@@ -28,6 +28,11 @@
   color: #61dafb;
 }
 
+.blocks {
+  height: 100vh;
+  overflow: auto;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +40,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.card-header {
+  padding: .2rem;
+}
+
+.card-body {
+  padding: .2rem;
+}
+
+.card-header {
+  background-color: rgb(146 146 146 / 62%);
 }
