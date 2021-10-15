@@ -6,24 +6,27 @@ export default function draw(ctx: CanvasRenderingContext2D,
     images: HTMLImageElement[],
     date: WatchDate,
     orderElementsTime: ElementOrderItem[],
-    watchState: WatchState) {
+    watchState: WatchState,
+    drawborder: boolean
+    ) {
+        let followXY = null
         orderElementsTime.forEach((item) => {
             switch (item.type) {
                 case 0:
                     if (date.enableYear) {
-                        drawDigit(ctx, images, date.year, watchState.year)
+                        followXY = drawDigit(ctx, images, date.year, watchState.year, date.year.follow ? followXY : null, drawborder)
                     }
                     break;
                 case 1:
                     if (date.enableMonth) {
-                        drawDigit(ctx, images, date.month, watchState.month)
+                        followXY = drawDigit(ctx, images, date.month, watchState.month, date.month.follow ? followXY : null, drawborder)
                     } else if (date.enableMonthAsWord) {
                         drawDigit(ctx, images, date.monthAsWord, watchState.monthasword)
                     }
                     break;
                 case 2:
                     if (date.enableDay) {
-                        drawDigit(ctx, images, date.day, watchState.day)
+                        followXY = drawDigit(ctx, images, date.day, watchState.day, date.day.follow ? followXY : null, drawborder)
                     }
                     break;
                 default:
@@ -32,6 +35,6 @@ export default function draw(ctx: CanvasRenderingContext2D,
         })
 
         if (date.enableWeekDay) {
-            drawDigit(ctx, images, date.weekDay, this.state.watchState.weekday)
+            drawDigit(ctx, images, date.weekDay, watchState.weekday)
         }
 }

@@ -1,17 +1,16 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 
-import { Digit, WatchTimeDigital } from '../model/watchFace.model';
+import { Digit, WatchDialFace } from '../model/watchFace.model';
 import DigitComponent from './digit.component';
 
 interface IProps {
   images: HTMLImageElement[],
-  timeDigital: WatchTimeDigital,
-  onUpdateTimeDigital(timeDigital: WatchTimeDigital): void,
+  timeDigital: WatchDialFace,
+  onUpdateTimeDigital(timeDigital: WatchDialFace): void,
 }
 
 interface IState {
-  timeDigital: WatchTimeDigital,
   collapsed: boolean
 }
 
@@ -21,7 +20,6 @@ export default class TimeDigitalComponent extends React.Component<IProps, IState
     super(props)
 
     this.state = {
-      timeDigital: new WatchTimeDigital(),
       collapsed: true
     }
 
@@ -32,42 +30,41 @@ export default class TimeDigitalComponent extends React.Component<IProps, IState
   }
 
   onToggleHours() {
-    const t = this.state.timeDigital
-    t.enableHours = !t.enableHours
+    const t = this.props.timeDigital
+    t.enableHoursDigital = !t.enableHoursDigital
     this.updateTimeDigital(t)
   }
 
   onToggleMinutes() {
-    const t = this.state.timeDigital
-    t.enableMinutes = !t.enableMinutes
+    const t = this.props.timeDigital
+    t.enableMinutesDigital = !t.enableMinutesDigital
     this.updateTimeDigital(t)
   }
   onToggleSeconds() {
-    const t = this.state.timeDigital
-    t.enableSeconds = !t.enableSeconds
+    const t = this.props.timeDigital
+    t.enableSecondsDigital = !t.enableSecondsDigital
     this.updateTimeDigital(t)
   }
 
   updateHoursDigit(h: Digit) {
-    const t = this.state.timeDigital
-    t.hours = h
+    const t = this.props.timeDigital
+    t.hoursDigital = h
     this.updateTimeDigital(t)
   }
 
   updateMinutesDigit(m: Digit) {
-    const t = this.state.timeDigital
-    t.minutes = m
+    const t = this.props.timeDigital
+    t.minutesDigital = m
     this.updateTimeDigital(t)
   }
 
   updateSecondsDigit(s: Digit) {
-    const t = this.state.timeDigital
-    t.seconds = s
+    const t = this.props.timeDigital
+    t.secondsDigital = s
     this.updateTimeDigital(t)
   }
   
-  updateTimeDigital(t: WatchTimeDigital) {
-    this.setState({timeDigital: t });
+  updateTimeDigital(t: WatchDialFace) {
     this.props.onUpdateTimeDigital(t)
   }
 
@@ -81,42 +78,42 @@ export default class TimeDigitalComponent extends React.Component<IProps, IState
         <Card.Body className={`${this.state.collapsed ? "collapse": ""}`}>
           <Card>
             <Card.Header>
-              <div className="input-group input-group-sm mb-3">
+              <div className="input-group input-group-sm">
                 <span className="input-group-text">Hours</span>
                 <div className="input-group-text">
                   <input className="form-check-input mt-0" type="checkbox" 
-                  checked={this.state.timeDigital.enableHours} 
+                  checked={this.props.timeDigital.enableHoursDigital} 
                   onChange={this.onToggleHours.bind(this)} />
                 </div>
               </div>
               </Card.Header>
-              { this.state.timeDigital.enableHours ? <DigitComponent images={this.props.images} digit={this.state.timeDigital.hours} onUpdateDigit={this.updateHoursDigit} /> : '' }
+              { this.props.timeDigital.enableHoursDigital ? <DigitComponent images={this.props.images} digit={this.props.timeDigital.hoursDigital} onUpdateDigit={this.updateHoursDigit}  showDecimalPointer={false} showDelimiter={false} showNoData={false} paddingZeroFix={false} /> : '' }
           </Card>
           <Card>
            <Card.Header>
-              <div className="input-group input-group-sm mb-3">
+              <div className="input-group input-group-sm">
                 <span className="input-group-text">Minutes</span>
                 <div className="input-group-text">
                   <input className="form-check-input mt-0" type="checkbox" 
-                  checked={this.state.timeDigital.enableMinutes} 
+                  checked={this.props.timeDigital.enableMinutesDigital} 
                   onChange={this.onToggleMinutes.bind(this)} />
                 </div>
               </div>
               </Card.Header>
-              { this.state.timeDigital.enableMinutes ? <DigitComponent images={this.props.images} digit={this.state.timeDigital.minutes} onUpdateDigit={this.updateMinutesDigit} /> : '' }
+              { this.props.timeDigital.enableMinutesDigital ? <DigitComponent images={this.props.images} digit={this.props.timeDigital.minutesDigital} onUpdateDigit={this.updateMinutesDigit} showDecimalPointer={false} showDelimiter={false} showNoData={false}  paddingZeroFix={true} /> : '' }
           </Card>
           <Card>
             <Card.Header>
-              <div className="input-group input-group-sm mb-3">
+              <div className="input-group input-group-sm">
                 <span className="input-group-text">Seconds</span>
                 <div className="input-group-text">
                   <input className="form-check-input mt-0" type="checkbox" 
-                  checked={this.state.timeDigital.enableSeconds} 
+                  checked={this.props.timeDigital.enableSecondsDigital} 
                   onChange={this.onToggleSeconds.bind(this)} />
                 </div>
               </div>
             </Card.Header>
-              { this.state.timeDigital.enableSeconds ? <DigitComponent images={this.props.images} digit={this.state.timeDigital.seconds} onUpdateDigit={this.updateSecondsDigit} /> : '' }
+              { this.props.timeDigital.enableSecondsDigital ? <DigitComponent images={this.props.images} digit={this.props.timeDigital.secondsDigital} onUpdateDigit={this.updateSecondsDigit} showDecimalPointer={false} showDelimiter={false} showNoData={false}  paddingZeroFix={true} /> : '' }
           </Card>
         </Card.Body>
       </Card>

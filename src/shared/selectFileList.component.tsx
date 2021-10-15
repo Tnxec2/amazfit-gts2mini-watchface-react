@@ -2,12 +2,12 @@ import React, { ReactElement } from "react";
 import './selectFileList.css'
 
 interface IProps {
+    imageIndex: number,
     images: HTMLImageElement[],
     setSelectedFileIndex(index: number)
 }
 
 interface IState {
-    selectedFileIndex: number,
     collapsed: boolean
 }
 export default class SelectFileListComponent extends React.Component<IProps, IState> {
@@ -15,16 +15,16 @@ export default class SelectFileListComponent extends React.Component<IProps, ISt
         super(props)
         
         this.state =  {
-            selectedFileIndex: null,
             collapsed: true
         }
         this.onFileSelected = this.onFileSelected.bind(this);
         this.onRemove = this.onRemove.bind(this)
+
     }
 
     onFileSelected(index: number) {
         this.props.setSelectedFileIndex(index)
-        this.setState({ selectedFileIndex: index, collapsed: true})
+        this.setState({collapsed: true})
 	};
 
     onClick = (val: number) => (e) => {
@@ -58,9 +58,9 @@ export default class SelectFileListComponent extends React.Component<IProps, ISt
         return (
             <>
             <div className="input-group-text dropdown">
-                <div >{ this.state.selectedFileIndex !== null  ? this.state.selectedFileIndex : 'None'}</div>
+                <div >{ ( this.props.imageIndex !== null && this.props.imageIndex !== undefined)  ? this.props.images[this.props.imageIndex].alt : 'None'}</div>
                 { this.state.collapsed ? '' : 
-                    <ul className="list-group dropdown-content" >
+                    <ul className="list-group dropdown-content">
                         {options}
                     </ul>
                 }

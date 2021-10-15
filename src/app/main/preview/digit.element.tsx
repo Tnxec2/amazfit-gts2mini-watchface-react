@@ -1,22 +1,50 @@
 import { Digit } from "../../model/watchFace.model"
+import drawSeparator from './imageCoords.element'
 
-export default function draw(ctx: CanvasRenderingContext2D, images: HTMLImageElement[], digit: Digit, 
-    number: number, followXY?: [number, number]) {
+export default function draw(
+    ctx: CanvasRenderingContext2D, 
+    images: HTMLImageElement[], 
+    digit: Digit, 
+    number: number, 
+    followXY?: [number, number], 
+    drawBorder?: boolean,
+    paddingZeroFix?: boolean) {
     const x = followXY ? followXY[0] : digit.x
     const y = followXY ? followXY[1] : digit.y
     if (digit.imageIndex !== undefined && digit.imageIndex !== null) {
         let strNumber = number.toString()
-        if (digit.paddingZero) {
+        if (number < 0) strNumber = (-number).toString()
+        if (digit.paddingZero || paddingZeroFix) {
             strNumber = strNumber.padStart(digit.numberLenght, '0' )
         }
-        const ar = getImages(images, strNumber, digit.imageIndex, digit.imageCount )
-        drawImages(ctx, ar, x, y, digit.spacing, digit.alignment, digit.numberLenght)
+        let ar = []
+        if (digit.delimiterImageIndex) {
+            if (number < 0)
+                ar.push(images[digit.delimiterImageIndex])
+        }
+        ar = ar.concat(getImages(images, strNumber, digit.imageIndex, digit.imageCount, digit.decimalPointImageIndex ))
+        if (digit.unitImageIndex) {
+            ar.push(images[digit.unitImageIndex])
+        }
+
+        const followXY = drawImages(ctx, ar, x, y, digit.spacing, 
+            digit.alignment, digit.numberLenght - strNumber.length, drawBorder)
+
+        if ( digit.separator) {
+            drawSeparator(ctx, images, digit.separator)
+        }
+        return followXY
     }
 }
 
-function getImages(images: HTMLImageElement[], strNumber: string, startImageIndex: number, count: number): HTMLImageElement[] {
+
+
+function getImages(images: HTMLImageElement[], strNumber: string, startImageIndex: number, count: number, decimalPointer: number): HTMLImageElement[] {
     const ar = []
     for (let i = 0; i < strNumber.length; i++) {
+        if (decimalPointer && i === strNumber.length - 2) {
+            ar.push(images[decimalPointer])
+        }
         var chr = strNumber.charAt(i);
         var n = parseInt(chr)
         if (!isNaN(n) && n < count) {
@@ -35,11 +63,14 @@ function getImages(images: HTMLImageElement[], strNumber: string, startImageInde
 }
 
 function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[], 
-    x: number, y: number, spacing: number, alignment: number, paddingLenght: number) {
+    startx: number, starty: number, spacing: number, alignment: number, paddingLenght: number, drawborder: boolean) {
     if ( ar.length === 0) return
     let imageWidth = 0
 
-    ar.forEach(img => imageWidth = imageWidth + spacing + img.width)
+    ar.forEach(img => {
+        if (imageWidth && spacing) imageWidth += spacing
+        imageWidth += img.width
+    })
 
     let maxWidth = imageWidth
 
@@ -47,16 +78,27 @@ function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[],
         maxWidth = imageWidth + ( spacing + ar[0].width ) * paddingLenght
     }
 
+    let x = startx
+    let y = starty
     if (alignment === 2) { // right
         x = x + maxWidth - imageWidth
     } else if (alignment === 1) { // center
         x = x + (maxWidth - imageWidth) / 2
     }
+
+    let height = 0
     ar.forEach(img => {
-        if ( spacing ) {
-            x += spacing
-        }
         ctx.drawImage(img, x, y, img.width, img.height);
+        height = Math.max(img.height, height)
         x += img.width
+        if ( spacing ) x += spacing
     })
+    if ( drawborder) {
+        ctx.beginPath();
+        ctx.strokeStyle = 'gray'
+        ctx.rect(startx, starty, maxWidth, height);
+        ctx.stroke();
+    }
+
+    return [x, y]
 }

@@ -11,7 +11,6 @@ interface IProps {
 }
 
 interface IState {
-  background: Background,
   collapsed: boolean
 }
 
@@ -21,7 +20,6 @@ export default class BackgroundComponent extends React.Component<IProps, IState>
     super(props)
 
     this.state = {
-      background: new Background(),
       collapsed: true
     }
 
@@ -31,45 +29,47 @@ export default class BackgroundComponent extends React.Component<IProps, IState>
   }
 
   onChangeBackgroundPreviewImage(index: number) {
-      const b = this.state.background
+      const b = this.props.background
       b.previewIndex = index
       this.updateBackground(b)
   }
 
   onChangeBackgroundImageIndex(index: number) {
-    const b = this.state.background
+    const b = this.props.background
     b.imageIndex = index
     this.updateBackground(b)
   }
 
   onChangeBackgroundColor(e) {
-    const b = this.state.background
+    const b = this.props.background
     b.color = e.target.value
     this.updateBackground(b)
   }
 
   updateBackground(b: Background) {
-    this.setState({background: b });
     this.props.onUpdateBackground(b)
   }
 
   render() {
+
     return (
       <Card>
-        <Card.Header 
+        <Card.Header className="clickable"
          onClick={() => {this.setState({collapsed: !this.state.collapsed})}}
          >
            Background</Card.Header>
-        <Card.Body className={`${this.state.collapsed ? "collapse": ""}`}>
-        <div className="input-group input-group-sm mb-3">
+        { !this.state.collapsed ? 
+        <Card.Body>
+        <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">PreviewImage</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeBackgroundPreviewImage} />
+            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeBackgroundPreviewImage} imageIndex={this.props.background.previewIndex}/>
         </div>
-        <div className="input-group input-group-sm mb-3">
+        
+        <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">ImageIndex</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeBackgroundImageIndex} />
+            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeBackgroundImageIndex} imageIndex={this.props.background.imageIndex}/>
         </div>
-        <div className="input-group input-group-sm mb-3">
+        <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Color</span>
           <Form.Control onChange={this.onChangeBackgroundColor}
             type="color"
@@ -78,7 +78,7 @@ export default class BackgroundComponent extends React.Component<IProps, IState>
             title="Choose background color"
           />
         </div>
-        </Card.Body>
+        </Card.Body> : '' }
       </Card>
     );
   }
