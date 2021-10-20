@@ -1,115 +1,113 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
+import { useContext, useMemo, useState } from "react";
+import { Card } from "react-bootstrap";
+import { IWatchContext, WatchfaceContext } from "../../context";
+import { WatchActivity, WatchActivityList } from "../model/watchFace.model";
+import ActivityComponent from "./activity.component";
 
-import { WatchActivityList } from '../model/watchFace.model';
-import ActivityComponent from './activity.component';
+const ActivityListComponent = () => {
+  const { watchface, setWatchface } =
+    useContext<IWatchContext>(WatchfaceContext);
 
-interface IProps {
-  images: HTMLImageElement[],
-  activity: WatchActivityList,
-  onUpdateActivityList(activityList: WatchActivityList): void,
-}
+  const [collapsed, setCollapsed] = useState<boolean>(true);
 
-interface IState {
-  collapsed: boolean
-}
-
-export default class ActivityListComponent extends React.Component<IProps, IState> {
-  
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      collapsed: true
-    }
-
-    this.updateActivityList = this.updateActivityList.bind(this)
+  function updateBattery(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, battery: a};
+    updateActivity(al);
   }
-  
-  updateActivityList(a: WatchActivityList) {
-    this.props.onUpdateActivityList(a)
+  function updateSteps(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, steps: a};
+    updateActivity(al);
+  }
+  function updateCalories(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, calories: a};
+    updateActivity(al);
+  }
+  function updateHearthRate(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, heartRate: a};
+    updateActivity(al);
+  }
+  function updatePai(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, pai: a};
+    updateActivity(al);
+  }
+  function updateDistance(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, distance: a};
+    updateActivity(al);
+  }
+  function updateStandUp(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, standUp: a};
+    updateActivity(al);
+  }
+  function updateWeather(a: WatchActivity) {
+    const al: WatchActivityList = {...watchface.activity, weather: a};
+    updateActivity(al);
   }
 
-  render() {
-    return (
-      <Card>
-        <Card.Header 
-         onClick={() => {this.setState({collapsed: !this.state.collapsed})}}
-         >
-           Activity</Card.Header>
-          { !this.state.collapsed ? 
+  function updateActivity(wa: WatchActivityList) {
+    setWatchface({ ...watchface, activity: wa });
+  }
+
+  const activitys = useMemo(
+    () => [
+      { title: "Battery", a: watchface.activity.battery, up: updateBattery, showNoData: true },
+      { title: "Steps", a: watchface.activity.steps, up: updateSteps, showNoData: true },
+      { title: "Calories", a: watchface.activity.calories, up: updateCalories,showNoData: true },
+      {
+        title: "HearthRate",
+        a: watchface.activity.heartRate,
+        up: updateHearthRate,
+        showNoData: true,
+      },
+      { title: "PAI", a: watchface.activity.pai,up: updatePai, showNoData: true },
+      {
+        title: "Distance",
+        a: watchface.activity.distance,
+        up: updateDistance,
+        showNoData: true,
+        showDecimalPointer: true,
+        showProgress: false,
+      },
+      { title: "StandUp", a: watchface.activity.standUp, up: updateStandUp, showNoData: true },
+      {
+        title: "Weather",
+        a: watchface.activity.standUp,
+        up: updateWeather,
+        showNoData: true,
+        showDelimiter: true,
+      },
+    ],
+    [watchface]
+  );
+
+  return (
+    <Card>
+      <Card.Header
+        onClick={() => {
+          setCollapsed(!collapsed);
+        }}
+      >
+        Activity
+      </Card.Header>
+      {!collapsed ? (
         <Card.Body>
-          <ActivityComponent
-            title='Battery'
-            images={this.props.images}
-            activity={this.props.activity.battery}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.battery = a; this.updateActivityList(l)}}
-            showNoData={true}  
-          >
-          </ActivityComponent>
-          <ActivityComponent
-            title='Steps'
-            images={this.props.images}
-            activity={this.props.activity.steps}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.steps = a; this.updateActivityList(l)}}
-            showNoData={true}  
-          >
-          </ActivityComponent>
-          <ActivityComponent
-            title='Calories'
-            images={this.props.images}
-            activity={this.props.activity.calories}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.calories = a; this.updateActivityList(l)}}
-            showNoData={true}  
-          >
-          </ActivityComponent>
-          <ActivityComponent
-            title='HearthRate'
-            images={this.props.images}
-            activity={this.props.activity.heartRate}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.heartRate = a; this.updateActivityList(l)}}
-            showNoData={true}  
-          >
-          </ActivityComponent>
-          <ActivityComponent
-            title='PAI'
-            images={this.props.images}
-            activity={this.props.activity.pai}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.pai = a; this.updateActivityList(l)}}
-            showNoData={true}  
-          >
-          </ActivityComponent>
-          <ActivityComponent
-            title='Distance'
-            images={this.props.images}
-            activity={this.props.activity.distance}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.distance = a; this.updateActivityList(l)}}
-            showDecimalPointer={true} 
-            showNoData={true}  
-            showProgress={false}
-          >
-          </ActivityComponent>
-          <ActivityComponent
-            title='StandUp'
-            images={this.props.images}
-            activity={this.props.activity.standUp}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.standUp = a; this.updateActivityList(l)}}
-            showNoData={true}  
-          >
-          </ActivityComponent>
-          <ActivityComponent
-            title='Weather'
-            images={this.props.images}
-            activity={this.props.activity.weather}
-            onUpdateActivity={(a) => {const l = this.props.activity; l.weather = a; this.updateActivityList(l)}}
-            showDelimiter={true} 
-            showNoData={true}  
-          >
-          </ActivityComponent>
+          {activitys.map((item) => {
+            return (
+              <ActivityComponent
+                title={item.title}
+                activity={item.a}
+                onUpdateActivity={item.up}
+                showNoData={item.showNoData}
+                showDecimalPointer={item.showDecimalPointer}
+                showProgress={item.showProgress}
+              />
+            );
+          })}
         </Card.Body>
-     : ''}
-      </Card>
-    );
-  }
-}
+      ) : (
+        ""
+      )}
+    </Card>
+  );
+};
 
+export default ActivityListComponent;

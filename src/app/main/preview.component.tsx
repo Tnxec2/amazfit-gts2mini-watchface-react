@@ -1,205 +1,270 @@
-import React from 'react';
-import Watchface from '../model/watchFace.model';
-import { WatchState } from '../model/watchState';
-import './preview.css';
-import drawBackground from './preview/background.element';
-import drawDate from './preview/date.element';
-import drawTimeDigital from './preview/timeDigital.element';
-import drawTimeAnalog from './preview/timeAnalog.element';
-import drawActivity from './preview/activity.element';
-import Canvas from './canvas.function';
+import { FC, useContext, useState } from "react";
 
+import { IWatchContext, WatchfaceContext } from "../../context";
+import { IImage } from "../model/image.model";
+import Canvas from "./canvas.function";
+import drawActivity from "./preview/activity.element";
+import drawBackground from "./preview/background.element";
+import drawAodBackground from "./preview/backgroundaod.element";
+import drawDate from "./preview/date.element";
+import drawStatus from "./preview/status.element";
+import drawTimeAnalog from "./preview/timeAnalog.element";
+import drawTimeDigital from "./preview/timeDigital.element";
+import cl from "./previewComponent.module.css";
 
 interface IProps {
-    images: HTMLImageElement[],
-    watchface: Watchface,
-    width: number,
-    height: number
-}
-
-interface IState {
-    x: number,
-    y: number,
-    watchState: WatchState,
-    whiteGrid: boolean,
-    blackGrid: boolean,
-    digitBorder: boolean,
-
+  width: number;
+  height: number;
 }
 
 const storage_items = {
-    preview_white_grid: 'preview_white_grid',
-    preview_black_grid: 'preview_black_grid',
-    preview_digit_border: 'preview_digit_border'
+  preview_white_grid: "preview_white_grid",
+  preview_black_grid: "preview_black_grid",
+  preview_digit_border: "preview_digit_border",
+};
+
+const PreviewComponent: FC<IProps> = ({ width, height }) => {
+  const { images, watchface, watchState, previewScreenNormal } =
+    useContext<IWatchContext>(WatchfaceContext);
+
+  const [x, setX] = useState<number>(0);
+  const [y, setY] = useState<number>(0);
+  const [whiteGrid, setWhiteGrid] = useState<boolean>(
+    localStorage.getItem(storage_items.preview_white_grid)
+      ? JSON.parse(localStorage.getItem(storage_items.preview_white_grid))
+      : false
+  );
+  const [blackGrid, setBlackGrid] = useState<boolean>(
+    localStorage.getItem(storage_items.preview_black_grid)
+      ? JSON.parse(localStorage.getItem(storage_items.preview_black_grid))
+      : false
+  );
+  const [digitBorder, setDigitBorder] = useState<boolean>(
+    localStorage.getItem(storage_items.preview_digit_border)
+      ? JSON.parse(localStorage.getItem(storage_items.preview_digit_border))
+      : false
+  );
+
+  function draw(canvas, ctx: CanvasRenderingContext2D) {
+    if (images && watchface) {
+      if (canvas) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (previewScreenNormal) drawNormal(canvas, ctx, images)
+        else drawAod(canvas, ctx, images)
+        drawGrid(ctx);
+      } else {
+        console.error("don't find canvas with id canvasPreview");
+      }
+    }
   }
 
-export default class PreviewComponent extends React.Component<IProps, IState> {
-    colorPickerRef: React.RefObject<unknown>;
-
-    constructor(props) {
-        super(props)
-
-        let whiteGrid = false
-        if ( localStorage.getItem(storage_items.preview_white_grid)) {
-            whiteGrid = JSON.parse(localStorage.getItem(storage_items.preview_white_grid))
-        }
-        let blackGrid = false
-        if ( localStorage.getItem(storage_items.preview_black_grid)) {
-            blackGrid = JSON.parse(localStorage.getItem(storage_items.preview_black_grid))
-        }
-        let digitBorder = false
-        if ( localStorage.getItem(storage_items.preview_digit_border)) {
-            digitBorder = JSON.parse(localStorage.getItem(storage_items.preview_digit_border))
-        }
-
-        this.state = {
-            x: 0,
-            y: 0,
-            watchState: new WatchState(),
-            whiteGrid: whiteGrid,
-            blackGrid: blackGrid,
-            digitBorder: digitBorder
-        }
-
-        this.draw = this.draw.bind(this)
-        this.drawGrid = this.drawGrid.bind(this)
-
-        this.colorPickerRef = React.createRef();
-
+  function drawNormal(canvas, ctx: CanvasRenderingContext2D, images: IImage[]) {
+    if (watchface.background) drawBackground(canvas, ctx, images, watchface.background);
+    if (watchface.date) {
+      drawDate(
+        ctx,
+        images,
+        watchface.date,
+        watchface.orderElements.orderElementsDate,
+        watchState,
+        digitBorder
+      );
     }
-
-    colorRegex: RegExp = /^#[0-9A-F]{6}$/i;
+    if (watchface.activity) {
+      drawActivity(
+        ctx,
+        images,
+        watchface.activity,
+        watchface.orderElements.orderElementsActivity,
+        watchState,
+        digitBorder
+      );
+    }
+    if (watchface.status) {
+      drawStatus(ctx, images, watchface.status, watchState);
+    }
+    if (watchface.dialFace) {
+      drawTimeDigital(
+        ctx,
+        images,
+        watchface.dialFace,
+        watchface.orderElements.orderElementsTime,
+        watchState,
+        digitBorder
+      );
+      drawTimeAnalog(ctx, images, watchface.dialFace, watchState);
+    }
+  }
   
-    GFG_Fun(colorCode: string) {
-        return this.colorRegex.test(colorCode);
+  function drawAod(canvas, ctx: CanvasRenderingContext2D, images: IImage[]) {
+    if (watchface.aod) drawAodBackground(canvas, ctx, images, watchface.aod.backgroundImageIndex);
+    if (watchface.aod.date) {
+      drawDate(
+        ctx,
+        images,
+        watchface.aod.date,
+        watchface.orderElements.orderElementsDate,
+        watchState,
+        digitBorder
+      );
+    }
+    if (watchface.aod.activity) {
+      drawActivity(
+        ctx,
+        images,
+        watchface.aod.activity,
+        watchface.orderElements.orderElementsActivity,
+        watchState,
+        digitBorder
+      );
+    }
+    if (watchface.aod.dialFace) {
+      drawTimeDigital(
+        ctx,
+        images,
+        watchface.aod.dialFace,
+        watchface.orderElements.orderElementsTime,
+        watchState,
+        digitBorder
+      );
+      drawTimeAnalog(ctx, images, watchface.dialFace, watchState);
+    }
+  }
+
+  function getCursorPosition(event) {
+    const canvas = document.getElementById(
+      "canvasPreview"
+    ) as HTMLCanvasElement;
+    const rect = canvas.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    x = Math.min(width, Math.max(0, Math.round(x)));
+    y = Math.min(height, Math.max(0, Math.round(y)));
+    setX(x);
+    setY(y);
+  }
+
+  function onToggleWhiteGrid() {
+    const wg = !whiteGrid;
+    setWhiteGrid(wg);
+    localStorage.setItem(storage_items.preview_white_grid, JSON.stringify(wg));
+  }
+
+  function onToggleBlackGrid() {
+    const bg = !blackGrid;
+    setBlackGrid(bg);
+    localStorage.setItem(storage_items.preview_white_grid, JSON.stringify(bg));
+  }
+
+  function onToggleDigitBorder() {
+    const db = !digitBorder;
+    setDigitBorder(db);
+    localStorage.setItem(
+      storage_items.preview_digit_border,
+      JSON.stringify(db)
+    );
+  }
+
+  function drawGrid(ctx: CanvasRenderingContext2D) {
+    if (!whiteGrid && !blackGrid) return;
+    const stroke = whiteGrid ? "white" : "black";
+    const step = 20;
+    for (let i = width / 2; i > 0; i -= step) {
+      drawLine(ctx, [i, 0], [i, height], stroke, 1);
+    }
+    for (let i = width / 2; i < width; i += step) {
+      drawLine(ctx, [i, 0], [i, height], stroke, 1);
+    }
+    for (let i = height / 2; i > 0; i -= step) {
+      drawLine(ctx, [0, i], [width, i], stroke, 1);
+    }
+    for (let i = height / 2; i < height; i += step) {
+      drawLine(ctx, [0, i], [width, i], stroke, 1);
+    }
+    drawLine(ctx, [width / 2 - 1, 0], [width / 2 - 1, height], stroke, 2);
+    drawLine(ctx, [0, height / 2 - 1], [width, height / 2 - 1], stroke, 2);
+  }
+
+  function drawLine(
+    ctx: CanvasRenderingContext2D,
+    begin: [number, number],
+    end: [number, number],
+    stroke = "black",
+    width = 1
+  ) {
+    if (stroke) {
+      ctx.strokeStyle = stroke;
     }
 
-    draw(canvas, ctx: CanvasRenderingContext2D) {
-        const props = this.props
-        
-        if (props.images && props.watchface) {
-
-            if ( canvas) {
-                
-                ctx.clearRect(0, 0, canvas.width, canvas.height)
-                if (props.watchface.background) {
-                    drawBackground(canvas, ctx, props.images, props.watchface.background )
-                }
-                if (props.watchface.date) {
-                    drawDate(ctx,props.images, props.watchface.date, props.watchface.orderElements.orderElementsDate, this.state.watchState, this.state.digitBorder)
-                }
-                if (props.watchface.activity) {
-                    drawActivity(ctx,props.images, props.watchface.activity, props.watchface.orderElements.orderElementsActivity, this.state.watchState, this.state.digitBorder)
-                }
-                if (props.watchface.dialFace) {
-                    drawTimeDigital(ctx, props.images, props.watchface.dialFace, props.watchface.orderElements.orderElementsTime, this.state.watchState, this.state.digitBorder)
-                    drawTimeAnalog(ctx, props.images, props.watchface.dialFace, this.state.watchState)
-                }
-
-                this.drawGrid(ctx)
-            } else {
-                console.error('don\'t find canvas with id canvasPreview')
-            }
-        }
+    if (width) {
+      ctx.lineWidth = width;
     }
 
-    getCursorPosition(event) {
-        const canvas = document.getElementById("canvasPreview") as HTMLCanvasElement;
-        const rect = canvas.getBoundingClientRect()
-        let x = event.clientX - rect.left
-        let y = event.clientY - rect.top
-        x = Math.min(this.props.width, Math.max(0, Math.round(x)))
-        y = Math.min(this.props.height, Math.max(0, Math.round(y)))
-        this.setState({x: x, y: y})
-    }
+    ctx.beginPath();
+    ctx.moveTo(begin[0], begin[1]);
+    ctx.lineTo(end[0], end[1]);
+    ctx.stroke();
+  }
 
-    onToggleWhiteGrid() {
-        const wg = !this.state.whiteGrid
-        this.setState(({whiteGrid: wg}))
-        localStorage.setItem(storage_items.preview_white_grid, JSON.stringify(wg))
-    }
+  return (
+    <>
+      <div className={cl.canvasCcontainer}>
+        {previewScreenNormal? 'Screen Normal' : 'AOD'}
+        <div>
+          x: {x}, y: {y}
+        </div>
+        <Canvas
+          id='canvasPreview'
+          draw={draw}
+          className={cl.canvasPreview}
+          width={width}
+          height={height}
+          onClick={getCursorPosition}
+        />
+      </div>
 
-    onToggleBlackGrid() {
-        const bg = ! this.state.blackGrid
-        this.setState({blackGrid: bg})
-        localStorage.setItem(storage_items.preview_white_grid, JSON.stringify(bg))
-    }
+      <div className="container d-flex justify-content-center">
+        <div
+          className="input-group input-group-sm"
+          style={{ width: "max-content" }}
+        >
+          <span className="input-group-text" id="addon-wrapping">
+            White grid
+          </span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={whiteGrid}
+              onChange={onToggleWhiteGrid}
+            />
+          </div>
+          <span className="input-group-text" id="addon-wrapping">
+            Black grid
+          </span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={blackGrid}
+              onChange={onToggleBlackGrid}
+            />
+          </div>
+          <span className="input-group-text" id="addon-wrapping">
+            border on digit
+          </span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={digitBorder}
+              onChange={onToggleDigitBorder}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
-    onToggleDigitBorder() {
-        const db = ! this.state.digitBorder
-        this.setState({digitBorder: db})
-        localStorage.setItem(storage_items.preview_digit_border, JSON.stringify(db))
-    }
-
-    drawGrid(ctx: CanvasRenderingContext2D) {
-        if (!this.state.whiteGrid && !this.state.blackGrid) return
-        const stroke = this.state.whiteGrid ? 'white' : 'black'
-        const step = 20
-        for(let i = this.props.width / 2; i > 0; i -= step) {
-            this.drawLine(ctx, [i,0], [i,this.props.height], stroke, 1)
-        }
-        for(let i = this.props.width / 2; i < this.props.width; i += step) {
-            this.drawLine(ctx, [i,0], [i,this.props.height], stroke, 1)
-        }
-        for(let i = this.props.height / 2; i > 0; i -= step) {
-            this.drawLine(ctx, [0,i], [this.props.width,i], stroke, 1)
-        }
-        for(let i = this.props.height / 2; i < this.props.height; i += step) {
-            this.drawLine(ctx, [0,i], [this.props.width,i], stroke, 1)
-        }
-        this.drawLine(ctx, [this.props.width / 2 -1, 0], [this.props.width / 2 -1, this.props.height], stroke, 2 )
-        this.drawLine(ctx, [0, this.props.height / 2 -1], [this.props.width, this.props.height /2 -1], stroke, 2 )
-    }
-
-    drawLine(ctx: CanvasRenderingContext2D, begin: [number, number], end: [number, number], stroke = 'black', width = 1) {
-        if (stroke) {
-            ctx.strokeStyle = stroke;
-        }
-    
-        if (width) {
-            ctx.lineWidth = width;
-        }
-    
-        ctx.beginPath();
-        ctx.moveTo(begin[0], begin[1]);
-        ctx.lineTo(end[0], end[1]);
-        ctx.stroke();
-    }
-
-    render() {
-        //this.drawPreview()
-        return (
-            <>
-            <div id="canvasCcontainer">
-                <div>
-                    x: {this.state.x}, y: {this.state.y}
-                </div>
-                <Canvas draw={this.draw.bind(this)} id="canvasPreview" width={this.props.width} height={this.props.height} onClick={this.getCursorPosition.bind(this)} />
-            </div>
-            
-            <div className="container d-flex justify-content-center">
-                    <div className="input-group input-group-sm" style={{width: 'max-content'}}>
-                        <span className="input-group-text" id="addon-wrapping">White grid</span>
-                        <div className="input-group-text">
-                        <input className="form-check-input mt-0" type="checkbox" 
-                        checked={this.state.whiteGrid} 
-                        onChange={this.onToggleWhiteGrid.bind(this)} />
-                        </div>
-                        <span className="input-group-text" id="addon-wrapping">Black grid</span>
-                        <div className="input-group-text">
-                            <input className="form-check-input mt-0" type="checkbox" 
-                            checked={this.state.blackGrid} 
-                            onChange={this.onToggleBlackGrid.bind(this)} />
-                        </div>
-                        <span className="input-group-text" id="addon-wrapping">border on digit</span>
-                        <div className="input-group-text">
-                            <input className="form-check-input mt-0" type="checkbox" 
-                            checked={this.state.digitBorder} 
-                            onChange={this.onToggleDigitBorder.bind(this)} />
-                        </div>
-                </div>
-            </div>
-            </>
-        )
-    }
-}
+export default PreviewComponent;

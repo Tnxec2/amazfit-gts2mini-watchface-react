@@ -1,9 +1,10 @@
+import { IImage } from "../../model/image.model";
 import { ElementOrderItem, WatchDate } from "../../model/watchFace.model";
 import { WatchState } from "../../model/watchState";
 import drawDigit from "./digit.element";
 
 export default function draw(ctx: CanvasRenderingContext2D, 
-    images: HTMLImageElement[],
+    images: IImage[],
     date: WatchDate,
     orderElementsTime: ElementOrderItem[],
     watchState: WatchState,
@@ -13,19 +14,19 @@ export default function draw(ctx: CanvasRenderingContext2D,
         orderElementsTime.forEach((item) => {
             switch (item.type) {
                 case 0:
-                    if (date.enableYear) {
+                    if (date.year.enabled) {
                         followXY = drawDigit(ctx, images, date.year, watchState.year, date.year.follow ? followXY : null, drawborder)
                     }
                     break;
                 case 1:
-                    if (date.enableMonth) {
+                    if (date.month.enabled) {
                         followXY = drawDigit(ctx, images, date.month, watchState.month, date.month.follow ? followXY : null, drawborder)
-                    } else if (date.enableMonthAsWord) {
+                    } else if (date.monthAsWord.enabled) {
                         drawDigit(ctx, images, date.monthAsWord, watchState.monthasword)
                     }
                     break;
                 case 2:
-                    if (date.enableDay) {
+                    if (date.day.enabled) {
                         followXY = drawDigit(ctx, images, date.day, watchState.day, date.day.follow ? followXY : null, drawborder)
                     }
                     break;
@@ -34,7 +35,7 @@ export default function draw(ctx: CanvasRenderingContext2D,
             }
         })
 
-        if (date.enableWeekDay) {
+        if (date.weekDay.enabled) {
             drawDigit(ctx, images, date.weekDay, watchState.weekday)
         }
 }

@@ -1,9 +1,9 @@
-#canvasCcontainer {
+.canvasCcontainer {
     width: 100%;
     text-align:center;
  }
  
-#canvasPreview {
+.canvasPreview {
     display: inline;
     border: 1px gray dotted;
 }

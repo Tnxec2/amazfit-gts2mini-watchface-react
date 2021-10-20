@@ -1,7 +1,18 @@
+.header {
+  height: 10%;
+}
+
+.main {
+  height: 80%;
+}
+
+.leftcol {
+  height: 100%;
+}
 
 .blocks {
-  height: 100vh;
-  overflow: auto;
+  overflow-y: auto;
+  height: 100%;
 }
 
 @keyframes App-logo-spin {
@@ -18,13 +29,10 @@
 }
 
 .card-body {
-  padding: .2rem;
+  padding: .2rem .2rem .2rem 1rem;
 }
 
 .card-header {
   background-color: rgb(146 146 146 / 62%);
 }
 
-.activity > .card-header {
-  background-color: #887ee2;
-}

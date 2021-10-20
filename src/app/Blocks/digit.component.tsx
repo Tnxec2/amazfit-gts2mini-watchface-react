@@ -1,219 +1,304 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
-
-import { Digit } from '../model/watchFace.model';
-import SelectFileListComponent from '../../shared/selectFileList.component';
+import { FC, useContext } from "react";
+import { Card } from "react-bootstrap";
+import { IWatchContext, WatchfaceContext } from "../../context";
+import SelectFileListComponent from "../../shared/selectFileList.component";
+import { Digit } from "../model/watchFace.model";
 
 interface IProps {
-  images: HTMLImageElement[],
-  digit: Digit,
-  onUpdateDigit(digit: Digit): void,
-  showNoData: boolean,
-  showDecimalPointer: boolean,
-  showDelimiter: boolean,
-  paddingZeroFix: boolean
+  title: string;
+  digit: Digit;
+  onUpdate(digit: Digit): void;
+  showNoData?: boolean;
+  showDecimalPointer?: boolean;
+  showDelimiter?: boolean;
+  paddingZeroFix?: boolean;
+  onCopyFromNormal?(): void
 }
 
-interface IState {
-  digit: Digit,
-  collapsed: boolean
-}
+const DigitComponent: FC<IProps> = ({
+  title,
+  digit,
+  onUpdate,
+  showNoData,
+  showDecimalPointer,
+  showDelimiter,
+  paddingZeroFix,
+  onCopyFromNormal
+}) => {
 
-export default class DigitComponent extends React.Component<IProps, IState> {
-  
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      digit: this.props.digit ? this.props.digit : new Digit(),
-      collapsed: true
-    }
-
-    this.onChangeImageIndex = this.onChangeImageIndex.bind(this)
-    this.onChangeUnit = this.onChangeUnit.bind(this)
-    this.onChangeX = this.onChangeX.bind(this)
-    this.onChangeY = this.onChangeY.bind(this)
-    this.onChangePaddingZero = this.onChangePaddingZero.bind(this)
-    this.onChangeAlignment = this.onChangeAlignment.bind(this)
-    this.onChangeSpacing = this.onChangeSpacing.bind(this)
-    this.onChangeFollow = this.onChangeFollow.bind(this)
-    this.onChangeSeparatorX =  this.onChangeSeparatorX.bind(this)
-    this.onChangeSeparatorY =  this.onChangeSeparatorY.bind(this)
+  function onChangeImageIndex(index: number) {
+    const d = {...digit};
+    d.imageIndex = index;
+    onUpdate(d);
   }
 
-  onChangeImageIndex(index: number) {
-    const d = this.state.digit
-    d.imageIndex = index
-    this.updateDigit(d)
+  function onChangeUnit(index: number) {
+    const d = {...digit};
+    d.unitImageIndex = index;
+    onUpdate(d);
   }
 
-  onChangeUnit(index: number) {
-    const d = this.state.digit
-    d.unitImageIndex = index
-    this.updateDigit(d)
+  function onChangeX(e) {
+    const d = {...digit};
+    d.x = parseInt(e.target.value);
+    onUpdate(d);
   }
 
-  onChangeX(e) {
-    const d = this.state.digit
-    d.x = parseInt(e.target.value)
-    this.updateDigit(d)
+  function onChangeY(e) {
+    const d = {...digit};
+    d.y = parseInt(e.target.value);
+    onUpdate(d);
   }
 
-  onChangeY(e) {
-    const d = this.state.digit
-    d.y = parseInt(e.target.value)
-    this.updateDigit(d)
+  function onChangePaddingZero(e) {
+    const d = {...digit};
+    d.paddingZero = !d.paddingZero;
+    onUpdate(d);
   }
 
-  onChangePaddingZero(e) {
-    const d = this.state.digit
-    d.paddingZero = !d.paddingZero
-    this.updateDigit(d)
+  function onChangeAlignment(e) {
+    const d = {...digit};
+    d.alignment = parseInt(e.target.value);
+    onUpdate(d);
   }
 
-  onChangeAlignment(e) {
-    const d = this.state.digit
-    d.alignment = parseInt(e.target.value)
-    this.updateDigit(d)
+  function onChangeFollow(e) {
+    const d = {...digit};
+    d.follow = !d.follow;
+    onUpdate(d);
   }
 
-  onChangeFollow(e) {
-    const d = this.state.digit
-    d.follow = !d.follow
-    this.updateDigit(d)
+  function onChangeSpacing(e) {
+    const d = {...digit};
+    d.spacing = parseInt(e.target.value);
+    onUpdate(d);
   }
 
-  onChangeSpacing(e) {
-    const d = this.state.digit
-    d.spacing = parseInt(e.target.value)
-    this.updateDigit(d)
+  function onChangeNoData(index: number) {
+    const d = {...digit};
+    d.noDataImageIndex = index;
+    onUpdate(d);
   }
 
-  onChangeNoData(index: number) {
-    const d = this.state.digit
-    d.noDataImageIndex = index
-    this.updateDigit(d)
+  function onChangeDelimiter(index: number) {
+    const d = {...digit};
+    d.delimiterImageIndex = index;
+    onUpdate(d);
   }
 
-  onChangeDelimiter(index: number) {
-    const d = this.state.digit
-    d.delimiterImageIndex = index
-    this.updateDigit(d)
+  function onChangeDecimalPointer(index: number) {
+    const d = {...digit};
+    d.decimalPointImageIndex = index;
+    onUpdate(d);
   }
 
-  onChangeDecimalPointer(index: number) {
-    const d = this.state.digit
-    d.decimalPointImageIndex = index
-    this.updateDigit(d)
+  function onChangeSeparator(index: number) {
+    const d = {...digit};
+    d.separator.imageIndex = index;
+    onUpdate(d);
   }
 
-  onChangeSeparator(index: number) {
-    const d = this.state.digit
-    d.separator.imageIndex = index
-    this.updateDigit(d)
+  function onChangeSeparatorX(e) {
+    const d = {...digit};
+    d.separator.x = parseInt(e.target.value);
+    onUpdate(d);
   }
 
-  onChangeSeparatorX(e) {
-    const d = this.state.digit
-    d.separator.x = parseInt(e.target.value)
-    this.updateDigit(d)
-  }
-  
-  onChangeSeparatorY(e) {
-    const d = this.state.digit
-    d.separator.y = parseInt(e.target.value)
-    this.updateDigit(d)
+  function onChangeSeparatorY(e) {
+    const d = {...digit};
+    d.separator.y = parseInt(e.target.value);
+    onUpdate(d);
   }
 
-  updateDigit(d: Digit) {
-    this.setState({digit: d });
-    this.props.onUpdateDigit(d)
-  }
+  const x = digit.x ? digit.x : 0;
+  const y = digit.y ? digit.y : 0;
+  const separatorx = digit.separator.x ? digit.separator.x : 0;
+  const separatory = digit.separator.y ? digit.separator.y : 0;
+  const spacing = digit.spacing ? digit.spacing : 0;
 
-  render() {
-    const x = this.state.digit.x ? this.state.digit.x : 0
-    const y = this.state.digit.y ? this.state.digit.y : 0
-    const separatorx = this.state.digit.separator.x ? this.state.digit.separator.x : 0
-    const separatory = this.state.digit.separator.y ? this.state.digit.separator.y : 0
-    const spacing = this.state.digit.spacing ? this.state.digit.spacing : 0
-    return (
-      <Card.Body>
-        <div className="input-group input-group-sm mb-1">
-          <span className="input-group-text">ImageIndex</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeImageIndex} imageIndex={this.state.digit.imageIndex} />
-            <span className="input-group-text">count: {this.state.digit.imageCount}</span>
-        </div>
-        { ! this.state.digit.displayFormAnalog ?
+  return (
+    <Card>
+      <Card.Header>
         <div className="input-group input-group-sm">
-          <span className="input-group-text">Unit</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeUnit.bind(this)} imageIndex={this.state.digit.unitImageIndex}  />
-        </div> : '' 
-        }
-        { this.props.showNoData ?
-        <div className="input-group input-group-sm">
-          <span className="input-group-text">NoData</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeNoData.bind(this)} imageIndex={this.state.digit.noDataImageIndex}/>
-        </div> : '' }
-        { this.props.showDelimiter ?
-        <div className="input-group input-group-sm">
-          <span className="input-group-text">Minus</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeDelimiter.bind(this)} imageIndex={this.state.digit.delimiterImageIndex}/>
-        </div> : '' }
-        { this.props.showDecimalPointer ?
-        <div className="input-group input-group-sm">
-          <span className="input-group-text">Decimal pointer</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeDecimalPointer.bind(this)} imageIndex={this.state.digit.decimalPointImageIndex}/>
-        </div> : '' }
-        <div className="input-group input-group-sm flex-nowrap mb-1 mt-1">
-          <span className="input-group-text" id="addon-wrapping">X</span>
-          <input type="number" className="form-control form-control-sm" value={x } onChange={this.onChangeX} />
-          <span className="input-group-text" id="addon-wrapping">Y</span>
-          <input type="number" className="form-control form-control-sm" value={y } onChange={this.onChangeY} />
-          { ! this.state.digit.displayFormAnalog ?
-          <>
-          <span className="input-group-text" id="addon-wrapping">alignment</span>
-            <div className="input-group-text">
-              <select className="form-select form-select-sm" onChange={this.onChangeAlignment}>
-                <option value="0">Left</option>
-                <option value="1">Center</option>
-                <option value="2">Right</option>
-              </select>
-            </div> 
-            </>
-            : '' }
-        </div>
-        { !this.state.digit.displayFormAnalog ?
-          <>
-          <div className="input-group input-group-sm flex-nowrap mb-1">
-            <span className="input-group-text" id="addon-wrapping">padding zero</span>
-            <div className="input-group-text">
-              <input className="form-check-input mt-0" type="checkbox" disabled={this.props.paddingZeroFix}
-              checked={this.state.digit.paddingZero || this.props.paddingZeroFix} 
-              onChange={this.onChangePaddingZero} />
-            </div>
-            <span className="input-group-text" id="addon-wrapping">spacing</span>
-            <input type="number" className="form-control form-control-sm" value={spacing } onChange={this.onChangeSpacing} />
-            <span className="input-group-text" id="addon-wrapping">follow</span>
-            <div className="input-group-text">
-              <input className="form-check-input mt-0" type="checkbox" 
-              checked={this.state.digit.follow} 
-              onChange={this.onChangeFollow} />
-            </div>
+          <span className="input-group-text">{title}</span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={digit.enabled}
+              onChange={() => {
+                const d = { ...digit };
+                d.enabled = !d.enabled;
+                onUpdate(d);
+              }}
+            />
           </div>
+        </div>
+      </Card.Header>
+      {digit.enabled ? (
+        <Card.Body>
+          { !onCopyFromNormal ? '' : <div style={{clear:'both'}}><button className='btn btn-sm btn-secondary mb-1' style={{float:'right'}} onClick={onCopyFromNormal}>Copy from normal screen</button></div> }
+          <div className="input-group input-group-sm mb-1">
+            <span className="input-group-text">ImageIndex</span>
+            <SelectFileListComponent
+              setSelectedFileIndex={onChangeImageIndex}
+              imageIndex={digit.imageIndex}
+            />
+            <span className="input-group-text">count: {digit.imageCount}</span>
+            <span className="input-group-text" id="addon-wrapping">
+              X
+            </span>
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              value={x}
+              onChange={onChangeX}
+            />
+            <span className="input-group-text" id="addon-wrapping">
+              Y
+            </span>
+            <input
+              type="number"
+              className="form-control form-control-sm"
+              value={y}
+              onChange={onChangeY}
+            />
+          </div>
+          {!digit.displayFormAnalog ? (
+            <div className="input-group input-group-sm">
+              <span className="input-group-text">Unit</span>
+              <SelectFileListComponent
+                setSelectedFileIndex={onChangeUnit}
+                imageIndex={digit.unitImageIndex}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+          {showNoData ? (
+            <div className="input-group input-group-sm">
+              <span className="input-group-text">NoData</span>
+              <SelectFileListComponent
+                setSelectedFileIndex={onChangeNoData}
+                imageIndex={digit.noDataImageIndex}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+          {showDelimiter ? (
+            <div className="input-group input-group-sm">
+              <span className="input-group-text">Minus</span>
+              <SelectFileListComponent
+                setSelectedFileIndex={onChangeDelimiter}
+                imageIndex={digit.delimiterImageIndex}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+          {showDecimalPointer ? (
+            <div className="input-group input-group-sm">
+              <span className="input-group-text">Decimal pointer</span>
+              <SelectFileListComponent
+                setSelectedFileIndex={onChangeDecimalPointer}
+                imageIndex={digit.decimalPointImageIndex}
+              />
+            </div>
+          ) : (
+            ""
+          )}
+          {!digit.displayFormAnalog ? (
+            <>
+              <div className="input-group input-group-sm flex-nowrap mb-1">
+                <span className="input-group-text" id="addon-wrapping">
+                  padding zero
+                </span>
+                <div className="input-group-text">
+                  <input
+                    className="form-check-input mt-0"
+                    type="checkbox"
+                    disabled={paddingZeroFix}
+                    checked={digit.paddingZero || paddingZeroFix}
+                    onChange={onChangePaddingZero}
+                  />
+                </div>
+                <span className="input-group-text" id="addon-wrapping">
+                  spacing
+                </span>
+                <input
+                  type="number"
+                  className="form-control form-control-sm"
+                  value={spacing}
+                  onChange={onChangeSpacing}
+                />
+                <span className="input-group-text" id="addon-wrapping">
+                  follow
+                </span>
+                <div className="input-group-text">
+                  <input
+                    className="form-check-input mt-0"
+                    type="checkbox"
+                    checked={digit.follow}
+                    onChange={onChangeFollow}
+                  />
+                </div>
+                <span className="input-group-text" id="addon-wrapping">
+                  alignment
+                </span>
+                <div className="input-group-text">
+                  <select
+                    className="form-select form-select-sm"
+                    onChange={onChangeAlignment}
+                  >
+                    <option value="0" selected={digit.alignment === 0}>
+                      Left
+                    </option>
+                    <option value="1" selected={digit.alignment === 1}>
+                      Center
+                    </option>
+                    <option value="2" selected={digit.alignment === 2}>
+                      Right
+                    </option>
+                  </select>
+                </div>
+              </div>
 
-          <div className="input-group input-group-sm">
-            <span className="input-group-text">Separator</span>
-            <SelectFileListComponent images={this.props.images} setSelectedFileIndex={this.onChangeSeparator.bind(this)} imageIndex={this.state.digit.separator.imageIndex}/>
-            <span className="input-group-text" id="addon-wrapping">X</span>
-            <input type="number" className="form-control form-control-sm" value={separatorx } onChange={this.onChangeSeparatorX} />
-            <span className="input-group-text" id="addon-wrapping">Y</span>
-            <input type="number" className="form-control form-control-sm" value={separatory } onChange={this.onChangeSeparatorY} />
-          </div> 
+              <div className="input-group input-group-sm">
+                <span className="input-group-text">Separator</span>
+                <SelectFileListComponent
+                  setSelectedFileIndex={onChangeSeparator}
+                  imageIndex={digit.separator.imageIndex}
+                />
+                <span className="input-group-text" id="addon-wrapping">
+                  X
+                </span>
+                <input
+                  type="number"
+                  className="form-control form-control-sm"
+                  value={separatorx}
+                  onChange={onChangeSeparatorX}
+                />
+                <span className="input-group-text" id="addon-wrapping">
+                  Y
+                </span>
+                <input
+                  type="number"
+                  className="form-control form-control-sm"
+                  value={separatory}
+                  onChange={onChangeSeparatorY}
+                />
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+        </Card.Body>
+      ) : (
+        ""
+      )}
+    </Card>
+  );
+};
 
-          </> : ''
-        }
-      </Card.Body>
-    );
-  }
-}
-
+export default DigitComponent;

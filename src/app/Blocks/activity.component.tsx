@@ -1,85 +1,118 @@
-import React from 'react';
-import { Card } from 'react-bootstrap';
-
-import { WatchActivity } from '../model/watchFace.model';
-import DigitComponent from './digit.component';
-import ImageProgressComponent from './imageProgress.component';
+import { FC, useState } from "react";
+import { Card } from "react-bootstrap";
+import { WatchActivity } from "../model/watchFace.model";
+import ClockHandComponent from "./clockHand.component";
+import DigitComponent from "./digit.component";
+import ImageCoordsComponent from "./imageCoords.component";
+import ImageProgressComponent from "./imageProgress.component";
+import ProgressbarCircleCodmponent from "./progressbarCircle.component";
+import ProgressbarLinearComponent from "./progressbarLinear.component";
 
 interface IProps {
-  images: HTMLImageElement[],
-  activity: WatchActivity,
-  title: string,
-  onUpdateActivity(activity: WatchActivity): void,
-  showDecimalPointer?: boolean,
-  showDelimiter?: boolean,
-  showNoData?: boolean,
-  paddingZeroFix?: boolean,
-  showProgress?: boolean
+  activity: WatchActivity;
+  title: string;
+  onUpdateActivity(activity: WatchActivity): void;
+  showDecimalPointer?: boolean;
+  showDelimiter?: boolean;
+  showNoData?: boolean;
+  paddingZeroFix?: boolean;
+  showProgress?: boolean;
+  onCopy?(): void
 }
 
-interface IState {
-  collapsed: boolean
-}
+const ActivityComponent: FC<IProps> = ({
+  activity,
+  title,
+  onUpdateActivity,
+  showDecimalPointer,
+  showDelimiter,
+  showNoData,
+  paddingZeroFix,
+  showProgress,
+  onCopy
+}) => {
+  const [collapsed, setCollapsed] = useState<boolean>(true);
 
-export default class ActivityComponent extends React.Component<IProps, IState> {
-  
-  constructor(props: IProps) {
-    super(props)
+  return (
+    <Card className="activity">
+      <Card.Header onClick={() => setCollapsed(!collapsed)}>
+        <div className="input-group input-group-sm">
+          <span className="input-group-text">{title}</span>
+        </div>
+      </Card.Header>
+      {!collapsed ? (
+        <Card.Body>
+          { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm mr-0' onClick={onCopy}>Copy from normal screen</button> }
+          <DigitComponent
+            title="Numerical"
+            digit={activity.digit}
+            onUpdate={(d) => {
+              const a = { ...activity };
+              a.digit = d;
+              onUpdateActivity(a);
+            }}
+            showDecimalPointer={showDecimalPointer}
+            showDelimiter={showDelimiter}
+            showNoData={showNoData}
+            paddingZeroFix={paddingZeroFix}
+          />
 
-    this.state = {
-      collapsed: true
-    }
-
-  }
-
-  render() {
-    return (
-          <Card className="activity">
-            <Card.Header>
-              <div className="input-group input-group-sm">
-                <span className="input-group-text">{this.props.title}</span>
-              </div>
-              </Card.Header>
-            <Card>
-              <Card.Header>
-                <div className="input-group input-group-sm">
-                  <span className="input-group-text">Numerical</span>
-                  <div className="input-group-text">
-                    <input className="form-check-input mt-0" type="checkbox" 
-                    checked={this.props.activity.digit.enabled} 
-                    onChange={() => {const a = this.props.activity; a.digit.enabled = ! a.digit.enabled; this.props.onUpdateActivity(a)}} />
-                  </div>
-                </div>
-              </Card.Header>
-              { this.props.activity.digit.enabled ? <DigitComponent images={this.props.images} digit={this.props.activity.digit} 
-                onUpdateDigit={(d) => {const a = this.props.activity; a.digit = d; this.props.onUpdateActivity(a) }} 
-                showDecimalPointer={this.props.showDecimalPointer} 
-                showDelimiter={this.props.showDelimiter} 
-                showNoData={this.props.showNoData} 
-                paddingZeroFix={this.props.paddingZeroFix} /> : '' }
-            </Card>
-            { this.props.showProgress === undefined || this.props.showProgress === true ?
+          {showProgress === undefined || showProgress === true ? 
             <>
-            <Card>
-              <Card.Header>
-                <div className="input-group input-group-sm">
-                  <span className="input-group-text">Image Progress</span>
-                  <div className="input-group-text">
-                    <input className="form-check-input mt-0" type="checkbox" 
-                    checked={this.props.activity.imageProgress.enabled} 
-                    onChange={() => {const a = this.props.activity; a.imageProgress.enabled = ! a.imageProgress.enabled; this.props.onUpdateActivity(a)}} />
-                  </div>
-                </div>
-              </Card.Header>
-              { this.props.activity.imageProgress.enabled ? <ImageProgressComponent 
-                images={this.props.images}
-                imageProgress={this.props.activity.imageProgress} 
-                onUpdate={(d) => {const a = this.props.activity; a.imageProgress = d; this.props.onUpdateActivity(a) }} 
-                /> : '' }
-            </Card>
-            </> : '' }
-          </Card>
-    );
-  }
-}
+              <ImageProgressComponent
+                imageProgress={activity.imageProgress}
+                onUpdate={(d) => {
+                  const a = { ...activity };
+                  a.imageProgress = d;
+                  onUpdateActivity(a);
+                }}
+              />
+              <ProgressbarCircleCodmponent
+                progressBar={activity.progressBar}
+                onUpdate={(d) => {
+                  const a = { ...activity };
+                  a.progressBar = d;
+                  onUpdateActivity(a);
+                }}
+              />
+              <ProgressbarLinearComponent
+                progressBar={activity.progressBar}
+                onUpdate={(d) => {
+                  const a = { ...activity };
+                  a.progressBar = d;
+                  onUpdateActivity(a);
+                }}
+              />
+            <ClockHandComponent
+              title="Pointer Progress"
+              clockHand={activity.pointerProgress}
+              onUpdate={(ch) => {
+                const a = { ...activity };
+                a.pointerProgress = ch;
+                onUpdateActivity(a);
+              }}
+              showAngle={true}
+            />
+            </> : ""}
+          {activity.icon ? (
+            <ImageCoordsComponent
+              title="Icon"
+              imageCoords={activity.icon}
+              onUpdate={(ip) => {
+                const a = { ...activity };
+                a.icon = ip;
+                onUpdateActivity(a);
+              }}
+            />
+          ) : (
+            ""
+          )}
+        </Card.Body>
+      ) : (
+        ""
+        )}
+    </Card>
+  );
+};
 
+export default ActivityComponent;

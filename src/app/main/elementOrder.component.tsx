@@ -1,51 +1,39 @@
-import React from 'react';
-import DnDListComponent from '../../shared/draganddroplist.component';
-import Watchface, { ElementOrderItem } from '../model/watchFace.model';
-import './preview.css';
+import { useContext } from "react";
+import { IWatchContext, WatchfaceContext } from "../../context";
+import DnDListComponent from "../../shared/draganddroplist.component";
+import { ElementOrderItem } from "../model/watchFace.model";
 
-interface IProps {
-    watchface: Watchface,
-    updateWatchface(watchface: Watchface)
-}
+const ElementOrderComponent = () => {
+  const { watchface, setWatchface } =
+    useContext<IWatchContext>(WatchfaceContext);
 
-interface IState {
+  function onUpdateTimeOrder(list: ElementOrderItem[]) {
+    setWatchface({
+      ...watchface,
+      orderElements: { ...watchface.orderElements, orderElementsTime: list },
+    });
+  }
 
-}
+  function onUpdateDateOrder(list: ElementOrderItem[]) {
+    setWatchface({
+      ...watchface,
+      orderElements: { ...watchface.orderElements, orderElementsDate: list },
+    });
+  }
+  return (
+    <>
+      <h2>order of time elements</h2>
+      <DnDListComponent
+        _list={watchface.orderElements.orderElementsTime}
+        updateOrder={onUpdateTimeOrder}
+      />
+      <h2>order of date elements</h2>
+      <DnDListComponent
+        _list={watchface.orderElements.orderElementsDate}
+        updateOrder={onUpdateDateOrder}
+      />
+    </>
+  );
+};
 
-export default class ElementOrderComponent extends React.Component<IProps, IState> {
-
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-        }
-    }
-
-    onUpdateTimeOrder(list: ElementOrderItem[]) {
-        const w = this.props.watchface
-        w.orderElements.orderElementsTime = list
-        this.props.updateWatchface(w)
-    }
-
-    onUpdateDateOrder(list: ElementOrderItem[]) {
-        const w = this.props.watchface
-        w.orderElements.orderElementsDate = list
-        this.props.updateWatchface(w)
-    }
-
-    render() {
-        return (
-            <>
-            <h2>order of time elements</h2>
-             <DnDListComponent 
-                list={this.props.watchface.orderElements.orderElementsTime}
-                updateOrder={this.onUpdateTimeOrder.bind(this)} />
-            <h2>order of date elements</h2>
-             <DnDListComponent 
-             list={this.props.watchface.orderElements.orderElementsDate} 
-             updateOrder={this.onUpdateDateOrder.bind(this)} />
-            </>
-        )
-    }
-}
+export default ElementOrderComponent;

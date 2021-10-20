@@ -1,9 +1,11 @@
+import { findImageById } from "../../../shared/helper"
+import { IImage } from "../../model/image.model"
 import { Digit } from "../../model/watchFace.model"
 import drawSeparator from './imageCoords.element'
 
 export default function draw(
     ctx: CanvasRenderingContext2D, 
-    images: HTMLImageElement[], 
+    images: IImage[], 
     digit: Digit, 
     number: number, 
     followXY?: [number, number], 
@@ -11,20 +13,29 @@ export default function draw(
     paddingZeroFix?: boolean) {
     const x = followXY ? followXY[0] : digit.x
     const y = followXY ? followXY[1] : digit.y
+
     if (digit.imageIndex !== undefined && digit.imageIndex !== null) {
         let strNumber = number.toString()
         if (number < 0) strNumber = (-number).toString()
-        if (digit.paddingZero || paddingZeroFix) {
+        if ( !digit.displayFormAnalog && (digit.paddingZero || paddingZeroFix)) {
             strNumber = strNumber.padStart(digit.numberLenght, '0' )
         }
-        let ar = []
+        let ar: HTMLImageElement[] = []
         if (digit.delimiterImageIndex) {
-            if (number < 0)
-                ar.push(images[digit.delimiterImageIndex])
+            if (number < 0){
+                const img = findImageById(digit.delimiterImageIndex, images)
+                if (img) ar.push(img)
+            }
         }
-        ar = ar.concat(getImages(images, strNumber, digit.imageIndex, digit.imageCount, digit.decimalPointImageIndex ))
+        if (digit.displayFormAnalog) {
+            const img = findImageById(digit.imageIndex + number, images)
+            if (img) ar.push(img)
+        } else {
+            ar = ar.concat(getImages(images, strNumber, digit.imageIndex, digit.imageCount, digit.decimalPointImageIndex ))
+        }
         if (digit.unitImageIndex) {
-            ar.push(images[digit.unitImageIndex])
+            const img = findImageById(digit.unitImageIndex, images)
+            if (img) ar.push(img)
         }
 
         const followXY = drawImages(ctx, ar, x, y, digit.spacing, 
@@ -39,24 +50,20 @@ export default function draw(
 
 
 
-function getImages(images: HTMLImageElement[], strNumber: string, startImageIndex: number, count: number, decimalPointer: number): HTMLImageElement[] {
-    const ar = []
+function getImages(images: IImage[], strNumber: string, startImageIndex: number, count: number, decimalPointer: number): HTMLImageElement[] {
+    const ar: HTMLImageElement[] = []
     for (let i = 0; i < strNumber.length; i++) {
         if (decimalPointer && i === strNumber.length - 2) {
-            ar.push(images[decimalPointer])
+            const img = findImageById(decimalPointer, images)
+            if (img) { ar.push(img) }
         }
         var chr = strNumber.charAt(i);
         var n = parseInt(chr)
         if (!isNaN(n) && n < count) {
-            if (startImageIndex + n < images.length) {
-                ar.push(images[startImageIndex + n])
-            } else {
-                alert('cant load image for index ' + (startImageIndex + n))
-                return []
-            }
+            const img = findImageById(startImageIndex + n, images)
+            if (img) { ar.push(img) }
         } else {
             alert('cant parse number string: ' + strNumber + ' at index ' + i)
-            return []
         }
     }
     return ar;

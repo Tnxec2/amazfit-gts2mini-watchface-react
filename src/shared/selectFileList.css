@@ -23,3 +23,7 @@
 
     border-top: 10px solid black;
 }
+
+.fileitem:hover {
+    background-color: cornflowerblue;
+}
