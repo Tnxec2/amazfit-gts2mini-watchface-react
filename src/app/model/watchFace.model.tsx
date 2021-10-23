@@ -1,29 +1,9 @@
-import Color from "../../shared/color";
-
+import Color from "../shared/color";
 import {
-  ActivityType,
-  DigitalCommonDigit,
-  DigitalDateDigit,
-  DigitalTimeDigit,
-  ImageCoord,
-  WatchJson,
-  Status,
-  TimeType,
-  DateType,
-  JsonType,
-  ImageProgress,
-  ImageProgressDisplayType,
-  DigitType,
-  FollowType,
-  AlignmentType,
-  LangCodeType,
-  ClockHand,
-  ProgressBar,
-  Shortcut,
-  ScreenIdle,
-  Widget,
-  Widgets,
+  ClockHand, DigitalDigit, ImageCoord, ImageProgress, ProgressBar, ScreenIdle, Shortcut, Status, Text, WatchJson, Widgets, MultilangImageCoord
 } from "./json.model";
+import { TimeType, DateType, CommonType, ActivityType, JsonType, LangCodeType } from "./types.model";
+
 
 interface IDigitConstructor {
   type: number;
@@ -139,6 +119,69 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
   },
+  uvIndex: {
+    type: 0,
+    count: 10,
+    numberLenght: 2,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  airQuality: {
+    type: 0,
+    count: 10,
+    numberLenght: 2,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  humidity: {
+    type: 0,
+    count: 10,
+    numberLenght: 3,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  sunrise: {
+    type: 0,
+    count: 10,
+    numberLenght: 4,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  windForce: {
+    type: 0,
+    count: 10,
+    numberLenght: 2,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  airPressure: {
+    type: 0,
+    count: 10,
+    numberLenght: 2,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  stress: {
+    type: 0,
+    count: 10,
+    numberLenght: 2,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  activityGoal: {
+    type: 0,
+    count: 10,
+    numberLenght: 5,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
+  fatBurning: {
+    type: 0,
+    count: 10,
+    numberLenght: 2,
+    displayAnalog: false,
+    imageProgressTotal: null,
+  },
   weather: {
     type: 0,
     count: 10,
@@ -176,208 +219,112 @@ export class Coords {
     this.y = y;
   }
 }
-export class WatchImageCoords extends Coords {
-  constructor(ic?: ImageCoord) {
-    super();
-    if (ic) {
-      if (ic.ImageIndex) {
-        this.imageIndex = ic.ImageIndex;
-      }
-      this.x = ic.Coordinates.X;
-      this.y = ic.Coordinates.Y;
+
+export class WatchImageCoords {
+  json = new ImageCoord()
+  enabled = false;
+
+  constructor(j?: ImageCoord) {
+    if (j != null && j !== undefined) {
+      this.enabled = true
+      this.json = j
     }
   }
-  imageIndex = null;
+}
+export class WatchMultilangImageCoords {
+  json = new MultilangImageCoord()
   enabled = false;
+  count = 1;
+
+  constructor(j?: MultilangImageCoord, count?: number) {
+    if (j != null && j !== undefined) {
+      this.enabled = true
+      this.json = j
+    }
+    if (count) {
+      this.count = count
+    }
+  }
 }
 
 export class WatchImageProgress {
-  constructor(ip?: ImageProgress) {
-    if (ip) {
-      this.imageIndex = ip.ImageSet.ImageIndex;
-      this.imageCount = ip.ImageSet.ImagesCount;
-      this.displayType = ImageProgressDisplayType.fromJson(ip.DisplayType);
-      this.coordinates = [];
-      ip.Coordinates.forEach((coords) => {
-        this.coordinates.push(new Coords(coords.X, coords.Y));
-      });
+  enabled = false;
+  json = new ImageProgress();
+
+  constructor(j?: ImageProgress) {
+    if (j != null && j !== undefined) {
+      this.enabled = true
+      this.json = j
     }
   }
-  enabled = false;
-  imageIndex: number = null;
-  imageCount: number = 1;
-  displayType: number = 0;
-  coordinates: Coords[] = [new Coords()];
 }
 
-export class Digit {
-  constructor(
-    d?: DigitalTimeDigit | DigitalDateDigit | DigitalCommonDigit,
-    con?: IDigitConstructor
-  ) {
-    if (con) {
-      this.digitType = con.type;
-      this.imageCount = con.count;
-      this.numberLenght = con.numberLenght;
-      this.displayFormAnalog = con.displayFormAnalog;
+
+export enum TypeOfDigit {
+  TIME,
+  DATE,
+  COMMON
+}
+export class WatchCommonDigit {
+  constructor(type: TypeOfDigit, d?: DigitalDigit, con?: IDigitConstructor) {
+    this.json = d;
+    if (d != null) {
+      this.enabled = true
+      if (d.Digit?.Image) this.enabledImage = true
+
+      if (d.Digit?.SystemFont) {
+        if (d.Digit?.SystemFont?.FontRotate) this.enabledSystemFontCircle = true
+        else this.enabledSystemFont = true
+      }
     }
-    if (d) {
-      let ix = 0;
-      if (d.Digit.Image.MultilangImage) {
-        d.Digit.Image.MultilangImage.forEach((image, index) => {
-          if (image.LangCode === LangCodeType.All.json) {
-            ix = index;
-          }
-        });
+    if (con != null) {
+      if (!d) {
+        this.json = new DigitalDigit()
+        this.json.Digit = new Text()
       }
-      if (
-        d.Digit.Image.MultilangImage &&
-        d.Digit.Image.MultilangImage[ix]?.ImageSet?.ImageIndex
-      ) {
-        this.imageIndex = d.Digit.Image.MultilangImage[ix].ImageSet.ImageIndex;
-        this.imageCount = d.Digit.Image.MultilangImage[ix].ImageSet.ImagesCount;
-      }
-      this.x = d.Digit.Image.X;
-      this.y = d.Digit.Image.Y;
-      this.follow = d.CombingMode === FollowType.Follow.json;
-      this.paddingZero = d.Digit.PaddingZero;
-      this.spacing = d.Digit.Spacing;
-      this.displayFormAnalog = d.Digit.DisplayFormAnalog;
-      this.alignment = AlignmentType.fromJson(d.Digit.Alignment);
-      if (d.Digit.Image.NoDataImageIndex) {
-        this.noDataImageIndex = d.Digit.Image.NoDataImageIndex;
-      }
-      if (d.Digit.Image.DecimalPointImageIndex) {
-        this.decimalPointImageIndex = d.Digit.Image.DecimalPointImageIndex;
-      }
-      if (d.Digit.Image.DelimiterImageIndex) {
-        this.delimiterImageIndex = d.Digit.Image.DelimiterImageIndex;
-      }
-      ix = 0;
-      if (d.Digit.Image.MultilangImageUnit) {
-        d.Digit.Image.MultilangImageUnit.forEach((image, index) => {
-          if (image.LangCode === LangCodeType.All.json) {
-            ix = index;
-          }
-        });
-      }
-      if (
-        d.Digit.Image.MultilangImageUnit &&
-        d.Digit.Image.MultilangImageUnit[ix]?.ImageSet?.ImageIndex
-      ) {
-        this.unitImageIndex =
-          d.Digit.Image.MultilangImageUnit[ix].ImageSet.ImageIndex;
-      }
-      this.separator = new WatchImageCoords(d.Separator);
+      this.con = con
     }
+    this.json.DateType = type === TypeOfDigit.DATE ? DateType.toJson(con.type) : null
+    this.json.TimeType = type === TypeOfDigit.TIME ? TimeType.toJson(con.type) : null
+    this.json.Type = type === TypeOfDigit.COMMON ? CommonType.toJson(con.type) : null
   }
-
-  digitType = 0;
-  imageIndex = null;
-  imageCount = 1;
-  x = null;
-  y = null;
-  follow = false;
-  paddingZero = false;
-  spacing = 0;
-  displayFormAnalog = false;
-  /* 
-    alignment:
-        Left = 0
-        Center = 1
-        Right = 2
-    */
-  alignment = 0;
-  numberLenght = 1;
-  noDataImageIndex = null;
-  decimalPointImageIndex = null;
-  delimiterImageIndex = null;
-  unitImageIndex = null;
-
-  separator = new WatchImageCoords();
-
+  json: DigitalDigit = new DigitalDigit();
+  separator = new WatchImageCoords(null);
   enabled = false;
+  con: IDigitConstructor;
+  enabledImage = false;
+  enabledSystemFont = false;
+  enabledSystemFontCircle = false;
 }
-export class WatchClockHand extends Coords {
+
+export class WatchClockHand {
   enabled: boolean;
-  scaleImageIndex: number;
-  scaleX: number;
-  scaleY: number;
-  pointerImageIndex: number;
-  pointerX: number;
-  pointerY: number;
-  coverImageIndex: number;
-  coverX: number;
-  coverY: number;
-  startAngle: number;
-  endAngle: number;
+
+  json: ClockHand = new ClockHand()
 
   constructor(json?: ClockHand) {
-    super();
-    if (json) {
-      if (json.Scale?.ImageSet) {
-        let scaleSet = json.Scale.ImageSet[0];
-        json.Scale.ImageSet.forEach((is) => {
-          if (is.LangCode === LangCodeType.All.json) {
-            scaleSet = is;
-          }
-        });
-        if (scaleSet.ImageSet) {
-          if (scaleSet.ImageSet.ImageIndex)
-            this.scaleImageIndex = scaleSet.ImageSet.ImageIndex;
-        }
-        this.scaleX = json.Scale?.Coordinates.X;
-        this.scaleY = json.Scale?.Coordinates.Y;
-      }
-      this.x = json.X;
-      this.y = json.Y;
-      if (json.Pointer) {
-        this.pointerImageIndex = json.Pointer.ImageIndex;
-        this.pointerX = json.Pointer.Coordinates?.X;
-        this.pointerY = json.Pointer.Coordinates?.Y;
-      }
-      if (json.Cover) {
-        this.coverImageIndex = json.Cover.ImageIndex;
-        this.coverX = json.Cover.Coordinates?.X;
-        this.coverY = json.Cover.Coordinates?.Y;
-      }
-      this.startAngle = json.StartAngle;
-      this.endAngle = json.EndAngle;
-    }
+    this.json = json
+    if (json) this.enabled = true
   }
 }
 
 export class WatchDialFace {
-  hoursDigital = new Digit(null, { type: 0, count: 10, numberLenght: 2 });
-  minutesDigital = new Digit(null, { type: 1, count: 10, numberLenght: 2 });
-  secondsDigital = new Digit(null, { type: 2, count: 10, numberLenght: 2 });
+  hoursDigital = new WatchCommonDigit(TypeOfDigit.TIME, null, digitTypes.hour);
+  minutesDigital = new WatchCommonDigit(TypeOfDigit.TIME, null, digitTypes.min);
+  secondsDigital = new WatchCommonDigit(TypeOfDigit.TIME, null, digitTypes.sec);
   hoursClockhand = new WatchClockHand();
   minutesClockhand = new WatchClockHand();
   secondsClockhand = new WatchClockHand();
-  amImageIndex: number;
-  amX: number;
-  amY: number;
-  pmImageIndex: number;
-  pmX: number;
-  pmY: number;
+  am = new WatchMultilangImageCoords()
+  pm = new WatchMultilangImageCoords()
 }
 
 export class WatchDate {
-  year = new Digit(null, { type: 0, count: 10, numberLenght: 4 });
-  month = new Digit(null, { type: 1, count: 10, numberLenght: 2 });
-  day = new Digit(null, { type: 2, count: 10, numberLenght: 2 });
-  monthAsWord = new Digit(null, {
-    type: 1,
-    count: 12,
-    numberLenght: 1,
-    displayFormAnalog: true,
-  });
-  weekDay = new Digit(null, {
-    type: 0,
-    count: 7,
-    numberLenght: 1,
-    displayFormAnalog: true,
-  });
+  year = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.year);
+  month = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.month);
+  day = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.day);
+  monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.monthasword);
+  weekDay = new WatchCommonDigit(TypeOfDigit.COMMON, null, digitTypes.weekday);
 }
 
 export class WatchStatus {
@@ -401,19 +348,29 @@ export class WatchStatus {
       }
     }
   }
-  bluetooth = new WatchImageCoords();
-  dnd = new WatchImageCoords();
-  alarm = new WatchImageCoords();
-  lock = new WatchImageCoords();
+  bluetooth = new WatchImageCoords(null);
+  dnd = new WatchImageCoords(null);
+  alarm = new WatchImageCoords(null);
+  lock = new WatchImageCoords(null);
 }
 
 export class WatchProgressBar {
   enabledLinear: boolean;
   enabledCircle: boolean;
   jsonObj: ProgressBar;
+
+  constructor(json?: ProgressBar) {
+    this.jsonObj = json;
+    if (json) {
+      if (json.LinearSettings)
+        this.enabledLinear = true;
+      else if (json.AngleSettings)
+        this.enabledCircle = true;
+    }
+  }
 }
 export class WatchActivity {
-  digit: Digit;
+  digit: WatchCommonDigit;
   imageProgress = new WatchImageProgress();
   pointerProgress = new WatchClockHand();
   progressBar = new WatchProgressBar();
@@ -421,11 +378,10 @@ export class WatchActivity {
   shortcut: Shortcut = null;
 
   constructor(dt: IDigitConstructor) {
-    this.digit = new Digit(null, dt);
-    this.imageProgress.imageCount = dt.imageProgressTotal;
+    this.digit = new WatchCommonDigit(TypeOfDigit.COMMON, null, dt);
+    this.imageProgress.json.ImageSet.ImagesCount = dt.imageProgressTotal;
   }
 }
-
 
 export class WatchActivityList {
   battery = new WatchActivity(digitTypes.battery);
@@ -438,16 +394,15 @@ export class WatchActivityList {
   weather = new WatchActivity(digitTypes.weather);
   weatherMin = new WatchActivity(digitTypes.weatherMin);
   weatherMax = new WatchActivity(digitTypes.weatherMax);
-  //UVindex = new WatchActivity(0, 10, 2)
-  //AirQuality = new WatchActivity(0, 10, 2)
-  //Humidity = new WatchActivity(0, 10, 3)
-  //Sunrise = new WatchActivity(0, 10, 1)
-  //WindForce = new WatchActivity(0, 10, 2)
-  //Altitude = new WatchActivity(0, 10, 3)
-  //AirPressure = new WatchActivity(0, 10, 2)
-  //Stress = new WatchActivity(0, 10, 2)
-  //ActivityGoal = new WatchActivity(0, 10, 5)
-  //FatBurning = new WatchActivity(0, 10, 2)
+  uvindex = new WatchActivity(digitTypes.uvIndex)
+  airQuality = new WatchActivity(digitTypes.airQuality)
+  humidity = new WatchActivity(digitTypes.humidity)
+  sunrise = new WatchActivity(digitTypes.sunrise)
+  windForce = new WatchActivity(digitTypes.windForce)
+  airPressure = new WatchActivity(digitTypes.airPressure)
+  stress = new WatchActivity(digitTypes.stress)
+  activityGoal = new WatchActivity(digitTypes.activityGoal)
+  fatBurning = new WatchActivity(digitTypes.fatBurning)
 }
 
 export class ElementOrderItem {
@@ -459,7 +414,7 @@ export class ElementOrderItem {
   }
 }
 
-export class WatchAOD{
+export class WatchAOD {
   dialFace = new WatchDialFace();
   date = new WatchDate();
   activity = new WatchActivityList();
@@ -505,16 +460,14 @@ export class WatchAOD{
     if (j.DialFace?.DigitalDialFace?.Digits) {
       j.DialFace.DigitalDialFace.Digits.forEach((d) => {
         switch (d.TimeType) {
-            case TimeType.Minute.json:
-              this.dialFace.minutesDigital = new Digit(d, digitTypes.min);
-              this.dialFace.minutesDigital.enabled = true;
-              newOrderElementsTime.push(new ElementOrderItem(TimeType.Minute));
-              break;
-            default:
-              this.dialFace.hoursDigital = new Digit(d, digitTypes.hour);
-              this.dialFace.hoursDigital.enabled = true;
-              newOrderElementsTime.push(new ElementOrderItem(TimeType.Hour));
-              break;
+          case TimeType.Minute.json:
+            this.dialFace.minutesDigital = new WatchCommonDigit(TypeOfDigit.TIME, d, digitTypes.min);
+            newOrderElementsTime.push(new ElementOrderItem(TimeType.Minute));
+            break;
+          default:
+            this.dialFace.hoursDigital = new WatchCommonDigit(TypeOfDigit.TIME, d, digitTypes.hour);
+            newOrderElementsTime.push(new ElementOrderItem(TimeType.Hour));
+            break;
         }
       });
     }
@@ -524,52 +477,15 @@ export class WatchAOD{
     });
     this.orderElements.orderElementsTime = newOrderElementsTime;
 
-    if (j.DialFace.DigitalDialFace.AM) {
-      if (j.DialFace.DigitalDialFace.AM.ImageSet) {
-        let scaleSet = j.DialFace.DigitalDialFace.AM.ImageSet[0];
-        j.DialFace.DigitalDialFace.AM.ImageSet.forEach((is) => {
-          if (is.LangCode === LangCodeType.All.json) {
-            scaleSet = is;
-          }
-        });
-        if (scaleSet.ImageSet) {
-          if (scaleSet.ImageSet[0].ImageIndex)
-            this.dialFace.amImageIndex = scaleSet.ImageSet.ImageIndex;
-        }
-        this.dialFace.amX = j.DialFace.DigitalDialFace.AM.Coordinates.X;
-        this.dialFace.amY = j.DialFace.DigitalDialFace.AM.Coordinates.Y;
-      }
-    }
-    
-    if (j.DialFace.DigitalDialFace.PM) {
-      if (j.DialFace.DigitalDialFace.PM.ImageSet) {
-        let scaleSet = j.DialFace.DigitalDialFace.PM.ImageSet[0];
-        j.DialFace.DigitalDialFace.PM.ImageSet.forEach((is) => {
-          if (is.LangCode === LangCodeType.All.json) {
-            scaleSet = is;
-          }
-        });
-        if (scaleSet.ImageSet) {
-          if (scaleSet.ImageSet[0].ImageIndex)
-            this.dialFace.pmImageIndex = scaleSet.ImageSet.ImageIndex;
-        }
-        this.dialFace.pmX = j.DialFace.DigitalDialFace.PM.Coordinates.X;
-        this.dialFace.pmY = j.DialFace.DigitalDialFace.PM.Coordinates.Y;
-      }
-    }
-    
-    if (j.DialFace?.AnalogDialFace?.Hours) {
-      this.dialFace.hoursClockhand = new WatchClockHand(
-        j.DialFace.AnalogDialFace.Hours
-      );
-      this.dialFace.hoursClockhand.enabled = true;
-    }
-    if (j.DialFace?.AnalogDialFace?.Minutes) {
-      this.dialFace.minutesClockhand = new WatchClockHand(
-        j.DialFace.AnalogDialFace.Minutes
-      );
-      this.dialFace.minutesClockhand.enabled = true;
-    }
+    this.dialFace.am = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.AM)
+    this.dialFace.pm = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.PM)
+
+    this.dialFace.hoursClockhand = new WatchClockHand(
+      j.DialFace?.AnalogDialFace?.Hours
+    );
+    this.dialFace.minutesClockhand = new WatchClockHand(
+      j.DialFace?.AnalogDialFace?.Minutes
+    );
     this.dialFace.secondsClockhand = null
 
     this.date = new WatchDate();
@@ -578,24 +494,20 @@ export class WatchAOD{
       j.Date.DateDigits.forEach((d) => {
         switch (d.DateType) {
           case DateType.Year.json:
-            this.date.year = new Digit(d, digitTypes.year);
-            this.date.year.enabled = true;
+            this.date.year = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.year);
             newOrderElementsDate.push(new ElementOrderItem(DateType.Year));
             break;
           case DateType.Month.json:
             if (d.Digit.DisplayFormAnalog) {
-              this.date.monthAsWord = new Digit(d, digitTypes.month);
-              this.date.monthAsWord.enabled = true;
+              this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             } else {
-              this.date.month = new Digit(d, digitTypes.monthasword);
-              this.date.month.enabled = true;
+              this.date.month = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.monthasword);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             }
             break;
           case DateType.Day.json:
-            this.date.day = new Digit(d, digitTypes.day);
-            this.date.day.enabled = true;
+            this.date.day = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.day);
             newOrderElementsDate.push(new ElementOrderItem(DateType.Day));
             break;
           default:
@@ -609,13 +521,10 @@ export class WatchAOD{
     });
     this.orderElements.orderElementsDate = newOrderElementsDate;
 
-    if (j.Date?.WeeksDigits) {
-      this.date.weekDay = new Digit(
-        j.Date.WeeksDigits,
-        digitTypes.weekday
-      );
-      this.date.weekDay.enabled = true;
-    }
+    this.date.weekDay = new WatchCommonDigit(TypeOfDigit.COMMON,
+      j.Date?.WeeksDigits,
+      digitTypes.weekday
+    );
 
     this.activity = new WatchActivityList();
     if (j.Activity) {
@@ -651,73 +560,67 @@ export class WatchAOD{
             _activity = this.activity.standUp;
             _dt = digitTypes.standUp;
             break;
+          case ActivityType.UVindex.json:
+            _activity = this.activity.uvindex;
+            _dt = digitTypes.uvIndex;
+            break;
+          case ActivityType.AirQuality.json:
+            _activity = this.activity.airQuality;
+            _dt = digitTypes.airQuality;
+            break;
+          case ActivityType.Humidity.json:
+            _activity = this.activity.humidity;
+            _dt = digitTypes.humidity;
+            break;
+          case ActivityType.Sunrise.json:
+            _activity = this.activity.sunrise;
+            _dt = digitTypes.sunrise;
+            break;
+          case ActivityType.WindForce.json:
+            _activity = this.activity.windForce;
+            _dt = digitTypes.windForce;
+            break;
+          case ActivityType.AirPressure.json:
+            _activity = this.activity.airPressure;
+            _dt = digitTypes.airPressure;
+            break;
           case ActivityType.Weather.json:
             if (a.Digits) {
               a.Digits.forEach((digit) => {
-                if (digit.Type === DigitType.Min.json) {
-                  this.activity.weatherMin.digit = new Digit(
+                if (digit.Type === CommonType.Min.json) {
+                  this.activity.weatherMin.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
                     digit,
                     digitTypes.weatherMin
                   );
-                  this.activity.weatherMin.digit.enabled = true;
-                } else if (digit.Type === DigitType.Max.json) {
-                  this.activity.weatherMax.digit = new Digit(
+                } else if (digit.Type === CommonType.Max.json) {
+                  this.activity.weatherMax.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
                     digit,
                     digitTypes.weatherMax
                   );
-                  this.activity.weatherMax.digit.enabled = true;
                 } else {
-                  this.activity.weather.digit = new Digit(
+                  this.activity.weather.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
                     digit,
                     digitTypes.weather
                   );
-                  this.activity.weather.digit.enabled = true;
                 }
               });
             }
-            if (a.ImageProgress) {
-              this.activity.weather.imageProgress = new WatchImageProgress(
-                a.ImageProgress
-              );
-              this.activity.weather.imageProgress.enabled = true;
-            }
-            if (a.Icon) {
-              this.activity.weather.icon = new WatchImageCoords(a.Icon);
-            }
-            if (a.Shortcut) {
-              this.activity.weather.shortcut = a.Shortcut;
-            }
+            this.activity.weather.imageProgress = new WatchImageProgress(
+              a.ImageProgress
+            );
+            this.activity.weather.icon = new WatchImageCoords(a.Icon);
+            this.activity.weather.shortcut = a.Shortcut;
             break;
           default:
             break;
         }
         if (_activity) {
-          if (a.Digits) {
-            _activity.digit = new Digit(a.Digits[0], _dt);
-            _activity.digit.enabled = true;
-          }
-          if (a.ImageProgress) {
-            _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
-            _activity.imageProgress.enabled = true;
-          }
-          if (a.PointerProgress) {
-            _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
-            _activity.pointerProgress.enabled = true;
-          }
-          if (a.ProgressBar) {
-            _activity.progressBar.jsonObj = a.ProgressBar;
-            if (a.ProgressBar.LinearSettings)
-              _activity.progressBar.enabledLinear = true;
-            else if (a.ProgressBar.AngleSettings)
-              _activity.progressBar.enabledCircle = true;
-          }
-          if (a.Icon) {
-            _activity.icon = new WatchImageCoords(a.Icon);
-            _activity.icon.enabled = true;
-          }
-          if (a.Shortcut) {
-            _activity.shortcut = a.Shortcut;
-          }
+          _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
+          _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
+          _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
+          _activity.progressBar = new WatchProgressBar(a.ProgressBar);
+          _activity.icon = new WatchImageCoords(a.Icon);
+          _activity.shortcut = a.Shortcut;
         }
       });
     }
@@ -725,10 +628,12 @@ export class WatchAOD{
 }
 
 export class WatchWidgets {
+  enabled: boolean
   json: Widgets
 
   constructor(json: Widgets) {
     this.json = json
+    if (json) this.enabled = true
   }
 }
 
@@ -777,32 +682,31 @@ export default class WatchFace {
 
     this.background.color = Color.colorBackgroundRead(j.Background.Color);
     this.background.imageIndex = j.Background.BackgroundImageIndex;
-    let ix = 0;
-    j.Background.Preview.forEach((item, index) => {
-      if (item.LangCode === LangCodeType.All.json) {
-        ix = index;
-      }
-    });
-    this.background.previewIndex = j.Background.Preview[ix].ImageSet.ImageIndex;
+    if (j.Background.Preview) {
+      let ix = 0;
+      j.Background?.Preview?.forEach((item, index) => {
+        if (item.LangCode === LangCodeType.All.json) {
+          ix = index;
+        }
+      });
+      this.background.previewIndex = j.Background.Preview[ix]?.ImageSet?.ImageIndex;
+    }
 
     this.dialFace = new WatchDialFace();
     let newOrderElementsTime: ElementOrderItem[] = [];
     if (j.DialFace?.DigitalDialFace?.Digits) {
       j.DialFace.DigitalDialFace.Digits.forEach((d) => {
         switch (d.TimeType) {
-            case TimeType.Minute.json:
-              this.dialFace.minutesDigital = new Digit(d, digitTypes.min);
-              this.dialFace.minutesDigital.enabled = true;
+          case TimeType.Minute.json:
+            this.dialFace.minutesDigital = new WatchCommonDigit(TypeOfDigit.TIME, d, digitTypes.min);
             newOrderElementsTime.push(new ElementOrderItem(TimeType.Minute));
             break;
-            case TimeType.Second.json:
-            this.dialFace.secondsDigital = new Digit(d, digitTypes.sec);
-            this.dialFace.secondsDigital.enabled = true;
+          case TimeType.Second.json:
+            this.dialFace.secondsDigital = new WatchCommonDigit(TypeOfDigit.TIME, d, digitTypes.sec);
             newOrderElementsTime.push(new ElementOrderItem(TimeType.Second));
             break;
           default:
-            this.dialFace.hoursDigital = new Digit(d, digitTypes.hour);
-            this.dialFace.hoursDigital.enabled = true;
+            this.dialFace.hoursDigital = new WatchCommonDigit(TypeOfDigit.TIME, d, digitTypes.hour);
             newOrderElementsTime.push(new ElementOrderItem(TimeType.Hour));
             break;
         }
@@ -814,58 +718,18 @@ export default class WatchFace {
     });
     this.orderElements.orderElementsTime = newOrderElementsTime;
 
-    if (j.DialFace.DigitalDialFace.AM) {
-      if (j.DialFace.DigitalDialFace.AM.ImageSet) {
-        let scaleSet = j.DialFace.DigitalDialFace.AM.ImageSet[0];
-        j.DialFace.DigitalDialFace.AM.ImageSet.forEach((is) => {
-          if (is.LangCode === LangCodeType.All.json) {
-            scaleSet = is;
-          }
-        });
-        if (scaleSet.ImageSet) {
-          if (scaleSet.ImageSet[0].ImageIndex)
-            this.dialFace.amImageIndex = scaleSet.ImageSet.ImageIndex;
-        }
-        this.dialFace.amX = j.DialFace.DigitalDialFace.AM.Coordinates.X;
-        this.dialFace.amY = j.DialFace.DigitalDialFace.AM.Coordinates.Y;
-      }
-    }
+    this.dialFace.am = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.AM)
+    this.dialFace.pm = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.PM)
 
-    if (j.DialFace.DigitalDialFace.PM) {
-      if (j.DialFace.DigitalDialFace.PM.ImageSet) {
-        let scaleSet = j.DialFace.DigitalDialFace.PM.ImageSet[0];
-        j.DialFace.DigitalDialFace.PM.ImageSet.forEach((is) => {
-          if (is.LangCode === LangCodeType.All.json) {
-            scaleSet = is;
-          }
-        });
-        if (scaleSet.ImageSet) {
-          if (scaleSet.ImageSet[0].ImageIndex)
-            this.dialFace.pmImageIndex = scaleSet.ImageSet.ImageIndex;
-        }
-        this.dialFace.pmX = j.DialFace.DigitalDialFace.PM.Coordinates.X;
-        this.dialFace.pmY = j.DialFace.DigitalDialFace.PM.Coordinates.Y;
-      }
-    }
-
-    if (j.DialFace?.AnalogDialFace?.Hours) {
-      this.dialFace.hoursClockhand = new WatchClockHand(
-        j.DialFace.AnalogDialFace.Hours
-      );
-      this.dialFace.hoursClockhand.enabled = true;
-    }
-    if (j.DialFace?.AnalogDialFace?.Minutes) {
-      this.dialFace.minutesClockhand = new WatchClockHand(
-        j.DialFace.AnalogDialFace.Minutes
-      );
-      this.dialFace.minutesClockhand.enabled = true;
-    }
-    if (j.DialFace?.AnalogDialFace?.Seconds) {
-      this.dialFace.secondsClockhand = new WatchClockHand(
-        j.DialFace.AnalogDialFace.Seconds
-      );
-      this.dialFace.secondsClockhand.enabled = true;
-    }
+    this.dialFace.hoursClockhand = new WatchClockHand(
+      j.DialFace?.AnalogDialFace?.Hours
+    );
+    this.dialFace.minutesClockhand = new WatchClockHand(
+      j.DialFace?.AnalogDialFace?.Minutes
+    );
+    this.dialFace.secondsClockhand = new WatchClockHand(
+      j.DialFace?.AnalogDialFace?.Seconds
+    );
 
     this.date = new WatchDate();
     let newOrderElementsDate: ElementOrderItem[] = [];
@@ -873,24 +737,20 @@ export default class WatchFace {
       j.System.Date.DateDigits.forEach((d) => {
         switch (d.DateType) {
           case DateType.Year.json:
-            this.date.year = new Digit(d, digitTypes.year);
-            this.date.year.enabled = true;
+            this.date.year = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.year);
             newOrderElementsDate.push(new ElementOrderItem(DateType.Year));
             break;
           case DateType.Month.json:
             if (d.Digit.DisplayFormAnalog) {
-              this.date.monthAsWord = new Digit(d, digitTypes.month);
-              this.date.monthAsWord.enabled = true;
+              this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             } else {
-              this.date.month = new Digit(d, digitTypes.monthasword);
-              this.date.month.enabled = true;
+              this.date.month = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.monthasword);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             }
             break;
           case DateType.Day.json:
-            this.date.day = new Digit(d, digitTypes.day);
-            this.date.day.enabled = true;
+            this.date.day = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.day);
             newOrderElementsDate.push(new ElementOrderItem(DateType.Day));
             break;
           default:
@@ -904,18 +764,12 @@ export default class WatchFace {
     });
     this.orderElements.orderElementsDate = newOrderElementsDate;
 
-    if (j.System?.Date?.WeeksDigits) {
-      this.date.weekDay = new Digit(
-        j.System.Date.WeeksDigits,
-        digitTypes.weekday
-      );
-      this.date.weekDay.enabled = true;
-    }
+    this.date.weekDay = new WatchCommonDigit(TypeOfDigit.COMMON,
+      j.System?.Date?.WeeksDigits,
+      digitTypes.weekday
+    );
 
-    this.status = new WatchStatus();
-    if (j.System?.Status) {
-      this.status = new WatchStatus(j.System.Status);
-    }
+    this.status = new WatchStatus(j.System?.Status);
 
     this.activity = new WatchActivityList();
     if (j.System?.Activity) {
@@ -951,82 +805,70 @@ export default class WatchFace {
             _activity = this.activity.standUp;
             _dt = digitTypes.standUp;
             break;
+          case ActivityType.UVindex.json:
+            _activity = this.activity.uvindex;
+            _dt = digitTypes.uvIndex;
+            break;
+          case ActivityType.AirQuality.json:
+            _activity = this.activity.airQuality;
+            _dt = digitTypes.airQuality;
+            break;
+          case ActivityType.Humidity.json:
+            _activity = this.activity.humidity;
+            _dt = digitTypes.humidity;
+            break;
+          case ActivityType.Sunrise.json:
+            _activity = this.activity.sunrise;
+            _dt = digitTypes.sunrise;
+            break;
+          case ActivityType.WindForce.json:
+            _activity = this.activity.windForce;
+            _dt = digitTypes.windForce;
+            break;
+          case ActivityType.AirPressure.json:
+            _activity = this.activity.airPressure;
+            _dt = digitTypes.airPressure;
+            break;
           case ActivityType.Weather.json:
             if (a.Digits) {
               a.Digits.forEach((digit) => {
-                if (digit.Type === DigitType.Min.json) {
-                  this.activity.weatherMin.digit = new Digit(
+                if (digit.Type === CommonType.Min.json) {
+                  this.activity.weatherMin.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
                     digit,
                     digitTypes.weatherMin
                   );
-                  this.activity.weatherMin.digit.enabled = true;
-                } else if (digit.Type === DigitType.Max.json) {
-                  this.activity.weatherMax.digit = new Digit(
+                } else if (digit.Type === CommonType.Max.json) {
+                  this.activity.weatherMax.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
                     digit,
                     digitTypes.weatherMax
                   );
-                  this.activity.weatherMax.digit.enabled = true;
                 } else {
-                  this.activity.weather.digit = new Digit(
+                  this.activity.weather.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
                     digit,
                     digitTypes.weather
                   );
-                  this.activity.weather.digit.enabled = true;
                 }
               });
             }
-            if (a.ImageProgress) {
-              this.activity.weather.imageProgress = new WatchImageProgress(
-                a.ImageProgress
-              );
-              this.activity.weather.imageProgress.enabled = true;
-            }
-            if (a.Icon) {
-              this.activity.weather.icon = new WatchImageCoords(a.Icon);
-            }
-            if (a.Shortcut) {
-              this.activity.weather.shortcut = a.Shortcut;
-            }
+            this.activity.weather.imageProgress = new WatchImageProgress(a.ImageProgress);
+            this.activity.weather.icon = new WatchImageCoords(a.Icon);
+            this.activity.weather.shortcut = a.Shortcut;
             break;
           default:
             break;
         }
         if (_activity) {
-          if (a.Digits) {
-            _activity.digit = new Digit(a.Digits[0], _dt);
-            _activity.digit.enabled = true;
-          }
-          if (a.ImageProgress) {
-            _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
-            _activity.imageProgress.enabled = true;
-          }
-          if (a.PointerProgress) {
-            _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
-            _activity.pointerProgress.enabled = true;
-          }
-          if (a.ProgressBar) {
-            _activity.progressBar.jsonObj = a.ProgressBar;
-            if (a.ProgressBar.LinearSettings)
-              _activity.progressBar.enabledLinear = true;
-            else if (a.ProgressBar.AngleSettings)
-              _activity.progressBar.enabledCircle = true;
-          }
-          if (a.Icon) {
-            _activity.icon = new WatchImageCoords(a.Icon);
-            _activity.icon.enabled = true;
-          }
-          if (a.Shortcut) {
-            _activity.shortcut = a.Shortcut;
-          }
+          if (a.Digits) _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
+          _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
+          _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
+          _activity.progressBar = new WatchProgressBar(a.ProgressBar);
+          _activity.icon = new WatchImageCoords(a.Icon);
+          _activity.shortcut = a.Shortcut;
         }
       });
     }
 
-    if (j.Widgets) {
-      this.widgets = new WatchWidgets(j.Widgets)
-    }
-    if (j.ScreenIdle) {
-      this.aod = new WatchAOD(j.ScreenIdle)
-    }
+    this.widgets = new WatchWidgets(j.Widgets)
+    this.aod = new WatchAOD(j.ScreenIdle)
   }
 }

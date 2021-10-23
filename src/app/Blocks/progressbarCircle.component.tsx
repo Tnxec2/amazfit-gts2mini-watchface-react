@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Card } from "react-bootstrap";
-import Color from "../../shared/color";
-import SelectFileListComponent from "../../shared/selectFileList.component";
+import Color from "../shared/color";
+import SelectFileListComponent from "../shared/selectFileList.component";
 import { AngleSettings, ProgressBar } from "../model/json.model";
 import { WatchProgressBar } from "../model/watchFace.model";
 

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
-import SelectFileListComponent from "../../shared/selectFileList.component";
+import { IWatchContext, WatchfaceContext } from "../context";
+import SelectFileListComponent from "../shared/selectFileList.component";
 
 const BackgroundComponent = () => {
   const { watchface, setWatchface } =
@@ -42,7 +42,7 @@ const BackgroundComponent = () => {
       </Card.Header>
       {!collapsed ? (
         <Card.Body>
-          <div className="input-group input-group-sm mb-1">
+          <div className="input-group input-group-sm mb-1 flex-nowrap">
             <span className="input-group-text">PreviewImage</span>
             <SelectFileListComponent
               setSelectedFileIndex={onChangeBackgroundPreviewImage}
@@ -53,6 +53,8 @@ const BackgroundComponent = () => {
               setSelectedFileIndex={onChangeBackgroundImageIndex}
               imageIndex={watchface.background.imageIndex}
             />
+          </div>
+          <div className="input-group input-group-sm flex-nowrap">
             <span className="input-group-text">Color</span>
             <div className="input-group-text">
               <input
@@ -63,7 +65,7 @@ const BackgroundComponent = () => {
                 id="colorBackground"
                 value={watchface.background.color}
                 title="Choose background color"
-              />
+                />
             </div>
           </div>
         </Card.Body>

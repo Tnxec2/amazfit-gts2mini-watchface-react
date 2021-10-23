@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Button } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
+import { IWatchContext, WatchfaceContext } from "../context";
 import { IImage } from "../model/image.model";
 import { WatchJson } from "../model/json.model";
 import WatchFace from "../model/watchFace.model";
@@ -31,6 +31,8 @@ const FileLoaderComponent = () => {
   }
 
   function getImages(files: FileList, ar: IImage[], index = 0) {
+    clearInput()
+    setJsonName(null)
     if (index < files.length) {
       const filename = files[index].name;
       let base = filename;
@@ -63,7 +65,7 @@ const FileLoaderComponent = () => {
   }
 
   function clearInput() {
-    (document.getElementById("jsonLoad") as HTMLInputElement).value = null;
+    if (document.getElementById("jsonLoad")) (document.getElementById("jsonLoad") as HTMLInputElement).value = null;
     setWatchface(new WatchFace());
   }
 

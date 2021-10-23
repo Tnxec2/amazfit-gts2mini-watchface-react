@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Amazfit GTS2 WatchFace editor (react)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+this is my just for fun project.
+
+this is a Web-Based watchfaces json crate tool for Amazfit Gts2 watch.
 
 ## Available Scripts
 

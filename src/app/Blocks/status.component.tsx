@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
+import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchStatus } from "../model/watchFace.model";
 import ImageCoordsComponent from "./imageCoords.component";
 

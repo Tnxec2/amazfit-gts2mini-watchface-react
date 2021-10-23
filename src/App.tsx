@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "./App.css";
 import FileLoaderComponent from "./app/main/fileLoader.component";
@@ -8,15 +8,15 @@ import RightSideComponent from "./app/main/rightside.component";
 import { IImage } from "./app/model/image.model";
 import WatchFace from "./app/model/watchFace.model";
 import { WatchState } from "./app/model/watchState";
-import { WatchfaceContext } from "./context";
+import { WatchfaceContext } from "./app/context";
 
-const App = () => {
+const App: FC = () => {
   const [images, setImages] = useState<IImage[]>([]);
   const [watchface, setWatchface] = useState<WatchFace>(new WatchFace());
   const [watchState, setWatchState] = useState<WatchState>(new WatchState());
 
   const [jsonName, setJsonName] = useState<string>(null);
-  const [previewScreenNormal, setPreviewScreenNormal] = useState<string>(null);
+  const [previewScreenNormal, setPreviewScreenNormal] = useState<boolean>(true);
 
   return (
     <WatchfaceContext.Provider

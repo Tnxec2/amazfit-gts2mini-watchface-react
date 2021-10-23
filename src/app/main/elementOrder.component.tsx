@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { IWatchContext, WatchfaceContext } from "../../context";
-import DnDListComponent from "../../shared/draganddroplist.component";
+import { IWatchContext, WatchfaceContext } from "../context";
+import DnDListComponent from "../shared/draganddroplist.component";
 import { ElementOrderItem } from "../model/watchFace.model";
 
 const ElementOrderComponent = () => {

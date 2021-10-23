@@ -1,4 +1,5 @@
 const colorRegex: RegExp = /^#[0-9A-F]{6}$/i;
+
 export default class Color {
   static hexToRgb(hex: string) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -40,8 +41,8 @@ export default class Color {
     if (!color) return null;
     if (color.length === 18)
       color = color.substring(0, 2) + color.substring(8, 18);
-    let firstByteS = color.substring(6, 2);
-    let secondByteS = color.substring(8, 2);
+    let firstByteS = color.substring(8, 10);
+    let secondByteS = color.substring(10, 12);
     let firstByte = parseInt(firstByteS, 16);
     let secondByte = parseInt(secondByteS, 16);
 
@@ -54,6 +55,9 @@ export default class Color {
     b = (secondByte & 0x1f) << 3;
 
     let new_color = this.rgbToHex(r, g, b);
+
+    console.log(color, new_color);
+    
     return new_color;
   }
 
@@ -74,8 +78,8 @@ export default class Color {
     let temp_g2 = (g >> 5) & 0x07;
     let temp_r = ((r >> 3) & 0x1f) << 3;
     let firstByte = temp_g2 | temp_r;
-    let firstByteS = firstByte.toString(16).toUpperCase();
-    let secondByteS = secondByte.toString(16).toUpperCase();
+    let firstByteS = firstByte.toString(16).padStart(2, '0').toUpperCase();
+    let secondByteS = secondByte.toString(16).padStart(2, '0').toUpperCase();
 
     let new_color = "0xFFFF" + firstByteS + secondByteS;
     return new_color;

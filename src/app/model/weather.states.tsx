@@ -1,0 +1,33 @@
+export class WeatherStates {
+ public static ar: string[] = [
+    'Cloudy',
+    'Chance of rain',
+    'Chance of snow',
+    'Sunny',
+    'Overcast',
+    'Light rain',
+    'Light snow',
+    'Moderate rain',
+    'Moderate snow',
+    'Heavy snowfall',
+    'Heavy rain',
+    'Sandstorm',
+    'Sleet',
+    'Fog',
+    'Haze',
+    'Thunderstorm',
+    'Snowstorm',
+    'Dusty',
+    'Extreme rain',
+    'Rain with hail',
+    'Heavy rain with hail',
+    'Rainstorm',
+    'Dust storm',
+    'Severe sandstorm',
+    'Torrential rain',
+    'Unknown weather',
+    'Cloudy night',
+    'Rainy night',
+    'Clear night'
+ ]
+}

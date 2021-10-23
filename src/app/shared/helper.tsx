@@ -1,4 +1,4 @@
-import { IImage } from "../app/model/image.model"
+import { IImage } from "../model/image.model"
 
 
 export function findImageById(id: number, images: IImage[]): HTMLImageElement | null {

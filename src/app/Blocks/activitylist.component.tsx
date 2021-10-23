@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
+import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchActivity, WatchActivityList } from "../model/watchFace.model";
 import ActivityComponent from "./activity.component";
 
@@ -70,7 +70,14 @@ const ActivityListComponent = () => {
       { title: "StandUp", a: watchface.activity.standUp, up: updateStandUp, showNoData: true },
       {
         title: "Weather",
-        a: watchface.activity.standUp,
+        a: watchface.activity.weather,
+        up: updateWeather,
+        showNoData: true,
+        showDelimiter: true,
+      },
+      {
+        title: "Weather Min",
+        a: watchface.activity.weatherMin,
         up: updateWeather,
         showNoData: true,
         showDelimiter: true,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Constant } from "../model/constant";
+import { Constant } from "../shared/constant";
 import ElementOrderComponent from "./elementOrder.component";
 import JsonComponent from "./json.component";
 import PreviewComponent from "./preview.component";

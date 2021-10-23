@@ -1,39 +1,36 @@
-import { findImageById } from "../../../shared/helper";
-import { Constant } from "../../model/constant";
+import { findImageById } from "../../shared/helper";
+import { Constant } from "../../shared/constant";
 import { IImage } from "../../model/image.model";
+import { LangCodeType, MultilangImage } from "../../model/json.model";
 import { WatchClockHand } from "../../model/watchFace.model";
 
 export default function drawclockhand(ctx: CanvasRenderingContext2D, 
     images: IImage[], 
     clockHand: WatchClockHand, value: number, total: number) {
-        if (clockHand.scaleImageIndex >= 0) {
-            if ( clockHand.scaleImageIndex > images.length) {
-                alert('bad imageIndex:' + clockHand.scaleImageIndex)
-                return
+        
+        if (clockHand.json.Scale) {
+            const scaleImageSetIndex = findImageIndex(clockHand.json.Scale?.ImageSet);
+            if (clockHand.json.Scale.ImageSet[scaleImageSetIndex].ImageSet.ImageIndex >= 0) {
+                let x = clockHand.json.Scale.Coordinates?.X ? clockHand.json.Scale.Coordinates?.X : 0
+                let y = clockHand.json.Scale.Coordinates?.Y ? clockHand.json.Scale.Coordinates?.Y : 0
+                let img = findImageById(clockHand.json.Scale.ImageSet[scaleImageSetIndex].ImageSet.ImageIndex, images)
+                if (img) ctx.drawImage(img, x, y, img.width, img.height);
             }
-            let x = clockHand.scaleX ? clockHand.scaleX : 0
-            let y = clockHand.scaleY ? clockHand.scaleY : 0
-            let img = findImageById(clockHand.scaleImageIndex, images)
-            if (img) ctx.drawImage(img, x, y, img.width, img.height);
         }
-        if (clockHand.pointerImageIndex >= 0) {
-            if ( clockHand.pointerImageIndex > images.length) {
-                alert('bad imageIndex:' + clockHand.pointerImageIndex)
-                return
+        if (clockHand.json.Pointer?.ImageIndex >= 0) {
+            let x = clockHand.json.X ? clockHand.json.X : 0
+            let y = clockHand.json.Y ? clockHand.json.Y : 0
+            if ( !clockHand.json.X && !clockHand.json.Y) {
+                x = clockHand.json.X ? clockHand.json.X : Constant.width / 2
+                y = clockHand.json.Y ? clockHand.json.Y : Constant.height / 2
             }
-            let x = clockHand.x ? clockHand.x : 0
-            let y = clockHand.y ? clockHand.y : 0
-            if ( !clockHand.x && !clockHand.y) {
-                x = clockHand.x ? clockHand.x : Constant.width / 2
-                y = clockHand.y ? clockHand.y : Constant.height / 2
-            }
-            let img = findImageById(clockHand.pointerImageIndex, images)
+            let img = findImageById(clockHand.json.Pointer?.ImageIndex, images)
             if (img) {
-                let offsetX = clockHand.pointerX ? clockHand.pointerX : img.width / 2
-                let offsetY = clockHand.pointerY ? clockHand.pointerY : img.height / 2
+                let offsetX = clockHand.json.Pointer.Coordinates?.X ? clockHand.json.Pointer.Coordinates?.X : img.width / 2
+                let offsetY = clockHand.json.Pointer.Coordinates?.Y ? clockHand.json.Pointer.Coordinates?.Y : img.height / 2
                 
-                let _startAngle = clockHand.startAngle ? clockHand.startAngle: 0
-                let _endAngle = clockHand.endAngle ? clockHand.endAngle: 360
+                let _startAngle = clockHand.json.StartAngle ? clockHand.json.StartAngle: 0
+                let _endAngle = clockHand.json.EndAngle ? clockHand.json.EndAngle: 360
                 let angle = _startAngle + Math.round(value * (_endAngle - _startAngle ) / total)
                 angle = Math.min(angle, _endAngle)
                 angle = Math.max(angle, _startAngle)
@@ -46,10 +43,15 @@ export default function drawclockhand(ctx: CanvasRenderingContext2D,
                 ctx.restore(); // restore original states (no rotation etc)
             }
         }
-        if (clockHand.coverImageIndex >= 0) {
-            let x = clockHand.coverX ? clockHand.coverX : 0
-            let y = clockHand.coverY ? clockHand.coverY : 0
-            let img = findImageById(clockHand.coverImageIndex, images)
+        if (clockHand.json.Cover?.ImageIndex >= 0) {
+            let x = clockHand.json.Cover?.Coordinates?.X ? clockHand.json.Cover.Coordinates.X : 0
+            let y = clockHand.json.Cover?.Coordinates?.Y ? clockHand.json.Cover.Coordinates?.Y : 0
+            let img = findImageById(clockHand.json.Cover.ImageIndex, images)
             if ( img ) ctx.drawImage(img, x, y, img.width, img.height);
         }
 }
+
+function findImageIndex(ar: MultilangImage[]): number {
+    let index = ar.findIndex((item) => item.LangCode === LangCodeType.All.json)
+    return index ? index : 0
+  }

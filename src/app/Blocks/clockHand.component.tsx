@@ -1,8 +1,9 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 
 import { WatchClockHand } from "../model/watchFace.model";
-import SelectFileListComponent from "../../shared/selectFileList.component";
+import SelectFileListComponent from "../shared/selectFileList.component";
+import { ClockHand, Coordinates, ImageCoord, LangCodeType, MultilangImage, MultilangImageCoord } from "../model/json.model";
 
 interface IProps {
   title: string,
@@ -14,6 +15,14 @@ interface IProps {
 
 const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle, onCopyFromNormal }) => {
   
+  const scaleImageSetIndex = useMemo<number>(() => findImageIndex(clockHand.json?.Scale?.ImageSet), [clockHand])
+
+  function findImageIndex(ar: MultilangImage[]): number {
+    if (!ar) return null
+    let index = ar.findIndex((item) => item.LangCode === LangCodeType.All.json)
+    return index ? index : 0
+  }
+
   return (
     <Card>
       <Card.Header>
@@ -27,6 +36,7 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
               onChange={() => {
                 const ch = { ...clockHand };
                 ch.enabled = !ch.enabled;
+                if (ch.enabled && !ch.json) {ch.json = new ClockHand(); ch.json.StartAngle = 0; ch.json.EndAngle = 360; }
                 onUpdate(ch);
               }}
             />
@@ -41,10 +51,11 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <SelectFileListComponent
               setSelectedFileIndex={(i) => {
                 let ch = clockHand;
-                ch.pointerImageIndex = i;
+                if (!ch.json.Pointer) ch.json.Pointer = new ImageCoord()
+                ch.json.Pointer.ImageIndex = i;
                 onUpdate(ch);
               }}
-              imageIndex={clockHand.pointerImageIndex}
+              imageIndex={clockHand.json?.Pointer?.ImageIndex}
             />
           </div>
           <div className="input-group input-group-sm mb-1">
@@ -55,10 +66,10 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.x}
+              value={clockHand.json.X}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.x = parseInt(e.target.value);
+                ch.json.X = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -68,10 +79,10 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.y}
+              value={clockHand.json.Y}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.y = parseInt(e.target.value);
+                ch.json.Y = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -84,10 +95,12 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.pointerX}
+              value={clockHand.json?.Pointer?.Coordinates?.X}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.pointerX = parseInt(e.target.value);
+                if (!ch.json.Pointer) ch.json.Pointer = new ImageCoord()
+                if (!ch.json.Pointer.Coordinates) ch.json.Pointer.Coordinates = new Coordinates()
+                ch.json.Pointer.Coordinates.X = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -97,10 +110,12 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.pointerY}
+              value={clockHand.json?.Pointer?.Coordinates?.Y}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.pointerY = parseInt(e.target.value);
+                if (!ch.json.Pointer) ch.json.Pointer = new ImageCoord()
+                if (!ch.json.Pointer.Coordinates) ch.json.Pointer.Coordinates = new Coordinates()
+                ch.json.Pointer.Coordinates.Y = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -110,10 +125,11 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <SelectFileListComponent
               setSelectedFileIndex={(i) => {
                 let ch = clockHand;
-                ch.coverImageIndex = i;
+                if (!ch.json.Cover) ch.json.Cover = new ImageCoord()
+                ch.json.Cover.ImageIndex = i;
                 onUpdate(ch);
               }}
-              imageIndex={clockHand.coverImageIndex}
+              imageIndex={clockHand.json?.Cover?.ImageIndex}
             />
             <span className="input-group-text" id="addon-wrapping">
               X
@@ -121,10 +137,12 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.coverX}
+              value={clockHand.json?.Cover?.Coordinates?.X}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.coverX = parseInt(e.target.value);
+                if (!ch.json.Cover) ch.json.Cover = new ImageCoord()
+                if (!ch.json.Cover.Coordinates) ch.json.Cover.Coordinates = new Coordinates()
+                ch.json.Cover.Coordinates.X = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -134,10 +152,12 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.coverY}
+              value={clockHand.json?.Cover?.Coordinates?.Y}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.coverY = parseInt(e.target.value);
+                if (!ch.json.Cover) ch.json.Cover = new ImageCoord()
+                if (!ch.json.Cover.Coordinates) ch.json.Cover.Coordinates = new Coordinates()
+                ch.json.Cover.Coordinates.Y = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -147,10 +167,15 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <SelectFileListComponent
               setSelectedFileIndex={(i) => {
                 let ch = clockHand;
-                ch.scaleImageIndex = i;
+                if (!ch.json.Scale) { 
+                  ch.json.Scale = new MultilangImageCoord()
+                  ch.json.Scale.ImageSet[0].ImageSet.ImageIndex = i;
+                } else {
+                  ch.json.Scale.ImageSet[scaleImageSetIndex].ImageSet.ImageIndex = i;
+                }
                 onUpdate(ch);
               }}
-              imageIndex={clockHand.scaleImageIndex}
+              imageIndex={clockHand.json?.Scale?.ImageSet[scaleImageSetIndex]?.ImageSet?.ImageIndex}
             />
             <span className="input-group-text" id="addon-wrapping">
               X
@@ -158,10 +183,12 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.scaleX}
+              value={clockHand.json?.Scale?.Coordinates?.X}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.scaleX = parseInt(e.target.value);
+                if (!ch.json.Scale) ch.json.Scale = new MultilangImageCoord() 
+                if (!ch.json.Scale.Coordinates) ch.json.Scale.Coordinates = new Coordinates()
+                ch.json.Scale.Coordinates.X = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -171,10 +198,12 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
             <input
               type="number"
               className="form-control form-control-sm"
-              value={clockHand.scaleY}
+              value={clockHand.json?.Scale?.Coordinates?.Y}
               onChange={(e) => {
                 const ch = clockHand;
-                ch.scaleY = parseInt(e.target.value);
+                if (!ch.json.Scale) ch.json.Scale = new MultilangImageCoord() 
+                if (!ch.json.Scale.Coordinates) ch.json.Scale.Coordinates = new Coordinates()
+                ch.json.Scale.Coordinates.Y = parseInt(e.target.value);
                 onUpdate(ch);
               }}
             />
@@ -187,10 +216,10 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
               <input
                 type="number"
                 className="form-control form-control-sm"
-                value={clockHand.startAngle}
+                value={clockHand.json?.StartAngle}
                 onChange={(e) => {
                   const ch = clockHand;
-                  ch.startAngle = parseInt(e.target.value);
+                  ch.json.StartAngle = parseInt(e.target.value);
                   onUpdate(ch);
                 }}
               />
@@ -200,10 +229,10 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
               <input
                 type="number"
                 className="form-control form-control-sm"
-                value={clockHand.endAngle}
+                value={clockHand.json?.EndAngle}
                 onChange={(e) => {
                   const ch = clockHand;
-                  ch.endAngle = parseInt(e.target.value);
+                  ch.json.EndAngle = parseInt(e.target.value);
                   onUpdate(ch);
                 }}
               />

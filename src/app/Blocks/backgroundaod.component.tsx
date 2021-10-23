@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
-import SelectFileListComponent from "../../shared/selectFileList.component";
+import { IWatchContext, WatchfaceContext } from "../context";
+import SelectFileListComponent from "../shared/selectFileList.component";
 
 const BackgroundAODComponent = () => {
   const { watchface, setWatchface } =

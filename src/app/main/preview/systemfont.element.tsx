@@ -18,7 +18,7 @@ function rotate(ctx: CanvasRenderingContext2D) {
         ctx.translate(tx,ty);
         ctx.rotate(Math.PI / 10);
         ctx.translate(-tx,-ty);
-                ctx.fillText(x[i],i*50+20,50);
+        ctx.fillText(x[i],i*50+20,50);
         ctx.restore();
     }
 }

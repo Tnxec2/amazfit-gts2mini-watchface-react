@@ -1,6 +1,6 @@
 import { FC, useContext, useState } from "react";
 
-import { IWatchContext, WatchfaceContext } from "../../context";
+import { IWatchContext, WatchfaceContext } from "../context";
 import { IImage } from "../model/image.model";
 import Canvas from "./canvas.function";
 import drawActivity from "./preview/activity.element";
@@ -10,6 +10,7 @@ import drawDate from "./preview/date.element";
 import drawStatus from "./preview/status.element";
 import drawTimeAnalog from "./preview/timeAnalog.element";
 import drawTimeDigital from "./preview/timeDigital.element";
+import drawWidgets from "./preview/widgets.element";
 import cl from "./previewComponent.module.css";
 
 interface IProps {
@@ -83,6 +84,9 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
     if (watchface.status) {
       drawStatus(ctx, images, watchface.status, watchState);
     }
+    if (watchface.widgets.enabled) {
+      drawWidgets(ctx, images, watchface.widgets.json)
+    }
     if (watchface.dialFace) {
       drawTimeDigital(
         ctx,
@@ -97,7 +101,9 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
   }
   
   function drawAod(canvas, ctx: CanvasRenderingContext2D, images: IImage[]) {
-    if (watchface.aod) drawAodBackground(canvas, ctx, images, watchface.aod.backgroundImageIndex);
+    if (watchface.aod) {
+      drawAodBackground(canvas, ctx, images, watchface.aod.backgroundImageIndex);
+    }
     if (watchface.aod.date) {
       drawDate(
         ctx,
@@ -127,7 +133,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         watchState,
         digitBorder
       );
-      drawTimeAnalog(ctx, images, watchface.dialFace, watchState);
+      drawTimeAnalog(ctx, images, watchface.aod.dialFace, watchState);
     }
   }
 

@@ -8,16 +8,16 @@ import drawClockHand from "./clockHand.element";
         dialFace: WatchDialFace,
         watchState: WatchState
         ) {
-        if ( dialFace.hoursClockhand.enabled) {
+        if ( dialFace.hoursClockhand?.enabled) {
             if ( watchState.hours < 12)
                 drawClockHand(ctx, images, dialFace.hoursClockhand, watchState.hours, 12 )
             else 
             drawClockHand(ctx, images, dialFace.hoursClockhand, watchState.hours-12, 12 )
         }
-        if ( dialFace.minutesClockhand.enabled) {
+        if ( dialFace.minutesClockhand?.enabled) {
             drawClockHand(ctx, images, dialFace.minutesClockhand, watchState.minutes, 60 )
         }
-        if ( dialFace.secondsClockhand.enabled) {
+        if ( dialFace.secondsClockhand?.enabled) {
             drawClockHand(ctx, images, dialFace.secondsClockhand, watchState.seconds, 60 )
         }
     }

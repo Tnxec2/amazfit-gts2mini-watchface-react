@@ -26,7 +26,7 @@ export default function draw(
                     drawActivity(ctx, images, activity.steps, watchState.steps, watchState.stepsGoal, digitBorder)
                     break;
                 case ActivityType.Calories.index:
-                    drawActivity(ctx, images, activity.calories, watchState.calories, 999, digitBorder)
+                    drawActivity(ctx, images, activity.calories, watchState.calories, 200, digitBorder)
                     break;
                 case ActivityType.HeartRate.index:
                     drawActivity(ctx, images, activity.heartRate, watchState.hearthrate, 200, digitBorder)

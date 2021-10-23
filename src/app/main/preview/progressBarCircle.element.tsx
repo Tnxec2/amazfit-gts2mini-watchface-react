@@ -1,5 +1,5 @@
-import Color from "../../../shared/color";
-import { findImageById } from "../../../shared/helper";
+import Color from "../../shared/color";
+import { findImageById } from "../../shared/helper";
 import { IImage } from "../../model/image.model";
 import {  WatchProgressBar } from "../../model/watchFace.model";
 
@@ -43,7 +43,7 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
 
                     /// draw the image
                     ctx.drawImage(img, angleSettings.X - img.width/2, angleSettings.Y - img.height/2);
-                    ctx.stroke()
+                    //ctx.stroke() // test
                     /// reset clip to default
                     ctx.restore();
                 }

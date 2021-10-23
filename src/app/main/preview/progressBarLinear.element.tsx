@@ -1,5 +1,5 @@
-import Color from "../../../shared/color";
-import { findImageById } from "../../../shared/helper";
+import Color from "../../shared/color";
+import { findImageById } from "../../shared/helper";
 import { IImage } from "../../model/image.model";
 import {  WatchProgressBar } from "../../model/watchFace.model";
 
@@ -31,7 +31,20 @@ export default function drawProgressBarLinear(ctx: CanvasRenderingContext2D,
                     width = Math.min(width, img.width)
                     let height = progressBar.jsonObj.Width
                     height = Math.min(height, img.height)
-                    ctx.drawImage(img, x, y, width, height);
+                    
+                    /// use save when using clip Path
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.rect(x, y, width, height)
+                    /// define this Path as clipping mask
+                    ctx.clip();
+                    
+                    /// draw the image
+                    ctx.drawImage(img, x, y);
+                    
+                    //ctx.stroke() // test
+                    /// reset clip to default
+                    ctx.restore();
                 }
             } else if (progressBar.jsonObj?.Color) {
                 let color = Color.colorRead(progressBar.jsonObj.Color)

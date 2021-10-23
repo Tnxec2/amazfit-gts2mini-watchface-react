@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { WatchfaceContext } from "../../context";
+import { WatchfaceContext } from "../context";
 import Blocks from "./screennormal.component";
 import PreviewStatesComponent from "./previewstates.component";
 import AodComponent from "./aod.component";
@@ -11,15 +11,15 @@ const tabs = [
 ];
 
 const LeftSideComponent = () => {
-  
-  const {setPreviewScreenNormal} = useContext(WatchfaceContext)
+
+  const { setPreviewScreenNormal } = useContext(WatchfaceContext)
 
   const [tabLeft, setTabLeft] = useState<number>(0);
 
   function onclick(tabid: number) {
     setTabLeft(tabid)
-    if ( tabid === 1) setPreviewScreenNormal(false)
-    if ( tabid === 0) setPreviewScreenNormal(true)
+    if (tabid === 1) setPreviewScreenNormal(false)
+    if (tabid === 0) setPreviewScreenNormal(true)
   }
   return (
     <div>

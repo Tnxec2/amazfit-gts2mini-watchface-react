@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Card } from "react-bootstrap";
-import SelectFileListComponent from "../../shared/selectFileList.component";
+import SelectFileListComponent from "../shared/selectFileList.component";
 import { WatchImageProgress } from "../model/watchFace.model";
 
 interface IProps {
@@ -36,10 +36,10 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
             <SelectFileListComponent
               setSelectedFileIndex={(i) => {
                 let ip = imageProgress;
-                ip.imageIndex = i;
+                ip.json.ImageSet.ImageIndex = i;
                 onUpdate(ip);
               }}
-              imageIndex={imageProgress.imageIndex}
+              imageIndex={imageProgress.json.ImageSet.ImageIndex}
             />
             <span className="input-group-text" id="addon-wrapping">
               Count
@@ -47,15 +47,15 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={imageProgress.imageCount}
+              value={imageProgress.json.ImageSet.ImagesCount}
               onChange={(e) => {
                 const d = imageProgress;
-                d.imageCount = parseInt(e.target.value);
+                d.json.ImageSet.ImagesCount = parseInt(e.target.value);
                 onUpdate(d);
               }}
             />
           </div>
-            { imageProgress.coordinates.map((coords, index) => (
+            { imageProgress.json.Coordinates.map((coords, index) => (
               <div className="input-group input-group-sm">
                 <span className="input-group-text">
                   {index}
@@ -66,10 +66,10 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
                 <input
                   type="number"
                   className="form-control form-control-sm"
-                  value={coords.x}
+                  value={coords.X}
                   onChange={(e) => {
                     const d = imageProgress;
-                    coords.x = parseInt(e.target.value);
+                    coords.X = parseInt(e.target.value);
                     onUpdate(d);
                   }}
                 />
@@ -79,10 +79,10 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
                 <input
                   type="number"
                   className="form-control form-control-sm"
-                  value={coords.y}
+                  value={coords.Y}
                   onChange={(e) => {
                     const d = imageProgress;
-                    coords.y = parseInt(e.target.value);
+                    coords.Y = parseInt(e.target.value);
                     onUpdate(d);
                   }}
                 />

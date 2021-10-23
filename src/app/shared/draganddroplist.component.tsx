@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { ElementOrderItem } from "../app/model/watchFace.model";
+import { ElementOrderItem } from "../model/watchFace.model";
 import "./draganddroplist.css";
 
 interface IProps {

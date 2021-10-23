@@ -1,5 +1,6 @@
 import React, { useContext, useMemo } from "react";
-import { IWatchContext, WatchfaceContext } from "../../context";
+import { IWatchContext, WatchfaceContext } from "../context";
+import { WeatherStates } from "../model/weather.states";
 
 const PreviewStatesComponent = () => {
   const { watchState, setWatchState } =
@@ -199,6 +200,7 @@ const PreviewStatesComponent = () => {
               setWatchState(ws);
             }}
           />
+          <span className="input-group-text">{WeatherStates.ar[watchState.weatherIcon]}</span>
         </div>
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Current</span>

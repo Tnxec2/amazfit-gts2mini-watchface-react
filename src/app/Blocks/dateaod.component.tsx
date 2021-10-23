@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
-import { Digit, WatchDate } from "../model/watchFace.model";
-import DigitComponent from "./digit.component";
+import { IWatchContext, WatchfaceContext } from "../context";
+import { WatchCommonDigit, WatchDate } from "../model/watchFace.model";
+import ImageDigitComponent from "./imagedigit.component";
 
 const DateAODComponent = () => {
   const { watchface, setWatchface } =
@@ -10,27 +10,27 @@ const DateAODComponent = () => {
 
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
-  function updateDay(d: Digit) {
+  function updateDay(d: WatchCommonDigit) {
     const date = {...watchface.aod.date};
     date.day = d;
     updateDate(date);
   }
-  function updateMonth(d: Digit) {
+  function updateMonth(d: WatchCommonDigit) {
     const date = {...watchface.aod.date};
     date.month = d;
     updateDate(date);
   }
-  function updateMonthAsWord(d: Digit) {
+  function updateMonthAsWord(d: WatchCommonDigit) {
     const date = {...watchface.aod.date};
     date.monthAsWord = d;
     updateDate(date);
   }
-  function updateYear(d: Digit) {
+  function updateYear(d: WatchCommonDigit) {
     const date = {...watchface.aod.date};
     date.year = d;
     updateDate(date);
   }
-  function updateWeekday(d: Digit) {
+  function updateWeekday(d: WatchCommonDigit) {
     const date = {...watchface.aod.date};
     date.weekDay = d;
     updateDate(date);
@@ -77,32 +77,32 @@ const DateAODComponent = () => {
           Date
         </Card.Header>
         <Card.Body className={`${collapsed ? "collapse" : ""}`}>
-          <DigitComponent
+          <ImageDigitComponent
             title="Day"
             digit={watchface.aod.date.day}
             onUpdate={updateDay}
             onCopyFromNormal={copyDayFromNormal}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Month"
             digit={watchface.aod.date.month}
             onUpdate={updateMonth}
             onCopyFromNormal={copyMonthFromNormal}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Month as word"
             digit={watchface.aod.date.monthAsWord}
             onUpdate={updateMonthAsWord}
             paddingZeroFix={true}
             onCopyFromNormal={copyMonthAsWordFromNormal}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Year"
             digit={watchface.aod.date.year}
             onUpdate={updateYear}
             onCopyFromNormal={copyYearFromNormal}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Weekday"
             digit={watchface.aod.date.weekDay}
             onUpdate={updateWeekday}

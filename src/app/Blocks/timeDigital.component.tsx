@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
-import { Digit, WatchDialFace } from "../model/watchFace.model";
-import DigitComponent from "./digit.component";
+import { IWatchContext, WatchfaceContext } from "../context";
+import { WatchCommonDigit, WatchDialFace, WatchMultilangImageCoords } from "../model/watchFace.model";
+import ImageDigitComponent from "./imagedigit.component";
+import MultilangImageCoordsComponent from "./multiLangImageCoords.component";
 
 const TimeDigitalComponent = () => {
   const { watchface, setWatchface } =
@@ -10,21 +11,32 @@ const TimeDigitalComponent = () => {
 
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
-  function updateHoursDigit(h: Digit) {
+  function updateHoursDigit(h: WatchCommonDigit) {
     const t = {...watchface.dialFace};
     t.hoursDigital = h;
     updateTimeDigital(t);
   }
 
-  function updateMinutesDigit(m: Digit) {
+  function updateMinutesDigit(m: WatchCommonDigit) {
     const t = {...watchface.dialFace};
     t.minutesDigital = m;
     updateTimeDigital(t);
   }
 
-  function updateSecondsDigit(s: Digit) {
+  function updateSecondsDigit(s: WatchCommonDigit) {
     const t = {...watchface.dialFace};
     t.secondsDigital = s;
+    updateTimeDigital(t);
+  }
+
+  function updateAm(s: WatchMultilangImageCoords) {
+    const t = {...watchface.dialFace};
+    t.am = s;
+    updateTimeDigital(t);
+  }
+  function updatePm(s: WatchMultilangImageCoords) {
+    const t = {...watchface.dialFace};
+    t.pm = s;
     updateTimeDigital(t);
   }
 
@@ -42,7 +54,7 @@ const TimeDigitalComponent = () => {
         Time Digital
       </Card.Header>
       <Card.Body className={`${collapsed ? "collapse" : ""}`}>
-        <DigitComponent
+        <ImageDigitComponent
           title="Hours"
           digit={watchface.dialFace.hoursDigital}
           onUpdate={updateHoursDigit}
@@ -51,7 +63,7 @@ const TimeDigitalComponent = () => {
           showNoData={false}
           paddingZeroFix={false}
         />
-        <DigitComponent
+        <ImageDigitComponent
           title="Minutes"
           digit={watchface.dialFace.minutesDigital}
           onUpdate={updateMinutesDigit}
@@ -60,7 +72,7 @@ const TimeDigitalComponent = () => {
           showNoData={false}
           paddingZeroFix={true}
         />
-        <DigitComponent
+        <ImageDigitComponent
           title="Seconds"
           digit={watchface.dialFace.secondsDigital}
           onUpdate={updateSecondsDigit}
@@ -69,6 +81,14 @@ const TimeDigitalComponent = () => {
           showNoData={false}
           paddingZeroFix={true}
         />
+        <MultilangImageCoordsComponent
+          title="AM"
+          imageCoords={watchface.dialFace.am}
+          onUpdate={updateAm} />
+        <MultilangImageCoordsComponent
+          title="PM"
+          imageCoords={watchface.dialFace.pm}
+          onUpdate={updatePm} />
       </Card.Body>
     </Card>
   );

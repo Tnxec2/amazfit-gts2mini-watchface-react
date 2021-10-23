@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Card } from "react-bootstrap";
 
 import { WatchImageCoords } from "../model/watchFace.model";
-import SelectFileListComponent from "../../shared/selectFileList.component";
+import SelectFileListComponent from "../shared/selectFileList.component";
 
 interface IProps {
   title: string;
@@ -37,10 +37,10 @@ const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
             <SelectFileListComponent
               setSelectedFileIndex={(ix) => {
                 const ip = { ...imageCoords };
-                ip.imageIndex = ix;
+                ip.json.ImageIndex = ix;
                 onUpdate(ip);
               }}
-              imageIndex={imageCoords.imageIndex}
+              imageIndex={imageCoords.json.ImageIndex}
             />
             <span className="input-group-text" id="addon-wrapping">
               X
@@ -48,11 +48,11 @@ const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={imageCoords.x}
+              value={imageCoords.json.Coordinates.X}
               onChange={(e) => {
                 const ip = { ...imageCoords };
                 let x = parseInt(e.target.value);
-                ip.x = !isNaN(x) ? x : 0;
+                ip.json.Coordinates.X = !isNaN(x) ? x : 0;
                 onUpdate(ip);
               }}
             />
@@ -62,11 +62,11 @@ const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={imageCoords.y}
+              value={imageCoords.json.Coordinates.Y}
               onChange={(e) => {
                 const ip = { ...imageCoords };
                 let y = parseInt(e.target.value);
-                ip.y = !isNaN(y) ? y : 0;
+                ip.json.Coordinates.Y = !isNaN(y) ? y : 0;
                 onUpdate(ip);
               }}
             />

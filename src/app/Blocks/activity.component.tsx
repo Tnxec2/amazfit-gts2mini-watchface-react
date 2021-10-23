@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { Card } from "react-bootstrap";
-import { WatchActivity } from "../model/watchFace.model";
+import { WatchActivity, WatchCommonDigit } from "../model/watchFace.model";
 import ClockHandComponent from "./clockHand.component";
-import DigitComponent from "./digit.component";
+import ImageDigitComponent from "./imagedigit.component";
 import ImageCoordsComponent from "./imageCoords.component";
 import ImageProgressComponent from "./imageProgress.component";
 import ProgressbarCircleCodmponent from "./progressbarCircle.component";
@@ -43,12 +43,12 @@ const ActivityComponent: FC<IProps> = ({
       {!collapsed ? (
         <Card.Body>
           { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm mr-0' onClick={onCopy}>Copy from normal screen</button> }
-          <DigitComponent
+          <ImageDigitComponent
             title="Numerical"
             digit={activity.digit}
             onUpdate={(d) => {
               const a = { ...activity };
-              a.digit = d;
+              a.digit = d as WatchCommonDigit;
               onUpdateActivity(a);
             }}
             showDecimalPointer={showDecimalPointer}

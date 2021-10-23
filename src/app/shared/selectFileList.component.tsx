@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useContext, useState } from "react";
-import { Constant } from "../app/model/constant";
+import { Constant } from "./constant";
 import { IWatchContext, WatchfaceContext } from "../context";
 import "./selectFileList.css";
 interface IProps {

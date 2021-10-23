@@ -1,56 +1,65 @@
-import { findImageById } from "../../../shared/helper"
+import { findImageById } from "../../shared/helper"
 import { IImage } from "../../model/image.model"
-import { Digit } from "../../model/watchFace.model"
+import { AlignmentType, LangCodeType, MultilangImage } from "../../model/json.model"
+import { WatchCommonDigit } from "../../model/watchFace.model"
 import drawSeparator from './imageCoords.element'
 
 export default function draw(
     ctx: CanvasRenderingContext2D, 
     images: IImage[], 
-    digit: Digit, 
+    digit: WatchCommonDigit, 
     number: number, 
     followXY?: [number, number], 
     drawBorder?: boolean,
     paddingZeroFix?: boolean) {
-    const x = followXY ? followXY[0] : digit.x
-    const y = followXY ? followXY[1] : digit.y
+    const x = followXY ? followXY[0] : digit.json?.Digit?.Image?.X
+    const y = followXY ? followXY[1] : digit.json?.Digit?.Image?.Y
+    const imageSetIndex = findImageIndex(digit.json.Digit?.Image?.MultilangImage);
+    const unitImageSetIndex =findImageIndex(digit.json.Digit?.Image?.MultilangImageUnit);
 
-    if (digit.imageIndex !== undefined && digit.imageIndex !== null) {
-        let strNumber = number.toString()
-        if (number < 0) strNumber = (-number).toString()
-        if ( !digit.displayFormAnalog && (digit.paddingZero || paddingZeroFix)) {
-            strNumber = strNumber.padStart(digit.numberLenght, '0' )
-        }
-        let ar: HTMLImageElement[] = []
-        if (digit.delimiterImageIndex) {
-            if (number < 0){
-                const img = findImageById(digit.delimiterImageIndex, images)
+    if (digit.json.Digit?.Image?.MultilangImage &&
+        digit.json.Digit.Image.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex) {
+            let strNumber = number.toString()
+            if (number < 0) strNumber = (-number).toString()
+            if ( !digit.json.Digit.DisplayFormAnalog && (digit.json.Digit.PaddingZero || paddingZeroFix)) {
+                strNumber = strNumber.padStart(digit.con.numberLenght, '0' )
+            }
+            let ar: HTMLImageElement[] = []
+            if (digit.json.Digit.Image.DelimiterImageIndex) {
+                if (number < 0){
+                    const img = findImageById(digit.json.Digit.Image.DelimiterImageIndex, images)
+                    if (img) ar.push(img)
+                }
+            }
+            if (digit.json.Digit.DisplayFormAnalog) {
+                const img = findImageById(digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex + number, images)
+                if (img) ar.push(img)
+            } else {
+                ar = ar.concat(getImages(images, strNumber, 
+                    digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex, 
+                    digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImagesCount,
+                    digit.json.Digit.Image.DecimalPointImageIndex ))
+            }
+            if (digit.json.Digit.Image.MultilangImageUnit && digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex]) {
+                const img = findImageById(digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex].ImageSet.ImageIndex, images)
                 if (img) ar.push(img)
             }
-        }
-        if (digit.displayFormAnalog) {
-            const img = findImageById(digit.imageIndex + number, images)
-            if (img) ar.push(img)
-        } else {
-            ar = ar.concat(getImages(images, strNumber, digit.imageIndex, digit.imageCount, digit.decimalPointImageIndex ))
-        }
-        if (digit.unitImageIndex) {
-            const img = findImageById(digit.unitImageIndex, images)
-            if (img) ar.push(img)
-        }
 
-        const followXY = drawImages(ctx, ar, x, y, digit.spacing, 
-            digit.alignment, digit.numberLenght - strNumber.length, drawBorder)
+            const followXY = drawImages(ctx, ar, x, y, digit.json.Digit.Spacing, 
+                digit.json.Digit.Alignment, digit.con.numberLenght - strNumber.length, drawBorder)
 
-        if ( digit.separator) {
-            drawSeparator(ctx, images, digit.separator)
+            if ( digit.separator) {
+                drawSeparator(ctx, images, digit.separator)
+            }
+            return followXY
         }
-        return followXY
     }
-}
 
-
-
-function getImages(images: IImage[], strNumber: string, startImageIndex: number, count: number, decimalPointer: number): HTMLImageElement[] {
+function getImages(
+    images: IImage[], 
+    strNumber: string, 
+    startImageIndex: number, 
+    count: number, decimalPointer: number): HTMLImageElement[] {
     const ar: HTMLImageElement[] = []
     for (let i = 0; i < strNumber.length; i++) {
         if (decimalPointer && i === strNumber.length - 2) {
@@ -70,7 +79,7 @@ function getImages(images: IImage[], strNumber: string, startImageIndex: number,
 }
 
 function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[], 
-    startx: number, starty: number, spacing: number, alignment: number, paddingLenght: number, drawborder: boolean) {
+    startx: number, starty: number, spacing: number, alignment: string, paddingLenght: number, drawborder: boolean) {
     if ( ar.length === 0) return
     let imageWidth = 0
 
@@ -87,9 +96,9 @@ function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[],
 
     let x = startx
     let y = starty
-    if (alignment === 2) { // right
+    if (alignment === AlignmentType.Right.json) { // right
         x = x + maxWidth - imageWidth
-    } else if (alignment === 1) { // center
+    } else if (alignment === AlignmentType.Center.json) { // center
         x = x + (maxWidth - imageWidth) / 2
     }
 
@@ -109,3 +118,10 @@ function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[],
 
     return [x, y]
 }
+
+
+function findImageIndex(ar: MultilangImage[]): number {
+    if (!ar) return null
+    let index = ar.findIndex((item) => item.LangCode === LangCodeType.All.json)
+    return index >= 0 ? index : 0
+  }

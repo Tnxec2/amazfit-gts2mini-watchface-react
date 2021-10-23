@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../../context";
-import { Digit, WatchDate } from "../model/watchFace.model";
-import DigitComponent from "./digit.component";
+import { IWatchContext, WatchfaceContext } from "../context";
+import { WatchCommonDigit, WatchDate } from "../model/watchFace.model";
+import ImageDigitComponent from "./imagedigit.component";
 
 const DateComponent = () => {
   const { watchface, setWatchface } =
@@ -10,27 +10,27 @@ const DateComponent = () => {
 
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
-  function updateDay(d: Digit) {
+  function updateDay(d: WatchCommonDigit) {
     const date = {...watchface.date};
     date.day = d;
     updateDate(date);
   }
-  function updateMonth(d: Digit) {
+  function updateMonth(d: WatchCommonDigit) {
     const date = {...watchface.date};
     date.month = d;
     updateDate(date);
   }
-  function updateMonthAsWord(d: Digit) {
+  function updateMonthAsWord(d: WatchCommonDigit) {
     const date = {...watchface.date};
     date.monthAsWord = d;
     updateDate(date);
   }
-  function updateYear(d: Digit) {
+  function updateYear(d: WatchCommonDigit) {
     const date = {...watchface.date};
     date.year = d;
     updateDate(date);
   }
-  function updateWeekday(d: Digit) {
+  function updateWeekday(d: WatchCommonDigit) {
     const date = {...watchface.date};
     date.weekDay = d;
     updateDate(date);
@@ -51,28 +51,28 @@ const DateComponent = () => {
           Date
         </Card.Header>
         <Card.Body className={`${collapsed ? "collapse" : ""}`}>
-          <DigitComponent
+          <ImageDigitComponent
             title="Day"
             digit={watchface.date.day}
             onUpdate={updateDay}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Month"
             digit={watchface.date.month}
             onUpdate={updateMonth}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Month as word"
             digit={watchface.date.monthAsWord}
             onUpdate={updateMonthAsWord}
             paddingZeroFix={true}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Year"
             digit={watchface.date.year}
             onUpdate={updateYear}
           />
-          <DigitComponent
+          <ImageDigitComponent
             title="Weekday"
             digit={watchface.date.weekDay}
             onUpdate={updateWeekday}

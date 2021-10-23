@@ -1,5 +1,5 @@
-import Color from "../../../shared/color";
-import { findImageById } from "../../../shared/helper";
+import Color from "../../shared/color";
+import { findImageById } from "../../shared/helper";
 import { IImage } from "../../model/image.model";
 import { Background } from "../../model/watchFace.model";
   

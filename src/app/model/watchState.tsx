@@ -11,7 +11,7 @@ export class WatchState {
   battery = Math.round(Math.random() * 100);
   stepsGoal = (Math.round(Math.random() * 5) + 5) * 1000;
   steps = Math.round(Math.random() * this.stepsGoal);
-  calories = Math.round(Math.random() * 1000);
+  calories = Math.round(Math.random() * 200);
   hearthrate = Math.round(Math.random() * 200);
   distance = Math.round(Math.random() * 1000) + 1000;
   pai = Math.round(Math.random() * 100);
