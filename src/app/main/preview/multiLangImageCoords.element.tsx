@@ -1,7 +1,8 @@
 import { findImageById } from "../../shared/helper";
 import { IImage } from "../../model/image.model";
-import { LangCodeType, MultilangImage } from "../../model/json.model";
+import {  MultilangImage } from "../../model/json.model";
 import { WatchMultilangImageCoords } from "../../model/watchFace.model";
+import { LangCodeType } from "../../model/types.model";
 
 export default function drawMultilangImageCoords(ctx: CanvasRenderingContext2D, images: IImage[], 
     imageCoord: WatchMultilangImageCoords) {

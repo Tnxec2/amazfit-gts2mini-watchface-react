@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchStatus } from "../model/watchFace.model";
 import ImageCoordsComponent from "./imageCoords.component";
 
-const StatusComponent = () => {
+const StatusComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 

@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { WatchfaceContext } from "../context";
-import Blocks from "./screennormal.component";
+import ScreenNormalcomponent from "./screennormal.component";
 import PreviewStatesComponent from "./previewstates.component";
 import AodComponent from "./aod.component";
 
@@ -10,7 +10,7 @@ const tabs = [
   { id: 2, name: "Preview State" },
 ];
 
-const LeftSideComponent = () => {
+const LeftSideComponent: FC = () => {
 
   const { setPreviewScreenNormal } = useContext(WatchfaceContext)
 
@@ -39,7 +39,7 @@ const LeftSideComponent = () => {
       </ul>
       {tabLeft === 0 ? (
         <div className="mt-3 blocks">
-          <Blocks />
+          <ScreenNormalcomponent />
         </div>
       ) : tabLeft === 1 ? (
         <div className="mt-3">

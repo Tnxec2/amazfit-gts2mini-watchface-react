@@ -1,8 +1,7 @@
-import { findImageById } from "../../shared/helper"
 import { IImage } from "../../model/image.model"
-import { AlignmentType, LangCodeType, MultilangImage } from "../../model/json.model"
 import { WatchCommonDigit } from "../../model/watchFace.model"
-import drawSeparator from './imageCoords.element'
+import drawDigitImage from "./digitImage.element"
+import {drawSystemFont} from "./systemfont.element"
 
 export default function draw(
     ctx: CanvasRenderingContext2D, 
@@ -11,117 +10,9 @@ export default function draw(
     number: number, 
     followXY?: [number, number], 
     drawBorder?: boolean,
-    paddingZeroFix?: boolean) {
-    const x = followXY ? followXY[0] : digit.json?.Digit?.Image?.X
-    const y = followXY ? followXY[1] : digit.json?.Digit?.Image?.Y
-    const imageSetIndex = findImageIndex(digit.json.Digit?.Image?.MultilangImage);
-    const unitImageSetIndex =findImageIndex(digit.json.Digit?.Image?.MultilangImageUnit);
-
-    if (digit.json.Digit?.Image?.MultilangImage &&
-        digit.json.Digit.Image.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex) {
-            let strNumber = number.toString()
-            if (number < 0) strNumber = (-number).toString()
-            if ( !digit.json.Digit.DisplayFormAnalog && (digit.json.Digit.PaddingZero || paddingZeroFix)) {
-                strNumber = strNumber.padStart(digit.con.numberLenght, '0' )
-            }
-            let ar: HTMLImageElement[] = []
-            if (digit.json.Digit.Image.DelimiterImageIndex) {
-                if (number < 0){
-                    const img = findImageById(digit.json.Digit.Image.DelimiterImageIndex, images)
-                    if (img) ar.push(img)
-                }
-            }
-            if (digit.json.Digit.DisplayFormAnalog) {
-                const img = findImageById(digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex + number, images)
-                if (img) ar.push(img)
-            } else {
-                ar = ar.concat(getImages(images, strNumber, 
-                    digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex, 
-                    digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImagesCount,
-                    digit.json.Digit.Image.DecimalPointImageIndex ))
-            }
-            if (digit.json.Digit.Image.MultilangImageUnit && digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex]) {
-                const img = findImageById(digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex].ImageSet.ImageIndex, images)
-                if (img) ar.push(img)
-            }
-
-            const followXY = drawImages(ctx, ar, x, y, digit.json.Digit.Spacing, 
-                digit.json.Digit.Alignment, digit.con.numberLenght - strNumber.length, drawBorder)
-
-            if ( digit.separator) {
-                drawSeparator(ctx, images, digit.separator)
-            }
-            return followXY
-        }
-    }
-
-function getImages(
-    images: IImage[], 
-    strNumber: string, 
-    startImageIndex: number, 
-    count: number, decimalPointer: number): HTMLImageElement[] {
-    const ar: HTMLImageElement[] = []
-    for (let i = 0; i < strNumber.length; i++) {
-        if (decimalPointer && i === strNumber.length - 2) {
-            const img = findImageById(decimalPointer, images)
-            if (img) { ar.push(img) }
-        }
-        var chr = strNumber.charAt(i);
-        var n = parseInt(chr)
-        if (!isNaN(n) && n < count) {
-            const img = findImageById(startImageIndex + n, images)
-            if (img) { ar.push(img) }
-        } else {
-            alert('cant parse number string: ' + strNumber + ' at index ' + i)
-        }
-    }
-    return ar;
+    paddingZeroFix?: boolean): [number, number] | null  {
+        if (digit.enabledImage) return drawDigitImage(ctx, images, digit, number, followXY, drawBorder, paddingZeroFix)
+        if (digit.enabledSystemFont || digit.enabledSystemFontCircle) return drawSystemFont(ctx, digit, number, followXY)
+        return followXY
 }
 
-function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[], 
-    startx: number, starty: number, spacing: number, alignment: string, paddingLenght: number, drawborder: boolean) {
-    if ( ar.length === 0) return
-    let imageWidth = 0
-
-    ar.forEach(img => {
-        if (imageWidth && spacing) imageWidth += spacing
-        imageWidth += img.width
-    })
-
-    let maxWidth = imageWidth
-
-    if (paddingLenght) {
-        maxWidth = imageWidth + ( spacing + ar[0].width ) * paddingLenght
-    }
-
-    let x = startx
-    let y = starty
-    if (alignment === AlignmentType.Right.json) { // right
-        x = x + maxWidth - imageWidth
-    } else if (alignment === AlignmentType.Center.json) { // center
-        x = x + (maxWidth - imageWidth) / 2
-    }
-
-    let height = 0
-    ar.forEach(img => {
-        ctx.drawImage(img, x, y, img.width, img.height);
-        height = Math.max(img.height, height)
-        x += img.width
-        if ( spacing ) x += spacing
-    })
-    if ( drawborder) {
-        ctx.beginPath();
-        ctx.strokeStyle = 'gray'
-        ctx.rect(startx, starty, maxWidth, height);
-        ctx.stroke();
-    }
-
-    return [x, y]
-}
-
-
-function findImageIndex(ar: MultilangImage[]): number {
-    if (!ar) return null
-    let index = ar.findIndex((item) => item.LangCode === LangCodeType.All.json)
-    return index >= 0 ? index : 0
-  }

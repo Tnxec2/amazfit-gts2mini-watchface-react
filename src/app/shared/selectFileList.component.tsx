@@ -49,7 +49,7 @@ const SelectFileListComponent: FC<IProps> = ({
       );
     }
   }
-
+  
   return (
     <>
       <div className="input-group-text dropdown">
@@ -74,7 +74,7 @@ const SelectFileListComponent: FC<IProps> = ({
         }}
         disabled={!images || images.length === 0}
       >
-        +
+        + 
       </button>
       <button
         className="btn btn-outline-secondary"

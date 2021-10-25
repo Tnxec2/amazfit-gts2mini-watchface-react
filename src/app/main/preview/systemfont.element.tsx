@@ -1,24 +1,91 @@
 
+import { WatchCommonDigit } from "../../model/watchFace.model";
+import Color from "../../shared/color";
 
-export default function drawText(ctx: CanvasRenderingContext2D) {
-    // change font and font-size for better visibilty   
-    ctx.font = "40px Verdana";    
-    
-    // draw "Test text" at X = 10 and Y = 30   
-    ctx.fillText( "Test text", 10, 30 );
+export function drawSystemFont(
+    ctx: CanvasRenderingContext2D, 
+    digit: WatchCommonDigit, 
+    value: number, 
+    followXY?: [number, number]
+    ): [number, number] | null {
+    if (digit.json?.Digit?.SystemFont) {
+        let systemFont = digit.json?.Digit?.SystemFont
+        let text: string = value.toString()
+        if (digit.json.Digit.PaddingZero) {
+            text = text.padStart(digit.con.numberLenght, '0')
+        }
+        if (systemFont.ShowUnitCheck === -1) {
+            text = text + digit.con.unit[0]
+        } else if (systemFont.ShowUnitCheck === 1) {
+            text = text + digit.con.unit[1]
+        } else if ( systemFont.ShowUnitCheck === 2) {
+            text = text + digit.con.unit[2]
+        } else if (digit.json.Separator) {
+            text = text + digit.con.separator
+        }
+        if (systemFont.FontRotate) return drawFontRotated(ctx, digit, text)
+        else return drawText(ctx, digit, text)
+    }
 }
 
-function rotate(ctx: CanvasRenderingContext2D) {
-    var x = new Array("Day1","Day2","Day3","Day4","Day5");
-    for(var i = 0; i < x.length; i++){
-        var size = ctx.measureText(x[i]);
-        ctx.save();
-        var tx = (i*50+20) + (size.width/2);
-        var ty = (50);
-        ctx.translate(tx,ty);
-        ctx.rotate(Math.PI / 10);
-        ctx.translate(-tx,-ty);
-        ctx.fillText(x[i],i*50+20,50);
-        ctx.restore();
+export function drawText(
+    ctx: CanvasRenderingContext2D,
+     digit: WatchCommonDigit, 
+     text: string): [number, number] | null {
+    let systemFont = digit.json.Digit.SystemFont
+    let fontSize: number = systemFont.Size ? systemFont.Size : 0;
+    let spacing: number = digit.json.Digit.Spacing
+    ctx.font = `${fontSize}px Verdana`;
+
+    ctx.save();
+    var tx = systemFont.Coordinates?.X ? systemFont.Coordinates.X : 0;
+    var ty = systemFont.Coordinates?.Y ? systemFont.Coordinates.Y : 0;
+    let radians = Math.PI / 180 * (systemFont.Angle)
+    ctx.translate(tx, ty);
+    ctx.rotate(radians);
+    ctx.fillStyle = Color.colorRead(systemFont.Color)
+    let x = 0;
+    for (var i = 0; i < text.length; i++) {
+        ctx.fillText(text[i], x, 0);
+        x = x + ctx.measureText(text[i]).width + spacing
     }
+    ctx.restore();
+    return null
+}
+
+function drawFontRotated(
+    ctx: CanvasRenderingContext2D, 
+    digit: WatchCommonDigit, 
+    text: string): [number, number] | null {
+    let systemFont = digit.json.Digit.SystemFont
+    let fontSize = systemFont.Size ? systemFont.Size : 0;
+    let spacing: number = digit.json.Digit.Spacing
+    
+    ctx.font = `${fontSize}px Verdana`;
+
+    var tx = systemFont.FontRotate?.X ? systemFont.FontRotate.X : 0;
+    var ty = systemFont.FontRotate?.Y ? systemFont.FontRotate.Y : 0;
+    ctx.fillStyle = Color.colorRead(systemFont.Color)
+    
+    ctx.save();
+    ctx.translate(tx, ty);
+    if ( systemFont.FontRotate.RotateDirection !== 1) {
+        ctx.rotate(Math.PI / 180 * systemFont.Angle);
+        console.log(tx, ty, systemFont.Angle, systemFont.FontRotate.Radius);
+        for (var i = 0; i < text.length; i++) {
+            let width = ctx.measureText(text[i]).width
+            ctx.fillText(text[i], 0, - systemFont.FontRotate.Radius);
+            ctx.rotate( Math.PI / 180 * (width + spacing) );
+        }
+    } else {
+        ctx.rotate(Math.PI / 180 * (180 - systemFont.Angle) );
+        console.log(tx, ty, systemFont.Angle, systemFont.FontRotate.Radius);
+        for (var i = 0; i < text.length; i++) {
+            let width = ctx.measureText(text[i]).width
+            ctx.fillText(text[i], 0, + systemFont.FontRotate.Radius);
+            ctx.rotate( Math.PI / 180 * -(width + spacing) );
+        }
+    }
+    ctx.restore();
+    return null
 }

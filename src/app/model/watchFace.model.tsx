@@ -9,6 +9,8 @@ interface IDigitConstructor {
   type: number;
   count: number;
   numberLenght: number;
+  unit: string[];
+  separator: string;
   displayFormAnalog?: boolean;
   imageProgressTotal?: number;
 }
@@ -20,6 +22,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', ':', ':'],
+    separator: '/'
   },
   min: {
     type: TimeType.Minute.index,
@@ -27,6 +31,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', ':', ':'],
+    separator: '/'
   },
   sec: {
     type: TimeType.Second.index,
@@ -34,6 +40,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', ':', ':'],
+    separator: '/'
   },
   year: {
     type: DateType.Year.index,
@@ -41,6 +49,8 @@ const digitTypes = {
     numberLenght: 4,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '.', '/'],
+    separator: '/'
   },
   month: {
     type: DateType.Month.index,
@@ -48,6 +58,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '.', '/'],
+    separator: '/'
   },
   monthasword: {
     type: DateType.Month.index,
@@ -55,6 +67,8 @@ const digitTypes = {
     numberLenght: 1,
     displayAnalog: true,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   day: {
     type: DateType.Day.index,
@@ -62,6 +76,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '.', '/'],
+    separator: '/'
   },
   weekday: {
     type: 0,
@@ -69,6 +85,8 @@ const digitTypes = {
     numberLenght: 1,
     displayAnalog: true,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   battery: {
     type: 0,
@@ -76,6 +94,8 @@ const digitTypes = {
     numberLenght: 3,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['%', '%', '%'],
+    separator: '/'
   },
   steps: {
     type: 0,
@@ -83,6 +103,8 @@ const digitTypes = {
     numberLenght: 5,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', 'Steps', 'STEPS'],
+    separator: '/'
   },
   calories: {
     type: 0,
@@ -90,6 +112,9 @@ const digitTypes = {
     numberLenght: 4,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', 'kcal', 'Cal'],
+    separator: '/'
+
   },
   heartRate: {
     type: 0,
@@ -97,6 +122,9 @@ const digitTypes = {
     numberLenght: 3,
     displayAnalog: false,
     imageProgressTotal: 6,
+    unit: ['', 'bpm', 'BPM'],
+    separator: '/'
+
   },
   pai: {
     type: 0,
@@ -104,6 +132,8 @@ const digitTypes = {
     numberLenght: 3,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   distance: {
     type: 0,
@@ -111,6 +141,8 @@ const digitTypes = {
     numberLenght: 4,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', 'km', 'KM'],
+    separator: '/'
   },
   standUp: {
     type: 0,
@@ -118,6 +150,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   uvIndex: {
     type: 0,
@@ -125,6 +159,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   airQuality: {
     type: 0,
@@ -132,6 +168,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   humidity: {
     type: 0,
@@ -139,6 +177,8 @@ const digitTypes = {
     numberLenght: 3,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['%', '%', '%'],
+    separator: '/'
   },
   sunrise: {
     type: 0,
@@ -146,6 +186,8 @@ const digitTypes = {
     numberLenght: 4,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   windForce: {
     type: 0,
@@ -153,6 +195,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', 'kpa', 'KPA'],
+    separator: '/'
   },
   airPressure: {
     type: 0,
@@ -160,6 +204,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   stress: {
     type: 0,
@@ -167,6 +213,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   activityGoal: {
     type: 0,
@@ -174,6 +222,8 @@ const digitTypes = {
     numberLenght: 5,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   fatBurning: {
     type: 0,
@@ -181,6 +231,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: null,
+    unit: ['', '', ''],
+    separator: '/'
   },
   weather: {
     type: 0,
@@ -188,6 +240,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: 29,
+    unit: ['°C', '°C', '°C'],
+    separator: '/'
   },
   weatherMin: {
     type: 0,
@@ -195,6 +249,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: 29,
+    unit: ['°C', '°C', '°C'],
+    separator: '/'
   },
   weatherMax: {
     type: 0,
@@ -202,6 +258,8 @@ const digitTypes = {
     numberLenght: 2,
     displayAnalog: false,
     imageProgressTotal: 29,
+    unit: ['°C', '°C', '°C'],
+    separator: '/'
   },
 };
 export class Background {
@@ -271,7 +329,6 @@ export class WatchCommonDigit {
     if (d != null) {
       this.enabled = true
       if (d.Digit?.Image) this.enabledImage = true
-
       if (d.Digit?.SystemFont) {
         if (d.Digit?.SystemFont?.FontRotate) this.enabledSystemFontCircle = true
         else this.enabledSystemFont = true
@@ -289,9 +346,8 @@ export class WatchCommonDigit {
     this.json.Type = type === TypeOfDigit.COMMON ? CommonType.toJson(con.type) : null
   }
   json: DigitalDigit = new DigitalDigit();
-  separator = new WatchImageCoords(null);
-  enabled = false;
   con: IDigitConstructor;
+  enabled = false;
   enabledImage = false;
   enabledSystemFont = false;
   enabledSystemFontCircle = false;

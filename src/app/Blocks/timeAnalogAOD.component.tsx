@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import ClockHandComponent from "./clockHand.component";
 
-const TimeAnalogAODComponent = () => {
+const TimeAnalogAODComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 

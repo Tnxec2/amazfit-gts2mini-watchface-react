@@ -1,7 +1,8 @@
 import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import SelectFileListComponent from "../shared/selectFileList.component";
-import { AlignmentType, FollowType, Image, LangCodeType, MultilangImage } from "../model/json.model";
+import { Image, MultilangImage } from "../model/json.model";
+import { AlignmentType, FollowType, LangCodeType } from "../model/types.model";
 import { WatchCommonDigit } from "../model/watchFace.model";
 
 interface IProps {
@@ -150,10 +151,11 @@ const ImageDigitComponent: FC<IProps> = ({
             <input
               className="form-check-input mt-0"
               type="checkbox"
-              checked={digit.enabled}
+              checked={digit.enabledImage}
               onChange={() => {
                 const d = { ...digit };
-                d.enabled = !d.enabled;
+                d.enabledImage = !d.enabledImage;
+                d.enabled = d.enabledImage || d.enabledSystemFont
                 if ( !d.json.Digit.Image) {
                   d.json.Digit.Image = new Image()
                   let digitimage = new MultilangImage()
@@ -166,7 +168,7 @@ const ImageDigitComponent: FC<IProps> = ({
           </div>
         </div>
       </Card.Header>
-      {digit.enabled ? (
+      {digit.enabledImage ? (
         <Card.Body>
           { !onCopyFromNormal ? '' : <div style={{clear:'both'}}><button className='btn btn-sm btn-secondary mb-1' style={{float:'right'}} onClick={onCopyFromNormal}>Copy from normal screen</button></div> }
           <div className="input-group input-group-sm mb-1">

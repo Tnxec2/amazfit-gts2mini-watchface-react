@@ -1,11 +1,11 @@
-import { useContext } from "react";
+import { FC, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { IImage } from "../model/image.model";
 import { WatchJson } from "../model/json.model";
 import WatchFace from "../model/watchFace.model";
 
-const FileLoaderComponent = () => {
+const FileLoaderComponent: FC = () => {
   const { images, setImages, setWatchface, setJsonName } =
     useContext<IWatchContext>(WatchfaceContext);
 

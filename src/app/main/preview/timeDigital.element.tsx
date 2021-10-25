@@ -1,5 +1,5 @@
 import { IImage } from "../../model/image.model";
-import { FollowType } from "../../model/json.model";
+import { FollowType } from "../../model/types.model";
 import { ElementOrderItem, WatchDialFace } from "../../model/watchFace.model";
 import { WatchState } from "../../model/watchState";
 import drawDigit from "./digit.element";

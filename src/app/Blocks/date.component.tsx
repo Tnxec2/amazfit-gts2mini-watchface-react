@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDate } from "../model/watchFace.model";
-import ImageDigitComponent from "./imagedigit.component";
+import ImageDigitComponent from "./imageDigit.component";
 
-const DateComponent = () => {
+const DateComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 

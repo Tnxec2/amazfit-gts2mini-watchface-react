@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Constant } from "../shared/constant";
 import ElementOrderComponent from "./elementOrder.component";
 import JsonComponent from "./json.component";
@@ -10,7 +10,7 @@ const tabs = [
   { id: 2, name: "Json" },
 ];
 
-const RightSideComponent = () => {
+const RightSideComponent: FC = () => {
   const [tabRight, setTabRight] = useState<number>(0);
 
   return (

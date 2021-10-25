@@ -191,7 +191,7 @@ export class MultilangImageCoord {
 
 
 export class ImageCoord {
-  Coordinates: Coordinates;
+  Coordinates: Coordinates = new Coordinates();
   ImageIndex: number = null;
   ImageIndex2: number = null;
   ImageIndex3: number = null;
@@ -229,18 +229,18 @@ export class Image {
 export class SystemFont {
   FontRotate: FontRotate;
   Coordinates: Coordinates;
-  Angle: number = null;
-  Size: number = 0;
+  Angle: number = 0;
+  Size: number = 20;
   Color: string = null;
-  ShowUnitCheck: number = null;
+  ShowUnitCheck: number = -1;
 }
 
 
 export class FontRotate {
-  X: number;
-  Y: number;
-  Radius: number;
-  RotateDirection: number;
+  X: number = 0;
+  Y: number = 0;
+  Radius: number = 0;
+  RotateDirection: number = 0;
 }
 
 export class DigitalDigit {

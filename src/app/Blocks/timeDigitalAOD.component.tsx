@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDialFace, WatchMultilangImageCoords } from "../model/watchFace.model";
-import ImageDigitComponent from "./imagedigit.component";
+import ImageDigitComponent from "./imageDigit.component";
 import MultilangImageCoordsComponent from "./multiLangImageCoords.component";
 
-const TimeDigitalAODComponent = () => {
+const TimeDigitalAODComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 

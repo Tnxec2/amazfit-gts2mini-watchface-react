@@ -3,7 +3,8 @@ import { Card } from "react-bootstrap";
 
 import { WatchMultilangImageCoords } from "../model/watchFace.model";
 import SelectFileListComponent from "../shared/selectFileList.component";
-import { Coordinates, LangCodeType, MultilangImage } from "../model/json.model";
+import { Coordinates, MultilangImage } from "../model/json.model";
+import { LangCodeType } from "../model/types.model";
 
 interface IProps {
   title: string;

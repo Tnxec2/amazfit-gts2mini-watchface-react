@@ -1,5 +1,5 @@
 import { IImage } from "../../model/image.model";
-import { ActivityType } from "../../model/json.model";
+import { ActivityType } from "../../model/types.model";
 import { ElementOrderItem, WatchActivity, WatchActivityList } from "../../model/watchFace.model";
 import { WatchState } from "../../model/watchState";
 import drawclockhand from "./clockHand.element";
@@ -48,7 +48,7 @@ export default function draw(
                         drawImageProgress(ctx, images, activity.weather.imageProgress, watchState.weatherIcon, 29)
                     }
                     if (activity.weather.icon.enabled) {
-                        drawImageCoords(ctx, images, activity.weather.icon)
+                        drawImageCoords(ctx, images, activity.weather.icon.json)
                     }
                     if (activity.weatherMin.digit.enabled) {
                         drawDigit(ctx, images, activity.weatherMin.digit, watchState.temperatureMin, null, digitBorder)
@@ -57,7 +57,7 @@ export default function draw(
                         drawImageProgress(ctx, images, activity.weatherMin.imageProgress, watchState.weatherIcon, 29)
                     }
                     if (activity.weatherMin.icon.enabled) {
-                        drawImageCoords(ctx, images, activity.weatherMin.icon)
+                        drawImageCoords(ctx, images, activity.weatherMin.icon.json)
                     }
                     if (activity.weatherMax.digit.enabled) {
                         drawDigit(ctx, images, activity.weatherMax.digit, watchState.temperatureMax, null, digitBorder)
@@ -66,7 +66,7 @@ export default function draw(
                         drawImageProgress(ctx, images, activity.weatherMax.imageProgress, watchState.weatherIcon, 29)
                     }
                     if (activity.weatherMax.icon.enabled) {
-                        drawImageCoords(ctx, images, activity.weatherMax.icon)
+                        drawImageCoords(ctx, images, activity.weatherMax.icon.json)
                     }
                     break;
                 default:
@@ -92,7 +92,7 @@ function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchA
         drawProgressBarCircle(ctx, images, a.progressBar, value, total)
     }
     if (a.icon.enabled) {
-        drawImageCoords(ctx, images, a.icon)
+        drawImageCoords(ctx, images, a.icon.json)
     }
 }
 
@@ -101,6 +101,6 @@ function drawDistance(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchA
         drawDigit(ctx, images, a.digit, value, null, digitBorder)
     }
     if (a.icon.enabled) {
-        drawImageCoords(ctx, images, a.icon)
+        drawImageCoords(ctx, images, a.icon.json)
     }
 }

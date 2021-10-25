@@ -1,10 +1,10 @@
-import { useContext, useMemo, useState } from "react";
+import { FC, useContext, useMemo, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchActivity, WatchActivityList } from "../model/watchFace.model";
 import ActivityComponent from "./activity.component";
 
-const ActivityListComponent = () => {
+const ActivityListComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 

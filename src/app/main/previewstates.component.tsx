@@ -1,8 +1,8 @@
-import React, { useContext, useMemo } from "react";
+import React, { FC, useContext, useMemo } from "react";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WeatherStates } from "../model/weather.states";
 
-const PreviewStatesComponent = () => {
+const PreviewStatesComponent: FC = () => {
   const { watchState, setWatchState } =
     useContext<IWatchContext>(WatchfaceContext);
 

@@ -2,11 +2,13 @@ import { FC, useState } from "react";
 import { Card } from "react-bootstrap";
 import { WatchActivity, WatchCommonDigit } from "../model/watchFace.model";
 import ClockHandComponent from "./clockHand.component";
-import ImageDigitComponent from "./imagedigit.component";
 import ImageCoordsComponent from "./imageCoords.component";
+import ImageDigitComponent from "./imageDigit.component";
 import ImageProgressComponent from "./imageProgress.component";
 import ProgressbarCircleCodmponent from "./progressbarCircle.component";
 import ProgressbarLinearComponent from "./progressbarLinear.component";
+import SystemFontComponent from "./systemFont.component";
+import SystemFontCircleComponent from "./systemFontCircle.component";
 
 interface IProps {
   activity: WatchActivity;
@@ -54,6 +56,27 @@ const ActivityComponent: FC<IProps> = ({
             showDecimalPointer={showDecimalPointer}
             showDelimiter={showDelimiter}
             showNoData={showNoData}
+            paddingZeroFix={paddingZeroFix}
+          />
+
+          <SystemFontComponent
+            title="Systemfont Rotated"
+            digit={activity.digit}
+            onUpdate={(d) => {
+              const a = { ...activity };
+              a.digit = d as WatchCommonDigit;
+              onUpdateActivity(a);
+            }}
+            paddingZeroFix={paddingZeroFix}
+          />
+          <SystemFontCircleComponent 
+            title="Systemfont Circle"
+            digit={activity.digit}
+            onUpdate={(d) => {
+              const a = { ...activity };
+              a.digit = d as WatchCommonDigit;
+              onUpdateActivity(a);
+            }}
             paddingZeroFix={paddingZeroFix}
           />
 

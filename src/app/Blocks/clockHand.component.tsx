@@ -3,7 +3,8 @@ import { Card } from "react-bootstrap";
 
 import { WatchClockHand } from "../model/watchFace.model";
 import SelectFileListComponent from "../shared/selectFileList.component";
-import { ClockHand, Coordinates, ImageCoord, LangCodeType, MultilangImage, MultilangImageCoord } from "../model/json.model";
+import { ClockHand, Coordinates, ImageCoord, MultilangImage, MultilangImageCoord } from "../model/json.model";
+import { LangCodeType } from "../model/types.model";
 
 interface IProps {
   title: string,

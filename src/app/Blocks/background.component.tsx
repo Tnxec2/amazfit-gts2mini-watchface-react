@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import SelectFileListComponent from "../shared/selectFileList.component";
 
-const BackgroundComponent = () => {
+const BackgroundComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 

@@ -1,15 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import Color from "../shared/color";
 import { Constant } from "../shared/constant";
-import { Activity, ActivityType, DateType, DigitalDigit, LangCodeType, MultilangImageCoord, Shortcut, WatchJson } from "../model/json.model";
+import { Activity, DigitalDigit, Shortcut, WatchJson } from "../model/json.model";
+import { ActivityType, DateType, LangCodeType } from "../model/types.model";
 import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar } from "../model/watchFace.model";
 import cl from './JsonComponent.module.css';
 
 const langCode = 2
 
-const JsonComponent = () => {
+const JsonComponent: FC = () => {
 
     const {watchface, jsonName } = useContext<IWatchContext>(WatchfaceContext);
 
