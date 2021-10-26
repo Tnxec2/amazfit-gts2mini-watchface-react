@@ -5,24 +5,10 @@ import Color from "../../shared/color";
 export function drawSystemFont(
     ctx: CanvasRenderingContext2D, 
     digit: WatchCommonDigit, 
-    value: number, 
-    followXY?: [number, number]
+    text: string, 
     ): [number, number] | null {
     if (digit.json?.Digit?.SystemFont) {
         let systemFont = digit.json?.Digit?.SystemFont
-        let text: string = value.toString()
-        if (digit.json.Digit.PaddingZero) {
-            text = text.padStart(digit.con.numberLenght, '0')
-        }
-        if (systemFont.ShowUnitCheck === -1) {
-            text = text + digit.con.unit[0]
-        } else if (systemFont.ShowUnitCheck === 1) {
-            text = text + digit.con.unit[1]
-        } else if ( systemFont.ShowUnitCheck === 2) {
-            text = text + digit.con.unit[2]
-        } else if (digit.json.Separator) {
-            text = text + digit.con.separator
-        }
         if (systemFont.FontRotate) return drawFontRotated(ctx, digit, text)
         else return drawText(ctx, digit, text)
     }
@@ -33,7 +19,7 @@ export function drawText(
      digit: WatchCommonDigit, 
      text: string): [number, number] | null {
     let systemFont = digit.json.Digit.SystemFont
-    let fontSize: number = systemFont.Size ? systemFont.Size : 0;
+    let fontSize: number = systemFont.Size ? systemFont.Size*0.8 : 0;
     let spacing: number = digit.json.Digit.Spacing
     ctx.font = `${fontSize}px Verdana`;
 
@@ -58,9 +44,10 @@ function drawFontRotated(
     digit: WatchCommonDigit, 
     text: string): [number, number] | null {
     let systemFont = digit.json.Digit.SystemFont
-    let fontSize = systemFont.Size ? systemFont.Size : 0;
+    let fontSize = systemFont.Size ? systemFont.Size*0.8 : 0;
+    let radius = systemFont.FontRotate.Radius
     let spacing: number = digit.json.Digit.Spacing
-    
+   
     ctx.font = `${fontSize}px Verdana`;
 
     var tx = systemFont.FontRotate?.X ? systemFont.FontRotate.X : 0;
@@ -71,19 +58,22 @@ function drawFontRotated(
     ctx.translate(tx, ty);
     if ( systemFont.FontRotate.RotateDirection !== 1) {
         ctx.rotate(Math.PI / 180 * systemFont.Angle);
-        console.log(tx, ty, systemFont.Angle, systemFont.FontRotate.Radius);
         for (var i = 0; i < text.length; i++) {
             let width = ctx.measureText(text[i]).width
             ctx.fillText(text[i], 0, - systemFont.FontRotate.Radius);
-            ctx.rotate( Math.PI / 180 * (width + spacing) );
+            let sp = width + spacing
+            let spacingAngle = sp * 180 / (radius * Math.PI)
+            console.log(sp, spacingAngle);
+            ctx.rotate( Math.PI / 180 * spacingAngle );
         }
     } else {
         ctx.rotate(Math.PI / 180 * (180 - systemFont.Angle) );
-        console.log(tx, ty, systemFont.Angle, systemFont.FontRotate.Radius);
         for (var i = 0; i < text.length; i++) {
             let width = ctx.measureText(text[i]).width
             ctx.fillText(text[i], 0, + systemFont.FontRotate.Radius);
-            ctx.rotate( Math.PI / 180 * -(width + spacing) );
+            let sp = width + spacing
+            let spacingAngle = sp * 180 / (radius * Math.PI)
+            ctx.rotate( Math.PI / 180 * -spacingAngle );
         }
     }
     ctx.restore();

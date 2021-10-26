@@ -13,6 +13,7 @@ interface IProps {
   showDecimalPointer?: boolean;
   showDelimiter?: boolean;
   paddingZeroFix?: boolean;
+  followDisabled?: boolean;
   onCopyFromNormal?(): void
 }
 
@@ -21,7 +22,8 @@ const SystemFontComponent: FC<IProps> = ({
   digit,
   onUpdate,
   paddingZeroFix,
-  onCopyFromNormal
+  onCopyFromNormal,
+  followDisabled
 }) => {
 
   function onChangeX(e) {
@@ -207,6 +209,7 @@ const SystemFontComponent: FC<IProps> = ({
                 type="checkbox"
                 checked={digit.json?.CombingMode === FollowType.Follow.json}
                 onChange={onChangeFollow}
+                disabled={followDisabled}
               />
             </div>
             <span className="input-group-text" id="addon-wrapping">

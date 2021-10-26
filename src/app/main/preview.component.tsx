@@ -92,7 +92,6 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         ctx,
         images,
         watchface.dialFace,
-        watchface.orderElements.orderElementsTime,
         watchState,
         digitBorder
       );
@@ -129,7 +128,6 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         ctx,
         images,
         watchface.aod.dialFace,
-        watchface.orderElements.orderElementsTime,
         watchState,
         digitBorder
       );

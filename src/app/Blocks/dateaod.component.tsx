@@ -3,6 +3,8 @@ import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDate } from "../model/watchFace.model";
 import ImageDigitComponent from "./imageDigit.component";
+import SystemFontComponent from "./systemFont.component";
+import SystemFontCircleComponent from "./systemFontCircle.component";
 
 const DateAODComponent: FC = () => {
   const { watchface, setWatchface } =
@@ -78,14 +80,38 @@ const DateAODComponent: FC = () => {
         </Card.Header>
         <Card.Body className={`${collapsed ? "collapse" : ""}`}>
           <ImageDigitComponent
-            title="Day"
+            title="Day Digits"
             digit={watchface.aod.date.day}
             onUpdate={updateDay}
             onCopyFromNormal={copyDayFromNormal}
           />
+          <SystemFontComponent
+            title="Day Systemfont Rotated"
+            digit={watchface.date.day}
+            onUpdate={updateDay}
+            onCopyFromNormal={copyDayFromNormal}
+          />
+          <SystemFontCircleComponent
+            title="Day Systemfont Circle"
+            digit={watchface.date.day}
+            onUpdate={updateDay}
+            onCopyFromNormal={copyDayFromNormal}
+          />
           <ImageDigitComponent
-            title="Month"
+            title="Month Digits"
             digit={watchface.aod.date.month}
+            onUpdate={updateMonth}
+            onCopyFromNormal={copyMonthFromNormal}
+          />
+          <SystemFontComponent
+            title="Month Systemfont Rotated"
+            digit={watchface.date.month}
+            onUpdate={updateMonth}
+            onCopyFromNormal={copyMonthFromNormal}
+          />
+          <SystemFontCircleComponent
+            title="Month Systemfont Circle"
+            digit={watchface.date.month}
             onUpdate={updateMonth}
             onCopyFromNormal={copyMonthFromNormal}
           />
@@ -98,6 +124,18 @@ const DateAODComponent: FC = () => {
           />
           <ImageDigitComponent
             title="Year"
+            digit={watchface.aod.date.year}
+            onUpdate={updateYear}
+            onCopyFromNormal={copyYearFromNormal}
+          />
+          <SystemFontComponent
+            title="Year Systemfont Rotated"
+            digit={watchface.aod.date.year}
+            onUpdate={updateYear}
+            onCopyFromNormal={copyYearFromNormal}
+          />
+          <SystemFontCircleComponent
+            title="Month Systemfont Circle"
             digit={watchface.aod.date.year}
             onUpdate={updateYear}
             onCopyFromNormal={copyYearFromNormal}

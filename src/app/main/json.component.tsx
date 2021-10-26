@@ -284,21 +284,11 @@ function getActivitys(w: WatchFace | WatchAOD): Activity[] {
 
 function getTimeDigital(w: WatchFace | WatchAOD): DigitalDigit[] {
     let timeDigits: DigitalDigit[] = []
-    w.orderElements.orderElementsTime.forEach(item => {
-        let digit: WatchCommonDigit = null
-        let enabled = false
-        if ( item.type === 0) {
-            if (w.dialFace.hoursDigital?.enabled) enabled = true
-            digit = w.dialFace.hoursDigital
-        } else if ( item.type === 1) {
-            if (w.dialFace.minutesDigital?.enabled) enabled = true
-            digit = w.dialFace.minutesDigital
-        } else  if ( item.type === 2) {
-            if (w.dialFace.secondsDigital?.enabled) enabled = true
-            digit = w.dialFace.secondsDigital
-        }
-        if (enabled) timeDigits.push(digit.json)
-    })
+
+    if (w.dialFace.hoursDigital?.enabled) timeDigits.push(w.dialFace.hoursDigital.json)
+    if (w.dialFace.minutesDigital?.enabled) timeDigits.push(w.dialFace.minutesDigital.json)
+    if (w.dialFace.secondsDigital?.enabled) timeDigits.push(w.dialFace.secondsDigital.json)
+    
     return timeDigits
 }
 

@@ -10,9 +10,11 @@ export default function draw(
     number: number, 
     followXY?: [number, number], 
     drawBorder?: boolean,
-    paddingZeroFix?: boolean): [number, number] | null  {
+    paddingZeroFix?: boolean,
+    systemFontText?: string
+    ): [number, number] | null  {
         if (digit.enabledImage) return drawDigitImage(ctx, images, digit, number, followXY, drawBorder, paddingZeroFix)
-        if (digit.enabledSystemFont || digit.enabledSystemFontCircle) return drawSystemFont(ctx, digit, number, followXY)
+        if (digit.enabledSystemFont || digit.enabledSystemFontCircle) return drawSystemFont(ctx, digit, systemFontText)
         return followXY
 }
 

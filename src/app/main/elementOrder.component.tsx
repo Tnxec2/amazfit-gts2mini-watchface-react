@@ -7,13 +7,6 @@ const ElementOrderComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 
-  function onUpdateTimeOrder(list: ElementOrderItem[]) {
-    setWatchface({
-      ...watchface,
-      orderElements: { ...watchface.orderElements, orderElementsTime: list },
-    });
-  }
-
   function onUpdateDateOrder(list: ElementOrderItem[]) {
     setWatchface({
       ...watchface,
@@ -22,11 +15,6 @@ const ElementOrderComponent: FC = () => {
   }
   return (
     <>
-      <h2>order of time elements</h2>
-      <DnDListComponent
-        _list={watchface.orderElements.orderElementsTime}
-        updateOrder={onUpdateTimeOrder}
-      />
       <h2>order of date elements</h2>
       <DnDListComponent
         _list={watchface.orderElements.orderElementsDate}

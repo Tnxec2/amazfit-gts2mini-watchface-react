@@ -478,11 +478,6 @@ export class WatchAOD {
   json: ScreenIdle
 
   orderElements = {
-    orderElementsTime: [
-      new ElementOrderItem(TimeType.Hour),
-      new ElementOrderItem(TimeType.Minute),
-      new ElementOrderItem(TimeType.Second),
-    ],
     orderElementsDate: [
       new ElementOrderItem(DateType.Year),
       new ElementOrderItem(DateType.Month),
@@ -527,11 +522,6 @@ export class WatchAOD {
         }
       });
     }
-    this.orderElements.orderElementsTime.forEach((el) => {
-      if (!newOrderElementsTime.find((s) => s.type === el.type))
-        newOrderElementsTime.push(el);
-    });
-    this.orderElements.orderElementsTime = newOrderElementsTime;
 
     this.dialFace.am = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.AM)
     this.dialFace.pm = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.PM)
@@ -703,11 +693,6 @@ export default class WatchFace {
   aod = new WatchAOD(null)
 
   orderElements = {
-    orderElementsTime: [
-      new ElementOrderItem(TimeType.Hour),
-      new ElementOrderItem(TimeType.Minute),
-      new ElementOrderItem(TimeType.Second),
-    ],
     orderElementsDate: [
       new ElementOrderItem(DateType.Year),
       new ElementOrderItem(DateType.Month),
@@ -768,11 +753,6 @@ export default class WatchFace {
         }
       });
     }
-    this.orderElements.orderElementsTime.forEach((el) => {
-      if (!newOrderElementsTime.find((s) => s.type === el.type))
-        newOrderElementsTime.push(el);
-    });
-    this.orderElements.orderElementsTime = newOrderElementsTime;
 
     this.dialFace.am = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.AM)
     this.dialFace.pm = new WatchMultilangImageCoords(j.DialFace?.DigitalDialFace?.PM)

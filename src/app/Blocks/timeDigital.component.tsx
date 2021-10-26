@@ -4,6 +4,8 @@ import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDialFace, WatchMultilangImageCoords } from "../model/watchFace.model";
 import ImageDigitComponent from "./imageDigit.component";
 import MultilangImageCoordsComponent from "./multiLangImageCoords.component";
+import SystemFontComponent from "./systemFont.component";
+import SystemFontCircleComponent from "./systemFontCircle.component";
 
 const TimeDigitalComponent: FC = () => {
   const { watchface, setWatchface } =
@@ -55,31 +57,54 @@ const TimeDigitalComponent: FC = () => {
       </Card.Header>
       <Card.Body className={`${collapsed ? "collapse" : ""}`}>
         <ImageDigitComponent
-          title="Hours"
+          title="Hours Digits"
           digit={watchface.dialFace.hoursDigital}
           onUpdate={updateHoursDigit}
-          showDecimalPointer={false}
-          showDelimiter={false}
-          showNoData={false}
-          paddingZeroFix={false}
+          followDisabled={true}
+        />
+        <SystemFontComponent
+            title="Hours Systemfont Rotated"
+            digit={watchface.dialFace.hoursDigital}
+            onUpdate={updateHoursDigit}
+            followDisabled={true}
+          />
+        <SystemFontCircleComponent
+            title="Hours Systemfont Circle"
+            digit={watchface.dialFace.hoursDigital}
+            onUpdate={updateHoursDigit}
+            followDisabled={true}
         />
         <ImageDigitComponent
           title="Minutes"
           digit={watchface.dialFace.minutesDigital}
           onUpdate={updateMinutesDigit}
-          showDecimalPointer={false}
-          showDelimiter={false}
-          showNoData={false}
           paddingZeroFix={true}
+        />
+        <SystemFontComponent
+            title="Minutes Systemfont Rotated"
+            digit={watchface.dialFace.minutesDigital}
+            onUpdate={updateMinutesDigit}
+          />
+        <SystemFontCircleComponent
+            title="Minutes Systemfont Circle"
+            digit={watchface.dialFace.minutesDigital}
+            onUpdate={updateMinutesDigit}
         />
         <ImageDigitComponent
           title="Seconds"
           digit={watchface.dialFace.secondsDigital}
           onUpdate={updateSecondsDigit}
-          showDecimalPointer={false}
-          showDelimiter={false}
-          showNoData={false}
           paddingZeroFix={true}
+        />
+        <SystemFontComponent
+            title="Seconds Systemfont Rotated"
+            digit={watchface.dialFace.secondsDigital}
+            onUpdate={updateSecondsDigit}
+          />
+        <SystemFontCircleComponent
+            title="Seconds Systemfont Circle"
+            digit={watchface.dialFace.secondsDigital}
+            onUpdate={updateSecondsDigit}
         />
         <MultilangImageCoordsComponent
           title="AM"

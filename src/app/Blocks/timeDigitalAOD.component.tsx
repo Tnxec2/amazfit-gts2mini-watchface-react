@@ -4,6 +4,8 @@ import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDialFace, WatchMultilangImageCoords } from "../model/watchFace.model";
 import ImageDigitComponent from "./imageDigit.component";
 import MultilangImageCoordsComponent from "./multiLangImageCoords.component";
+import SystemFontComponent from "./systemFont.component";
+import SystemFontCircleComponent from "./systemFontCircle.component";
 
 const TimeDigitalAODComponent: FC = () => {
   const { watchface, setWatchface } =
@@ -69,6 +71,19 @@ const TimeDigitalAODComponent: FC = () => {
           showNoData={false}
           paddingZeroFix={false}
           onCopyFromNormal={copyHoursFromNormal}
+          followDisabled={true}
+        />
+        <SystemFontComponent
+            title="Hours Systemfont Rotated"
+            digit={watchface.aod.dialFace.hoursDigital}
+            onUpdate={updateHoursDigit}
+            followDisabled={true}
+          />
+        <SystemFontCircleComponent
+            title="Hours Systemfont Circle"
+            digit={watchface.aod.dialFace.hoursDigital}
+            onUpdate={updateHoursDigit}
+            followDisabled={true}
         />
         <ImageDigitComponent
           title="Minutes"
@@ -79,6 +94,16 @@ const TimeDigitalAODComponent: FC = () => {
           showNoData={false}
           paddingZeroFix={true}
           onCopyFromNormal={copyMinutesFromNormal}
+        />
+        <SystemFontComponent
+            title="Minutes Systemfont Rotated"
+            digit={watchface.aod.dialFace.minutesDigital}
+            onUpdate={updateMinutesDigit}
+          />
+        <SystemFontCircleComponent
+            title="Minutes Systemfont Circle"
+            digit={watchface.aod.dialFace.minutesDigital}
+            onUpdate={updateMinutesDigit}
         />
         <MultilangImageCoordsComponent
           title="AM"

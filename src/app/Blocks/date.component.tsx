@@ -3,6 +3,8 @@ import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDate } from "../model/watchFace.model";
 import ImageDigitComponent from "./imageDigit.component";
+import SystemFontComponent from "./systemFont.component";
+import SystemFontCircleComponent from "./systemFontCircle.component";
 
 const DateComponent: FC = () => {
   const { watchface, setWatchface } =
@@ -52,12 +54,33 @@ const DateComponent: FC = () => {
         </Card.Header>
         <Card.Body className={`${collapsed ? "collapse" : ""}`}>
           <ImageDigitComponent
-            title="Day"
+            title="Day Digit"
             digit={watchface.date.day}
             onUpdate={updateDay}
           />
+          <SystemFontComponent
+            title="Day Systemfont Rotated"
+            digit={watchface.date.day}
+            onUpdate={updateDay}
+          />
+          <SystemFontCircleComponent
+            title="Day Systemfont Circle"
+            digit={watchface.date.day}
+            onUpdate={updateDay}
+          />
+
           <ImageDigitComponent
             title="Month"
+            digit={watchface.date.month}
+            onUpdate={updateMonth}
+          />
+          <SystemFontComponent
+            title="Month Systemfont Rotated"
+            digit={watchface.date.month}
+            onUpdate={updateMonth}
+          />
+          <SystemFontCircleComponent
+            title="Month Systemfont Circle"
             digit={watchface.date.month}
             onUpdate={updateMonth}
           />
@@ -69,6 +92,16 @@ const DateComponent: FC = () => {
           />
           <ImageDigitComponent
             title="Year"
+            digit={watchface.date.year}
+            onUpdate={updateYear}
+          />
+          <SystemFontComponent
+            title="Year Systemfont Rotated"
+            digit={watchface.date.year}
+            onUpdate={updateYear}
+          />
+          <SystemFontCircleComponent
+            title="Year Systemfont Circle"
             digit={watchface.date.year}
             onUpdate={updateYear}
           />

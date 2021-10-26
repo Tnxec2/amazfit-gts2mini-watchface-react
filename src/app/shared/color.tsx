@@ -27,7 +27,7 @@ export default class Color {
   static colorRead(color: string) {
     if (!color) return null;
     if (color.length === 18)
-      color = color.substring(0, 2) + color.substring(8, 18);
+      color = color.substring(0, 2) + color.substring(10, 18);
     if (color.length === 10) color = "#" + color.substring(4);
     //let old_color = this.hexToRgb(color);
     //let new_color = this.rgbToHex(old_color.r, old_color.g, old_color.b);
