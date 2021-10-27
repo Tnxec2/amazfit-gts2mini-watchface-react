@@ -3,11 +3,13 @@ import { Constant } from "../shared/constant";
 import ElementOrderComponent from "./elementOrder.component";
 import JsonComponent from "./json.component";
 import PreviewComponent from "./preview.component";
+import UploadedImagesomponent from "./uploadedImages.component";
 
 const tabs = [
   { id: 0, name: "Preview" },
   { id: 1, name: "Element Order" },
-  { id: 2, name: "Json" },
+  { id: 2, name: "Uploaded Images" },
+  { id: 3, name: "Json" },
 ];
 
 const RightSideComponent: FC = () => {
@@ -33,6 +35,8 @@ const RightSideComponent: FC = () => {
         <PreviewComponent width={Constant.width} height={Constant.height} />
       ) : tabRight === 1 ? (
         <ElementOrderComponent />
+      ) : tabRight === 2 ? (
+        <UploadedImagesomponent />
       ) : (
         <JsonComponent />
       )}
