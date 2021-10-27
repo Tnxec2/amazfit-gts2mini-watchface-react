@@ -1,4 +1,3 @@
-import Color from "../shared/color";
 import { AlignmentType, ImageProgressDisplayType, LangCodeType } from "./types.model";
 
 
@@ -232,7 +231,7 @@ export class SystemFont {
   Coordinates: Coordinates;
   Angle: number = 0;
   Size: number = 20;
-  Color: string =  Color.colorWrite("#000000");
+  Color: string = null;
   ShowUnitCheck: number = -1;
 }
 

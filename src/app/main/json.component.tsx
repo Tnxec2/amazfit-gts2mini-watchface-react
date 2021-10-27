@@ -30,7 +30,6 @@ const JsonComponent: FC = () => {
 
         let dateEnabled = w.date.day.enabled || w.date.month.enabled || w.date.monthAsWord.enabled || w.date.weekDay.enabled || w.date.year.enabled
         let dateAodEnabled = w.aod.date.day.enabled || w.aod.date.month.enabled || w.aod.date.monthAsWord.enabled || w.aod.date.weekDay.enabled || w.aod.date.year.enabled
-        let activityEnabled = w.activity.battery.digit.enabled || w.activity.calories.digit.enabled || w.activity.distance.digit.enabled || w.activity.heartRate.digit.enabled || w.activity.pai.digit.enabled || w.activity.standUp.digit.enabled || w.activity.steps.digit.enabled || w.activity.weather.digit.enabled
         let statusEnabled = w.status.alarm.enabled || w.status.bluetooth.enabled || w.status.lock.enabled || w.status.dnd.enabled
 
         let dialFaceEnabled = timeDigitalEnabled || timeClockHandEnabled
@@ -42,8 +41,8 @@ const JsonComponent: FC = () => {
         let dateDigits = getDate(watchface)
         let dateDigitsAod = getDate(watchface.aod)
         
-        let activitys = getActivitys(watchface)
-        let activitysAod = getActivitys(watchface.aod)
+        let activitys = getActivitys(watchface.activity)
+        let activitysAod = getActivitys(watchface.aod.activitylist)
 
         let j: WatchJson = {
             Info: {
@@ -76,7 +75,7 @@ const JsonComponent: FC = () => {
                 } : null,
                 ProgressDialFace: null
             } : null,
-            System: dateEnabled || activityEnabled || statusEnabled ? {
+            System: dateEnabled || activitys.length > 0 || statusEnabled ? {
                 Status: statusEnabled ? {
                     Bluetooth: w.status.bluetooth.enabled ? w.status.bluetooth.json: null,
                     DoNotDisturb: w.status.dnd.enabled ? w.status.dnd.json : null,
@@ -149,135 +148,51 @@ const JsonComponent: FC = () => {
 
 export default JsonComponent;
 
-function getActivitys(w: WatchFace | WatchAOD): Activity[] {
+function getActivitys(alist: WatchActivity[]): Activity[] {
     let activitys: Activity[] = []
-        w.orderElements.orderElementsActivity.forEach(item => {
-            let digits: WatchCommonDigit[] = []
-            let digits2: WatchCommonDigit[] = []
-            let enabled = false
-            let enabled2 = false
-            let _activity: WatchActivity = null
-            let imageProgress: WatchImageProgress = null
-            let imageProgress2: WatchImageProgress = null
-            let pointerProgress: WatchClockHand = null
-            let pointerProgress2: WatchClockHand = null
-            let icon: WatchImageCoords = null
-            let icon2: WatchImageCoords = null
-            let progressBar: WatchProgressBar = null
-            let progressBar2: WatchProgressBar = null
-            let shortcut: Shortcut = null
-            let shortcut2: Shortcut = null
-            switch (item.type) {
-                case ActivityType.Battery.index:
-                    if (w.activity.battery.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.battery.digit)
-                    }
-                    _activity =w.activity.battery
-                    break;
-                case ActivityType.Steps.index:
-                    if (w.activity.steps.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.steps.digit)
-                    }
-                    _activity =w.activity.steps
-                    break;
-                case ActivityType.Calories.index:
-                    if (w.activity.calories.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.calories.digit)
-                    }
-                    _activity = w.activity.calories
-                    break;
-                case ActivityType.HeartRate.index:
-                    if (w.activity.heartRate.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.heartRate.digit)
-                    }
-                    _activity = w.activity.heartRate
-                    break;
-                case ActivityType.Pai.index:
-                    if (w.activity.pai.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.pai.digit)
-                    }
-                    _activity = w.activity.pai
-                    break;
-                case ActivityType.Distance.index:
-                    if (w.activity.distance.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.distance.digit)
-                    }
-                    break;
-                case ActivityType.StandUp.index:
-                    if (w.activity.standUp.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.standUp.digit)
-                    }
-                    _activity = w.activity.standUp
-                    break;
-                case ActivityType.Weather.index:
-                    if (w.activity.weather.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.weather.digit)
-                    }
-                    if (w.activity.weatherMin.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.weatherMin.digit)
-                    }
-                    if (w.activity.weatherMax.digit.enabled) {
-                        enabled = true
-                        digits.push(w.activity.weatherMax.digit)
-                    }
-                    if (w.activity.weather.imageProgress.enabled) { 
-                        enabled2 = true; 
-                        imageProgress2 = w.activity.weather.imageProgress }
-                    break;
-                default:
-                    break;
-            }
+    if (!alist) return activitys
+    alist.forEach(item => {
+        let digits: WatchCommonDigit[] = []
+        let enabled = false
+        let imageProgress: WatchImageProgress = null
+        let pointerProgress: WatchClockHand = null
+        let icon: WatchImageCoords = null
+        let progressBar: WatchProgressBar = null
+        let shortcut: Shortcut = null
 
-            if (_activity) {
-                if (_activity.imageProgress.enabled) {
-                    enabled = true
-                    imageProgress = _activity.imageProgress
-                }
-                if (_activity.pointerProgress.enabled) {
-                    enabled = true
-                    pointerProgress = _activity.pointerProgress
-                }
-                if (_activity.progressBar.enabledLinear || _activity.progressBar.enabledCircle) {
-                    enabled = true
-                    progressBar = _activity.progressBar
-                }
-                if (_activity.icon.enabled) {
-                    enabled = true
-                    icon = _activity.icon
-                }
-                if (_activity.shortcut) {
-                    enabled = true
-                    shortcut = _activity.shortcut
-                }
+        if (item) {
+            if (item.imageProgress.enabled) {
+                enabled = true
+                imageProgress = item.imageProgress
             }
+            if (item.pointerProgress.enabled) {
+                enabled = true
+                pointerProgress = item.pointerProgress
+            }
+            if (item.progressBar.enabledLinear || item.progressBar.enabledCircle) {
+                enabled = true
+                progressBar = item.progressBar
+            }
+            if (item.icon.enabled) {
+                enabled = true
+                icon = item.icon
+            }
+            if (item.shortcut) {
+                enabled = true
+                shortcut = item.shortcut
+            }
+        }
 
-            if (enabled) activitys.push({
-                Type: ActivityType.toJson(item.type),
-                PointerProgress: pointerProgress ? pointerProgress.json : null,
-                ProgressBar: progressBar ? progressBar.jsonObj : null,
-                ImageProgress: imageProgress?.enabled ? imageProgress.json : null,
-                Digits: digits.length > 0 ? digits.map(d => d.json) : null,
-                Shortcut: shortcut ? shortcut : null,
-                Icon: icon?.enabled ? icon.json : null
-            })
-            if (enabled2) activitys.push({
-                Type: ActivityType.toJson(item.type),
-                PointerProgress: pointerProgress2 ? pointerProgress2.json : null,
-                ProgressBar: progressBar2 ? progressBar2.jsonObj : null,
-                ImageProgress: imageProgress2?.enabled ? imageProgress2.json : null,
-                Digits: digits2.length > 0 ? digits2.map(d => d.json) : null,
-                Shortcut: shortcut2 ? shortcut2 : null,
-                Icon: icon2?.enabled ? icon2.json : null
-            })
+        if (enabled) activitys.push({
+            Type: item.type.json,
+            PointerProgress: pointerProgress ? pointerProgress.json : null,
+            ProgressBar: progressBar ? progressBar.jsonObj : null,
+            ImageProgress: imageProgress?.enabled ? imageProgress.json : null,
+            Digits: digits.length > 0 ? digits.map(d => d.json) : null,
+            Shortcut: shortcut ? shortcut : null,
+            Icon: icon?.enabled ? icon.json : null
+        })
+
         })
     return activitys
 }

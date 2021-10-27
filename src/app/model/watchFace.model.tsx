@@ -1,6 +1,6 @@
 import Color from "../shared/color";
 import {
-  ClockHand, DigitalDigit, ImageCoord, ImageProgress, ProgressBar, ScreenIdle, Shortcut, Status, Text, WatchJson, Widgets, MultilangImageCoord
+  ClockHand, DigitalDigit, ImageCoord, ImageProgress, ProgressBar, ScreenIdle, Shortcut, Status, Text, WatchJson, Widgets, MultilangImageCoord, Activity
 } from "./json.model";
 import { TimeType, DateType, CommonType, ActivityType, JsonType, LangCodeType } from "./types.model";
 
@@ -11,6 +11,8 @@ interface IDigitConstructor {
   numberLenght: number;
   unit: string[];
   separator: string;
+  decimalDelimiter?: boolean;
+  timeDelimiter?: boolean;
   displayFormAnalog?: boolean;
   imageProgressTotal?: number;
 }
@@ -23,7 +25,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', ':', ':'],
-    separator: '/'
+    separator: '/',
+    timeDelimiter: true
   },
   min: {
     type: TimeType.Minute.index,
@@ -32,7 +35,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', ':', ':'],
-    separator: '/'
+    separator: '/',
+    timeDelimiter: true,
   },
   sec: {
     type: TimeType.Second.index,
@@ -41,7 +45,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', ':', ':'],
-    separator: '/'
+    separator: '/',
+    timeDelimiter: true,
   },
   year: {
     type: DateType.Year.index,
@@ -142,7 +147,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', 'km', 'KM'],
-    separator: '/'
+    separator: '/',
+    decimalDelimiter: true
   },
   standUp: {
     type: 0,
@@ -187,7 +193,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    timeDelimiter: true
   },
   windForce: {
     type: 0,
@@ -426,40 +433,25 @@ export class WatchProgressBar {
   }
 }
 export class WatchActivity {
+  type: JsonType;
+  dt: IDigitConstructor;
   digit: WatchCommonDigit;
+  digitMin: WatchCommonDigit;
+  digitMax: WatchCommonDigit;
   imageProgress = new WatchImageProgress();
   pointerProgress = new WatchClockHand();
   progressBar = new WatchProgressBar();
   icon = new WatchImageCoords();
   shortcut: Shortcut = null;
 
-  constructor(dt: IDigitConstructor) {
-    this.digit = new WatchCommonDigit(TypeOfDigit.COMMON, null, dt);
+  constructor(type: JsonType, dt: IDigitConstructor) {
+    this.type = type;
+    this.dt = dt;
     this.imageProgress.json.ImageSet.ImagesCount = dt.imageProgressTotal;
   }
 }
 
-export class WatchActivityList {
-  battery = new WatchActivity(digitTypes.battery);
-  steps = new WatchActivity(digitTypes.steps);
-  calories = new WatchActivity(digitTypes.calories);
-  heartRate = new WatchActivity(digitTypes.heartRate);
-  pai = new WatchActivity(digitTypes.pai);
-  distance = new WatchActivity(digitTypes.distance);
-  standUp = new WatchActivity(digitTypes.standUp);
-  weather = new WatchActivity(digitTypes.weather);
-  weatherMin = new WatchActivity(digitTypes.weatherMin);
-  weatherMax = new WatchActivity(digitTypes.weatherMax);
-  uvindex = new WatchActivity(digitTypes.uvIndex)
-  airQuality = new WatchActivity(digitTypes.airQuality)
-  humidity = new WatchActivity(digitTypes.humidity)
-  sunrise = new WatchActivity(digitTypes.sunrise)
-  windForce = new WatchActivity(digitTypes.windForce)
-  airPressure = new WatchActivity(digitTypes.airPressure)
-  stress = new WatchActivity(digitTypes.stress)
-  activityGoal = new WatchActivity(digitTypes.activityGoal)
-  fatBurning = new WatchActivity(digitTypes.fatBurning)
-}
+
 
 export class ElementOrderItem {
   public type: number;
@@ -473,7 +465,7 @@ export class ElementOrderItem {
 export class WatchAOD {
   dialFace = new WatchDialFace();
   date = new WatchDate();
-  activity = new WatchActivityList();
+  activitylist: WatchActivity[] = [];
   backgroundImageIndex: number;
   json: ScreenIdle
 
@@ -482,24 +474,13 @@ export class WatchAOD {
       new ElementOrderItem(DateType.Year),
       new ElementOrderItem(DateType.Month),
       new ElementOrderItem(DateType.Day),
-    ],
-    orderElementsActivity: [
-      new ElementOrderItem(ActivityType.Date),
-      new ElementOrderItem(ActivityType.Battery),
-      new ElementOrderItem(ActivityType.Steps),
-      new ElementOrderItem(ActivityType.Calories),
-      new ElementOrderItem(ActivityType.HeartRate),
-      new ElementOrderItem(ActivityType.Pai),
-      new ElementOrderItem(ActivityType.Distance),
-      new ElementOrderItem(ActivityType.StandUp),
-      new ElementOrderItem(ActivityType.Weather),
-    ],
+    ]
   };
 
   constructor(j: ScreenIdle) {
     this.dialFace = new WatchDialFace();
     this.date = new WatchDate();
-    this.activity = new WatchActivityList();
+    this.activitylist = [];
     this.backgroundImageIndex = null;
     this.json = j
     if (j == null) return
@@ -572,105 +553,96 @@ export class WatchAOD {
       digitTypes.weekday
     );
 
-    this.activity = new WatchActivityList();
-    if (j.Activity) {
-      j.Activity.forEach((a) => {
-        let _activity: WatchActivity = null;
-        let _dt: IDigitConstructor = null;
-        switch (a.Type) {
-          case ActivityType.Battery.json:
-            _activity = this.activity.battery;
-            _dt = digitTypes.battery;
-            break;
-          case ActivityType.Steps.json:
-            _activity = this.activity.steps;
-            _dt = digitTypes.steps;
-            break;
-          case ActivityType.Calories.json:
-            _activity = this.activity.calories;
-            _dt = digitTypes.calories;
-            break;
-          case ActivityType.HeartRate.json:
-            _activity = this.activity.heartRate;
-            _dt = digitTypes.heartRate;
-            break;
-          case ActivityType.Pai.json:
-            _activity = this.activity.pai;
-            _dt = digitTypes.pai;
-            break;
-          case ActivityType.Distance.json:
-            _activity = this.activity.distance;
-            _dt = digitTypes.distance;
-            break;
-          case ActivityType.StandUp.json:
-            _activity = this.activity.standUp;
-            _dt = digitTypes.standUp;
-            break;
-          case ActivityType.UVindex.json:
-            _activity = this.activity.uvindex;
-            _dt = digitTypes.uvIndex;
-            break;
-          case ActivityType.AirQuality.json:
-            _activity = this.activity.airQuality;
-            _dt = digitTypes.airQuality;
-            break;
-          case ActivityType.Humidity.json:
-            _activity = this.activity.humidity;
-            _dt = digitTypes.humidity;
-            break;
-          case ActivityType.Sunrise.json:
-            _activity = this.activity.sunrise;
-            _dt = digitTypes.sunrise;
-            break;
-          case ActivityType.WindForce.json:
-            _activity = this.activity.windForce;
-            _dt = digitTypes.windForce;
-            break;
-          case ActivityType.AirPressure.json:
-            _activity = this.activity.airPressure;
-            _dt = digitTypes.airPressure;
-            break;
-          case ActivityType.Weather.json:
-            if (a.Digits) {
-              a.Digits.forEach((digit) => {
-                if (digit.Type === CommonType.Min.json) {
-                  this.activity.weatherMin.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
-                    digit,
-                    digitTypes.weatherMin
-                  );
-                } else if (digit.Type === CommonType.Max.json) {
-                  this.activity.weatherMax.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
-                    digit,
-                    digitTypes.weatherMax
-                  );
-                } else {
-                  this.activity.weather.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
-                    digit,
-                    digitTypes.weather
-                  );
-                }
-              });
-            }
-            this.activity.weather.imageProgress = new WatchImageProgress(
-              a.ImageProgress
-            );
-            this.activity.weather.icon = new WatchImageCoords(a.Icon);
-            this.activity.weather.shortcut = a.Shortcut;
-            break;
-          default:
-            break;
-        }
-        if (_activity) {
-          _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
-          _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
-          _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
-          _activity.progressBar = new WatchProgressBar(a.ProgressBar);
-          _activity.icon = new WatchImageCoords(a.Icon);
-          _activity.shortcut = a.Shortcut;
-        }
-      });
-    }
+    this.activitylist = getActivitys(j.Activity);
   }
+}
+
+export function getActivity(a: Activity, atype: JsonType): WatchActivity {
+  let _activity: WatchActivity = null;
+  let _dt: IDigitConstructor = null;
+  switch (atype) {
+    case ActivityType.Battery:
+      _dt = digitTypes.battery;
+      break;
+    case ActivityType.Steps:
+      _dt = digitTypes.steps;
+      break;
+    case ActivityType.Calories:
+      _dt = digitTypes.calories;
+      break;
+    case ActivityType.HeartRate:
+      _dt = digitTypes.heartRate;
+      break;
+    case ActivityType.Pai:
+      _dt = digitTypes.pai;
+      break;
+    case ActivityType.Distance:
+      _dt = digitTypes.distance;
+      break;
+    case ActivityType.StandUp:
+      _dt = digitTypes.standUp;
+      break;
+    case ActivityType.UVindex:
+      _dt = digitTypes.uvIndex;
+      break;
+    case ActivityType.AirQuality:
+      _dt = digitTypes.airQuality;
+      break;
+    case ActivityType.Humidity:
+      _dt = digitTypes.humidity;
+      break;
+    case ActivityType.Sunrise:
+      _dt = digitTypes.sunrise;
+      break;
+    case ActivityType.WindForce:
+      _dt = digitTypes.windForce;
+      break;
+    case ActivityType.AirPressure:
+      _dt = digitTypes.airPressure;
+      break;
+    case ActivityType.Weather:
+      _dt = digitTypes.airPressure;
+      break;
+    default:
+      break;
+  }
+
+  if (_dt){
+    _activity = new WatchActivity(atype, _dt);
+    _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, null, _dt);
+    _activity.digitMin = new WatchCommonDigit(TypeOfDigit.COMMON, null, _dt);
+    _activity.digitMax = new WatchCommonDigit(TypeOfDigit.COMMON, null, _dt);
+  } 
+  if (_activity && a) {
+    a.Digits.forEach((digit) => {
+      if ( digit.Type === CommonType.Min.json )
+        _activity.digitMin = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
+      if ( digit.Type === CommonType.Max.json )
+        _activity.digitMax = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
+      else
+        _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
+    })
+    _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
+    _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
+    _activity.progressBar = new WatchProgressBar(a.ProgressBar);
+    _activity.icon = new WatchImageCoords(a.Icon);
+    _activity.shortcut = a.Shortcut;
+  }
+  return _activity
+}
+
+function getActivitys(ar: Activity[]): WatchActivity[] | null {
+  if (ar) {
+    let activitylist: WatchActivity[] = []
+    ar.forEach((a) => {
+      let _a = getActivity(a, ActivityType.findByJson(a.Type))
+      if (_a) activitylist.push(_a)
+    });
+    return activitylist;
+  } else {
+    return null;
+  }
+
 }
 
 export class WatchWidgets {
@@ -684,10 +656,10 @@ export class WatchWidgets {
 }
 
 export default class WatchFace {
-  background = new Background();
-  dialFace = new WatchDialFace();
-  date = new WatchDate();
-  activity = new WatchActivityList();
+  background: Background = new Background();
+  dialFace: WatchDialFace = new WatchDialFace();
+  date: WatchDate = new WatchDate();
+  activity: WatchActivity[] = [];
   status = new WatchStatus();
   widgets = new WatchWidgets(null)
   aod = new WatchAOD(null)
@@ -717,7 +689,7 @@ export default class WatchFace {
     this.background = new Background();
     this.dialFace = new WatchDialFace();
     this.date = new WatchDate();
-    this.activity = new WatchActivityList();
+    this.activity = [];
     this.status = new WatchStatus();
     this.aod = new WatchAOD(null)
 
@@ -807,102 +779,7 @@ export default class WatchFace {
 
     this.status = new WatchStatus(j.System?.Status);
 
-    this.activity = new WatchActivityList();
-    if (j.System?.Activity) {
-      j.System.Activity.forEach((a) => {
-        let _activity: WatchActivity = null;
-        let _dt: IDigitConstructor = null;
-        switch (a.Type) {
-          case ActivityType.Battery.json:
-            _activity = this.activity.battery;
-            _dt = digitTypes.battery;
-            break;
-          case ActivityType.Steps.json:
-            _activity = this.activity.steps;
-            _dt = digitTypes.steps;
-            break;
-          case ActivityType.Calories.json:
-            _activity = this.activity.calories;
-            _dt = digitTypes.calories;
-            break;
-          case ActivityType.HeartRate.json:
-            _activity = this.activity.heartRate;
-            _dt = digitTypes.heartRate;
-            break;
-          case ActivityType.Pai.json:
-            _activity = this.activity.pai;
-            _dt = digitTypes.pai;
-            break;
-          case ActivityType.Distance.json:
-            _activity = this.activity.distance;
-            _dt = digitTypes.distance;
-            break;
-          case ActivityType.StandUp.json:
-            _activity = this.activity.standUp;
-            _dt = digitTypes.standUp;
-            break;
-          case ActivityType.UVindex.json:
-            _activity = this.activity.uvindex;
-            _dt = digitTypes.uvIndex;
-            break;
-          case ActivityType.AirQuality.json:
-            _activity = this.activity.airQuality;
-            _dt = digitTypes.airQuality;
-            break;
-          case ActivityType.Humidity.json:
-            _activity = this.activity.humidity;
-            _dt = digitTypes.humidity;
-            break;
-          case ActivityType.Sunrise.json:
-            _activity = this.activity.sunrise;
-            _dt = digitTypes.sunrise;
-            break;
-          case ActivityType.WindForce.json:
-            _activity = this.activity.windForce;
-            _dt = digitTypes.windForce;
-            break;
-          case ActivityType.AirPressure.json:
-            _activity = this.activity.airPressure;
-            _dt = digitTypes.airPressure;
-            break;
-          case ActivityType.Weather.json:
-            if (a.Digits) {
-              a.Digits.forEach((digit) => {
-                if (digit.Type === CommonType.Min.json) {
-                  this.activity.weatherMin.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
-                    digit,
-                    digitTypes.weatherMin
-                  );
-                } else if (digit.Type === CommonType.Max.json) {
-                  this.activity.weatherMax.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
-                    digit,
-                    digitTypes.weatherMax
-                  );
-                } else {
-                  this.activity.weather.digit = new WatchCommonDigit(TypeOfDigit.COMMON,
-                    digit,
-                    digitTypes.weather
-                  );
-                }
-              });
-            }
-            this.activity.weather.imageProgress = new WatchImageProgress(a.ImageProgress);
-            this.activity.weather.icon = new WatchImageCoords(a.Icon);
-            this.activity.weather.shortcut = a.Shortcut;
-            break;
-          default:
-            break;
-        }
-        if (_activity) {
-          if (a.Digits) _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
-          _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
-          _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
-          _activity.progressBar = new WatchProgressBar(a.ProgressBar);
-          _activity.icon = new WatchImageCoords(a.Icon);
-          _activity.shortcut = a.Shortcut;
-        }
-      });
-    }
+    this.activity = getActivitys(j.System.Activity)
 
     this.widgets = new WatchWidgets(j.Widgets)
     this.aod = new WatchAOD(j.ScreenIdle)

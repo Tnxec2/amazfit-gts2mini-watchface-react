@@ -7,6 +7,7 @@ export default function drawProgressBarLinear(ctx: CanvasRenderingContext2D,
     images: IImage[], 
     progressBar: WatchProgressBar,
     value: number, total: number) {
+        if (total === null) return
         if ( progressBar.jsonObj?.LinearSettings) {
             let lineB = progressBar.jsonObj.LinearSettings
             if (progressBar.jsonObj?.BackgroundImageIndex) {

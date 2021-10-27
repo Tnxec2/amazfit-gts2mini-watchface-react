@@ -126,9 +126,17 @@ export class JsonType {
     static ActivityGoal = new JsonType(17, "ActivityGoal");
     static FatBurning = new JsonType(18, "FatBurning");
   
+    static findByIndex(index: number) {
+      if (index === undefined) return this.Date;
+      return Object.values(ActivityType).find((val) => val.index === index);
+    }
     static toJson(index: number) {
       if (index === undefined) return this.Date.json;
       return Object.values(ActivityType).find((val) => val.index === index).json;
+    }
+    static findByJson(json: string) {
+      if (json === undefined) return this.Date;
+      return Object.values(ActivityType).find((val) => val.json === json);
     }
     static fromJson(json: string) {
       if (json === undefined) return this.Date.index;

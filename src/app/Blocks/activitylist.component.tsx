@@ -1,7 +1,8 @@
-import { FC, useContext, useMemo, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
-import { WatchActivity, WatchActivityList } from "../model/watchFace.model";
+import { ActivityType } from "../model/types.model";
+import { getActivity, WatchActivity } from "../model/watchFace.model";
 import ActivityComponent from "./activity.component";
 
 const ActivityListComponent: FC = () => {
@@ -9,106 +10,87 @@ const ActivityListComponent: FC = () => {
     useContext<IWatchContext>(WatchfaceContext);
 
   const [collapsed, setCollapsed] = useState<boolean>(true);
+  const [activityToAdd, setActivityToAdd] = useState<number>(ActivityType.Battery.index);
 
-  function updateBattery(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, battery: a};
-    updateActivity(al);
-  }
-  function updateSteps(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, steps: a};
-    updateActivity(al);
-  }
-  function updateCalories(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, calories: a};
-    updateActivity(al);
-  }
-  function updateHearthRate(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, heartRate: a};
-    updateActivity(al);
-  }
-  function updatePai(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, pai: a};
-    updateActivity(al);
-  }
-  function updateDistance(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, distance: a};
-    updateActivity(al);
-  }
-  function updateStandUp(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, standUp: a};
-    updateActivity(al);
-  }
-  function updateWeather(a: WatchActivity) {
-    const al: WatchActivityList = {...watchface.activity, weather: a};
-    updateActivity(al);
+  function updateActivity(index: number, a: WatchActivity) {
+    let w = {...watchface}
+    w.activity[index] = {...a}
+    setWatchface(w)
   }
 
-  function updateActivity(wa: WatchActivityList) {
-    setWatchface({ ...watchface, activity: wa });
+  function addActivity(e) {
+    e.stopPropagation()
+    if (activityToAdd) {
+      let w = {...watchface}
+      let _a = getActivity(null, ActivityType.findByIndex(activityToAdd) )
+      if (_a) {
+        w.activity.push(_a)
+        setWatchface(w)
+        setCollapsed(false)
+      }
+    }
   }
 
-  const activitys = useMemo(
-    () => [
-      { title: "Battery", a: watchface.activity.battery, up: updateBattery, showNoData: true },
-      { title: "Steps", a: watchface.activity.steps, up: updateSteps, showNoData: true },
-      { title: "Calories", a: watchface.activity.calories, up: updateCalories,showNoData: true },
-      {
-        title: "HearthRate",
-        a: watchface.activity.heartRate,
-        up: updateHearthRate,
-        showNoData: true,
-      },
-      { title: "PAI", a: watchface.activity.pai,up: updatePai, showNoData: true },
-      {
-        title: "Distance",
-        a: watchface.activity.distance,
-        up: updateDistance,
-        showNoData: true,
-        showDecimalPointer: true,
-        showProgress: false,
-      },
-      { title: "StandUp", a: watchface.activity.standUp, up: updateStandUp, showNoData: true },
-      {
-        title: "Weather",
-        a: watchface.activity.weather,
-        up: updateWeather,
-        showNoData: true,
-        showDelimiter: true,
-      },
-      {
-        title: "Weather Min",
-        a: watchface.activity.weatherMin,
-        up: updateWeather,
-        showNoData: true,
-        showDelimiter: true,
-      },
-    ],
-    [watchface]
-  );
+  function deleteActivity(index: number) {
+    if ( window.confirm('Are you sure?')) {
+      let w = {...watchface}
+      w.activity.splice(index)
+      setWatchface(w)
+    }
+  }
 
   return (
     <Card>
-      <Card.Header
+      <Card.Header className="d-flex justify-content-between align-items-center"
         onClick={() => {
           setCollapsed(!collapsed);
         }}
       >
-        Activity
+        Activity [{watchface.activity.length}]
+        <span className="d-flex flex-nowrap">
+          <select className="form-select" 
+            onChange={(e) => setActivityToAdd(parseInt(e.target.value))}
+            onClick={(e) => e.stopPropagation()}
+            value={activityToAdd}
+            >
+            <option value={ActivityType.Battery.index}>{ActivityType.Battery.json}</option>
+            <option value={ActivityType.Steps.index}>{ActivityType.Steps.json}</option>
+            <option value={ActivityType.Calories.index}>{ActivityType.Calories.json}</option>
+            <option value={ActivityType.HeartRate.index}>{ActivityType.HeartRate.json}</option>
+            <option value={ActivityType.Pai.index}>{ActivityType.Pai.json}</option>
+            <option value={ActivityType.Distance.index}>{ActivityType.Distance.json}</option>
+            <option value={ActivityType.StandUp.index}>{ActivityType.StandUp.json}</option>
+            <option value={ActivityType.Weather.index}>{ActivityType.Weather.json}</option>
+            <option value={ActivityType.UVindex.index}>{ActivityType.UVindex.json}</option>
+            <option value={ActivityType.AirQuality.index}>{ActivityType.AirQuality.json}</option>
+            <option value={ActivityType.Humidity.index}>{ActivityType.Humidity.json}</option>
+            <option value={ActivityType.Sunrise.index}>{ActivityType.Sunrise.json}</option>
+            <option value={ActivityType.WindForce.index}>{ActivityType.WindForce.json}</option>
+            <option value={ActivityType.Altitude.index}>{ActivityType.Altitude.json}</option>
+            <option value={ActivityType.AirPressure.index}>{ActivityType.AirPressure.json}</option>
+            <option value={ActivityType.Stress.index}>{ActivityType.Stress.json}</option>
+            <option value={ActivityType.ActivityGoal.index}>{ActivityType.ActivityGoal.json}</option>
+            <option value={ActivityType.FatBurning.index}>{ActivityType.FatBurning.json}</option>
+          </select>
+          <button className="btn btn-outline-success" type="button" onClick={addActivity}>Add</button>
+        </span>
       </Card.Header>
       {!collapsed ? (
         <Card.Body>
-          {activitys.map((item) => {
+          {watchface.activity.length > 0 ? watchface.activity.map((item, index) => {
             return (
               <ActivityComponent
-                title={item.title}
-                activity={item.a}
-                onUpdateActivity={item.up}
-                showNoData={item.showNoData}
-                showDecimalPointer={item.showDecimalPointer}
-                showProgress={item.showProgress}
+                title={item.type.json}
+                activity={item}
+                onUpdateActivity={(a) => updateActivity(index, a)}
+                onDelete={() => deleteActivity(index)}
+                showNoData={true}
+                showDecimalPointer={item.type === ActivityType.Distance}
+                showProgress={item.type !== ActivityType.Distance}
               />
             );
-          })}
+          }) 
+        : 'no activitys addes'}
         </Card.Body>
       ) : (
         ""

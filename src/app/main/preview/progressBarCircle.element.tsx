@@ -7,6 +7,7 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
     images: IImage[], 
     progressBar: WatchProgressBar,
     value: number, total: number) {
+        if (total === null) return
         if ( progressBar.jsonObj?.AngleSettings) {
 
             let width = progressBar.jsonObj.Width ? progressBar.jsonObj.Width : 0

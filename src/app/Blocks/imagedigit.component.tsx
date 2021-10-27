@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import SelectFileListComponent from "../shared/selectFileList.component";
-import { Image, MultilangImage } from "../model/json.model";
+import { DigitalDigit, Image, MultilangImage } from "../model/json.model";
 import { AlignmentType, FollowType, LangCodeType } from "../model/types.model";
 import { WatchCommonDigit } from "../model/watchFace.model";
 
@@ -29,8 +29,8 @@ const ImageDigitComponent: FC<IProps> = ({
   onCopyFromNormal
 }) => {
 
-  const imageSetIndex = useMemo<number>(() => findImageIndex(digit.json.Digit?.Image?.MultilangImage), [digit])
-  const unitImageSetIndex = useMemo<number>(() => findImageIndex(digit.json.Digit?.Image?.MultilangImageUnit), [digit])
+  const imageSetIndex = useMemo<number>(() => findImageIndex(digit.json?.Digit?.Image?.MultilangImage), [digit])
+  const unitImageSetIndex = useMemo<number>(() => findImageIndex(digit.json?.Digit?.Image?.MultilangImageUnit), [digit])
 
   function findImageIndex(ar: MultilangImage[]): number {
     if (!ar) return null

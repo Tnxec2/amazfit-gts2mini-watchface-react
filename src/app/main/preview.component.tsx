@@ -76,7 +76,6 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         ctx,
         images,
         watchface.activity,
-        watchface.orderElements.orderElementsActivity,
         watchState,
         digitBorder
       );
@@ -113,12 +112,11 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         digitBorder
       );
     }
-    if (watchface.aod.activity) {
+    if (watchface.aod.activitylist) {
       drawActivity(
         ctx,
         images,
-        watchface.aod.activity,
-        watchface.orderElements.orderElementsActivity,
+        watchface.aod.activitylist,
         watchState,
         digitBorder
       );

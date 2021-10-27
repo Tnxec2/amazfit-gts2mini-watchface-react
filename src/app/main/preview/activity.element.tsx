@@ -1,6 +1,6 @@
 import { IImage } from "../../model/image.model";
 import { ActivityType } from "../../model/types.model";
-import { ElementOrderItem, WatchActivity, WatchActivityList } from "../../model/watchFace.model";
+import { WatchActivity } from "../../model/watchFace.model";
 import { WatchState } from "../../model/watchState";
 import drawclockhand from "./clockHand.element";
 import drawDigit from "./digit.element";
@@ -8,66 +8,79 @@ import drawImageCoords from "./imageCoords.element";
 import drawImageProgress from "./imageProgress.element";
 import drawProgressBarCircle from "./progressBarCircle.element";
 import drawProgressBarLinear from "./progressBarLinear.element";
+import { getSystemFontText } from "./systemfont.element";
+
+interface IDigitDraw {
+    cur: {
+        value: number,
+        total: number
+    },
+    min: {
+        value: number,
+        total: number
+    },
+    max: {
+        value: number,
+        total: number
+    },
+    imageProgress: {
+        value: number,
+        total: number
+    }
+}
 
 export default function draw(
     ctx: CanvasRenderingContext2D, 
     images: IImage[],
-    activity: WatchActivityList,
-    orderElements: ElementOrderItem[],
+    activitys: WatchActivity[],
     watchState: WatchState,
     digitBorder: boolean
     ) {
-        orderElements.forEach((item) => {
-            switch (item.type) {
-                case ActivityType.Battery.index:
-                    drawActivity(ctx, images, activity.battery, watchState.battery, 100, digitBorder)
+        let val = 0
+        let total = 0
+        activitys.forEach((activity) => {
+            switch (activity.type) {
+                case ActivityType.Battery:
+                    val = watchState.battery
+                    total = watchState.batteryGoal
+                    drawActivity(ctx, images, activity, { cur: { value: val, total: total }, min: { value: val, total: total }, max: { value: val, total: total }, imageProgress: { value: val, total: total}}, digitBorder)
                     break;
-                case ActivityType.Steps.index:
-                    drawActivity(ctx, images, activity.steps, watchState.steps, watchState.stepsGoal, digitBorder)
+                case ActivityType.Steps:
+                    val = watchState.steps
+                    total = watchState.stepsGoal
+                    drawActivity(ctx, images, activity, { cur: { value: val, total: total }, min: { value: val, total: total }, max: { value: val, total: total }, imageProgress: { value: val, total: total}}, digitBorder)
                     break;
-                case ActivityType.Calories.index:
-                    drawActivity(ctx, images, activity.calories, watchState.calories, 200, digitBorder)
+                case ActivityType.Calories:
+                    val = watchState.calories
+                    total = watchState.caloriesGoal
+                    drawActivity(ctx, images, activity, { cur: { value: val, total: total }, min: { value: val, total: total }, max: { value: val, total: total }, imageProgress: { value: val, total: total}}, digitBorder)
                     break;
-                case ActivityType.HeartRate.index:
-                    drawActivity(ctx, images, activity.heartRate, watchState.hearthrate, 200, digitBorder)
+                case ActivityType.HeartRate:
+                    val = watchState.hearthrate
+                    total = watchState.hearthrateGoal
+                    drawActivity(ctx, images, activity, { cur: { value: val, total: total }, min: { value: val, total: total }, max: { value: val, total: total }, imageProgress: { value: val, total: total}}, digitBorder)
                     break;
-                case ActivityType.Pai.index:
-                    drawActivity(ctx, images, activity.pai, watchState.pai, 100, digitBorder)
+                case ActivityType.Pai:
+                    val = watchState.pai
+                    total = watchState.paiGoal
+                    drawActivity(ctx, images, activity, { cur: { value: val, total: total }, min: { value: val, total: total }, max: { value: val, total: total }, imageProgress: { value: val, total: total}}, digitBorder)
                     break;
-                case ActivityType.Distance.index:
-                    drawDistance(ctx, images, activity.distance, watchState.distance, digitBorder)
+                case ActivityType.Distance:
+                    val = watchState.distance
+                    drawActivity(ctx, images, activity, { cur: { value: val, total: null }, min: { value: val, total: null }, max: { value: val, total: null }, imageProgress: null}, digitBorder)
                     break;
-                case ActivityType.StandUp.index:
-                    drawActivity(ctx, images, activity.standUp, watchState.standup, 12, digitBorder)
+                case ActivityType.StandUp:
+                    val = watchState.standup
+                    total = watchState.standupGoal
+                    drawActivity(ctx, images, activity, { cur: { value: val, total: total }, min: { value: val, total: total }, max: { value: val, total: total }, imageProgress: { value: val, total: total}}, digitBorder)
                     break;
-                case ActivityType.Weather.index:
-                    if (activity.weather.digit.enabled) {
-                        drawDigit(ctx, images, activity.weather.digit, watchState.temperature, null, digitBorder)
-                    }
-                    if (activity.weather.imageProgress.enabled) {
-                        drawImageProgress(ctx, images, activity.weather.imageProgress, watchState.weatherIcon, 29)
-                    }
-                    if (activity.weather.icon.enabled) {
-                        drawImageCoords(ctx, images, activity.weather.icon.json)
-                    }
-                    if (activity.weatherMin.digit.enabled) {
-                        drawDigit(ctx, images, activity.weatherMin.digit, watchState.temperatureMin, null, digitBorder)
-                    }
-                    if (activity.weatherMin.imageProgress.enabled) {
-                        drawImageProgress(ctx, images, activity.weatherMin.imageProgress, watchState.weatherIcon, 29)
-                    }
-                    if (activity.weatherMin.icon.enabled) {
-                        drawImageCoords(ctx, images, activity.weatherMin.icon.json)
-                    }
-                    if (activity.weatherMax.digit.enabled) {
-                        drawDigit(ctx, images, activity.weatherMax.digit, watchState.temperatureMax, null, digitBorder)
-                    }
-                    if (activity.weatherMax.imageProgress.enabled) {
-                        drawImageProgress(ctx, images, activity.weatherMax.imageProgress, watchState.weatherIcon, 29)
-                    }
-                    if (activity.weatherMax.icon.enabled) {
-                        drawImageCoords(ctx, images, activity.weatherMax.icon.json)
-                    }
+                case ActivityType.Weather:
+                    drawActivity(ctx, images, activity, {
+                         cur: { value: watchState.temperature, total: null },
+                         min: { value: watchState.temperatureMin, total: null }, 
+                         max: { value: watchState.temperatureMax, total: null }, 
+                         imageProgress: { value: watchState.weatherIcon, total: 29}},
+                         digitBorder)
                     break;
                 default:
                     break;
@@ -75,30 +88,28 @@ export default function draw(
         });
 }
 
-function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchActivity, value: number, total: number, digitBorder: boolean) {
-    if (a.digit.enabled) {
-        drawDigit(ctx, images, a.digit, value, null, digitBorder)
+function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchActivity, values: IDigitDraw, digitBorder: boolean) {
+    let followxy = null
+    if (a.digit?.enabled) {
+        followxy = drawDigit(ctx, images, a.digit, values.cur.value, followxy, digitBorder, false, getSystemFontText(a.digit, values.cur.value))
+    }
+    if (a.digitMin?.enabled) {
+        followxy = drawDigit(ctx, images, a.digitMin, values.min.value, followxy, digitBorder, false, getSystemFontText(a.digit, values.min.value))
+    }
+    if (a.digitMax?.enabled) {
+        drawDigit(ctx, images, a.digit, values.max.value, followxy, digitBorder, false, getSystemFontText(a.digit, values.min.value))
     }
     if (a.imageProgress.enabled) {
-        drawImageProgress(ctx, images, a.imageProgress, value, total)
+        drawImageProgress(ctx, images, a.imageProgress, values.imageProgress.value, values.imageProgress.total)
     }
     if (a.pointerProgress.enabled) {
-        drawclockhand(ctx, images, a.pointerProgress, value, total)
+        drawclockhand(ctx, images, a.pointerProgress, values.cur.value, values.cur.total)
     }
     if (a.progressBar.enabledLinear) {
-        drawProgressBarLinear(ctx, images, a.progressBar, value, total)
+        drawProgressBarLinear(ctx, images, a.progressBar, values.cur.value, values.cur.total)
     }
     if (a.progressBar.enabledCircle) {
-        drawProgressBarCircle(ctx, images, a.progressBar, value, total)
-    }
-    if (a.icon.enabled) {
-        drawImageCoords(ctx, images, a.icon.json)
-    }
-}
-
-function drawDistance(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchActivity, value: number, digitBorder: boolean) {
-    if (a.digit.enabled) {
-        drawDigit(ctx, images, a.digit, value, null, digitBorder)
+        drawProgressBarCircle(ctx, images, a.progressBar, values.cur.value, values.cur.total)
     }
     if (a.icon.enabled) {
         drawImageCoords(ctx, images, a.icon.json)

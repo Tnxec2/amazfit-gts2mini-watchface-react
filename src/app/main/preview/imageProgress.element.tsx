@@ -6,6 +6,7 @@ export default function drawImageProgress(ctx: CanvasRenderingContext2D,
     images: IImage[], 
     imageProgress: WatchImageProgress,
     value: number, total: number) {
+        if (total === null) return
         if (imageProgress.enabled && imageProgress.json.ImageSet?.ImageIndex) {
             if ( imageProgress.json.Coordinates) {
 

@@ -1,9 +1,10 @@
 import { IImage } from "../../model/image.model";
 import { FollowType } from "../../model/types.model";
-import { WatchCommonDigit, WatchDialFace } from "../../model/watchFace.model";
+import { WatchDialFace } from "../../model/watchFace.model";
 import { WatchState } from "../../model/watchState";
 import drawDigit from "./digit.element";
 import drawMultilangImageCoords from "./multiLangImageCoords.element";
+import { addUnitsAndSeparator } from "./systemfont.element";
 
 export default function drawTimeDigital(
     ctx: CanvasRenderingContext2D, 
@@ -17,7 +18,6 @@ export default function drawTimeDigital(
     let s_hours = ''
     let s_minutes = ''
     let s_seconds = ''
-
    
     if (timeDigital.secondsDigital?.enabled) {
         s_seconds = watchState.seconds.toString().padStart(timeDigital.secondsDigital.con.numberLenght, '0')
@@ -74,19 +74,5 @@ export default function drawTimeDigital(
     }
 }
 
-function addUnitsAndSeparator(s_hours: string, digit: WatchCommonDigit): string {
-    let systemFont = digit.json.Digit?.SystemFont
-    let result = s_hours
-    if (systemFont.ShowUnitCheck === -1) {
-        result = result + digit.con.unit[0]
-    } else if (systemFont.ShowUnitCheck === 1) {
-        result = result + digit.con.unit[1]
-    } else if ( systemFont.ShowUnitCheck === 2) {
-        result = result + digit.con.unit[2]
-    } 
-    if (digit.json.Separator) {
-        result = result + digit.con.separator
-    }
-    return result;
-}
+
 

@@ -14,12 +14,13 @@ interface IProps {
   activity: WatchActivity;
   title: string;
   onUpdateActivity(activity: WatchActivity): void;
+  onDelete(): void;
   showDecimalPointer?: boolean;
   showDelimiter?: boolean;
   showNoData?: boolean;
   paddingZeroFix?: boolean;
   showProgress?: boolean;
-  onCopy?(): void
+  onCopy?(): void;
 }
 
 const ActivityComponent: FC<IProps> = ({
@@ -31,20 +32,23 @@ const ActivityComponent: FC<IProps> = ({
   showNoData,
   paddingZeroFix,
   showProgress,
-  onCopy
+  onCopy,
+  onDelete
 }) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   return (
     <Card className="activity">
-      <Card.Header onClick={() => setCollapsed(!collapsed)}>
-        <div className="input-group input-group-sm">
+      <Card.Header 
+      className="d-flex justify-content-between align-items-center"
+      onClick={() => setCollapsed(!collapsed)}>
           <span className="input-group-text">{title}</span>
-        </div>
+          <button className="btn btn-outline-danger" type="button" onClick={onDelete}>Delete</button>
       </Card.Header>
       {!collapsed ? (
         <Card.Body>
           { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm mr-0' onClick={onCopy}>Copy from normal screen</button> }
+
           <ImageDigitComponent
             title="Numerical"
             digit={activity.digit}
