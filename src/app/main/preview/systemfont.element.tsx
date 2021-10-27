@@ -101,5 +101,6 @@ export function getSystemFontText(digit: WatchCommonDigit, value: number): strin
         }
         if (digit.con.timeDelimiter && systemFontText.length > 2 )
             systemFontText = systemFontText.substring(0, systemFontText.length-2) + ':' + systemFontText.substring(systemFontText.length-2, systemFontText.length)
+        systemFontText = addUnitsAndSeparator(systemFontText, digit)
     return systemFontText
 }

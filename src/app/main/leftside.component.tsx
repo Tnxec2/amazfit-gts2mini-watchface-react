@@ -42,7 +42,7 @@ const LeftSideComponent: FC = () => {
           <ScreenNormalcomponent />
         </div>
       ) : tabLeft === 1 ? (
-        <div className="mt-3">
+        <div className="mt-3 blocks">
           <AodComponent />
         </div>
       ) : tabLeft === 2 ? (
