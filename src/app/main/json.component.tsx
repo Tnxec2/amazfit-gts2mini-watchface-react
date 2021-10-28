@@ -1,11 +1,11 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
+import { Activity, DigitalDigit, Shortcut, WatchJson } from "../model/json.model";
+import { DateType, LangCodeType } from "../model/types.model";
+import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar } from "../model/watchFace.model";
 import Color from "../shared/color";
 import { Constant } from "../shared/constant";
-import { Activity, DigitalDigit, Shortcut, WatchJson } from "../model/json.model";
-import { ActivityType, DateType, LangCodeType } from "../model/types.model";
-import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar } from "../model/watchFace.model";
 import cl from './JsonComponent.module.css';
 
 const langCode = 2
@@ -161,6 +161,9 @@ function getActivitys(alist: WatchActivity[]): Activity[] {
         let shortcut: Shortcut = null
 
         if (item) {
+            if (item.digit.enabled) {enabled = true; digits.push(item.digit)}
+            if (item.digitMin.enabled) {enabled = true; digits.push(item.digitMin)}
+            if (item.digitMax.enabled) {enabled = true; digits.push(item.digitMax)}
             if (item.imageProgress.enabled) {
                 enabled = true
                 imageProgress = item.imageProgress

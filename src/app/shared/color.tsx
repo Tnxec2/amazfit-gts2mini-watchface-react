@@ -55,9 +55,7 @@ export default class Color {
     b = (secondByte & 0x1f) << 3;
 
     let new_color = this.rgbToHex(r, g, b);
-
-    console.log(color, new_color);
-    
+   
     return new_color;
   }
 

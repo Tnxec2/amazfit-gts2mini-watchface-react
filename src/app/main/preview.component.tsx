@@ -84,7 +84,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       drawStatus(ctx, images, watchface.status, watchState);
     }
     if (watchface.widgets.enabled) {
-      drawWidgets(ctx, images, watchface.widgets.json)
+      drawWidgets(ctx, images, watchface.widgets.json, watchState, digitBorder)
     }
     if (watchface.dialFace) {
       drawTimeDigital(

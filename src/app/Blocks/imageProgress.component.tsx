@@ -56,7 +56,7 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
             />
           </div>
             { imageProgress.json.Coordinates.map((coords, index) => (
-              <div className="input-group input-group-sm">
+              <div key={index} className="input-group input-group-sm">
                 <span className="input-group-text">
                   {index}
                 </span>

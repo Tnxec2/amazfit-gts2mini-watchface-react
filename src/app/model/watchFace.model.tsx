@@ -11,6 +11,10 @@ interface IDigitConstructor {
   numberLenght: number;
   unit: string[];
   separator: string;
+  title: string;
+  titleDefault?: string;
+  titleMin?: string;
+  titleMax?: string;
   decimalDelimiter?: boolean;
   timeDelimiter?: boolean;
   displayFormAnalog?: boolean;
@@ -26,7 +30,8 @@ const digitTypes = {
     imageProgressTotal: null,
     unit: ['', ':', ':'],
     separator: '/',
-    timeDelimiter: true
+    timeDelimiter: true,
+    title: 'Hours',
   },
   min: {
     type: TimeType.Minute.index,
@@ -37,6 +42,7 @@ const digitTypes = {
     unit: ['', ':', ':'],
     separator: '/',
     timeDelimiter: true,
+    title: 'Minutes',
   },
   sec: {
     type: TimeType.Second.index,
@@ -47,6 +53,7 @@ const digitTypes = {
     unit: ['', ':', ':'],
     separator: '/',
     timeDelimiter: true,
+    title: 'Seconds',
   },
   year: {
     type: DateType.Year.index,
@@ -55,7 +62,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '.', '/'],
-    separator: '/'
+    separator: '/',
+    title: 'Year',
   },
   month: {
     type: DateType.Month.index,
@@ -64,7 +72,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '.', '/'],
-    separator: '/'
+    separator: '/',
+    title: 'Month',
   },
   monthasword: {
     type: DateType.Month.index,
@@ -73,7 +82,8 @@ const digitTypes = {
     displayAnalog: true,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'Month as word',
   },
   day: {
     type: DateType.Day.index,
@@ -82,7 +92,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '.', '/'],
-    separator: '/'
+    separator: '/',
+    title: 'Day',
   },
   weekday: {
     type: 0,
@@ -91,7 +102,8 @@ const digitTypes = {
     displayAnalog: true,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'Weekday',
   },
   battery: {
     type: 0,
@@ -100,7 +112,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['%', '%', '%'],
-    separator: '/'
+    separator: '/',
+    title: 'Battery',
   },
   steps: {
     type: 0,
@@ -109,7 +122,9 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', 'Steps', 'STEPS'],
-    separator: '/'
+    separator: '/',
+    title: 'Steps',
+    titleMin: 'goal of steps'
   },
   calories: {
     type: 0,
@@ -118,8 +133,9 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', 'kcal', 'Cal'],
-    separator: '/'
-
+    separator: '/',
+    title: 'Calories',
+    titleMin: 'goal of calories'
   },
   heartRate: {
     type: 0,
@@ -128,8 +144,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: 6,
     unit: ['', 'bpm', 'BPM'],
-    separator: '/'
-
+    separator: '/',
+    title: 'Heart rate'
   },
   pai: {
     type: 0,
@@ -138,7 +154,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'PAI',
   },
   distance: {
     type: 0,
@@ -148,7 +165,8 @@ const digitTypes = {
     imageProgressTotal: null,
     unit: ['', 'km', 'KM'],
     separator: '/',
-    decimalDelimiter: true
+    decimalDelimiter: true,
+    title: 'Distance',
   },
   standUp: {
     type: 0,
@@ -157,7 +175,9 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'Standup',
+    titleMin: 'goal of stand up'
   },
   uvIndex: {
     type: 0,
@@ -166,7 +186,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'UVIndex',
   },
   airQuality: {
     type: 0,
@@ -175,7 +196,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'Air quality',
   },
   humidity: {
     type: 0,
@@ -184,7 +206,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['%', '%', '%'],
-    separator: '/'
+    separator: '/',
+    title: 'Humidity',
   },
   sunrise: {
     type: 0,
@@ -194,7 +217,11 @@ const digitTypes = {
     imageProgressTotal: null,
     unit: ['', '', ''],
     separator: '/',
-    timeDelimiter: true
+    timeDelimiter: true,
+    title: 'Sunrise',
+    titleDefault: 'closest sunrise or sunset',
+    titleMin: 'sunrise',
+    titleMax: 'sunset',
   },
   windForce: {
     type: 0,
@@ -203,7 +230,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', 'kpa', 'KPA'],
-    separator: '/'
+    separator: '/',
+    title: 'Wind force',
   },
   airPressure: {
     type: 0,
@@ -212,7 +240,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'Air pressure',
   },
   stress: {
     type: 0,
@@ -221,7 +250,8 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'Stress',
   },
   activityGoal: {
     type: 0,
@@ -230,7 +260,9 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'ActivityGoal',
+    titleMin: 'goal of activity'
   },
   fatBurning: {
     type: 0,
@@ -239,7 +271,9 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     unit: ['', '', ''],
-    separator: '/'
+    separator: '/',
+    title: 'FatBurning',
+    titleMin: 'goal of FatBurning'
   },
   weather: {
     type: 0,
@@ -248,26 +282,13 @@ const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: 29,
     unit: ['°C', '°C', '°C'],
-    separator: '/'
+    separator: '/',
+    title: 'Weather',
+    titleDefault: 'Current',
+    titleMin: 'Minimum',
+    titleMax: 'Maximum',
   },
-  weatherMin: {
-    type: 0,
-    count: 10,
-    numberLenght: 2,
-    displayAnalog: false,
-    imageProgressTotal: 29,
-    unit: ['°C', '°C', '°C'],
-    separator: '/'
-  },
-  weatherMax: {
-    type: 0,
-    count: 10,
-    numberLenght: 2,
-    displayAnalog: false,
-    imageProgressTotal: 29,
-    unit: ['°C', '°C', '°C'],
-    separator: '/'
-  },
+
 };
 export class Background {
   imageIndex = null;
@@ -290,7 +311,7 @@ export class WatchImageCoords {
   enabled = false;
 
   constructor(j?: ImageCoord) {
-    if (j != null && j !== undefined) {
+    if (j) {
       this.enabled = true
       this.json = j
     }
@@ -433,6 +454,7 @@ export class WatchProgressBar {
   }
 }
 export class WatchActivity {
+  key: string;
   type: JsonType;
   dt: IDigitConstructor;
   digit: WatchCommonDigit;
@@ -445,6 +467,7 @@ export class WatchActivity {
   shortcut: Shortcut = null;
 
   constructor(type: JsonType, dt: IDigitConstructor) {
+    this.key = type.index + '_' + new Date().getTime()
     this.type = type;
     this.dt = dt;
     this.imageProgress.json.ImageSet.ImagesCount = dt.imageProgressTotal;
@@ -601,7 +624,10 @@ export function getActivity(a: Activity, atype: JsonType): WatchActivity {
       _dt = digitTypes.airPressure;
       break;
     case ActivityType.Weather:
-      _dt = digitTypes.airPressure;
+      _dt = digitTypes.weather;
+      break;
+    case ActivityType.ActivityGoal:
+      _dt = digitTypes.activityGoal;
       break;
     default:
       break;
@@ -610,23 +636,25 @@ export function getActivity(a: Activity, atype: JsonType): WatchActivity {
   if (_dt){
     _activity = new WatchActivity(atype, _dt);
     _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, null, _dt);
-    _activity.digitMin = new WatchCommonDigit(TypeOfDigit.COMMON, null, _dt);
-    _activity.digitMax = new WatchCommonDigit(TypeOfDigit.COMMON, null, _dt);
+    _activity.digitMin = new WatchCommonDigit(TypeOfDigit.COMMON, null, {..._dt, type: CommonType.Min.index});
+    _activity.digitMax = new WatchCommonDigit(TypeOfDigit.COMMON, null, {..._dt, type: CommonType.Max.index});
   } 
-  if (_activity && a) {
-    a.Digits.forEach((digit) => {
-      if ( digit.Type === CommonType.Min.json )
-        _activity.digitMin = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
-      if ( digit.Type === CommonType.Max.json )
-        _activity.digitMax = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
-      else
-        _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, a.Digits[0], _dt);
-    })
-    _activity.imageProgress = new WatchImageProgress(a.ImageProgress);
-    _activity.pointerProgress = new WatchClockHand(a.PointerProgress);
-    _activity.progressBar = new WatchProgressBar(a.ProgressBar);
-    _activity.icon = new WatchImageCoords(a.Icon);
-    _activity.shortcut = a.Shortcut;
+  if (_activity) {
+    if (a?.Digits) {
+      a.Digits.forEach((digit) => {
+        if ( digit.Type === CommonType.Min.json )
+          _activity.digitMin = new WatchCommonDigit(TypeOfDigit.COMMON, digit, {..._dt, type: CommonType.Min.index});
+        else if ( digit.Type === CommonType.Max.json )
+          _activity.digitMax = new WatchCommonDigit(TypeOfDigit.COMMON, digit, {..._dt, type: CommonType.Max.index});
+        else
+          _activity.digit = new WatchCommonDigit(TypeOfDigit.COMMON, digit, {..._dt, type: CommonType.Default.index});
+      })
+    }
+    _activity.imageProgress = new WatchImageProgress(a?.ImageProgress);
+    _activity.pointerProgress = new WatchClockHand(a?.PointerProgress);
+    _activity.progressBar = new WatchProgressBar(a?.ProgressBar);
+    _activity.icon = new WatchImageCoords(a?.Icon);
+    _activity.shortcut = a?.Shortcut;
   }
   return _activity
 }
@@ -640,7 +668,7 @@ function getActivitys(ar: Activity[]): WatchActivity[] | null {
     });
     return activitylist;
   } else {
-    return null;
+    return [];
   }
 
 }

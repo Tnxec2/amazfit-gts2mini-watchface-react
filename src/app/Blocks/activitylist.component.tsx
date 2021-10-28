@@ -1,41 +1,43 @@
-import { FC, useContext, useState } from "react";
+import { FC, useState } from "react";
 import { Card } from "react-bootstrap";
-import { IWatchContext, WatchfaceContext } from "../context";
 import { ActivityType } from "../model/types.model";
 import { getActivity, WatchActivity } from "../model/watchFace.model";
 import ActivityComponent from "./activity.component";
 
-const ActivityListComponent: FC = () => {
-  const { watchface, setWatchface } =
-    useContext<IWatchContext>(WatchfaceContext);
+
+interface IProps {
+  activitys: WatchActivity[];
+  onUpdate(activitys: WatchActivity[]): void;
+}
+
+const ActivityListComponent: FC<IProps> = ({activitys, onUpdate}) => {
 
   const [collapsed, setCollapsed] = useState<boolean>(true);
   const [activityToAdd, setActivityToAdd] = useState<number>(ActivityType.Battery.index);
 
   function updateActivity(index: number, a: WatchActivity) {
-    let w = {...watchface}
-    w.activity[index] = {...a}
-    setWatchface(w)
+    let al = {...activitys}
+    al[index] = {...a}
+    onUpdate(al)
   }
 
   function addActivity(e) {
     e.stopPropagation()
     if (activityToAdd) {
-      let w = {...watchface}
       let _a = getActivity(null, ActivityType.findByIndex(activityToAdd) )
       if (_a) {
-        w.activity.push(_a)
-        setWatchface(w)
+        activitys.push(_a)
         setCollapsed(false)
+        onUpdate(activitys)
       }
     }
   }
 
   function deleteActivity(index: number) {
     if ( window.confirm('Are you sure?')) {
-      let w = {...watchface}
-      w.activity.splice(index)
-      setWatchface(w)
+      let al = {...activitys}
+      al.splice(index)
+      onUpdate(al)
     }
   }
 
@@ -46,7 +48,7 @@ const ActivityListComponent: FC = () => {
           setCollapsed(!collapsed);
         }}
       >
-        Activity [{watchface.activity.length}]
+        Activity [{activitys?.length}]
         <span className="d-flex flex-nowrap">
           <select className="form-select" 
             onChange={(e) => setActivityToAdd(parseInt(e.target.value))}
@@ -77,16 +79,21 @@ const ActivityListComponent: FC = () => {
       </Card.Header>
       {!collapsed ? (
         <Card.Body>
-          {watchface.activity.length > 0 ? watchface.activity.map((item, index) => {
+          {activitys?.length > 0 ? activitys.map((item, index) => {
             return (
               <ActivityComponent
-                title={item.type.json}
+                key={item.key}
                 activity={item}
                 onUpdateActivity={(a) => updateActivity(index, a)}
                 onDelete={() => deleteActivity(index)}
                 showNoData={true}
                 showDecimalPointer={item.type === ActivityType.Distance}
                 showProgress={item.type !== ActivityType.Distance}
+                showDelimiter={item.type === ActivityType.Weather}
+                title={item.digit ? item.digit.con.title : null}
+                titleDefault={item.digit ? item.digit.con.titleDefault : null}
+                titleMin={item.digitMin ? item.digitMin.con.titleMin : null}
+                titleMax={item.digitMax ? item.digitMax.con.titleMax : null}
               />
             );
           }) 

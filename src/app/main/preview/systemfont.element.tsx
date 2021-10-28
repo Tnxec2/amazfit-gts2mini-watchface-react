@@ -56,7 +56,6 @@ export function drawSystemFontFontRotated(
             ctx.fillText(text[i], 0, - systemFont.FontRotate.Radius);
             let sp = width + spacing
             let spacingAngle = sp * 180 / (radius * Math.PI)
-            console.log(sp, spacingAngle);
             ctx.rotate( Math.PI / 180 * spacingAngle );
         }
     } else {
@@ -92,15 +91,15 @@ export function addUnitsAndSeparator(text: string, digit: WatchCommonDigit): str
 
 export function getSystemFontText(digit: WatchCommonDigit, value: number): string {
     let systemFontText = value.toString()
-        if (digit.json.Digit.PaddingZero) systemFontText.padStart(digit.con.numberLenght, '0')
-        if (digit.con.decimalDelimiter) {
-            if ( systemFontText.length > 3)
-                systemFontText = systemFontText.substring(0, systemFontText.length-2) + '.' + systemFontText.substring(systemFontText.length-2, systemFontText.length)
-            else if ( systemFontText.length > 1 )
-                systemFontText = systemFontText.substring(0, systemFontText.length-1) + '.' + systemFontText.substring(systemFontText.length-1, systemFontText.length)
-        }
-        if (digit.con.timeDelimiter && systemFontText.length > 2 )
-            systemFontText = systemFontText.substring(0, systemFontText.length-2) + ':' + systemFontText.substring(systemFontText.length-2, systemFontText.length)
-        systemFontText = addUnitsAndSeparator(systemFontText, digit)
+    if (digit.json.Digit.PaddingZero) systemFontText.padStart(digit.con.numberLenght, '0')
+    if (digit.con.decimalDelimiter) {
+        if ( systemFontText.length > 3)
+            systemFontText = systemFontText.substring(0, systemFontText.length-2) + '.' + systemFontText.substring(systemFontText.length-2, systemFontText.length)
+        else if ( systemFontText.length > 1 )
+            systemFontText = systemFontText.substring(0, systemFontText.length-1) + '.' + systemFontText.substring(systemFontText.length-1, systemFontText.length)
+    }
+    if (digit.con.timeDelimiter && systemFontText.length > 2 )
+        systemFontText = systemFontText.substring(0, systemFontText.length-2) + ':' + systemFontText.substring(systemFontText.length-2, systemFontText.length)
+    systemFontText = addUnitsAndSeparator(systemFontText, digit)
     return systemFontText
 }

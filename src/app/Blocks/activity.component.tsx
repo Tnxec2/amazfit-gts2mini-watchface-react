@@ -1,14 +1,12 @@
 import { FC, useState } from "react";
 import { Card } from "react-bootstrap";
 import { WatchActivity, WatchCommonDigit } from "../model/watchFace.model";
+import ActivityDigitComponent from "./activityDigit.component";
 import ClockHandComponent from "./clockHand.component";
 import ImageCoordsComponent from "./imageCoords.component";
-import ImageDigitComponent from "./imageDigit.component";
 import ImageProgressComponent from "./imageProgress.component";
 import ProgressbarCircleCodmponent from "./progressbarCircle.component";
 import ProgressbarLinearComponent from "./progressbarLinear.component";
-import SystemFontComponent from "./systemFont.component";
-import SystemFontCircleComponent from "./systemFontCircle.component";
 
 interface IProps {
   activity: WatchActivity;
@@ -21,6 +19,9 @@ interface IProps {
   paddingZeroFix?: boolean;
   showProgress?: boolean;
   onCopy?(): void;
+  titleDefault?: string;
+  titleMin?: string;
+  titleMax?: string;
 }
 
 const ActivityComponent: FC<IProps> = ({
@@ -33,9 +34,30 @@ const ActivityComponent: FC<IProps> = ({
   paddingZeroFix,
   showProgress,
   onCopy,
-  onDelete
+  onDelete,
+  titleDefault,
+  titleMin,
+  titleMax
 }) => {
   const [collapsed, setCollapsed] = useState<boolean>(true);
+
+  function onUpdateDigit(d: WatchCommonDigit) {
+    let a = {...activity}
+    a.digit = {...d}
+    onUpdateActivity(a)
+  }
+  
+  function onUpdateDigitMin(d: WatchCommonDigit) {
+    let a = {...activity}
+    a.digitMin = {...d}
+    onUpdateActivity(a)
+  }
+
+  function onUpdateDigitMax(d: WatchCommonDigit) {
+    let a = {...activity}
+    a.digitMax = {...d}
+    onUpdateActivity(a)
+  }
 
   return (
     <Card className="activity">
@@ -49,40 +71,37 @@ const ActivityComponent: FC<IProps> = ({
         <Card.Body>
           { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm mr-0' onClick={onCopy}>Copy from normal screen</button> }
 
-          <ImageDigitComponent
-            title="Numerical"
+          <ActivityDigitComponent
             digit={activity.digit}
-            onUpdate={(d) => {
-              const a = { ...activity };
-              a.digit = d as WatchCommonDigit;
-              onUpdateActivity(a);
-            }}
+            title={titleDefault ? titleDefault : title}
+            onUpdate={onUpdateDigit}
             showDecimalPointer={showDecimalPointer}
             showDelimiter={showDelimiter}
             showNoData={showNoData}
             paddingZeroFix={paddingZeroFix}
           />
 
-          <SystemFontComponent
-            title="Systemfont Rotated"
-            digit={activity.digit}
-            onUpdate={(d) => {
-              const a = { ...activity };
-              a.digit = d as WatchCommonDigit;
-              onUpdateActivity(a);
-            }}
+        { titleMin ?
+          <ActivityDigitComponent
+            digit={activity.digitMin}
+            title={titleMin}
+            onUpdate={onUpdateDigitMin}
+            showDecimalPointer={showDecimalPointer}
+            showDelimiter={showDelimiter}
+            showNoData={showNoData}
             paddingZeroFix={paddingZeroFix}
-          />
-          <SystemFontCircleComponent 
-            title="Systemfont Circle"
-            digit={activity.digit}
-            onUpdate={(d) => {
-              const a = { ...activity };
-              a.digit = d as WatchCommonDigit;
-              onUpdateActivity(a);
-            }}
+          /> : '' }
+
+        { titleMax ? 
+          <ActivityDigitComponent
+            digit={activity.digitMax}
+            title={titleMax}
+            onUpdate={onUpdateDigitMax}
+            showDecimalPointer={showDecimalPointer}
+            showDelimiter={showDelimiter}
+            showNoData={showNoData}
             paddingZeroFix={paddingZeroFix}
-          />
+          /> : '' }
 
           {showProgress === undefined || showProgress === true ? 
             <>

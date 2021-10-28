@@ -22,10 +22,7 @@ export default function drawImageProgress(ctx: CanvasRenderingContext2D,
                 if (!imageProgress.json.DisplayType)
                     initial = s
 
-                console.log(value, total, count, initial, s);
-                    
                 for (let i = initial; i <= s; i++) {
-                    console.log(value, total, i);
                     let x = i < coors.length ? coors[i].X : coors[coors.length-1].X
                     let y = i < coors.length ? coors[i].Y : coors[coors.length-1].Y
                     let imageIndex = imageProgress.json.ImageSet.ImageIndex + i

@@ -25,8 +25,30 @@ export class WatchState {
   dnd = true;
   lock = false;
   alarm = true;
+  
   temperature = Math.round(Math.random() * 10);
   temperatureMin = this.temperature - Math.round(Math.random() * 10)
   temperatureMax = this.temperature + Math.round(Math.random() * 10)
   weatherIcon = Math.round(Math.random() * 29);
+  
+  uvIndexGoal = 11
+  uvIndex = Math.round(Math.random() * this.uvIndexGoal)
+  airQualityGoal = 500
+  airQuality = Math.round(Math.random() * this.airQualityGoal)
+  humidityGoal = 100
+  humidity = Math.round(Math.random() * this.humidityGoal)
+  
+  sunrise = 536
+  sunset = 1742
+
+  windForce = Math.round(Math.random() * 12)
+
+  airPressureGoal = 100
+  airPressure = Math.round(Math.random() * this.airPressureGoal)
+
+  stressGoal = 100
+  stress = Math.round(Math.random() * this.stressGoal)
+
+  fatBurningGoal = 30
+  fatBurning = Math.round(Math.random() * this.fatBurningGoal)
 }

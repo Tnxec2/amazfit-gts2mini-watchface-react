@@ -98,7 +98,6 @@ function drawArcPath(ctx: CanvasRenderingContext2D, flatness: number, x: number,
     if (width < 3) return
 
     if (flatness === 0 || !flatness) {
-
         let xc1 = x + (radius) * Math.cos(Math.PI * (startAngle - 90) / 180)
         let yc1 = y + (radius) * Math.sin(Math.PI * (startAngle - 90) / 180)
 
@@ -179,6 +178,8 @@ function drawColorEndings(ctx: CanvasRenderingContext2D, color: string,
     flatness: number, x: number, y: number, startAngle: number, endAngle: number, 
     radius: number, width: number) {
     if (width < 3) return
+
+
 
     if (flatness === 0 || !flatness) {
         // round edges

@@ -130,12 +130,12 @@ const PreviewStatesComponent: FC = () => {
             type="number"
             className="form-control form-control-sm"
             min="0"
-            max="220"
+            max={watchState.hearthrateGoal}
             value={watchState.hearthrate}
             onChange={(e) => {
               const ws = { ...watchState };
               const v = parseInt(e.target.value);
-              ws.hearthrate = !isNaN(v) ? Math.min(v, 220) : 0;
+              ws.hearthrate = !isNaN(v) ? Math.min(v, watchState.hearthrateGoal) : 0;
               setWatchState(ws);
             }}
           />
@@ -161,12 +161,12 @@ const PreviewStatesComponent: FC = () => {
             type="number"
             className="form-control form-control-sm"
             min="0"
-            max="100"
+            max={watchState.paiGoal}
             value={watchState.pai}
             onChange={(e) => {
               const ws = { ...watchState };
               const v = parseInt(e.target.value);
-              ws.pai = !isNaN(v) ? Math.min(v, 100) : 0;
+              ws.pai = !isNaN(v) ? Math.min(v, watchState.paiGoal) : 0;
               setWatchState(ws);
             }}
           />
@@ -175,16 +175,47 @@ const PreviewStatesComponent: FC = () => {
             type="number"
             className="form-control form-control-sm"
             min="0"
-            max="12"
+            max={watchState.standupGoal}
             value={watchState.standup}
             onChange={(e) => {
               const ws = { ...watchState };
               const v = parseInt(e.target.value);
-              ws.standup = !isNaN(v) ? Math.min(v, 12) : 0;
+              ws.standup = !isNaN(v) ? Math.min(v, watchState.standupGoal) : 0;
               setWatchState(ws);
             }}
           />
         </div>
+        <div className="input-group input-group-sm mb-1">
+          <span className="input-group-text">Stress</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="999"
+            value={watchState.stress}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.stress = !isNaN(v) ? Math.min(v, 999) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <span className="input-group-text">Fat Burning</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="99"
+            value={watchState.fatBurning}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.fatBurning = !isNaN(v) ? Math.min(v, 99) : 0;
+              setWatchState(ws);
+            }}
+          />
+        </div>
+
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Weather Icon</span>
           <input
@@ -242,6 +273,81 @@ const PreviewStatesComponent: FC = () => {
               const ws = { ...watchState };
               const v = parseInt(e.target.value);
               ws.temperatureMax = !isNaN(v) ? Math.max(Math.min(v, 99), -99) : 0;
+              setWatchState(ws);
+            }}
+          />
+        </div>
+
+        <div className="input-group input-group-sm mb-1">
+          <span className="input-group-text">UV Index</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="11"
+            value={watchState.uvIndex}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.uvIndex = !isNaN(v) ? Math.min(v, 11) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <span className="input-group-text">Air Quality</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="500"
+            value={watchState.airQuality}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.airQuality = !isNaN(v) ? Math.min(v, 500) : 0;
+              setWatchState(ws);
+            }}
+          />
+        </div>
+        <div className="input-group input-group-sm mb-1">
+          <span className="input-group-text">Humidity</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="100"
+            value={watchState.humidity}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.humidity = !isNaN(v) ? Math.min(v, 100) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <span className="input-group-text">Windforce</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="12"
+            value={watchState.windForce}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.windForce = !isNaN(v) ? Math.min(v, 12) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <span className="input-group-text">Air Pressure</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max={watchState.airPressureGoal}
+            value={watchState.airPressure}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.airPressure = !isNaN(v) ? Math.min(v, watchState.airPressureGoal) : 0;
               setWatchState(ws);
             }}
           />
