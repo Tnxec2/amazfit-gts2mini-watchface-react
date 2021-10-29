@@ -60,7 +60,7 @@ const ActivityComponent: FC<IProps> = ({
   }
 
   return (
-    <Card className="activity">
+    <Card className="activity w-100">
       <Card.Header 
       className="d-flex justify-content-between align-items-center"
       onClick={() => setCollapsed(!collapsed)}>

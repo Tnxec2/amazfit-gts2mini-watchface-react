@@ -39,6 +39,7 @@ export default function drawActivityList(
     ) {
         let val = 0
         let total = 0
+        if (!activitys) return
         activitys.forEach((activity) => {
             switch (activity.type) {
                 case ActivityType.Battery:
