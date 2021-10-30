@@ -60,9 +60,9 @@ export function drawSystemFontFontRotated(
         }
     } else {
         ctx.rotate(Math.PI / 180 * (180 - systemFont.Angle) );
-        for (var i = 0; i < text.length; i++) {
-            let width = ctx.measureText(text[i]).width
-            ctx.fillText(text[i], 0, + systemFont.FontRotate.Radius);
+        for (var j = 0; j < text.length; j++) {
+            let width = ctx.measureText(text[j]).width
+            ctx.fillText(text[j], 0, + systemFont.FontRotate.Radius);
             let sp = width + spacing
             let spacingAngle = sp * 180 / (radius * Math.PI)
             ctx.rotate( Math.PI / 180 * -spacingAngle );

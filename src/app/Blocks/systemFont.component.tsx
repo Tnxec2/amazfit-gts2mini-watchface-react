@@ -52,7 +52,7 @@ const SystemFontComponent: FC<IProps> = ({
 
   function onChangeFollow(e) {
     const d = {...digit};
-    d.json.CombingMode = d.json.CombingMode === FollowType.Follow.json ? FollowType.Single.json : FollowType.Follow.json;
+    d.json.CombingMode = d.json.CombingMode !== FollowType.Single.json ? FollowType.Single.json : FollowType.Follow.json;
     onUpdate(d);
   }
 

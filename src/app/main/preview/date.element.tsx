@@ -69,19 +69,19 @@ export default function draw(ctx: CanvasRenderingContext2D,
             switch (item.type) {
                 case 0:
                     if (date.year.enabled) {
-                        followXY = drawDigit(ctx, images, date.year, watchState.year, date.year.json.CombingMode === FollowType.Follow.json ? followXY : null, drawborder, false, s[i])
+                        followXY = drawDigit(ctx, images, date.year, watchState.year, date.year.json.CombingMode === FollowType.Single.json ? null : followXY, drawborder, false, s[i])
                     }
                     break;
                 case 1:
                     if (date.month.enabled) {
-                        followXY = drawDigit(ctx, images, date.month, watchState.month, date.month.json.CombingMode === FollowType.Follow.json ? followXY : null, drawborder, false, s[i])
+                        followXY = drawDigit(ctx, images, date.month, watchState.month, date.month.json.CombingMode === FollowType.Single.json ? null : followXY, drawborder, false, s[i])
                     } else if (date.monthAsWord.enabled) {
                         drawDigit(ctx, images, date.monthAsWord, watchState.monthasword)
                     }
                     break;
                 case 2:
                     if (date.day.enabled) {
-                        followXY = drawDigit(ctx, images, date.day, watchState.day, date.day.json.CombingMode === FollowType.Follow.json ? followXY : null, drawborder, false, s[i])
+                        followXY = drawDigit(ctx, images, date.day, watchState.day, date.day.json.CombingMode === FollowType.Single.json ? null : followXY, drawborder, false, s[i])
                     }
                     break;
                 default:

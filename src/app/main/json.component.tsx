@@ -8,8 +8,6 @@ import Color from "../shared/color";
 import { Constant } from "../shared/constant";
 import cl from './JsonComponent.module.css';
 
-const langCode = 2
-
 const JsonComponent: FC = () => {
 
     const {watchface, jsonName } = useContext<IWatchContext>(WatchfaceContext);
@@ -20,7 +18,7 @@ const JsonComponent: FC = () => {
         let json = generateJson(watchface)
         setJson(json)
         saveJson(json)
-    }, [watchface])
+    }, [watchface]) // eslint-disable-line react-hooks/exhaustive-deps
 
     function generateJson(w: WatchFace): string {
         let timeDigitalEnabled = w.dialFace.hoursDigital.enabled || w.dialFace.minutesDigital.enabled || w.dialFace.secondsDigital.enabled || w.dialFace.am.enabled || w.dialFace.pm.enabled
@@ -41,8 +39,8 @@ const JsonComponent: FC = () => {
         let dateDigits = getDate(watchface)
         let dateDigitsAod = getDate(watchface.aod)
         
-        let activitys = getActivitys(watchface.activity)
-        let activitysAod = getActivitys(watchface.aod.activitylist)
+        let activitys = activitysToJson(watchface.activity)
+        let activitysAod = activitysToJson(watchface.aod.activitylist)
 
         let j: WatchJson = {
             Info: {
@@ -51,7 +49,7 @@ const JsonComponent: FC = () => {
             Background: w.background.imageIndex || w.background.color || w.background.previewIndex  ? {
                 Preview: w.background.previewIndex ? [
                     {
-                        LangCode: LangCodeType.toJson(langCode),
+                        LangCode: LangCodeType.All.json,
                         ImageSet: {
                             ImageIndex: w.background.previewIndex ,
                             ImagesCount: 1
@@ -148,7 +146,7 @@ const JsonComponent: FC = () => {
 
 export default JsonComponent;
 
-function getActivitys(alist: WatchActivity[]): Activity[] {
+export function activitysToJson(alist: WatchActivity[]): Activity[] {
     let activitys: Activity[] = []
     if (!alist) return activitys
     alist.forEach(item => {

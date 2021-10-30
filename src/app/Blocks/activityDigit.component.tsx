@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { WatchCommonDigit } from '../model/watchFace.model';
 import ImageDigitComponent from './imageDigit.component';
 import SystemFontComponent from './systemFont.component';
@@ -23,7 +23,6 @@ const ActivityDigitComponent: FC<IProps> = ({
     showNoData,
     paddingZeroFix,
   }) => {
-    const [collapsed, setCollapsed] = useState<boolean>(true);
 
     return (
         <div>

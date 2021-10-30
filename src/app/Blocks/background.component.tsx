@@ -43,13 +43,13 @@ const BackgroundComponent: FC = () => {
       {!collapsed ? (
         <Card.Body>
           <div className="input-group input-group-sm mb-1 flex-nowrap">
-            <span className="input-group-text">PreviewImage</span>
             <SelectFileListComponent
+              title='Preview'
               setSelectedFileIndex={onChangeBackgroundPreviewImage}
               imageIndex={watchface.background.previewIndex}
             />
-            <span className="input-group-text">ImageIndex</span>
             <SelectFileListComponent
+              title='Background'
               setSelectedFileIndex={onChangeBackgroundImageIndex}
               imageIndex={watchface.background.imageIndex}
             />

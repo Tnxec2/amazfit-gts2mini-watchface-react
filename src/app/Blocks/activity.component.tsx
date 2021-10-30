@@ -12,7 +12,7 @@ interface IProps {
   activity: WatchActivity;
   title: string;
   onUpdateActivity(activity: WatchActivity): void;
-  onDelete(): void;
+  onDelete(e): void;
   showDecimalPointer?: boolean;
   showDelimiter?: boolean;
   showNoData?: boolean;
@@ -61,11 +61,11 @@ const ActivityComponent: FC<IProps> = ({
 
   return (
     <Card className="activity w-100">
-      <Card.Header 
+      <Card.Header
       className="d-flex justify-content-between align-items-center"
       onClick={() => setCollapsed(!collapsed)}>
           <span className="input-group-text">{title}</span>
-          <button className="btn btn-outline-danger" type="button" onClick={onDelete}>Delete</button>
+          <button className="btn btn-outline-danger" type="button" onClick={(e) => {e.stopPropagation(); onDelete(e);}}>Delete</button>
       </Card.Header>
       {!collapsed ? (
         <Card.Body>

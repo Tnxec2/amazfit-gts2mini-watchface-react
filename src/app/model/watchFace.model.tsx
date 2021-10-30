@@ -576,11 +576,11 @@ export class WatchAOD {
       digitTypes.weekday
     );
 
-    this.activitylist = getActivitys(j.Activity);
+    this.activitylist = getActivityListFromJson(j.Activity);
   }
 }
 
-export function getActivity(a: Activity, atype: JsonType): WatchActivity {
+export function getActivityFromJson(a: Activity, atype: JsonType): WatchActivity {
   let _activity: WatchActivity = null;
   let _dt: IDigitConstructor = null;
   switch (atype) {
@@ -659,11 +659,11 @@ export function getActivity(a: Activity, atype: JsonType): WatchActivity {
   return _activity
 }
 
-function getActivitys(ar: Activity[]): WatchActivity[] | null {
+export function getActivityListFromJson(ar: Activity[]): WatchActivity[] | null {
   if (ar) {
     let activitylist: WatchActivity[] = []
     ar.forEach((a) => {
-      let _a = getActivity(a, ActivityType.findByJson(a.Type))
+      let _a = getActivityFromJson(a, ActivityType.findByJson(a.Type))
       if (_a) activitylist.push(_a)
     });
     return activitylist;
@@ -807,7 +807,7 @@ export default class WatchFace {
 
     this.status = new WatchStatus(j.System?.Status);
 
-    this.activity = getActivitys(j.System.Activity)
+    this.activity = getActivityListFromJson(j.System.Activity)
 
     this.widgets = new WatchWidgets(j.Widgets)
     this.aod = new WatchAOD(j.ScreenIdle)

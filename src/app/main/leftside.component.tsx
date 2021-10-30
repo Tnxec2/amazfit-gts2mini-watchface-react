@@ -3,11 +3,13 @@ import { WatchfaceContext } from "../context";
 import ScreenNormalcomponent from "./screennormal.component";
 import PreviewStatesComponent from "./previewstates.component";
 import AodComponent from "./aod.component";
+import WidgetsComponent from "./widgets.component";
 
 const tabs = [
   { id: 0, name: "Screen normal" },
   { id: 1, name: "AOD" },
-  { id: 2, name: "Preview State" },
+  { id: 2, name: "Widgets" },
+  { id: 3, name: "Preview State" },
 ];
 
 const LeftSideComponent: FC = () => {
@@ -46,6 +48,10 @@ const LeftSideComponent: FC = () => {
           <AodComponent />
         </div>
       ) : tabLeft === 2 ? (
+        <div className="mt-3 blocks">
+          <WidgetsComponent />
+        </div>
+      ) : tabLeft === 3 ? (
         <div className="mt-3">
           <PreviewStatesComponent />
         </div>

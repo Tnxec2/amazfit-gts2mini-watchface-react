@@ -59,17 +59,17 @@ export default function drawTimeDigital(
 
     if (timeDigital.hoursDigital?.enabled) {
         followXY = drawDigit(ctx, images, timeDigital.hoursDigital, watchState.hours,
-            timeDigital.hoursDigital.json.CombingMode === FollowType.Follow.json ? followXY : null, digitBorder, false, s_hours)
+            timeDigital.hoursDigital.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, s_hours)
     }
 
     if (timeDigital.minutesDigital?.enabled) {
         followXY = drawDigit(ctx, images, timeDigital.minutesDigital, watchState.minutes, 
-            timeDigital.minutesDigital.json.CombingMode === FollowType.Follow.json ? followXY : null, digitBorder, true, s_minutes)
+            timeDigital.minutesDigital.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, true, s_minutes)
     }
 
     if (timeDigital.secondsDigital?.enabled) {
-        followXY = drawDigit(ctx, images, timeDigital.secondsDigital, watchState.seconds, 
-            timeDigital.secondsDigital.json.CombingMode === FollowType.Follow.json ? followXY : null, digitBorder, true, s_seconds)
+        drawDigit(ctx, images, timeDigital.secondsDigital, watchState.seconds, 
+            timeDigital.secondsDigital.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, true, s_seconds)
     }
 
     if (timeDigital.am && watchState.hours < 12) {

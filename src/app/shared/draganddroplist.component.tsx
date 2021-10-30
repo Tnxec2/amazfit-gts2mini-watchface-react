@@ -1,10 +1,15 @@
 import React, { FC, useState } from "react";
-import { ElementOrderItem } from "../model/watchFace.model";
 import "./draganddroplist.css";
 
+
+export interface IDNDItem<T> {
+  item: T,
+  reactItem: React.ReactChild
+}
+
 interface IProps {
-  _list: any[];
-  updateOrder(list: ElementOrderItem[]);
+  _list: IDNDItem<any>[];
+  updateOrder(list: IDNDItem<any>[]);
 }
 
 const initialDnDState = {
@@ -16,7 +21,6 @@ const initialDnDState = {
 };
 
 const DnDListComponent: FC<IProps> = ({ _list, updateOrder }) => {
-  const [list, setList] = useState<ElementOrderItem[]>(_list);
   const [dragAndDrop, setDragAndDrop] = useState(initialDnDState);
 
   // onDragStart fires when an element
@@ -28,7 +32,7 @@ const DnDListComponent: FC<IProps> = ({ _list, updateOrder }) => {
       ...dragAndDrop,
       draggedFrom: initialPosition,
       isDragging: true,
-      originalOrder: list,
+      originalOrder: _list,
     });
 
     // Note: this is only for Firefox.
@@ -76,7 +80,7 @@ const DnDListComponent: FC<IProps> = ({ _list, updateOrder }) => {
   }
 
   function onDrop(event) {
-    setList(dragAndDrop.updatedOrder);
+    updateOrder(dragAndDrop.updatedOrder);
 
     setDragAndDrop({
       ...dragAndDrop,
@@ -96,7 +100,7 @@ const DnDListComponent: FC<IProps> = ({ _list, updateOrder }) => {
   return (
     <>
       <ul className="list-group droplist">
-        {list.map((item, index) => {
+        {_list.map((item, index) => {
           return (
             <li
               key={index}
@@ -112,7 +116,7 @@ const DnDListComponent: FC<IProps> = ({ _list, updateOrder }) => {
                   : ""
               }`}
             >
-              {item.title}
+                {item.reactItem}
             </li>
           );
         })}

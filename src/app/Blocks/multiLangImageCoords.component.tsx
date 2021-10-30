@@ -22,20 +22,37 @@ const MultilangImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdat
     return index >= 0 ? index : 0
   }
 
-  function onChangeImageIndex(index: number) {
-    const d = {...imageCoords};
-    if (!d.json.ImageSet) {
+  function toggle() {
+    const d = { ...imageCoords };
+    d.enabled = !d.enabled;
+    if ( !d.json.ImageSet) {
       d.json.ImageSet = []
+      let digitimage = new MultilangImage()
+      digitimage.ImageSet.ImagesCount = d.count
+      d.json.ImageSet[0] = digitimage
     }
-    if (!d.json.ImageSet[imageSetIndex]) {
-      let length = d.json.ImageSet.push(new MultilangImage())
-      d.json.ImageSet[length-1].LangCode = LangCodeType.All.json;
-      d.json.ImageSet[length-1].ImageSet.ImageIndex = index;
-      d.json.ImageSet[length-1].ImageSet.ImagesCount = d.count;
-    } else {
-      d.json.ImageSet[imageSetIndex].ImageSet.ImageIndex = index;
-    }
-    onUpdate(d);
+  }
+
+  function changeImageIndex(ix: number) {
+    const ip = { ...imageCoords };
+    ip.json.ImageSet[imageSetIndex].ImageSet.ImageIndex = ix;
+    onUpdate(ip);
+  }
+
+  function changeX(e) {
+    const ip = { ...imageCoords };
+    let x = parseInt(e.target.value);
+    if (!ip.json.Coordinates) ip.json.Coordinates = new Coordinates()
+    ip.json.Coordinates.X = !isNaN(x) ? x : 0;
+    onUpdate(ip);
+  }
+
+  function changeY(e) {
+    const ip = { ...imageCoords };
+    let y = parseInt(e.target.value);
+    if (!ip.json.Coordinates) ip.json.Coordinates = new Coordinates()
+    ip.json.Coordinates.Y = !isNaN(y) ? y : 0;
+    onUpdate(ip);
   }
 
   return (
@@ -48,16 +65,7 @@ const MultilangImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdat
               className="form-check-input mt-0"
               type="checkbox"
               checked={imageCoords.enabled}
-              onChange={() => {
-                const d = { ...imageCoords };
-                d.enabled = !d.enabled;
-                if ( !d.json.ImageSet) {
-                  d.json.ImageSet = []
-                  let digitimage = new MultilangImage()
-                  digitimage.ImageSet.ImagesCount = d.count
-                  d.json.ImageSet[0] = digitimage
-                }}
-              }
+              onChange={toggle}
             />
           </div>
         </div>
@@ -65,13 +73,9 @@ const MultilangImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdat
       {imageCoords.enabled ? (
         <Card.Body>
           <div className="input-group input-group-sm">
-            <span className="input-group-text">ImageIndex</span>
             <SelectFileListComponent
-              setSelectedFileIndex={(ix) => {
-                const ip = { ...imageCoords };
-                ip.json.ImageSet[imageSetIndex].ImageSet.ImageIndex = ix;
-                onUpdate(ip);
-              }}
+              title='ImageIndex'
+              setSelectedFileIndex={changeImageIndex}
               imageIndex={imageCoords.json?.ImageSet[imageSetIndex]?.ImageSet.ImageIndex}
             />
             <span className="input-group-text" id="addon-wrapping">
@@ -81,13 +85,7 @@ const MultilangImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdat
               type="number"
               className="form-control form-control-sm"
               value={imageCoords.json.Coordinates?.X}
-              onChange={(e) => {
-                const ip = { ...imageCoords };
-                let x = parseInt(e.target.value);
-                if (!ip.json.Coordinates) ip.json.Coordinates = new Coordinates()
-                ip.json.Coordinates.X = !isNaN(x) ? x : 0;
-                onUpdate(ip);
-              }}
+              onChange={changeX}
             />
             <span className="input-group-text" id="addon-wrapping">
               Y
@@ -96,13 +94,7 @@ const MultilangImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdat
               type="number"
               className="form-control form-control-sm"
               value={imageCoords.json.Coordinates?.Y}
-              onChange={(e) => {
-                const ip = { ...imageCoords };
-                let y = parseInt(e.target.value);
-                if (!ip.json.Coordinates) ip.json.Coordinates = new Coordinates()
-                ip.json.Coordinates.Y = !isNaN(y) ? y : 0;
-                onUpdate(ip);
-              }}
+              onChange={changeY}
             />
           </div>
         </Card.Body>

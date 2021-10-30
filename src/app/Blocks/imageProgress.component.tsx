@@ -10,6 +10,36 @@ interface IProps {
 
 const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
 
+  function toggle() {
+    const ip = { ...imageProgress };
+    ip.enabled = !ip.enabled;
+    onUpdate(ip);
+  }
+
+  function changeImageIndex(i: number) {
+    let ip = { ...imageProgress };
+    ip.json.ImageSet.ImageIndex = i;
+    onUpdate(ip);
+  }
+
+  function changeCount(e) {
+    const d = { ...imageProgress };
+    d.json.ImageSet.ImagesCount = parseInt(e.target.value);
+    onUpdate(d);
+  }
+
+  function changeX(e, index: number) {
+    const d = {...imageProgress};
+    d.json.Coordinates[index].X = parseInt(e.target.value);
+    onUpdate(d);
+  }
+
+  function changeY(e, index: number) {
+    const d = {...imageProgress};
+    d.json.Coordinates[index].Y = parseInt(e.target.value);
+    onUpdate(d);
+  }
+
   return (
     <Card>
       <Card.Header>
@@ -20,11 +50,7 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
               className="form-check-input mt-0"
               type="checkbox"
               checked={imageProgress.enabled}
-              onChange={() => {
-                const ip = { ...imageProgress };
-                ip.enabled = !ip.enabled;
-                onUpdate(ip);
-              }}
+              onChange={toggle}
             />
           </div>
         </div>
@@ -32,13 +58,9 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
       {imageProgress.enabled ? (
         <Card.Body>
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text">ImageIndex</span>
             <SelectFileListComponent
-              setSelectedFileIndex={(i) => {
-                let ip = imageProgress;
-                ip.json.ImageSet.ImageIndex = i;
-                onUpdate(ip);
-              }}
+              title='ImageIndex'
+              setSelectedFileIndex={changeImageIndex}
               imageIndex={imageProgress.json.ImageSet.ImageIndex}
             />
             <span className="input-group-text" id="addon-wrapping">
@@ -48,11 +70,7 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
               type="number"
               className="form-control form-control-sm"
               value={imageProgress.json.ImageSet.ImagesCount}
-              onChange={(e) => {
-                const d = imageProgress;
-                d.json.ImageSet.ImagesCount = parseInt(e.target.value);
-                onUpdate(d);
-              }}
+              onChange={changeCount}
             />
           </div>
             { imageProgress.json.Coordinates.map((coords, index) => (
@@ -67,11 +85,7 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
                   type="number"
                   className="form-control form-control-sm"
                   value={coords.X}
-                  onChange={(e) => {
-                    const d = imageProgress;
-                    coords.X = parseInt(e.target.value);
-                    onUpdate(d);
-                  }}
+                  onChange={(e) => changeX(e, index)}
                 />
                 <span className="input-group-text">
                   Y
@@ -80,11 +94,7 @@ const ImageProgressComponent: FC<IProps> = ({ imageProgress, onUpdate }) => {
                   type="number"
                   className="form-control form-control-sm"
                   value={coords.Y}
-                  onChange={(e) => {
-                    const d = imageProgress;
-                    coords.Y = parseInt(e.target.value);
-                    onUpdate(d);
-                  }}
+                  onChange={(e) => changeY(e, index)}
                 />
               </div>
             ))

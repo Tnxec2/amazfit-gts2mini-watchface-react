@@ -29,8 +29,8 @@ const BackgroundAODComponent: FC = () => {
       {!collapsed ? (
         <Card.Body>
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text">ImageIndex</span>
             <SelectFileListComponent
+              title='Background'
               setSelectedFileIndex={onChangeBackgroundImageIndex}
               imageIndex={watchface.aod.backgroundImageIndex}
             />

@@ -33,8 +33,8 @@ const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
       {imageCoords.enabled ? (
         <Card.Body>
           <div className="input-group input-group-sm">
-            <span className="input-group-text">ImageIndex</span>
             <SelectFileListComponent
+              title='ImageIndex'
               setSelectedFileIndex={(ix) => {
                 const ip = { ...imageCoords };
                 ip.json.ImageIndex = ix;

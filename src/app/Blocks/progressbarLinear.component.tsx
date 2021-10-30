@@ -114,8 +114,8 @@ const ProgressbarLinearCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
             />
           </div>
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text">Image</span>
             <SelectFileListComponent
+              title='Foreground'
               setSelectedFileIndex={(i) => {
                 const ip = { ...progressBar };
                 ip.jsonObj.ForegroundImageIndex = i;
@@ -160,8 +160,8 @@ const ProgressbarLinearCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
             </div>
           </div>
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text">Pointer</span>
             <SelectFileListComponent
+              title='Pointer'
               setSelectedFileIndex={(i) => {
                 const ip = { ...progressBar };
                 ip.jsonObj.PointerImageIndex = i;
@@ -169,8 +169,8 @@ const ProgressbarLinearCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               }}
               imageIndex={progressBar.jsonObj.PointerImageIndex}
             />
-            <span className="input-group-text">Background</span>
             <SelectFileListComponent
+              title='Background'
               setSelectedFileIndex={(i) => {
                 const ip = { ...progressBar };
                 ip.jsonObj.BackgroundImageIndex = i;

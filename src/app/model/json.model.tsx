@@ -38,7 +38,7 @@ export class Widgets {
   Widget: Widget[];
   TopMaskImageIndex: number;
   UnderMaskImageIndex: number;
-  Unknown4: number;
+  Unknown4: number = 0;
 }
 
 export class ScreenIdle {
@@ -48,16 +48,23 @@ export class ScreenIdle {
   BackgroundImageIndex: number;
 }
 
+export class ImageCoord {
+  Coordinates: Coordinates = new Coordinates();
+  ImageIndex: number = null;
+  ImageIndex2: number = null;
+  ImageIndex3: number = null;
+}
+
 export class Widget {
-  X: number;
-  Y: number;
-  Width: number;
-  Height: number;
-  WidgetElement: WidgetElement[];
+  X: number = 0;
+  Y: number = 0;
+  Width: number = 0;
+  Height: number = 0;
+  WidgetElement: WidgetElement[] = [];
   BorderActivImageIndex: number;
   BorderInactivImageIndex: number;
-  DescriptionImageBackground: ImageCoord;
-  DescriptionWidthCheck: number;
+  DescriptionImageBackground: ImageCoord = new ImageCoord();
+  DescriptionWidthCheck: number = 0;
 }
 
 export class WidgetElement {
@@ -188,16 +195,6 @@ export class MultilangImageCoord {
     }
   ];
 }
-
-
-
-export class ImageCoord {
-  Coordinates: Coordinates = new Coordinates();
-  ImageIndex: number = null;
-  ImageIndex2: number = null;
-  ImageIndex3: number = null;
-}
-
 
 export class Text {
   Image: Image;

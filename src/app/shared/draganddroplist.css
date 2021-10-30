@@ -6,7 +6,7 @@ ul.droplist {
 ul.droplist > li {
     display: flex;
     align-items: center;
-    cursor: move;
+    /* cursor: move; */
  }
 
 ul.droplist > li.dropArea {

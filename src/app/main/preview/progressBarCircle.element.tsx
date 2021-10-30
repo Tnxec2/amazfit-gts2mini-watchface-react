@@ -129,8 +129,8 @@ function drawArcPath(ctx: CanvasRenderingContext2D, flatness: number, x: number,
         let x3 = x + (radius+width/2) * Math.cos(Math.PI * (startAngle - 90) / 180)
         let y3 = y + (radius+width/2) * Math.sin(Math.PI * (startAngle - 90) / 180)
         
-        let x4 = x + (radius+width/2) * Math.cos(Math.PI * (endAngle - 90) / 180)
-        let y4 = y + (radius+width/2) * Math.sin(Math.PI * (endAngle - 90) / 180)
+        //let x4 = x + (radius+width/2) * Math.cos(Math.PI * (endAngle - 90) / 180)
+        //let y4 = y + (radius+width/2) * Math.sin(Math.PI * (endAngle - 90) / 180)
 
         let x5 = x + (radius) * Math.cos(Math.PI * (endAngle + ( clockwise ? 1 : -1) * width/2 * 360 / (2 * Math.PI * (radius - width / 2)) - 90) / 180)
         let y5 = y + (radius) * Math.sin(Math.PI * (endAngle + ( clockwise ? 1 : -1) * width/2 * 360 / (2 * Math.PI * (radius - width / 2)) - 90) / 180)
@@ -156,8 +156,8 @@ function drawArcPath(ctx: CanvasRenderingContext2D, flatness: number, x: number,
         let x2 = x + (radius+width/2) * Math.cos(Math.PI * (startAngle - 90) / 180)
         let y2 = y + (radius+width/2) * Math.sin(Math.PI * (startAngle - 90) / 180)
         
-        let x3 = x + (radius+width/2) * Math.cos(Math.PI * (endAngle - 90) / 180)
-        let y3 = y + (radius+width/2) * Math.sin(Math.PI * (endAngle - 90) / 180)
+        //let x3 = x + (radius+width/2) * Math.cos(Math.PI * (endAngle - 90) / 180)
+        //let y3 = y + (radius+width/2) * Math.sin(Math.PI * (endAngle - 90) / 180)
         
         let x4 = x + (radius-width/2) * Math.cos(Math.PI * (endAngle - 90) / 180)
         let y4 = y + (radius-width/2) * Math.sin(Math.PI * (endAngle - 90) / 180)

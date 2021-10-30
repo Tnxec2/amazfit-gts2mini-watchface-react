@@ -3,11 +3,13 @@ import { Constant } from "./constant";
 import { IWatchContext, WatchfaceContext } from "../context";
 import "./selectFileList.css";
 interface IProps {
+  title: string,
   imageIndex: number;
   setSelectedFileIndex(id: number): void;
 }
 
 const SelectFileListComponent: FC<IProps> = ({
+  title,
   imageIndex,
   setSelectedFileIndex,
 }) => {
@@ -52,6 +54,7 @@ const SelectFileListComponent: FC<IProps> = ({
   
   return (
     <>
+      <span className="input-group-text">{title}</span>
       <div className="input-group-text dropdown">
         <div>
           {imageIndex !== null &&

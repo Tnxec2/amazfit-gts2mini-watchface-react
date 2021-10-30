@@ -18,6 +18,95 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
     else pBar.jsonObj.Flatness = 0;
     onUpdate(pBar);
   }
+
+  function toggle() {
+    const pb = { ...progressBar };
+    pb.enabledCircle = !pb.enabledCircle;
+    if (!pb.jsonObj)
+      pb.jsonObj = new ProgressBar();
+    if (!pb.jsonObj.AngleSettings)
+      pb.jsonObj.AngleSettings = new AngleSettings();
+    onUpdate(pb);
+  }
+
+  function changeX(e) {
+    const d = { ...progressBar };
+    const v = parseInt(e.target.value);
+    if (!isNaN(v)) {
+      d.jsonObj.AngleSettings.X = v;
+      onUpdate(d);
+    }
+  }
+
+  function changeY(e) {
+    const d = { ...progressBar };
+    const v = parseInt(e.target.value);
+    if (!isNaN(v)) {
+      d.jsonObj.AngleSettings.Y = v;
+      onUpdate(d);
+    }
+  }
+
+  function changeRadius(e) {
+    const d = { ...progressBar };
+    const v = parseInt(e.target.value);
+    if (!isNaN(v)) {
+      d.jsonObj.AngleSettings.Radius = Math.abs(v);
+      onUpdate(d);
+    }
+  }
+
+  function changeWidth(e) {
+    const d = { ...progressBar };
+    const v = parseInt(e.target.value);
+    if (!isNaN(v)) {
+      d.jsonObj.Width = Math.max(0, Math.min(v, 100));
+      onUpdate(d);
+    }
+  }
+
+  function changeStartAngle(e) {
+    const d = { ...progressBar };
+    const v = parseInt(e.target.value);
+    if (!isNaN(v)) {
+      d.jsonObj.AngleSettings.StartAngle = v;
+      onUpdate(d);
+    }
+  }
+
+  function changeEndAngle(e) {
+    const d = { ...progressBar };
+    const v = parseInt(e.target.value);
+    if (!isNaN(v)) {
+      d.jsonObj.AngleSettings.EndAngle = v;
+      onUpdate(d);
+    }
+  }
+
+  function changeForegroundImageIndex(i: number) {
+    const ip = { ...progressBar };
+    ip.jsonObj.ForegroundImageIndex = i;
+    onUpdate(ip);
+  }
+
+  function changeColor(e) {
+    const d = { ...progressBar };
+    d.jsonObj.Color = Color.colorWrite(e.target.value);
+    onUpdate(d);
+  }
+
+  function changePointerImageIndex(i: number) {
+    const ip = { ...progressBar };
+    ip.jsonObj.PointerImageIndex = i;
+    onUpdate(ip);
+  }
+
+  function changeBackgroundImageIndex(i: number) {
+    const ip = { ...progressBar };
+    ip.jsonObj.BackgroundImageIndex = i;
+    onUpdate(ip);
+  }
+
   return (
     <Card>
       <Card.Header>
@@ -28,15 +117,7 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               className="form-check-input mt-0"
               type="checkbox"
               checked={progressBar.enabledCircle}
-              onChange={() => {
-                const pb = { ...progressBar };
-                pb.enabledCircle = !pb.enabledCircle;
-                if (!pb.jsonObj)
-                  pb.jsonObj = new ProgressBar();
-                if (!pb.jsonObj.AngleSettings)
-                  pb.jsonObj.AngleSettings = new AngleSettings();
-                onUpdate(pb);
-              }}
+              onChange={toggle}
             />
           </div>
         </div>
@@ -54,14 +135,7 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               type="number"
               className="form-control form-control-sm"
               value={progressBar.jsonObj.AngleSettings.X}
-              onChange={(e) => {
-                const d = { ...progressBar };
-                const v = parseInt(e.target.value);
-                if (!isNaN(v)) {
-                  d.jsonObj.AngleSettings.X = v;
-                  onUpdate(d);
-                }
-              }}
+              onChange={changeX}
             />
             <span className="input-group-text" id="addon-wrapping">
               Y
@@ -70,14 +144,7 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               type="number"
               className="form-control form-control-sm"
               value={progressBar.jsonObj.AngleSettings.Y}
-              onChange={(e) => {
-                const d = { ...progressBar };
-                const v = parseInt(e.target.value);
-                if (!isNaN(v)) {
-                  d.jsonObj.AngleSettings.Y = v;
-                  onUpdate(d);
-                }
-              }}
+              onChange={changeY}
             />
           </div>
           <div className="input-group input-group-sm mb-1">
@@ -88,14 +155,7 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               type="number"
               className="form-control form-control-sm"
               value={progressBar.jsonObj.AngleSettings.Radius}
-              onChange={(e) => {
-                const d = { ...progressBar };
-                const v = parseInt(e.target.value);
-                if (!isNaN(v)) {
-                  d.jsonObj.AngleSettings.Radius = Math.abs(v);
-                  onUpdate(d);
-                }
-              }}
+              onChange={changeRadius}
             />
             <span className="input-group-text" id="addon-wrapping">
               Width
@@ -106,14 +166,7 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               min="0"
               max="100"
               value={progressBar.jsonObj.Width}
-              onChange={(e) => {
-                const d = { ...progressBar };
-                const v = parseInt(e.target.value);
-                if (!isNaN(v)) {
-                  d.jsonObj.Width = Math.max(0, Math.min(v, 100));
-                  onUpdate(d);
-                }
-              }}
+              onChange={changeWidth}
             />
             <span className="input-group-text" id="addon-wrapping">
               Start angle
@@ -122,14 +175,7 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               type="number"
               className="form-control form-control-sm"
               value={progressBar.jsonObj.AngleSettings.StartAngle}
-              onChange={(e) => {
-                const d = { ...progressBar };
-                const v = parseInt(e.target.value);
-                if (!isNaN(v)) {
-                  d.jsonObj.AngleSettings.StartAngle = v;
-                  onUpdate(d);
-                }
-              }}
+              onChange={changeStartAngle}
             />
             <span className="input-group-text" id="addon-wrapping">
               End angle
@@ -138,24 +184,13 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               type="number"
               className="form-control form-control-sm"
               value={progressBar.jsonObj.AngleSettings.EndAngle}
-              onChange={(e) => {
-                const d = { ...progressBar };
-                const v = parseInt(e.target.value);
-                if (!isNaN(v)) {
-                  d.jsonObj.AngleSettings.EndAngle = v;
-                  onUpdate(d);
-                }
-              }}
+              onChange={changeEndAngle}
             />
           </div>
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text">Image</span>
             <SelectFileListComponent
-              setSelectedFileIndex={(i) => {
-                const ip = { ...progressBar };
-                ip.jsonObj.ForegroundImageIndex = i;
-                onUpdate(ip);
-              }}
+              title='Foreground image'
+              setSelectedFileIndex={changeForegroundImageIndex}
               imageIndex={progressBar.jsonObj.ForegroundImageIndex}
             />
             <span className="input-group-text">Color</span>
@@ -165,11 +200,7 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
                 className="form-control form-control-sm"
                 style={{ width: 40 }}
                 value={Color.colorRead(progressBar.jsonObj.Color)}
-                onChange={(e) => {
-                  const d = { ...progressBar };
-                  d.jsonObj.Color = Color.colorWrite(e.target.value);
-                  onUpdate(d);
-                }}
+                onChange={changeColor}
                 defaultValue="#000000"
                 title="Choose progress bar color"
               />
@@ -201,22 +232,14 @@ const ProgressbarCircleCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
             </div>
           </div>
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text">Pointer</span>
             <SelectFileListComponent
-              setSelectedFileIndex={(i) => {
-                const ip = { ...progressBar };
-                ip.jsonObj.PointerImageIndex = i;
-                onUpdate(ip);
-              }}
+              title='Pointer'
+              setSelectedFileIndex={changePointerImageIndex}
               imageIndex={progressBar.jsonObj.PointerImageIndex}
             />
-            <span className="input-group-text">Background</span>
             <SelectFileListComponent
-              setSelectedFileIndex={(i) => {
-                const ip = { ...progressBar };
-                ip.jsonObj.BackgroundImageIndex = i;
-                onUpdate(ip);
-              }}
+              title='Background image'
+              setSelectedFileIndex={changeBackgroundImageIndex}
               imageIndex={progressBar.jsonObj.BackgroundImageIndex}
             />
           </div>

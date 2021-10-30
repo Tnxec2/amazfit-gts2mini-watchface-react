@@ -28,6 +28,9 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
   const { images, watchface, watchState, previewScreenNormal } =
     useContext<IWatchContext>(WatchfaceContext);
 
+  const [borderWidget, setBorderWidget] = useState<boolean>(false)
+  const [showWidgetPreview, setShowWidgetPreview] = useState<boolean>(false)
+
   const [x, setX] = useState<number>(0);
   const [y, setY] = useState<number>(0);
   const [whiteGrid, setWhiteGrid] = useState<boolean>(
@@ -84,17 +87,19 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       drawStatus(ctx, images, watchface.status, watchState);
     }
     if (watchface.widgets.enabled) {
-      drawWidgets(ctx, images, watchface.widgets.json, watchState, digitBorder)
+      drawWidgets(ctx, images, watchface.widgets.json, watchState, digitBorder, borderWidget, showWidgetPreview)
     }
     if (watchface.dialFace) {
-      drawTimeDigital(
-        ctx,
-        images,
-        watchface.dialFace,
-        watchState,
-        digitBorder
-      );
-      drawTimeAnalog(ctx, images, watchface.dialFace, watchState);
+      if (!showWidgetPreview || watchface.widgets?.json.Unknown4 === 1) {
+        drawTimeDigital(
+          ctx,
+          images,
+          watchface.dialFace,
+          watchState,
+          digitBorder
+        );
+        drawTimeAnalog(ctx, images, watchface.dialFace, watchState);
+      }
     }
   }
   
@@ -226,10 +231,8 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       </div>
 
       <div className="container d-flex justify-content-center">
-        <div
-          className="input-group input-group-sm"
-          style={{ width: "max-content" }}
-        >
+        <div>
+        <div className="input-group input-group-sm" style={{ width: "max-content" }}>
           <span className="input-group-text" id="addon-wrapping">
             White grid
           </span>
@@ -263,6 +266,31 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
               onChange={onToggleDigitBorder}
             />
           </div>
+        </div>
+        <div className="input-group input-group-sm" style={{ width: "max-content" }}>
+          <span className="input-group-text" id="addon-wrapping">
+            border on widgets
+          </span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={borderWidget}
+              onChange={() => setBorderWidget(!borderWidget)}
+            />
+          </div>
+          <span className="input-group-text" id="addon-wrapping">
+            show preview of widgets
+          </span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={showWidgetPreview}
+              onChange={() => setShowWidgetPreview(!showWidgetPreview)}
+            />
+          </div>
+        </div>
         </div>
       </div>
     </>

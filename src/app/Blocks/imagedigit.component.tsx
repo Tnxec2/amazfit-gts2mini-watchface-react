@@ -1,9 +1,9 @@
 import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
-import SelectFileListComponent from "../shared/selectFileList.component";
-import { DigitalDigit, Image, MultilangImage } from "../model/json.model";
+import { Image, MultilangImage } from "../model/json.model";
 import { AlignmentType, FollowType, LangCodeType } from "../model/types.model";
 import { WatchCommonDigit } from "../model/watchFace.model";
+import SelectFileListComponent from "../shared/selectFileList.component";
 
 interface IProps {
   title: string;
@@ -96,7 +96,7 @@ const ImageDigitComponent: FC<IProps> = ({
 
   function onChangeFollow(e) {
     const d = {...digit};
-    d.json.CombingMode = d.json.CombingMode === FollowType.Follow.json ? FollowType.Single.json : FollowType.Follow.json;
+    d.json.CombingMode = d.json.CombingMode !== FollowType.Single.json ? FollowType.Single.json : FollowType.Follow.json;
     onUpdate(d);
   }
 
@@ -174,8 +174,8 @@ const ImageDigitComponent: FC<IProps> = ({
         <Card.Body>
           { !onCopyFromNormal ? '' : <div style={{clear:'both'}}><button className='btn btn-sm btn-secondary mb-1' style={{float:'right'}} onClick={onCopyFromNormal}>Copy from normal screen</button></div> }
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text">{imageSetIndex} ImageIndex</span>
             <SelectFileListComponent
+              title='ImageIndex'
               setSelectedFileIndex={onChangeImageIndex}
               imageIndex={digit.json?.Digit?.Image?.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex}
             />
@@ -201,8 +201,8 @@ const ImageDigitComponent: FC<IProps> = ({
           </div>
           {!digit.json.Digit.DisplayFormAnalog ? (
             <div className="input-group input-group-sm">
-              <span className="input-group-text">Unit</span>
               <SelectFileListComponent
+                title='Unit'
                 setSelectedFileIndex={onChangeUnit}
                 imageIndex={digit.json?.Digit?.Image?.MultilangImageUnit ? digit.json?.Digit?.Image?.MultilangImageUnit[unitImageSetIndex].ImageSet?.ImageIndex : null}
               />
@@ -212,8 +212,8 @@ const ImageDigitComponent: FC<IProps> = ({
           )}
           {showNoData ? (
             <div className="input-group input-group-sm">
-              <span className="input-group-text">NoData</span>
               <SelectFileListComponent
+                title='NoData'
                 setSelectedFileIndex={onChangeNoData}
                 imageIndex={digit.json?.Digit?.Image?.NoDataImageIndex}
               />
@@ -223,8 +223,8 @@ const ImageDigitComponent: FC<IProps> = ({
           )}
           {showDelimiter ? (
             <div className="input-group input-group-sm">
-              <span className="input-group-text">Minus</span>
               <SelectFileListComponent
+                title='Minus'
                 setSelectedFileIndex={onChangeDelimiter}
                 imageIndex={digit.json?.Digit?.Image?.DelimiterImageIndex}
               />
@@ -234,8 +234,8 @@ const ImageDigitComponent: FC<IProps> = ({
           )}
           {showDecimalPointer ? (
             <div className="input-group input-group-sm">
-              <span className="input-group-text">Decimal pointer</span>
               <SelectFileListComponent
+                title='Decimal pointer'
                 setSelectedFileIndex={onChangeDecimalPointer}
                 imageIndex={digit.json?.Digit?.Image?.DecimalPointImageIndex}
               />
@@ -302,8 +302,8 @@ const ImageDigitComponent: FC<IProps> = ({
               </div>
 
               <div className="input-group input-group-sm">
-                <span className="input-group-text">Separator</span>
                 <SelectFileListComponent
+                  title='Separator'
                   setSelectedFileIndex={onChangeSeparator}
                   imageIndex={digit.json?.Separator?.ImageIndex}
                 />

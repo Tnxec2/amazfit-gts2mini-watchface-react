@@ -2,7 +2,6 @@ import { IImage } from "../../model/image.model";
 import { ActivityType, FollowType } from "../../model/types.model";
 import { WatchActivity } from "../../model/watchFace.model";
 import { WatchState } from "../../model/watchState";
-import drawclockhand from "./clockHand.element";
 import drawDigit from "./digit.element";
 import drawImageCoords from "./imageCoords.element";
 import drawImageProgress from "./imageProgress.element";
@@ -207,15 +206,15 @@ export default function drawActivityList(
 }
 
 function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchActivity, values: IDigitDraw, digitBorder: boolean) {
-    let followxy = null
+    let followXY = null
     if (a.digit?.enabled) {
-        followxy = drawDigit(ctx, images, a.digit, values.cur.value, followxy, digitBorder, false, getSystemFontText(a.digit, values.cur.value))
+        followXY = drawDigit(ctx, images, a.digit, values.cur.value, followXY, digitBorder, false, getSystemFontText(a.digit, values.cur.value))
     }
     if (a.digitMin?.enabled && values.min) {
-        followxy = drawDigit(ctx, images, a.digitMin, values.min.value, a.digitMin.json.CombingMode === FollowType.Follow.json ? followxy : null, digitBorder, false, getSystemFontText(a.digitMin, values.min.value))
+        followXY = drawDigit(ctx, images, a.digitMin, values.min.value, a.digitMin.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMin, values.min.value))
     }
     if (a.digitMax?.enabled && values.max) {
-        drawDigit(ctx, images, a.digitMax, values.max.value, a.digitMax.json.CombingMode === FollowType.Follow.json ? followxy : null, digitBorder, false, getSystemFontText(a.digitMax, values.max.value))
+        drawDigit(ctx, images, a.digitMax, values.max.value, a.digitMax.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMax, values.max.value))
     }
     if (a.imageProgress.enabled) {
         drawImageProgress(ctx, images, a.imageProgress, values.imageProgress.value, values.imageProgress.total)
@@ -227,7 +226,7 @@ function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchA
         drawProgressBarCircle(ctx, images, a.progressBar, values.cur.value, values.cur.total)
     }
     if (a.pointerProgress.enabled) {
-        drawPointer(ctx, images, a.pointerProgress, values.cur.value, values.cur.total)
+        drawPointer(ctx, images, a.pointerProgress, values.cur.value, values.cur.total, a.progressBar.enabledLinear || a.progressBar.enabledCircle)
     }
     if (a.icon.enabled) {
         drawImageCoords(ctx, images, a.icon.json)

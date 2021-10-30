@@ -1,10 +1,29 @@
-import React, { FC, useContext, useMemo } from "react";
+import React, { FC, useContext, useEffect, useMemo } from "react";
+import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WeatherStates } from "../model/weather.states";
 
 const PreviewStatesComponent: FC = () => {
-  const { watchState, setWatchState } =
+  const { watchface, watchState, setWatchState } =
     useContext<IWatchContext>(WatchfaceContext);
+
+  useEffect(() => {
+    const ws = { ...watchState };
+    if ( watchface.widgets?.json?.Widget ) {
+      if ( watchState.widgets.length > watchface.widgets.json.Widget.length) {
+        ws.widgets.splice(watchface.widgets.json.Widget.length-1)
+        setWatchState(ws)
+      } else if ( watchState.widgets.length < watchface.widgets.json.Widget.length) {
+        for(let i = watchState.widgets.length; i < watchface.widgets.json.Widget.length; i++) {
+          ws.widgets.push(0)
+        }
+        setWatchState(ws)
+      }
+    } else {
+      ws.widgets = []
+      setWatchState(ws)
+    }
+  }, [watchface]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const date = useMemo(
     () =>
@@ -415,6 +434,32 @@ const PreviewStatesComponent: FC = () => {
             />
           </div>
         </div>
+        
+        <Card className='mt-3'>
+          <Card.Header>
+            <h3>Preview of widgets element</h3>
+          </Card.Header>
+          <Card.Body>
+            { watchState.widgets?.length > 0 ? watchState.widgets.map((w, index) =>
+            <div className="input-group input-group-sm mb-1">
+              <span className="input-group-text">Widget {index+1}. Element for preview </span>
+              <input
+                type="number"
+                className="form-control form-control-sm"
+                value={w+1}
+                min={1}
+                max={watchface.widgets?.json?.Widget[index]?.WidgetElement?.length}
+                onChange={(e) => {
+                  const ws = { ...watchState };
+                  const v = parseInt(e.target.value);
+                  ws.widgets[index] = !isNaN(v) ? Math.max(0, v-1) : 0;
+                  setWatchState(ws);
+                }}
+              />
+            </div>
+          ) : 'no widgets in watchface' }
+          </Card.Body>
+        </Card>
       </>
     </div>
   );

@@ -52,7 +52,7 @@ const SystemFontCircleComponent: FC<IProps> = ({
 
   function onChangeFollow(e) {
     const d = {...digit};
-    d.json.CombingMode = d.json.CombingMode === FollowType.Follow.json ? FollowType.Single.json : FollowType.Follow.json;
+    d.json.CombingMode = d.json.CombingMode !== FollowType.Single.json ? FollowType.Single.json : FollowType.Follow.json;
     onUpdate(d);
   }
 
@@ -163,7 +163,6 @@ const SystemFontCircleComponent: FC<IProps> = ({
                   d.json.Digit.SystemFont.Color = Color.colorWrite(e.target.value);
                   onUpdate(d);
                 }}
-                defaultValue="#000000"
                 title="Choose font color"
               />
             </div>

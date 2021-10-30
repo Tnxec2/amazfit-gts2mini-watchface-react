@@ -5,9 +5,13 @@ import { MultilangImage } from "../../model/json.model";
 import { WatchClockHand } from "../../model/watchFace.model";
 import { LangCodeType } from "../../model/types.model";
 
-export default function drawPointer(ctx: CanvasRenderingContext2D, 
+export default function drawPointer(
+    ctx: CanvasRenderingContext2D, 
     images: IImage[], 
-    clockHand: WatchClockHand, value: number, total: number) {
+    clockHand: WatchClockHand, 
+    value: number, 
+    total: number,
+    withOffset?: boolean) {
         if (total === null) return
         if (clockHand.json.Scale) {
             const scaleImageSetIndex = findImageIndex(clockHand.json.Scale?.ImageSet);
@@ -32,8 +36,9 @@ export default function drawPointer(ctx: CanvasRenderingContext2D,
                 
                 let _startAngle = clockHand.json.StartAngle ? clockHand.json.StartAngle: 0
                 let _endAngle = clockHand.json.EndAngle ? clockHand.json.EndAngle: 360
-                let offsetAngle = (img.width / 2) * 180 / (offsetY * Math.PI)
+                let offsetAngle = withOffset ? (offsetX) * 180 / (offsetY * Math.PI) : 0
                 let angle = _startAngle + Math.round(value * (_endAngle - _startAngle ) / total) + offsetAngle
+                
                 angle = Math.min(angle, _endAngle + offsetAngle)
                 angle = Math.max(angle, _startAngle)
                 let radians = (Math.PI/180) * angle
