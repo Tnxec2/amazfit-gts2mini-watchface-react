@@ -133,7 +133,7 @@ const SystemFontCircleComponent: FC<IProps> = ({
         <Card.Body>
           { !onCopyFromNormal ? '' : <div style={{clear:'both'}}><button className='btn btn-sm btn-secondary mb-1' style={{float:'right'}} onClick={onCopyFromNormal}>Copy from normal screen</button></div> }
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               X
             </span>
             <input
@@ -142,7 +142,7 @@ const SystemFontCircleComponent: FC<IProps> = ({
               value={digit.json.Digit?.SystemFont?.FontRotate?.X ? digit.json.Digit.SystemFont.FontRotate.X : 0}
               onChange={onChangeX}
             />
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               Y
             </span>
             <input
@@ -152,24 +152,21 @@ const SystemFontCircleComponent: FC<IProps> = ({
               onChange={onChangeY}
             />
             <span className="input-group-text">Color</span>
-            <div className="input-group-text">
-              <input
-                type="color"
-                className="form-control form-control-sm"
-                style={{ width: 40 }}
-                value={digit.json.Digit.SystemFont.Color ? Color.colorRead(digit.json.Digit.SystemFont.Color): '#000000'}
-                onChange={(e) => {
-                  const d = { ...digit };
-                  d.json.Digit.SystemFont.Color = Color.colorWrite(e.target.value);
-                  onUpdate(d);
-                }}
-                title="Choose font color"
-              />
-            </div>
-
+            <input
+              type="color"
+              className="form-control form-control-sm"
+              style={{ width: 40 }}
+              value={digit.json.Digit.SystemFont.Color ? Color.colorRead(digit.json.Digit.SystemFont.Color): '#000000'}
+              onChange={(e) => {
+                const d = { ...digit };
+                d.json.Digit.SystemFont.Color = Color.colorWrite(e.target.value);
+                onUpdate(d);
+              }}
+              title="Choose font color"
+            />
           </div>
           <div className="input-group input-group-sm mb-1">
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               size
             </span>
             <input
@@ -179,7 +176,7 @@ const SystemFontCircleComponent: FC<IProps> = ({
               value={digit.json.Digit?.SystemFont?.Size ? digit.json.Digit.SystemFont.Size : 0}
               onChange={onChangeSize}
             />
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               radius
             </span>
             <input
@@ -189,7 +186,9 @@ const SystemFontCircleComponent: FC<IProps> = ({
               value={digit.json.Digit?.SystemFont?.FontRotate?.Radius ? digit.json.Digit.SystemFont.FontRotate.Radius : 0}
               onChange={onChangeRadius}
             />
-            <span className="input-group-text" id="addon-wrapping">
+          </div>
+          <div className="input-group input-group-sm mb-1">
+            <span className="input-group-text" >
               angle
             </span>
             <input
@@ -198,10 +197,10 @@ const SystemFontCircleComponent: FC<IProps> = ({
               value={digit.json.Digit?.SystemFont?.Angle ? digit.json.Digit.SystemFont.Angle : 0}
               onChange={onChangeAngle}
             />
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               direction
             </span>
-            <div className="input-group-text">
+
             <select
                 value={ digit.json?.Digit?.SystemFont?.FontRotate?.RotateDirection ? digit.json?.Digit?.SystemFont?.FontRotate?.RotateDirection.toFixed(0) : 0 }
                 className="form-select form-select-sm"
@@ -214,23 +213,21 @@ const SystemFontCircleComponent: FC<IProps> = ({
                   Counterlock
                 </option>
               </select>
-            </div>
-
           </div>
-          <div className="input-group input-group-sm flex-nowrap mb-1">
-            <span className="input-group-text" id="addon-wrapping">
+          <div className="input-group input-group-sm mb-1">
+            <span className="input-group-text" >
               padding zero
             </span>
             <div className="input-group-text">
               <input
-                className="form-check-input mt-0"
+                className="form-check-input"
                 type="checkbox"
                 disabled={paddingZeroFix}
                 checked={digit.json?.Digit?.PaddingZero || paddingZeroFix}
                 onChange={onChangePaddingZero}
               />
             </div>
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               spacing
             </span>
             <input
@@ -239,22 +236,23 @@ const SystemFontCircleComponent: FC<IProps> = ({
               value={digit.json?.Digit?.Spacing ? digit.json.Digit.Spacing : 0}
               onChange={onChangeSpacing}
             />
-            <span className="input-group-text" id="addon-wrapping">
+          </div>
+          <div className="input-group input-group-sm mb-1">
+            <span className="input-group-text" >
               follow
             </span>
             <div className="input-group-text">
               <input
-                className="form-check-input mt-0"
+                className="form-check-input"
                 type="checkbox"
                 checked={digit.json?.CombingMode === FollowType.Follow.json}
                 onChange={onChangeFollow}
                 disabled={followDisabled}
               />
             </div>
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               alignment
             </span>
-            <div className="input-group-text">
               <select
                 value={AlignmentType.fromJson(digit.json?.Digit?.Alignment)}
                 className="form-select form-select-sm"
@@ -270,28 +268,27 @@ const SystemFontCircleComponent: FC<IProps> = ({
                   Right
                 </option>
               </select>
-            </div>
           </div>
 
           <div className="input-group input-group-sm">
             <span className="input-group-text">Unit</span>
-            <div className="input-group-text">
-              <select
-                value={digit.json?.Digit?.SystemFont.ShowUnitCheck}
-                className="form-select form-select-sm"
-                onChange={onChangeUnitCheck}
-              >
-                <option value="-1">
-                  None
-                </option>
-                <option value="1">
-                  small
-                </option>
-                <option value="2">
-                  big
-                </option>
-              </select>
-            </div>
+
+            <select
+              value={digit.json?.Digit?.SystemFont.ShowUnitCheck}
+              className="form-select form-select-sm"
+              onChange={onChangeUnitCheck}
+            >
+              <option value="-1">
+                None
+              </option>
+              <option value="1">
+                small
+              </option>
+              <option value="2">
+                big
+              </option>
+            </select>
+
             <span className="input-group-text">Separator</span>
             <div className="input-group-text">
             <input

@@ -9,12 +9,12 @@ const PreviewStatesComponent: FC = () => {
 
   useEffect(() => {
     const ws = { ...watchState };
-    if ( watchface.widgets?.json?.Widget ) {
-      if ( watchState.widgets.length > watchface.widgets.json.Widget.length) {
-        ws.widgets.splice(watchface.widgets.json.Widget.length-1)
+    if ( watchface.widgets?.widgets ) {
+      if ( watchState.widgets.length > watchface.widgets.widgets.length) {
+        ws.widgets.splice(watchface.widgets.widgets.length-1)
         setWatchState(ws)
-      } else if ( watchState.widgets.length < watchface.widgets.json.Widget.length) {
-        for(let i = watchState.widgets.length; i < watchface.widgets.json.Widget.length; i++) {
+      } else if ( watchState.widgets.length < watchface.widgets.widgets.length) {
+        for(let i = watchState.widgets.length; i < watchface.widgets.widgets.length; i++) {
           ws.widgets.push(0)
         }
         setWatchState(ws)
@@ -441,14 +441,14 @@ const PreviewStatesComponent: FC = () => {
           </Card.Header>
           <Card.Body>
             { watchState.widgets?.length > 0 ? watchState.widgets.map((w, index) =>
-            <div className="input-group input-group-sm mb-1">
+            <div key={index} className="input-group input-group-sm mb-1">
               <span className="input-group-text">Widget {index+1}. Element for preview </span>
               <input
                 type="number"
                 className="form-control form-control-sm"
                 value={w+1}
                 min={1}
-                max={watchface.widgets?.json?.Widget[index]?.WidgetElement?.length}
+                max={watchface.widgets?.widgets[index]?.widgetElements?.length}
                 onChange={(e) => {
                   const ws = { ...watchState };
                   const v = parseInt(e.target.value);

@@ -7,11 +7,15 @@ import MultilangImageCoordsComponent from "./multiLangImageCoords.component";
 import SystemFontComponent from "./systemFont.component";
 import SystemFontCircleComponent from "./systemFontCircle.component";
 
-const TimeDigitalComponent: FC = () => {
+interface IProps {
+  collapsed: boolean,
+  setCollapsed(collapsed: boolean): void,
+}
+
+const TimeDigitalComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 
-  const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function updateHoursDigit(h: WatchCommonDigit) {
     const t = {...watchface.dialFace};

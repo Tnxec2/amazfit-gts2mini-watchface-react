@@ -31,6 +31,7 @@ const MultilangImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdat
       digitimage.ImageSet.ImagesCount = d.count
       d.json.ImageSet[0] = digitimage
     }
+    onUpdate(d)
   }
 
   function changeImageIndex(ix: number) {

@@ -87,10 +87,10 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       drawStatus(ctx, images, watchface.status, watchState);
     }
     if (watchface.widgets.enabled) {
-      drawWidgets(ctx, images, watchface.widgets.json, watchState, digitBorder, borderWidget, showWidgetPreview)
+      drawWidgets(ctx, images, watchface.widgets, watchState, digitBorder, borderWidget, showWidgetPreview)
     }
     if (watchface.dialFace) {
-      if (!showWidgetPreview || watchface.widgets?.json.Unknown4 === 1) {
+      if (!showWidgetPreview || watchface.widgets?.showTimeOnEditScreen === 1) {
         drawTimeDigital(
           ctx,
           images,

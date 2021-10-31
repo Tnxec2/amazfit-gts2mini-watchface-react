@@ -68,7 +68,7 @@ export class Widget {
 }
 
 export class WidgetElement {
-  Preview: MultilangImage[];
+  Preview: MultilangImage[] = [];
   Date: Date;
   Activity: Activity[];
 }
@@ -251,7 +251,7 @@ export class DigitalDigit {
 }
 
 export class MultilangImage {
-  LangCode: string;
+  LangCode: string = LangCodeType.All.json;
   ImageSet: ImageSetGTR2 = new ImageSetGTR2();
 }
 

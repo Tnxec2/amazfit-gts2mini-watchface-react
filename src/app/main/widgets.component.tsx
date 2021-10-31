@@ -1,13 +1,11 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import WidgetComponent from "../Blocks/widget.component";
 import { IWatchContext, WatchfaceContext } from "../context";
-import { Widget, Widgets } from "../model/json.model";
-import { WatchWidgets } from "../model/watchFace.model";
+import { WatchWidget, WatchWidgets } from "../model/watchFace.model";
 import SelectFileListComponent from "../shared/selectFileList.component";
 
 const WidgetsComponent: FC = () => {
-  const [collapsed, setCollapsed] = useState<boolean>(true);
   const { watchface, setWatchface }  = useContext<IWatchContext>(WatchfaceContext)
 
  
@@ -17,21 +15,21 @@ const WidgetsComponent: FC = () => {
     setWatchface(_wf)
   }
 
-  function updateWidget(index: number, wi: Widget) {
+  function updateWidget(index: number, wi: WatchWidget) {
     let _wf = {...watchface}
-    _wf.widgets.json.Widget[index] = {...wi}
+    _wf.widgets.widgets[index] = {...wi}
     setWatchface(_wf)
   }
 
   function addWidget(e) {
     e.stopPropagation()
-    let _wi = new Widget()
+    let _wi = new WatchWidget()
     let _wf = {...watchface}
-    if (!_wf.widgets.json) {
-      _wf.widgets.json = new Widgets()
-      _wf.widgets.json.Widget = []
+    if (!_wf.widgets) {
+      _wf.widgets = new WatchWidgets()
     }
-    _wf.widgets.json.Widget.push(_wi)
+    _wf.widgets.enabled = true;
+    _wf.widgets.widgets.push(_wi)
     setWatchface(_wf)
   }
 
@@ -39,7 +37,7 @@ const WidgetsComponent: FC = () => {
     e.stopPropagation()
     if ( window.confirm(`would you delete this widget?`)) {
       let _wf = {...watchface}
-      _wf.widgets.json.Widget.splice(index, 1)
+      _wf.widgets.widgets.splice(index, 1)
       setWatchface(_wf)
     }
   }
@@ -53,21 +51,21 @@ const WidgetsComponent: FC = () => {
                   title='Top mask'
                   setSelectedFileIndex={(ix) => {
                     const ws = { ...watchface.widgets };
-                    if (!ws.json) ws.json = new Widgets()
-                    ws.json.TopMaskImageIndex = ix;
+                    ws.enabled = true;
+                    ws.topMaskImageIndex = ix;
                     updateWidgets(ws);
                   }}
-                  imageIndex={watchface.widgets?.json?.TopMaskImageIndex}
+                  imageIndex={watchface.widgets?.topMaskImageIndex}
                 />
                 <SelectFileListComponent
                   title='Bottom mask'
                   setSelectedFileIndex={(ix) => {
                     const ws = { ...watchface.widgets };
-                    if (!ws.json) ws.json = new Widgets()
-                    ws.json.UnderMaskImageIndex = ix;
+                    ws.enabled = true;
+                    ws.underMaskImageIndex = ix;
                     updateWidgets(ws);
                   }}
-                  imageIndex={watchface.widgets?.json?.UnderMaskImageIndex}
+                  imageIndex={watchface.widgets?.underMaskImageIndex}
                 />
           </div>
         </Card.Body>
@@ -75,16 +73,18 @@ const WidgetsComponent: FC = () => {
       <Card>
       <Card.Header className="d-flex justify-content-between align-items-center"
         onClick={() => {
-          setCollapsed(!collapsed);
+          let wf = {...watchface};
+          wf.widgets.collapsed = !wf.widgets.collapsed;
+          setWatchface(wf);
         }}
       >
-        Widgets [{watchface.widgets?.json?.Widget?.length}]
+        Widgets [{watchface.widgets?.widgets?.length}]
           <button className="btn btn-outline-success" type="button" onClick={addWidget}>Add</button>
       </Card.Header>
       <Card.Body>
-          {watchface.widgets?.json?.Widget?.length > 0 ? 
+          {watchface.widgets?.widgets?.length > 0 ? 
           <>
-            { watchface.widgets.json.Widget.map((item, index) => {
+            { watchface.widgets.widgets.map((item, index) => {
               return (
                 <WidgetComponent
                   key={index}

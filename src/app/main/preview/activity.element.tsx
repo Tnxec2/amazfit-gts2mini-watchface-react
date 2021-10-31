@@ -207,15 +207,7 @@ export default function drawActivityList(
 
 function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchActivity, values: IDigitDraw, digitBorder: boolean) {
     let followXY = null
-    if (a.digit?.enabled) {
-        followXY = drawDigit(ctx, images, a.digit, values.cur.value, followXY, digitBorder, false, getSystemFontText(a.digit, values.cur.value))
-    }
-    if (a.digitMin?.enabled && values.min) {
-        followXY = drawDigit(ctx, images, a.digitMin, values.min.value, a.digitMin.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMin, values.min.value))
-    }
-    if (a.digitMax?.enabled && values.max) {
-        drawDigit(ctx, images, a.digitMax, values.max.value, a.digitMax.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMax, values.max.value))
-    }
+
     if (a.imageProgress.enabled) {
         drawImageProgress(ctx, images, a.imageProgress, values.imageProgress.value, values.imageProgress.total)
     }
@@ -230,5 +222,14 @@ function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchA
     }
     if (a.icon.enabled) {
         drawImageCoords(ctx, images, a.icon.json)
+    }
+    if (a.digit?.enabled) {
+        followXY = drawDigit(ctx, images, a.digit, values.cur.value, followXY, digitBorder, false, getSystemFontText(a.digit, values.cur.value))
+    }
+    if (a.digitMin?.enabled && values.min) {
+        followXY = drawDigit(ctx, images, a.digitMin, values.min.value, a.digitMin.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMin, values.min.value))
+    }
+    if (a.digitMax?.enabled && values.max) {
+        drawDigit(ctx, images, a.digitMax, values.max.value, a.digitMax.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMax, values.max.value))
     }
 }

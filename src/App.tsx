@@ -30,7 +30,7 @@ const App: FC = () => {
         jsonName,
         setJsonName,
         previewScreenNormal,
-        setPreviewScreenNormal
+        setPreviewScreenNormal,
       }}
     >
       <Container className="App d-flex flex-column min-vh-100 vh-100">

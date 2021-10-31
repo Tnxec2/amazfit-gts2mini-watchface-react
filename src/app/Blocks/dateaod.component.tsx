@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDate } from "../model/watchFace.model";
@@ -6,11 +6,14 @@ import ImageDigitComponent from "./imageDigit.component";
 import SystemFontComponent from "./systemFont.component";
 import SystemFontCircleComponent from "./systemFontCircle.component";
 
-const DateAODComponent: FC = () => {
+interface IProps {
+  collapsed: boolean,
+  setCollapsed(collapsed: boolean): void,
+}
+
+const DateAODComponent: FC<IProps> = ({collapsed, setCollapsed}) => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
-
-  const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function updateDay(d: WatchCommonDigit) {
     const date = {...watchface.aod.date};

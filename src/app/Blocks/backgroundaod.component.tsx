@@ -1,13 +1,10 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import SelectFileListComponent from "../shared/selectFileList.component";
 
 const BackgroundAODComponent: FC = () => {
-  const { watchface, setWatchface } =
-    useContext<IWatchContext>(WatchfaceContext);
-
-  const [collapsed, setCollapsed] = useState<boolean>(true);
+  const { watchface, setWatchface }  = useContext<IWatchContext>(WatchfaceContext)
 
   function onChangeBackgroundImageIndex(index: number) {
     setWatchface({
@@ -21,12 +18,14 @@ const BackgroundAODComponent: FC = () => {
       <Card.Header
         className="clickable"
         onClick={() => {
-          setCollapsed(!collapsed);
+          let w = {...watchface};
+          w.aod.backgroundCollapsed = !w.aod.backgroundCollapsed;
+          setWatchface(w);
         }}
       >
         Background
       </Card.Header>
-      {!collapsed ? (
+      {!watchface.aod.backgroundCollapsed ? (
         <Card.Body>
           <div className="input-group input-group-sm mb-1">
             <SelectFileListComponent

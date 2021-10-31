@@ -1,44 +1,49 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Card } from "react-bootstrap";
-import { ImageCoord, Widget, WidgetElement } from "../model/json.model";
+import { WatchWidget, WatchWidgetElement } from "../model/watchFace.model";
 import DnDListComponent, { IDNDItem } from "../shared/draganddroplist.component";
 import SelectFileListComponent from "../shared/selectFileList.component";
+import ImageCoordsComponent from "./imageCoords.component";
 import WidgetElementComponent from "./widgetElement.component";
 
 
 interface IProps {
   title: string;
-  widget: Widget;
-  onUpdate(widget: Widget): void;
+  widget: WatchWidget;
+  onUpdate(widget: WatchWidget): void;
   onDelete(e): void;
 }
 
 const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(true);
-  const [collapsedElements, setCollapsedElements] = useState<boolean>(true);
 
-  function addElement() {
-    let _wi: Widget = {...widget}
-    if (!_wi.WidgetElement) _wi.WidgetElement = []
-    _wi.WidgetElement.push(new WidgetElement())
+  function addElement(e) {
+    e.stopPropagation()
+    let _wi = {...widget}
+    if (!_wi.widgetElements) _wi.widgetElements = []
+    let _we = new WatchWidgetElement()
+    _wi.widgetElements.push(_we)
+    _wi.widgetElementsCollapsed = false
     onUpdate(_wi)
   }
 
-  function deleteElement(index: number) {
-    let _wi: Widget = {...widget}
-    _wi.WidgetElement.splice(index, 1)
+  function deleteElement(e, index: number) {
+    e.stopPropagation();
+    if ( window.confirm(`would you delete this element of widget?`)) {
+      let _wi = {...widget};
+      _wi.widgetElements.splice(index, 1);
+      onUpdate(_wi);
+    }
+  }
+
+  function updateElement(index: number, element: WatchWidgetElement) {
+    let _wi = {...widget}
+    _wi.widgetElements[index] = {...element}
     onUpdate(_wi)
   }
 
-  function updateElement(index: number, element: WidgetElement) {
-    let _wi: Widget = {...widget}
-    _wi.WidgetElement[index] = {...element}
-    onUpdate(_wi)
-  }
-
-  function updateWidgetElementsOrder(list: IDNDItem<WidgetElement>[]) {
-    let _wi: Widget = {...widget}
-    _wi.WidgetElement = list.map((value) => value.item)
+  function updateWidgetElementsOrder(list: IDNDItem<WatchWidgetElement>[]) {
+    let _wi = {...widget}
+    _wi.widgetElements = list.map((value) => value.item)
     onUpdate(_wi)
   }
 
@@ -46,11 +51,15 @@ const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
     <Card>
       <Card.Header 
       className="d-flex justify-content-between align-items-center"
-      onClick={() => setCollapsed(!collapsed)}>
+      onClick={() => {
+        let wi = {...widget};
+        wi.collapsed = !wi.collapsed;
+        onUpdate(wi)
+      }}>
           <span className="input-group-text">{title}</span>
           <button className="btn btn-outline-danger" type="button" onClick={onDelete}>Delete</button>
       </Card.Header>
-      {!collapsed ? 
+      {!widget.collapsed ? 
       <Card.Body>
           <div className="input-group input-group-sm">
             <span className="input-group-text" id="addon-wrapping">
@@ -59,11 +68,11 @@ const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={widget.X}
+              value={widget.x}
               onChange={(e) => {
                 const _wi = { ...widget };
                 let x = parseInt(e.target.value);
-                _wi.X = !isNaN(x) ? x : 0;
+                _wi.x = !isNaN(x) ? x : 0;
                 onUpdate(_wi);
               }}
             />
@@ -73,11 +82,11 @@ const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={widget.Y}
+              value={widget.y}
               onChange={(e) => {
                 const _wi = { ...widget };
                 let y = parseInt(e.target.value);
-                _wi.Y = !isNaN(y) ? y : 0;
+                _wi.y = !isNaN(y) ? y : 0;
                 onUpdate(_wi);
               }}
             />
@@ -89,11 +98,11 @@ const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={widget.Width}
+              value={widget.width}
               onChange={(e) => {
                 const _wi = { ...widget };
                 let val = parseInt(e.target.value);
-                _wi.Width = !isNaN(val) ? val : 0;
+                _wi.width = !isNaN(val) ? val : 0;
                 onUpdate(_wi);
               }}
             />
@@ -103,11 +112,11 @@ const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={widget.Height}
+              value={widget.height}
               onChange={(e) => {
                 const _wi = { ...widget };
                 let val = parseInt(e.target.value);
-                _wi.Height = !isNaN(val) ? val : 0;
+                _wi.height = !isNaN(val) ? val : 0;
                 onUpdate(_wi);
               }}
             />
@@ -117,61 +126,32 @@ const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
               title='Frame activ'
               setSelectedFileIndex={(ix) => {
                 const ip = { ...widget };
-                ip.BorderActivImageIndex = ix;
+                ip.borderActivImageIndex = ix;
                 onUpdate(ip);
               }}
-              imageIndex={widget.BorderActivImageIndex}
+              imageIndex={widget.borderActivImageIndex}
             />
             <SelectFileListComponent
               title='Frame inactiv'
               setSelectedFileIndex={(ix) => {
                 const _wi = { ...widget };
-                _wi.BorderInactivImageIndex = ix;
+                _wi.borderInactivImageIndex = ix;
                 onUpdate(_wi);
               }}
-              imageIndex={widget.BorderInactivImageIndex}
+              imageIndex={widget.borderInactivImageIndex}
             />
           </div>
           <div className="input-group input-group-sm pt-1">
-            <SelectFileListComponent
+            <ImageCoordsComponent
               title='Description background'
-              setSelectedFileIndex={(ix) => {
-                const _wi = { ...widget };
-                if (!_wi.DescriptionImageBackground) _wi.DescriptionImageBackground = new ImageCoord();
-                _wi.DescriptionImageBackground.ImageIndex = ix;
-                onUpdate(_wi);
-              }}
-              imageIndex={widget.DescriptionImageBackground?.ImageIndex}
-            />
-            <span className="input-group-text" id="addon-wrapping">
-              X
-            </span>
-            <input
-              type="number"
-              className="form-control form-control-sm"
-              value={widget.DescriptionImageBackground?.Coordinates?.X}
-              onChange={(e) => {
-                const _wi = { ...widget };
-                if (!_wi.DescriptionImageBackground) _wi.DescriptionImageBackground = new ImageCoord();
-                let x = parseInt(e.target.value);
-                _wi.DescriptionImageBackground.Coordinates.X = !isNaN(x) ? x : 0;
-                onUpdate(_wi);
-              }}
-            />
-            <span className="input-group-text" id="addon-wrapping">
-              Y
-            </span>
-            <input
-              type="number"
-              className="form-control form-control-sm"
-              value={widget.DescriptionImageBackground?.Coordinates?.Y}
-              onChange={(e) => {
-                const _wi = { ...widget };
-                if (!_wi.DescriptionImageBackground) _wi.DescriptionImageBackground = new ImageCoord();
-                let y = parseInt(e.target.value);
-                _wi.DescriptionImageBackground.Coordinates.Y = !isNaN(y) ? y : 0;
-                onUpdate(_wi);
-              }}
+              imageCoords={widget.descriptionImageBackground}
+              onUpdate={(ic) => {
+                let wi = {...widget};
+                wi.descriptionImageBackground = ic
+                onUpdate(wi)
+              }
+
+              }
             />
           </div>
           <div className="input-group input-group-sm">
@@ -181,35 +161,38 @@ const WidgetComponent: FC<IProps> = ({ title, widget, onUpdate, onDelete }) => {
             <input
               type="number"
               className="form-control form-control-sm"
-              value={widget.DescriptionWidthCheck}
+              value={widget.descriptionWidthCheck}
               onChange={(e) => {
                 const _wi = { ...widget };
                 let val = parseInt(e.target.value);
-                _wi.DescriptionWidthCheck = !isNaN(val) ? val : 0;
+                _wi.descriptionWidthCheck = !isNaN(val) ? val : 0;
                 onUpdate(_wi);
               }}
             />
           </div>
           <Card className="pt-1">
             <Card.Header className="d-flex justify-content-between align-items-center"
-              onClick={() => setCollapsedElements(!collapsedElements)}>
-              Elements [{widget.WidgetElement?.length}]
+              onClick={() => {
+                let wi = {...widget};
+                wi.widgetElementsCollapsed = !wi.widgetElementsCollapsed;
+                onUpdate(wi);
+              }}>
+              Elements [{widget.widgetElements?.length}]
               <button className="btn btn-outline-success" type="button" onClick={addElement}>Add</button>
             </Card.Header>
-            { !collapsedElements ? 
+            { !widget.widgetElementsCollapsed ? 
             <Card.Body>
-              { widget.WidgetElement?.length > 0 ?
-              
+              { widget.widgetElements?.length > 0 ?
               <DnDListComponent
                _list={
-              widget.WidgetElement?.map(
+              widget.widgetElements?.map(
                 (element, index) => ({item: element, reactItem:
                 <WidgetElementComponent
                   key={index}
                   index={index}
                   element={element}
                   defaultCount={1}
-                  onDelete={() => deleteElement(index)}
+                  onDelete={(e) => deleteElement(e, index)}
                   onUpdate={(element) => updateElement(index, element)}
                 />})) }
                 updateOrder={updateWidgetElementsOrder}

@@ -9,12 +9,13 @@ import ActivityComponent from "./activity.component";
 interface IProps {
   activitys: WatchActivity[];
   onUpdate(activitys: WatchActivity[]): void;
+  collapsed: boolean;
+  setCollapsed(collapsed: boolean): void
 }
 
-const ActivityListComponent: FC<IProps> = ({activitys, onUpdate}) => {
+const ActivityListComponent: FC<IProps> = ({activitys, onUpdate, collapsed, setCollapsed}) => {
 
-  const [collapsed, setCollapsed] = useState<boolean>(true);
-  const [activityToAdd, setActivityToAdd] = useState<number>(ActivityType.Date.index);
+  const [activityToAdd, setActivityToAdd] = useState<number>(ActivityType.Battery.index);
 
   function updateOrder(list: IDNDItem<WatchActivity>[]) {
     let al = list.map((value) => value.item)
@@ -32,9 +33,9 @@ const ActivityListComponent: FC<IProps> = ({activitys, onUpdate}) => {
     if (activityToAdd) {
       let _a = getActivityFromJson(null, ActivityType.findByIndex(activityToAdd) )
       if (_a) {
-        activitys.push(_a)
-        setCollapsed(false)
-        onUpdate(activitys)
+        let al = [...activitys]
+        al.push(_a)
+        onUpdate(al)
       }
     }
   }
@@ -53,7 +54,7 @@ const ActivityListComponent: FC<IProps> = ({activitys, onUpdate}) => {
       <Card.Header className="d-flex justify-content-between align-items-center"
         title='Click to open / close'
         onClick={() => {
-          setCollapsed(!collapsed);
+          setCollapsed(!collapsed)
         }}
       >
         Activity [{activitys?.length}]
@@ -66,7 +67,7 @@ const ActivityListComponent: FC<IProps> = ({activitys, onUpdate}) => {
               {
                 Object.keys(ActivityType).map((key) => 
                   ActivityType[key] instanceof JsonType ?
-                    <option value={ActivityType[key].index}>{ActivityType[key].json}</option>
+                    <option key={ActivityType[key].index} value={ActivityType[key].index}>{ActivityType[key].json}</option>
                     : ''
                 )
               }
@@ -74,7 +75,7 @@ const ActivityListComponent: FC<IProps> = ({activitys, onUpdate}) => {
           <button className="btn btn-outline-success" type="button" onClick={addActivity}>Add</button>
         </span>
       </Card.Header>
-      {!collapsed ? (
+      { !collapsed  ? (
         <Card.Body>
           {activitys?.length > 0 ? 
               <DnDListComponent

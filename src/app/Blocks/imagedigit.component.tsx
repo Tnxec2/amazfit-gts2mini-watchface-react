@@ -173,14 +173,16 @@ const ImageDigitComponent: FC<IProps> = ({
       {digit.enabledImage ? (
         <Card.Body>
           { !onCopyFromNormal ? '' : <div style={{clear:'both'}}><button className='btn btn-sm btn-secondary mb-1' style={{float:'right'}} onClick={onCopyFromNormal}>Copy from normal screen</button></div> }
-          <div className="input-group input-group-sm mb-1">
+          <div className="input-group input-group-sm mb-1 ">
             <SelectFileListComponent
               title='ImageIndex'
               setSelectedFileIndex={onChangeImageIndex}
               imageIndex={digit.json?.Digit?.Image?.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex}
             />
             <span className="input-group-text">count: {digit.json?.Digit?.Image?.MultilangImage[imageSetIndex]?.ImageSet?.ImagesCount}</span>
-            <span className="input-group-text" id="addon-wrapping">
+            </div>
+            <div className="input-group input-group-sm mb-1 ">
+            <span className="input-group-text" >
               X
             </span>
             <input
@@ -189,7 +191,7 @@ const ImageDigitComponent: FC<IProps> = ({
               value={digit.json.Digit?.Image?.X ? digit.json.Digit.Image.X : 0}
               onChange={onChangeX}
             />
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" >
               Y
             </span>
             <input
@@ -245,20 +247,20 @@ const ImageDigitComponent: FC<IProps> = ({
           )}
           {!digit.json.Digit.DisplayFormAnalog ? (
             <>
-              <div className="input-group input-group-sm flex-nowrap mb-1">
-                <span className="input-group-text" id="addon-wrapping">
+              <div className="input-group input-group-sm mt-1">
+                <span className="input-group-text" >
                   padding zero
                 </span>
                 <div className="input-group-text">
                   <input
-                    className="form-check-input mt-0"
+                    className="form-check-input form-check-input-sm"
                     type="checkbox"
                     disabled={paddingZeroFix}
                     checked={digit.json?.Digit?.PaddingZero || paddingZeroFix}
                     onChange={onChangePaddingZero}
                   />
                 </div>
-                <span className="input-group-text" id="addon-wrapping">
+                <span className="input-group-text" >
                   spacing
                 </span>
                 <input
@@ -267,47 +269,49 @@ const ImageDigitComponent: FC<IProps> = ({
                   value={digit.json?.Digit?.Spacing ? digit.json.Digit.Spacing : 0}
                   onChange={onChangeSpacing}
                 />
-                <span className="input-group-text" id="addon-wrapping">
+              </div>
+              <div className="input-group input-group-sm mt-1">
+                <span className="input-group-text" >
                   follow
                 </span>
                 <div className="input-group-text">
                   <input
-                    className="form-check-input mt-0"
+                    className="form-check-input form-check-input-sm"
                     type="checkbox"
                     checked={digit.json?.CombingMode === FollowType.Follow.json}
                     onChange={onChangeFollow}
                     disabled={followDisabled}
                   />
                 </div>
-                <span className="input-group-text" id="addon-wrapping">
+                <span className="input-group-text" >
                   alignment
                 </span>
-                <div className="input-group-text">
-                  <select
-                    value={AlignmentType.fromJson(digit.json?.Digit?.Alignment)}
-                    className="form-select form-select-sm"
-                    onChange={onChangeAlignment}
-                  >
-                    <option value="0">
-                      Left
-                    </option>
-                    <option value="1">
-                      Center
-                    </option>
-                    <option value="2">
-                      Right
-                    </option>
-                  </select>
-                </div>
+
+                <select
+                  value={AlignmentType.fromJson(digit.json?.Digit?.Alignment)}
+                  className="form-select form-select-sm"
+                  onChange={onChangeAlignment}
+                >
+                  <option value="0">
+                    Left
+                  </option>
+                  <option value="1">
+                    Center
+                  </option>
+                  <option value="2">
+                    Right
+                  </option>
+                </select>
+
               </div>
 
-              <div className="input-group input-group-sm">
+              <div className="input-group input-group-sm mt-1">
                 <SelectFileListComponent
                   title='Separator'
                   setSelectedFileIndex={onChangeSeparator}
                   imageIndex={digit.json?.Separator?.ImageIndex}
                 />
-                <span className="input-group-text" id="addon-wrapping">
+                <span className="input-group-text" >
                   X
                 </span>
                 <input
@@ -316,7 +320,7 @@ const ImageDigitComponent: FC<IProps> = ({
                   value={digit.json.Separator?.Coordinates?.X ? digit.json.Separator.Coordinates.X : 0}
                   onChange={onChangeSeparatorX}
                 />
-                <span className="input-group-text" id="addon-wrapping">
+                <span className="input-group-text" >
                   Y
                 </span>
                 <input

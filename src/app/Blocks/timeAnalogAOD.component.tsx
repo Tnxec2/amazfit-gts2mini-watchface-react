@@ -1,13 +1,16 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import ClockHandComponent from "./clockHand.component";
 
-const TimeAnalogAODComponent: FC = () => {
+interface IProps {
+  collapsed: boolean,
+  setCollapsed(collapsed: boolean): void,
+}
+
+const TimeAnalogAODComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
-
-  const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function copyHoursFromNormal() {
     const t = {...watchface.aod.dialFace}

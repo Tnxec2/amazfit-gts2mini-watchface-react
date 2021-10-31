@@ -18,6 +18,9 @@ export default function drawDigitImage(
     const imageSetIndex = findImageIndex(digit.json.Digit?.Image?.MultilangImage);
     const unitImageSetIndex =findImageIndex(digit.json.Digit?.Image?.MultilangImageUnit);
 
+    //console.log(number, x, y, imageSetIndex, digit.json.Digit.Image.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex);
+    
+
     if (digit.json.Digit?.Image?.MultilangImage &&
         digit.json.Digit.Image.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex) {
             let strNumber = number.toString()
@@ -32,6 +35,7 @@ export default function drawDigitImage(
                     if (img) ar.push(img)
                 }
             }
+
             if (digit.json.Digit.DisplayFormAnalog) {
                 const img = findImageById(digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex + number, images)
                 if (img) ar.push(img)
@@ -81,21 +85,27 @@ function getImages(
 }
 
 function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[], 
-    startx: number, starty: number, spacing: number, alignment: string, paddingLenght: number, drawborder: boolean): [number, number] | null  {
+    startx: number, 
+    starty: number, 
+    spacing: number, 
+    alignment: string, 
+    paddingLenght: number, 
+    drawborder: boolean): [number, number] | null  {
     if ( ar.length === 0) return
-    let imageWidth = 0
+    let imageWidth: number = 0
+    
+    if (!spacing) spacing = 0
 
     ar.forEach(img => {
         if (imageWidth && spacing) imageWidth += spacing
         imageWidth += img.width
     })
 
-    let maxWidth = imageWidth
+    let maxWidth: number = imageWidth
 
     if (paddingLenght) {
         maxWidth = imageWidth + ( spacing + ar[0].width ) * paddingLenght
     }
-
     let x = startx
     let y = starty
     if (alignment === AlignmentType.Right.json) { // right
@@ -104,9 +114,13 @@ function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[],
         x = x + (maxWidth - imageWidth) / 2
     }
 
+    //console.log(x, y, maxWidth, imageWidth);
+    
+
     let height = 0
+
     ar.forEach(img => {
-        ctx.drawImage(img, x, y, img.width, img.height);
+        ctx.drawImage(img, x, y);
         height = Math.max(img.height, height)
         x += img.width
         if ( spacing ) x += spacing
@@ -124,6 +138,12 @@ function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[],
 
 function findImageIndex(ar: MultilangImage[]): number {
     if (!ar) return null
-    let index = ar.findIndex((item) => item.LangCode === LangCodeType.All.json)
-    return index >= 0 ? index : 0
+    let resultIndex = 0
+    ar.forEach((item, index) => {
+        if ( item.LangCode === LangCodeType.All.json) {
+            resultIndex = index
+        }
+    })
+   
+    return resultIndex
   }

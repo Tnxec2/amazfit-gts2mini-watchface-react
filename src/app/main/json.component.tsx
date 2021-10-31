@@ -1,9 +1,9 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
-import { Activity, DigitalDigit, Shortcut, WatchJson } from "../model/json.model";
+import { Activity, DigitalDigit, Shortcut, WatchJson, Widgets } from "../model/json.model";
 import { DateType, LangCodeType } from "../model/types.model";
-import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar } from "../model/watchFace.model";
+import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar, WatchWidgets } from "../model/watchFace.model";
 import Color from "../shared/color";
 import { Constant } from "../shared/constant";
 import cl from './JsonComponent.module.css';
@@ -88,7 +88,7 @@ const JsonComponent: FC = () => {
                 } : null,
                 Activity: activitys.length > 0 ? activitys : null
             } : null,
-            Widgets: w.widgets ? w.widgets.json : null,
+            Widgets: w.widgets ? getWidgets(w.widgets) : null,
             ScreenIdle: w.aod.backgroundImageIndex || dialFaceAodEnabled || dateAodEnabled || activitysAod.length > 0 ? {
                 BackgroundImageIndex: w.aod.backgroundImageIndex ? w.aod.backgroundImageIndex : null,
                 DialFace: dialFaceAodEnabled ? {
@@ -184,17 +184,18 @@ export function activitysToJson(alist: WatchActivity[]): Activity[] {
             }
         }
 
-        if (enabled) activitys.push({
-            Type: item.type.json,
-            PointerProgress: pointerProgress ? pointerProgress.json : null,
-            ProgressBar: progressBar ? progressBar.jsonObj : null,
-            ImageProgress: imageProgress?.enabled ? imageProgress.json : null,
-            Digits: digits.length > 0 ? digits.map(d => d.json) : null,
-            Shortcut: shortcut ? shortcut : null,
-            Icon: icon?.enabled ? icon.json : null
-        })
-
-        })
+        if (enabled) {
+            activitys.push({
+                Type: item.type.json,
+                PointerProgress: pointerProgress ? pointerProgress.json : null,
+                ProgressBar: progressBar ? progressBar.jsonObj : null,
+                ImageProgress: imageProgress?.enabled ? imageProgress.json : null,
+                Digits: digits.length > 0 ? digits.map(d => d.json) : null,
+                Shortcut: shortcut ? shortcut : null,
+                Icon: icon?.enabled ? icon.json : null
+            })
+        }
+    })
     return activitys
 }
 
@@ -226,5 +227,47 @@ function getDate(w: WatchFace| WatchAOD): DigitalDigit[] {
         if (enabled) dateDigits.push(digit.json)
     })
     return dateDigits
+}
+
+function getWidgets(widgets: WatchWidgets): Widgets | null {
+    let result: Widgets = null
+    if (widgets) {
+        result = {
+            TopMaskImageIndex: widgets.topMaskImageIndex,
+            UnderMaskImageIndex: widgets.underMaskImageIndex,
+            Unknown4: widgets.showTimeOnEditScreen,
+            Widget: widgets.widgets?.length > 0 ? 
+                widgets.widgets.map((item) => 
+                    ({
+                        X: item.x,
+                        Y: item.y,
+                        Width: item.width,
+                        Height: item.height,
+                        BorderActivImageIndex: item.borderActivImageIndex,
+                        BorderInactivImageIndex: item.borderInactivImageIndex,
+                        DescriptionImageBackground: item.descriptionImageBackground.json,
+                        DescriptionWidthCheck: item.descriptionWidthCheck,
+                        WidgetElement: item.widgetElements?.length ? 
+                         item.widgetElements.map(
+                             (we) => ({
+                                 Preview: [
+                                     {
+                                         LangCode: LangCodeType.All.json,
+                                         ImageSet: {
+                                             ImageIndex: we.previewImageIndex,
+                                             ImagesCount: 1
+                                         }
+                                     }
+                                 ],
+                                 Date: null,
+                                 Activity: we.activitys?.length > 0 ? 
+                                    activitysToJson(we.activitys) : null
+                             })
+                         ) : null
+                    })
+            ) : null
+        }
+    }
+    return result
 }
 

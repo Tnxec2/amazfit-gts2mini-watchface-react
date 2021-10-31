@@ -76,6 +76,8 @@ const ProgressbarLinearCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
                 }
               }}
             />
+          </div>
+          <div className="input-group input-group-sm mb-1">
             <span className="input-group-text" id="addon-wrapping">
               Length
             </span>
@@ -124,40 +126,38 @@ const ProgressbarLinearCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               imageIndex={progressBar.jsonObj.ForegroundImageIndex}
             />
             <span className="input-group-text">Color</span>
-            <div className="input-group-text">
-              <input
-                type="color"
-                className="form-control form-control-sm"
-                style={{ width: 40 }}
-                value={Color.colorRead(progressBar.jsonObj.Color)}
-                onChange={(e) => {
-                  const d = { ...progressBar };
-                  d.jsonObj.Color = Color.colorWrite(e.target.value);
-                  onUpdate(d);
-                }}
-                defaultValue="#000000"
-                title="Choose progress bar color"
-              />
-            </div>
+            <input
+              type="color"
+              className="form-control form-control-sm"
+              style={{ width: 40 }}
+              value={Color.colorRead(progressBar.jsonObj.Color)}
+              onChange={(e) => {
+                const d = { ...progressBar };
+                d.jsonObj.Color = Color.colorWrite(e.target.value);
+                onUpdate(d);
+              }}
+              defaultValue="#000000"
+              title="Choose progress bar color"
+            />
+          </div>
+          <div className="input-group input-group-sm mb-1">
             <span className="input-group-text" id="addon-wrapping">
               Line ending
             </span>
-            <div className="input-group-text">
-              <select
-                className="form-select form-select-sm"
-                onChange={changeLineEnding}
+            <select
+              className="form-select form-select-sm"
+              onChange={changeLineEnding}
+            >
+              <option value="0" selected={progressBar.jsonObj.Flatness === 0}>
+                Circle
+              </option>
+              <option
+                value="180"
+                selected={progressBar.jsonObj.Flatness === 180}
               >
-                <option value="0" selected={progressBar.jsonObj.Flatness === 0}>
-                  Circle
-                </option>
-                <option
-                  value="180"
-                  selected={progressBar.jsonObj.Flatness === 180}
-                >
-                  Flat
-                </option>
-              </select>
-            </div>
+                Flat
+              </option>
+            </select>
           </div>
           <div className="input-group input-group-sm mb-1">
             <SelectFileListComponent
@@ -169,6 +169,8 @@ const ProgressbarLinearCodmponent: FC<IProps> = ({ progressBar, onUpdate }) => {
               }}
               imageIndex={progressBar.jsonObj.PointerImageIndex}
             />
+          </div>
+          <div className="input-group input-group-sm">
             <SelectFileListComponent
               title='Background'
               setSelectedFileIndex={(i) => {

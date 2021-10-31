@@ -1,13 +1,10 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import SelectFileListComponent from "../shared/selectFileList.component";
 
 const BackgroundComponent: FC = () => {
-  const { watchface, setWatchface } =
-    useContext<IWatchContext>(WatchfaceContext);
-
-  const [collapsed, setCollapsed] = useState<boolean>(true);
+  const { watchface, setWatchface }  = useContext<IWatchContext>(WatchfaceContext)
 
   function onChangeBackgroundPreviewImage(index: number) {
     setWatchface({
@@ -35,12 +32,14 @@ const BackgroundComponent: FC = () => {
       <Card.Header
         className="clickable"
         onClick={() => {
-          setCollapsed(!collapsed);
+          let w = {...watchface};
+          w.background.collapsed = !w.background.collapsed;
+          setWatchface(w);
         }}
       >
         Background
       </Card.Header>
-      {!collapsed ? (
+      {!watchface.background.collapsed ? (
         <Card.Body>
           <div className="input-group input-group-sm mb-1 flex-nowrap">
             <SelectFileListComponent
@@ -56,7 +55,6 @@ const BackgroundComponent: FC = () => {
           </div>
           <div className="input-group input-group-sm flex-nowrap">
             <span className="input-group-text">Color</span>
-            <div className="input-group-text">
               <input
                 type="color"
                 className="form-control form-control-sm"
@@ -66,7 +64,6 @@ const BackgroundComponent: FC = () => {
                 value={watchface.background.color}
                 title="Choose background color"
                 />
-            </div>
           </div>
         </Card.Body>
       ) : (

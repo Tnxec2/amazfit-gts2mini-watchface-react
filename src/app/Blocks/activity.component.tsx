@@ -37,9 +37,8 @@ const ActivityComponent: FC<IProps> = ({
   onDelete,
   titleDefault,
   titleMin,
-  titleMax
+  titleMax,
 }) => {
-  const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function onUpdateDigit(d: WatchCommonDigit) {
     let a = {...activity}
@@ -63,11 +62,15 @@ const ActivityComponent: FC<IProps> = ({
     <Card className="activity w-100">
       <Card.Header
       className="d-flex justify-content-between align-items-center"
-      onClick={() => setCollapsed(!collapsed)}>
+      onClick={() => {
+        let a = {...activity};
+        a.collapsed = !a.collapsed;
+        onUpdateActivity(a);
+      }}>
           <span className="input-group-text">{title}</span>
           <button className="btn btn-outline-danger" type="button" onClick={(e) => {e.stopPropagation(); onDelete(e);}}>Delete</button>
       </Card.Header>
-      {!collapsed ? (
+      {!activity.collapsed ? (
         <Card.Body>
           { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm mr-0' onClick={onCopy}>Copy from normal screen</button> }
 

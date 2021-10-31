@@ -38,8 +38,9 @@ const FileLoaderComponent: FC = () => {
       let base = filename;
       if (base.lastIndexOf(".") !== -1)
         base = base.substring(0, base.lastIndexOf("."));
+
       const id = parseInt(base);
-      if (!isNaN(id)) {
+      if ( /^\d+$/.test(base) && !isNaN(id)) {
         const img = new Image();
         img.addEventListener("load", () => {
           index += 1;

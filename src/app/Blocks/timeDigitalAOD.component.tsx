@@ -1,4 +1,4 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
 import { WatchCommonDigit, WatchDialFace, WatchMultilangImageCoords } from "../model/watchFace.model";
@@ -7,11 +7,14 @@ import MultilangImageCoordsComponent from "./multiLangImageCoords.component";
 import SystemFontComponent from "./systemFont.component";
 import SystemFontCircleComponent from "./systemFontCircle.component";
 
-const TimeDigitalAODComponent: FC = () => {
+interface IProps {
+  collapsed: boolean,
+  setCollapsed(collapsed: boolean): void,
+}
+
+const TimeDigitalAODComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
-
-  const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function updateHoursDigit(h: WatchCommonDigit) {
     const t = {...watchface.aod.dialFace};
@@ -107,11 +110,11 @@ const TimeDigitalAODComponent: FC = () => {
         />
         <MultilangImageCoordsComponent
           title="AM"
-          imageCoords={watchface.dialFace.am}
+          imageCoords={watchface.aod.dialFace.am}
           onUpdate={updateAm} />
         <MultilangImageCoordsComponent
           title="PM"
-          imageCoords={watchface.dialFace.pm}
+          imageCoords={watchface.aod.dialFace.pm}
           onUpdate={updatePm} />
       </Card.Body>
     </Card>

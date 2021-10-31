@@ -1,6 +1,6 @@
 import Color from "../shared/color";
 import {
-  ClockHand, DigitalDigit, ImageCoord, ImageProgress, ProgressBar, ScreenIdle, Shortcut, Status, Text, WatchJson, Widgets, MultilangImageCoord, Activity
+  ClockHand, DigitalDigit, ImageCoord, ImageProgress, ProgressBar, ScreenIdle, Shortcut, Status, Text, WatchJson, Widgets, MultilangImageCoord, Activity, Widget, WidgetElement
 } from "./json.model";
 import { TimeType, DateType, CommonType, ActivityType, JsonType, LangCodeType } from "./types.model";
 
@@ -294,6 +294,7 @@ export class Background {
   imageIndex = null;
   previewIndex = null;
   color = null;
+  collapsed = true;
 }
 
 export class Coords {
@@ -393,6 +394,8 @@ export class WatchClockHand {
 }
 
 export class WatchDialFace {
+  collapsedDigital = true;
+  collapsedAnalog = true;
   hoursDigital = new WatchCommonDigit(TypeOfDigit.TIME, null, digitTypes.hour);
   minutesDigital = new WatchCommonDigit(TypeOfDigit.TIME, null, digitTypes.min);
   secondsDigital = new WatchCommonDigit(TypeOfDigit.TIME, null, digitTypes.sec);
@@ -404,6 +407,7 @@ export class WatchDialFace {
 }
 
 export class WatchDate {
+  collapsed = true;
   year = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.year);
   month = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.month);
   day = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.day);
@@ -412,6 +416,7 @@ export class WatchDate {
 }
 
 export class WatchStatus {
+  collapsed = true;
   constructor(s?: Status) {
     if (s) {
       if (s.Bluetooth?.ImageIndex) {
@@ -454,6 +459,7 @@ export class WatchProgressBar {
   }
 }
 export class WatchActivity {
+  collapsed = true;
   key: string;
   type: JsonType;
   dt: IDigitConstructor;
@@ -488,8 +494,10 @@ export class ElementOrderItem {
 export class WatchAOD {
   dialFace = new WatchDialFace();
   date = new WatchDate();
+  activitylistCollapsed = true;
   activitylist: WatchActivity[] = [];
   backgroundImageIndex: number;
+  backgroundCollapsed = true;
   json: ScreenIdle
 
   orderElements = {
@@ -543,10 +551,6 @@ export class WatchAOD {
     if (j.Date?.DateDigits) {
       j.Date.DateDigits.forEach((d) => {
         switch (d.DateType) {
-          case DateType.Year.json:
-            this.date.year = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.year);
-            newOrderElementsDate.push(new ElementOrderItem(DateType.Year));
-            break;
           case DateType.Month.json:
             if (d.Digit.DisplayFormAnalog) {
               this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
@@ -561,6 +565,8 @@ export class WatchAOD {
             newOrderElementsDate.push(new ElementOrderItem(DateType.Day));
             break;
           default:
+            this.date.year = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.year);
+            newOrderElementsDate.push(new ElementOrderItem(DateType.Year));
             break;
         }
       });
@@ -673,13 +679,72 @@ export function getActivityListFromJson(ar: Activity[]): WatchActivity[] | null 
 
 }
 
+export class WatchWidgetElement {
+  collapsed = true;
+  previewImageIndex: number;
+  date: WatchDate;
+  activitylistCollapsed = true;
+  activitys: WatchActivity[] = [];
+
+  constructor(j?: WidgetElement) {
+    if (j) {
+
+      if (!j.Preview) return null
+      let index = j.Preview.findIndex((item) => item.LangCode === LangCodeType.All.json)
+      this.previewImageIndex = index >= 0 ? index : 0
+      this.activitys = getActivityListFromJson(j.Activity)
+    }
+  }
+}
+
+export class WatchWidget {
+  collapsed = true;
+  x: number = 0;
+  y: number = 0;
+  width: number = 0;
+  height: number = 0;
+  widgetElementsCollapsed = true;
+  widgetElements: WatchWidgetElement[] = [];
+  borderActivImageIndex: number;
+  borderInactivImageIndex: number;
+  descriptionImageBackground: WatchImageCoords = new WatchImageCoords();
+  descriptionWidthCheck: number = 0;
+
+  constructor(j?: Widget) {
+    if ( j) {
+      this.x = j.X;
+      this.y = j.Y;
+      this.width = j.Width;
+      this.height = j.Height;
+      this.widgetElements = []
+      if (j.WidgetElement) {
+        j.WidgetElement.forEach((item) => {
+          this.widgetElements.push(new WatchWidgetElement(item))
+        });
+      }
+      this.borderActivImageIndex = j.BorderActivImageIndex;
+      this.borderInactivImageIndex = j.BorderInactivImageIndex;
+      this.descriptionImageBackground = new WatchImageCoords(j.DescriptionImageBackground)
+      this.descriptionWidthCheck = j.DescriptionWidthCheck
+    }
+  }
+}
+
 export class WatchWidgets {
   enabled: boolean
-  json: Widgets
+  collapsed = true;
+  topMaskImageIndex: number
+  underMaskImageIndex: number
+  showTimeOnEditScreen: number
+  widgets: WatchWidget[] = []
 
-  constructor(json: Widgets) {
-    this.json = json
-    if (json) this.enabled = true
+  constructor(json?: Widgets) {
+    if (json) {
+      this.enabled = true
+      this.topMaskImageIndex = json.TopMaskImageIndex
+      this.underMaskImageIndex = json.UnderMaskImageIndex
+      this.showTimeOnEditScreen = json.Unknown4
+    }
   }
 }
 
@@ -687,6 +752,7 @@ export default class WatchFace {
   background: Background = new Background();
   dialFace: WatchDialFace = new WatchDialFace();
   date: WatchDate = new WatchDate();
+  activitylistCollapsed = true;
   activity: WatchActivity[] = [];
   status = new WatchStatus();
   widgets = new WatchWidgets(null)
@@ -772,10 +838,6 @@ export default class WatchFace {
     if (j.System?.Date?.DateDigits) {
       j.System.Date.DateDigits.forEach((d) => {
         switch (d.DateType) {
-          case DateType.Year.json:
-            this.date.year = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.year);
-            newOrderElementsDate.push(new ElementOrderItem(DateType.Year));
-            break;
           case DateType.Month.json:
             if (d.Digit.DisplayFormAnalog) {
               this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
@@ -790,6 +852,8 @@ export default class WatchFace {
             newOrderElementsDate.push(new ElementOrderItem(DateType.Day));
             break;
           default:
+            this.date.year = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.year);
+            newOrderElementsDate.push(new ElementOrderItem(DateType.Year));
             break;
         }
       });
@@ -807,7 +871,7 @@ export default class WatchFace {
 
     this.status = new WatchStatus(j.System?.Status);
 
-    this.activity = getActivityListFromJson(j.System.Activity)
+    this.activity = getActivityListFromJson(j.System?.Activity)
 
     this.widgets = new WatchWidgets(j.Widgets)
     this.aod = new WatchAOD(j.ScreenIdle)
