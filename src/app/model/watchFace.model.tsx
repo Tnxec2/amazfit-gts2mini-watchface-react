@@ -744,6 +744,10 @@ export class WatchWidgets {
       this.topMaskImageIndex = json.TopMaskImageIndex
       this.underMaskImageIndex = json.UnderMaskImageIndex
       this.showTimeOnEditScreen = json.Unknown4
+      this.widgets = []
+      if (json.Widget) {
+        this.widgets = json.Widget.map((wi) => new WatchWidget(wi))
+      }
     }
   }
 }
