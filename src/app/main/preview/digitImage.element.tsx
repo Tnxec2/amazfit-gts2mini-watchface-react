@@ -13,8 +13,8 @@ export default function drawDigitImage(
     followXY?: [number, number], 
     drawBorder?: boolean,
     paddingZeroFix?: boolean): [number, number] | null  {
-    const x = followXY ? followXY[0] : digit.json?.Digit?.Image?.X
-    const y = followXY ? followXY[1] : digit.json?.Digit?.Image?.Y
+    const x = followXY ? followXY[0] : ( digit.json?.Digit?.Image?.X ? digit.json?.Digit?.Image?.X : 0 )
+    const y = followXY ? followXY[1] : ( digit.json?.Digit?.Image?.Y ? digit.json?.Digit?.Image?.Y : 0 )
     const imageSetIndex = findImageIndex(digit.json.Digit?.Image?.MultilangImage);
     const unitImageSetIndex =findImageIndex(digit.json.Digit?.Image?.MultilangImageUnit);
 

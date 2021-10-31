@@ -13,6 +13,8 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
             let width = progressBar.jsonObj.Width ? progressBar.jsonObj.Width : 0
 
             let angleSettings = progressBar.jsonObj.AngleSettings
+            let ax = angleSettings.X ? angleSettings.X : 0
+            let ay = angleSettings.Y ? angleSettings.Y : 0
             if (value > total) value = total
             let startAngle = angleSettings.StartAngle ? angleSettings.StartAngle : 0
             let endAngle = angleSettings.EndAngle ? angleSettings.EndAngle : 360
@@ -23,8 +25,8 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
                 const img = findImageById(progressBar.jsonObj.ForegroundImageIndex, images)
                 if (img) {
 
-                    let dX = (angleSettings.X - radius - (width / 2))
-                    let dY = (angleSettings.Y - radius - (width / 2))
+                    let dX = (ax - radius - (width / 2))
+                    let dY = (ay - radius - (width / 2))
 
                     if (progressBar.jsonObj?.BackgroundImageIndex) {
                         const backimg = findImageById(progressBar.jsonObj.BackgroundImageIndex, images)
@@ -37,13 +39,13 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
                     ctx.save();
                     ctx.beginPath();
                     drawArcPath(ctx, progressBar.jsonObj.Flatness, 
-                        angleSettings.X, angleSettings.Y, startAngle, sector_angle, radius, width)
+                        ax, ay, startAngle, sector_angle, radius, width)
                     
                     /// define this Path as clipping mask
                     ctx.clip();
 
                     /// draw the image
-                    ctx.drawImage(img, angleSettings.X - img.width/2, angleSettings.Y - img.height/2);
+                    ctx.drawImage(img, ax - img.width/2, ay - img.height/2);
                     //ctx.stroke() // test
                     /// reset clip to default
                     ctx.restore();
@@ -52,8 +54,8 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
                 let color = Color.colorRead(progressBar.jsonObj.Color)
                 if ( Color.GFG_Fun(color)) {
 
-                    let dX = (angleSettings.X - radius - (width / 2))
-                    let dY = (angleSettings.Y - radius - (width / 2))
+                    let dX = (ax - radius - (width / 2))
+                    let dY = (ay - radius - (width / 2))
 
                     if (progressBar.jsonObj?.BackgroundImageIndex) {
                         const backimg = findImageById(progressBar.jsonObj.BackgroundImageIndex, images)
@@ -70,7 +72,7 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
                     let clockwise = radianStart < radianEnd;
                     
                     // calling canvas src with all arguments
-                    ctx.arc(angleSettings.X, angleSettings.Y,
+                    ctx.arc(ax, ay,
                         radius, radianStart, radianEnd, !clockwise);
                     // set stroke and fill style
                     ctx.strokeStyle = color;
@@ -78,15 +80,15 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
                     // fill, and stroke
                     ctx.stroke();
                     drawColorEndings(ctx, color, progressBar.jsonObj.Flatness, 
-                        angleSettings.X, angleSettings.Y, startAngle, sector_angle, radius, width)
+                        ax, ay, startAngle, sector_angle, radius, width)
                     ctx.lineWidth = 1;
                 }
             }
             if (progressBar.jsonObj?.PointerImageIndex) {
                 const img = findImageById(progressBar.jsonObj.PointerImageIndex, images)
                 if (img) {
-                    let _x = angleSettings.X + (radius) * Math.cos(Math.PI * (sector_angle - 90) / 180)
-                    let _y = angleSettings.Y + (radius) * Math.sin(Math.PI * (sector_angle - 90) / 180)
+                    let _x = ax + (radius) * Math.cos(Math.PI * (sector_angle - 90) / 180)
+                    let _y = ay + (radius) * Math.sin(Math.PI * (sector_angle - 90) / 180)
                     ctx.drawImage(img, _x, _y, img.width, img.height);
                 }
             }

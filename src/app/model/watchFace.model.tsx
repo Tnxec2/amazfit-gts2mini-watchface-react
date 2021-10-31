@@ -302,8 +302,8 @@ export class Coords {
   y: number = 0;
 
   constructor(x: number = 0, y: number = 0) {
-    this.x = x;
-    this.y = y;
+    this.x = x ? x : 0;
+    this.y = y ? y : 0;
   }
 }
 
@@ -712,8 +712,8 @@ export class WatchWidget {
 
   constructor(j?: Widget) {
     if ( j) {
-      this.x = j.X;
-      this.y = j.Y;
+      this.x = j.X ? j.X : 0;
+      this.y = j.Y ? j.Y : 0;
       this.width = j.Width;
       this.height = j.Height;
       this.widgetElements = []
