@@ -1,9 +1,10 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../context";
-import { Activity, DigitalDigit, Shortcut, WatchJson, Widgets } from "../model/json.model";
+import { Activity, DigitalDigit, Shortcut, WatchJson, Widget, Widgets } from "../model/json.model";
+import { WidgetElement } from "../model/json_gts2mini.model";
 import { DateType, LangCodeType } from "../model/types.model";
-import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar, WatchWidgets } from "../model/watchFace.model";
+import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar, WatchWidget, WatchWidgetElement, WatchWidgets } from "../model/watchFace.model";
 import Color from "../shared/color";
 import { Constant } from "../shared/constant";
 import cl from './JsonComponent.module.css';
@@ -236,38 +237,39 @@ function getWidgets(widgets: WatchWidgets): Widgets | null {
             TopMaskImageIndex: widgets.topMaskImageIndex,
             UnderMaskImageIndex: widgets.underMaskImageIndex,
             Unknown4: widgets.showTimeOnEditScreen,
-            Widget: widgets.widgets?.length > 0 ? 
-                widgets.widgets.map((item) => 
-                    ({
-                        X: item.x,
-                        Y: item.y,
-                        Width: item.width,
-                        Height: item.height,
-                        BorderActivImageIndex: item.borderActivImageIndex,
-                        BorderInactivImageIndex: item.borderInactivImageIndex,
-                        DescriptionImageBackground: item.descriptionImageBackground.json,
-                        DescriptionWidthCheck: item.descriptionWidthCheck,
-                        WidgetElement: item.widgetElements?.length ? 
-                         item.widgetElements.map(
-                             (we) => ({
-                                 Preview: [
-                                     {
-                                         LangCode: LangCodeType.All.json,
-                                         ImageSet: {
-                                             ImageIndex: we.previewImageIndex,
-                                             ImagesCount: 1
-                                         }
-                                     }
-                                 ],
-                                 Date: null,
-                                 Activity: we.activitys?.length > 0 ? 
-                                    activitysToJson(we.activitys) : null
-                             })
-                         ) : null
-                    })
-            ) : null
+            Widget: widgets.widgets?.length > 0 ? widgets.widgets.map((item) => getWidget(item)) : null
         }
     }
     return result
 }
 
+function getWidget(widget: WatchWidget): Widget | null {
+    return ({
+        X: widget.x,
+        Y: widget.y,
+        Width: widget.width,
+        Height: widget.height,
+        BorderActivImageIndex: widget.borderActivImageIndex,
+        BorderInactivImageIndex: widget.borderInactivImageIndex,
+        DescriptionImageBackground: widget.descriptionImageBackground.json,
+        DescriptionWidthCheck: widget.descriptionWidthCheck,
+        WidgetElement: widget.widgetElements?.length ? widget.widgetElements.map( (we) => getWidgetElement(we)) : null
+    })
+}
+
+function getWidgetElement(we: WatchWidgetElement): WidgetElement {
+    let activitys = activitysToJson(we.activitys)
+    return {
+        Preview: [
+            {
+                LangCode: LangCodeType.All.json,
+                ImageSet: {
+                    ImageIndex: we.previewImageIndex,
+                    ImagesCount: 1
+                }
+            }
+        ],
+        Date: null,
+        Activity: activitys?.length > 0 ? activitys : null
+    }
+}
