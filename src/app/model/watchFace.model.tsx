@@ -17,7 +17,7 @@ interface IDigitConstructor {
   titleMax?: string;
   decimalDelimiter?: boolean;
   timeDelimiter?: boolean;
-  displayFormAnalog?: boolean;
+  displayAnalog?: boolean;
   imageProgressTotal?: number;
 }
 
@@ -293,7 +293,7 @@ const digitTypes = {
 export class Background {
   imageIndex = null;
   previewIndex = null;
-  color = null;
+  color = Color.DEFAULT_COLOR;
   collapsed = true;
 }
 

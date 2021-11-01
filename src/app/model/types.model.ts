@@ -22,11 +22,11 @@ export class JsonType {
     static Center = new JsonType(1, "Center");
     static Right = new JsonType(2, "Right");
   
-    static toJson(index: number) {
+    static toJson(index: number): string {
       if (index === undefined) return this.Left.json;
       return Object.values(AlignmentType).find((val) => val.index === index).json;
     }
-    static fromJson(json: string) {
+    static fromJson(json: string): number {
       if (json === undefined) return this.Left.index;
       return Object.values(AlignmentType).find((val) => val.json === json).index;
     }

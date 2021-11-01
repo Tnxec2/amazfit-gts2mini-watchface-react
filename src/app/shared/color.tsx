@@ -1,6 +1,10 @@
 const colorRegex: RegExp = /^#[0-9A-F]{6}$/i;
 
+
 export default class Color {
+  
+  static readonly DEFAULT_COLOR = '#000000';
+  
   static hexToRgb(hex: string) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result

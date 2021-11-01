@@ -4,21 +4,21 @@ import { IWatchContext, WatchfaceContext } from "../context";
 import "./selectFileList.css";
 interface IProps {
   title: string,
-  imageIndex: number;
-  setSelectedFileIndex(id: number): void;
+  value: number;
+  onChange(id: number): void;
 }
 
 const SelectFileListComponent: FC<IProps> = ({
   title,
-  imageIndex,
-  setSelectedFileIndex,
+  value: imageIndex,
+  onChange: onChange,
 }) => {
   const { images } = useContext<IWatchContext>(WatchfaceContext);
 
   const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function onFileSelected(id: number) {
-    setSelectedFileIndex(id);
+    onChange(id);
     setCollapsed(true);
   }
 
