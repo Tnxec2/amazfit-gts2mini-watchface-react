@@ -80,7 +80,8 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         images,
         watchface.activity,
         watchState,
-        digitBorder
+        digitBorder,
+        true
       );
     }
     if (watchface.status) {

@@ -12,9 +12,11 @@ export default function drawDigit(
     drawBorder?: boolean,
     paddingZeroFix?: boolean,
     systemFontText?: string,
+    weatherIconCenterX?: number
     ): [number, number] | null  {
         if (!digit) return
-        if (digit.enabledImage) return drawDigitImage(ctx, images, digit, number, followXY, drawBorder, paddingZeroFix)
+        if (digit.enabledImage) 
+            return drawDigitImage(ctx, images, digit, number, followXY, drawBorder, paddingZeroFix, weatherIconCenterX)
         if (digit.enabledSystemFont || digit.enabledSystemFontCircle) {
             if (!systemFontText) return followXY
             if (digit.enabledSystemFontCircle)

@@ -12,7 +12,9 @@ export default function drawDigitImage(
     number: number, 
     followXY?: [number, number], 
     drawBorder?: boolean,
-    paddingZeroFix?: boolean): [number, number] | null  {
+    paddingZeroFix?: boolean,
+    weatherIconCenterX?: number
+    ): [number, number] | null  {
     const x = followXY ? followXY[0] : ( digit.json?.Digit?.Image?.X ? digit.json?.Digit?.Image?.X : 0 )
     const y = followXY ? followXY[1] : ( digit.json?.Digit?.Image?.Y ? digit.json?.Digit?.Image?.Y : 0 )
     const imageSetIndex = findImageIndex(digit.json.Digit?.Image?.MultilangImage);
@@ -45,13 +47,19 @@ export default function drawDigitImage(
                     digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImagesCount,
                     digit.json.Digit.Image.DecimalPointImageIndex ))
             }
+
+            let widthUnit = 0
             if (digit.json.Digit.Image.MultilangImageUnit && digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex]) {
                 const img = findImageById(digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex].ImageSet.ImageIndex, images)
-                if (img) ar.push(img)
+                if (img) {
+                    ar.push(img)
+                    widthUnit = img.width
+                }
             }
 
             const followXY = drawImages(ctx, ar, x, y, digit.json.Digit.Spacing, 
-                digit.json.Digit.Alignment, digit.con.numberLenght - strNumber.length, drawBorder)
+                digit.json.Digit.Alignment, digit.con.numberLenght - strNumber.length, 
+                drawBorder, weatherIconCenterX, widthUnit)
 
             if ( digit.json.Separator) {
                 drawSeparator(ctx, images, digit.json.Separator)
@@ -84,39 +92,54 @@ function getImages(
     return ar;
 }
 
-function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[], 
+function drawImages(
+    ctx: CanvasRenderingContext2D,
+    ar: HTMLImageElement[], 
     startx: number, 
     starty: number, 
     spacing: number, 
     alignment: string, 
     paddingLenght: number, 
-    drawborder: boolean): [number, number] | null  {
+    drawborder: boolean,
+    weatherIconCenterX?: number,
+    widthUnit?: number): [number, number] | null  {
     if ( ar.length === 0) return
     
     if (!spacing) spacing = 0
     
     let imageWidth: number = 0
-    let maxWidth: number = 0
+    //let maxWidth: number = 0
     ar.forEach(img => {
         imageWidth += img.width
         imageWidth += spacing
-        maxWidth += img.width
-        maxWidth += spacing > 0 ? spacing : 0
+        //maxWidth += img.width
+        //maxWidth += spacing > 0 ? spacing : 0
     })
     imageWidth -= spacing
-    maxWidth -= spacing > 0 ? spacing : 0
+    //maxWidth -= spacing > 0 ? spacing : 0
 
-    if (paddingLenght > 0) {
-        maxWidth +=  ar[0].width * paddingLenght +  ( spacing > 0 ? Math.abs(spacing) * (paddingLenght - 1) : 0)
-    }
+    //if (paddingLenght > 0) {
+    //    maxWidth +=  ar[0].width * paddingLenght + 1
+    //    if (spacing > 0) maxWidth += Math.abs(spacing) * (paddingLenght - 1)
+    //}
+
+    let width = ar[0].width;
+    let maxWidth: number = width * ar.length + width * paddingLenght
+    if (spacing > 0 ) maxWidth += spacing * (ar.length + paddingLenght - 1)
 
     let x = startx
     let y = starty
     if (alignment === AlignmentType.Right.json) { // right
         x = x + maxWidth - imageWidth
     } else if (alignment === AlignmentType.Center.json) { // center
-        x = x + (maxWidth - imageWidth) / 2
+        if (weatherIconCenterX) {
+            console.log(alignment, weatherIconCenterX, widthUnit, startx, x);
+            x = weatherIconCenterX - (imageWidth - widthUnit) / 2
+        } else {
+            x = x + maxWidth / 2 - imageWidth / 2
+        }
     }
+    
 
     let height = 0
 

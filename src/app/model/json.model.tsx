@@ -263,3 +263,14 @@ export class WatchJson {
   Widgets: Widgets;
   ScreenIdle: ScreenIdle;
 }
+
+export function oneCoordinates(coordinates: Coordinates[]): Boolean {
+    if (coordinates.length == 1) return true;
+    let result = true;
+    let x = coordinates[0].X;
+    let y = coordinates[0].Y;
+    coordinates.forEach( (coordinate) => {
+        if (x !== coordinate.X || y !== coordinate.Y) result = false;
+    })
+    return result;
+}

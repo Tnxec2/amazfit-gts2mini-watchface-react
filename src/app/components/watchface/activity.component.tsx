@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Card } from "react-bootstrap";
+import { Alert, Card } from "react-bootstrap";
+import { ActivityType } from "../../model/types.model";
 import { WatchActivity, WatchCommonDigit } from "../../model/watchFace.model";
 import ActivityDigitComponent from "./activityDigit.component";
 import ClockHandComponent from "./clockHand.component";
@@ -73,8 +74,12 @@ const ActivityComponent: FC<IProps> = ({
       </Card.Header>
       {!activity.collapsed ? (
         <Card.Body>
-          { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm mr-0' onClick={onCopy}>Copy from normal screen</button> }
+          { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm' onClick={onCopy}>Copy from normal screen</button> }
 
+          { activity.type === ActivityType.Weather ?
+          <div className="alert alert-info" role="alert">
+            In order to center the temperature correctly (only if weather icon as ImageProgress is enabled), weather icon should be defined in separated activity and placed before activity with temperature. 
+          </div> : '' }
           <ActivityDigitComponent
             digit={activity.digit}
             title={titleDefault ? titleDefault : title}

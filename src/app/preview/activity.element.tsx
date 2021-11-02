@@ -9,6 +9,8 @@ import drawProgressBarCircle from "./progressBarCircle.element";
 import drawProgressBarLinear from "./progressBarLinear.element";
 import drawclockhand from "./clockHand.element";
 import { getSystemFontText } from "./systemfont.element";
+import { oneCoordinates } from "../model/json.model";
+import { findImageById } from "../shared/helper";
 
 interface IDigitDraw {
     cur: {
@@ -34,11 +36,32 @@ export default function drawActivityList(
     images: IImage[],
     activitys: WatchActivity[],
     watchState: WatchState,
-    digitBorder: boolean
+    digitBorder: boolean,
+    mainScreen: boolean = false
     ) {
         let val = 0
         let total = 0
         if (!activitys) return
+
+        let weatherIconCenterX = 0
+        if ( mainScreen) {
+            activitys.forEach((activity) => {
+                if (activity.type === ActivityType.Weather) {
+                    if (activity.imageProgress.enabled && activity.imageProgress.json?.ImageSet?.ImageIndex &&
+                        activity.imageProgress.json?.Coordinates && oneCoordinates(activity.imageProgress.json.Coordinates)
+                        ) {
+
+                        let imageIndexWeather = activity.imageProgress.json.ImageSet.ImageIndex;
+                        let _image_x = activity.imageProgress.json.Coordinates[0].X;
+                        let img = findImageById(imageIndexWeather, images);
+                        if (img) {
+                            weatherIconCenterX = _image_x + img.width / 2;
+                        }
+                    }
+                }
+            }) 
+        }
+
         activitys.forEach((activity) => {
             switch (activity.type) {
                 case ActivityType.Battery:
@@ -110,7 +133,7 @@ export default function drawActivityList(
                         min: { value: watchState.temperatureMin, total: null }, 
                         max: { value: watchState.temperatureMax, total: null }, 
                         imageProgress: { value: watchState.weatherIcon, total: 29}},
-                        digitBorder)
+                        digitBorder, weatherIconCenterX)
                         break;
                 case ActivityType.UVindex:
                     val = watchState.uvIndex
@@ -205,7 +228,9 @@ export default function drawActivityList(
         });
 }
 
-function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchActivity, values: IDigitDraw, digitBorder: boolean) {
+function drawActivity(
+    ctx: CanvasRenderingContext2D, images: IImage[], a: WatchActivity, 
+    values: IDigitDraw, digitBorder: boolean, weatherIconCenterX?: number) {
     let followXY = null
 
     if (a.imageProgress.enabled) {
@@ -224,12 +249,19 @@ function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchA
         drawImageCoords(ctx, images, a.icon.json)
     }
     if (a.digit?.enabled) {
-        followXY = drawDigit(ctx, images, a.digit, values.cur.value, followXY, digitBorder, false, getSystemFontText(a.digit, values.cur.value))
+        followXY = drawDigit(ctx, images, a.digit, values.cur.value, 
+            followXY, digitBorder, 
+            false, getSystemFontText(a.digit, values.cur.value), weatherIconCenterX)
     }
     if (a.digitMin?.enabled && values.min) {
-        followXY = drawDigit(ctx, images, a.digitMin, values.min.value, a.digitMin.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMin, values.min.value))
+        followXY = drawDigit(ctx, images, a.digitMin, values.min.value, 
+            a.digitMin.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, 
+            false, getSystemFontText(a.digitMin, values.min.value))
     }
     if (a.digitMax?.enabled && values.max) {
-        drawDigit(ctx, images, a.digitMax, values.max.value, a.digitMax.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, getSystemFontText(a.digitMax, values.max.value))
+        drawDigit(ctx, images, a.digitMax, values.max.value, 
+            a.digitMax.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, 
+            false, 
+            getSystemFontText(a.digitMax, values.max.value))
     }
 }
