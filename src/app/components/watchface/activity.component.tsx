@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Alert, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { ActivityType } from "../../model/types.model";
 import { WatchActivity, WatchCommonDigit } from "../../model/watchFace.model";
 import ActivityDigitComponent from "./activityDigit.component";

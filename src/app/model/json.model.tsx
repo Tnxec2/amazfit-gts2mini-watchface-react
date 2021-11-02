@@ -265,7 +265,7 @@ export class WatchJson {
 }
 
 export function oneCoordinates(coordinates: Coordinates[]): Boolean {
-    if (coordinates.length == 1) return true;
+    if (coordinates.length === 1) return true;
     let result = true;
     let x = coordinates[0].X;
     let y = coordinates[0].Y;
