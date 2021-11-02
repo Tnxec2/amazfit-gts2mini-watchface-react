@@ -406,13 +406,29 @@ export class WatchDialFace {
   pm = new WatchMultilangImageCoords()
 }
 
+export class ElementOrderItem {
+  public type: number;
+  public title: string;
+  constructor(jsonType: JsonType) {
+    this.type = jsonType.index;
+    this.title = jsonType.json;
+  }
+}
+
 export class WatchDate {
   collapsed = true;
+  enabled = false;
   year = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.year);
   month = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.month);
   day = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.day);
   monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, null, digitTypes.monthasword);
   weekDay = new WatchCommonDigit(TypeOfDigit.COMMON, null, digitTypes.weekday);
+
+  orderElements = [
+    new ElementOrderItem(DateType.Year),
+    new ElementOrderItem(DateType.Month),
+    new ElementOrderItem(DateType.Day),
+  ]
 }
 
 export class WatchStatus {
@@ -482,15 +498,6 @@ export class WatchActivity {
 
 
 
-export class ElementOrderItem {
-  public type: number;
-  public title: string;
-  constructor(jsonType: JsonType) {
-    this.type = jsonType.index;
-    this.title = jsonType.json;
-  }
-}
-
 export class WatchAOD {
   dialFace = new WatchDialFace();
   date = new WatchDate();
@@ -499,14 +506,6 @@ export class WatchAOD {
   backgroundImageIndex: number;
   backgroundCollapsed = true;
   json: ScreenIdle
-
-  orderElements = {
-    orderElementsDate: [
-      new ElementOrderItem(DateType.Year),
-      new ElementOrderItem(DateType.Month),
-      new ElementOrderItem(DateType.Day),
-    ]
-  };
 
   constructor(j: ScreenIdle) {
     this.dialFace = new WatchDialFace();
@@ -553,10 +552,10 @@ export class WatchAOD {
         switch (d.DateType) {
           case DateType.Month.json:
             if (d.Digit.DisplayFormAnalog) {
-              this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
+              this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.monthasword);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             } else {
-              this.date.month = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.monthasword);
+              this.date.month = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             }
             break;
@@ -571,11 +570,11 @@ export class WatchAOD {
         }
       });
     }
-    this.orderElements.orderElementsDate.forEach((el) => {
+    this.date.orderElements.forEach((el) => {
       if (!newOrderElementsDate.find((s) => s.type === el.type))
         newOrderElementsDate.push(el);
     });
-    this.orderElements.orderElementsDate = newOrderElementsDate;
+    this.date.orderElements = newOrderElementsDate;
 
     this.date.weekDay = new WatchCommonDigit(TypeOfDigit.COMMON,
       j.Date?.WeeksDigits,
@@ -685,14 +684,56 @@ export class WatchWidgetElement {
   date: WatchDate;
   activitylistCollapsed = true;
   activitys: WatchActivity[] = [];
+  orderElements = {
+    orderElementsDate: [
+      new ElementOrderItem(DateType.Year),
+      new ElementOrderItem(DateType.Month),
+      new ElementOrderItem(DateType.Day),
+    ]
+  };
 
   constructor(j?: WidgetElement) {
     if (j) {
-
       if (!j.Preview) return null
       let index = j.Preview.findIndex((item) => item.LangCode === LangCodeType.All.json)
       this.previewImageIndex = index >= 0 ? index : 0
       this.activitys = getActivityListFromJson(j.Activity)
+
+      this.date = new WatchDate();
+      let newOrderElementsDate: ElementOrderItem[] = [];
+      if (j.Date?.DateDigits) {
+        j.Date.DateDigits.forEach((d) => {
+          switch (d.DateType) {
+            case DateType.Month.json:
+              if (d.Digit.DisplayFormAnalog) {
+                this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.monthasword);
+                newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
+              } else {
+                this.date.month = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
+                newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
+              }
+              break;
+            case DateType.Day.json:
+              this.date.day = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.day);
+              newOrderElementsDate.push(new ElementOrderItem(DateType.Day));
+              break;
+            default:
+              this.date.year = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.year);
+              newOrderElementsDate.push(new ElementOrderItem(DateType.Year));
+              break;
+          }
+        });
+      }
+      this.orderElements.orderElementsDate.forEach((el) => {
+        if (!newOrderElementsDate.find((s) => s.type === el.type))
+          newOrderElementsDate.push(el);
+      });
+      this.orderElements.orderElementsDate = newOrderElementsDate;
+  
+      this.date.weekDay = new WatchCommonDigit(TypeOfDigit.COMMON,
+        j.Date?.WeeksDigits,
+        digitTypes.weekday
+      );
     }
   }
 }
@@ -762,25 +803,6 @@ export default class WatchFace {
   widgets = new WatchWidgets(null)
   aod = new WatchAOD(null)
 
-  orderElements = {
-    orderElementsDate: [
-      new ElementOrderItem(DateType.Year),
-      new ElementOrderItem(DateType.Month),
-      new ElementOrderItem(DateType.Day),
-    ],
-    orderElementsActivity: [
-      new ElementOrderItem(ActivityType.Date),
-      new ElementOrderItem(ActivityType.Battery),
-      new ElementOrderItem(ActivityType.Steps),
-      new ElementOrderItem(ActivityType.Calories),
-      new ElementOrderItem(ActivityType.HeartRate),
-      new ElementOrderItem(ActivityType.Pai),
-      new ElementOrderItem(ActivityType.Distance),
-      new ElementOrderItem(ActivityType.StandUp),
-      new ElementOrderItem(ActivityType.Weather),
-    ],
-  };
-
   constructor(j?: WatchJson) {
     if (!j) return;
 
@@ -844,10 +866,10 @@ export default class WatchFace {
         switch (d.DateType) {
           case DateType.Month.json:
             if (d.Digit.DisplayFormAnalog) {
-              this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
+              this.date.monthAsWord = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.monthasword);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             } else {
-              this.date.month = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.monthasword);
+              this.date.month = new WatchCommonDigit(TypeOfDigit.DATE, d, digitTypes.month);
               newOrderElementsDate.push(new ElementOrderItem(DateType.Month));
             }
             break;
@@ -862,11 +884,11 @@ export default class WatchFace {
         }
       });
     }
-    this.orderElements.orderElementsDate.forEach((el) => {
+    this.date.orderElements.forEach((el) => {
       if (!newOrderElementsDate.find((s) => s.type === el.type))
         newOrderElementsDate.push(el);
     });
-    this.orderElements.orderElementsDate = newOrderElementsDate;
+    this.date.orderElements = newOrderElementsDate;
 
     this.date.weekDay = new WatchCommonDigit(TypeOfDigit.COMMON,
       j.System?.Date?.WeeksDigits,

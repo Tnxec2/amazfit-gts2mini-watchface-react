@@ -10,8 +10,8 @@ interface IProps {
 
 const SelectFileListComponent: FC<IProps> = ({
   title,
-  value: imageIndex,
-  onChange: onChange,
+  value,
+  onChange,
 }) => {
   const { images } = useContext<IWatchContext>(WatchfaceContext);
 
@@ -57,10 +57,10 @@ const SelectFileListComponent: FC<IProps> = ({
       <span className="input-group-text">{title}</span>
       <div className="input-group-text dropdown">
         <div>
-          {imageIndex !== null &&
-          imageIndex !== undefined &&
-          images[imageIndex - Constant.startImageIndex]
-            ? images[imageIndex - Constant.startImageIndex].name
+          {value !== null &&
+          value !== undefined &&
+          images[value - Constant.startImageIndex]
+            ? images[value - Constant.startImageIndex].name
             : "None"}
         </div>
         {collapsed ? (
@@ -83,7 +83,7 @@ const SelectFileListComponent: FC<IProps> = ({
         className="btn btn-outline-secondary"
         type="button"
         onClick={onRemove}
-        disabled={!imageIndex}
+        disabled={!value}
       >
         x
       </button>

@@ -32,9 +32,10 @@ export default function drawclockhand(ctx: CanvasRenderingContext2D,
                 
                 let _startAngle = clockHand.json.StartAngle ? clockHand.json.StartAngle: 0
                 let _endAngle = clockHand.json.EndAngle ? clockHand.json.EndAngle: 360
+                if (value > total) value = total
                 let angle = _startAngle + Math.round(value * (_endAngle - _startAngle ) / total)
-                angle = Math.min(angle, _endAngle)
-                angle = Math.max(angle, _startAngle)
+                //angle = Math.min(angle, _endAngle)
+                //angle = Math.max(angle, _startAngle)
                 let radians = (Math.PI/180) * angle
                 
                 ctx.save(); // save current state

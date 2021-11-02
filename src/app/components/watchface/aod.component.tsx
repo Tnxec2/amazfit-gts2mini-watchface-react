@@ -1,16 +1,22 @@
 import { FC, useContext } from "react";
-import ActivityListComponent from "../watchface/activitylist.component";
-import BackgroundAODComponent from "../watchface/backgroundaod.component";
-import DateAODComponent from "../watchface/dateaod.component";
-import TimeAnalogAODComponent from "../watchface/timeAnalogAOD.component";
-import TimeDigitalAODComponent from "../watchface/timeDigitalAOD.component";
+import ActivityListComponent from "./activitylist.component";
+import BackgroundAODComponent from "./backgroundaod.component";
+import TimeAnalogAODComponent from "./timeAnalogAOD.component";
+import TimeDigitalAODComponent from "./timeDigitalAOD.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { WatchActivity } from "../../model/watchFace.model";
+import { WatchActivity, WatchDate } from "../../model/watchFace.model";
+import DateComponent from "./date.component";
 
 const AodComponent: FC = () => {
 
   const { watchface, setWatchface }  = useContext<IWatchContext>(WatchfaceContext)
 
+  function updateDate(d: WatchDate) {
+    let w = {...watchface}
+    w.aod.date = d
+    setWatchface(w)
+  }
+  
   function updateActivitys(al: WatchActivity[]) {
     let w = {...watchface}
     w.aod.activitylist = al
@@ -37,7 +43,9 @@ const AodComponent: FC = () => {
           setWatchface(s)
         }}
       />
-      <DateAODComponent 
+      <DateComponent
+        date={watchface.aod.date} 
+        onUpdate={updateDate}
         collapsed={watchface.aod.date.collapsed}
         setCollapsed={(c) => {
           let s = {...watchface};

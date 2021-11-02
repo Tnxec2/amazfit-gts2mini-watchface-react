@@ -69,7 +69,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         ctx,
         images,
         watchface.date,
-        watchface.orderElements.orderElementsDate,
+        watchface.date.orderElements,
         watchState,
         digitBorder
       );
@@ -112,7 +112,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         ctx,
         images,
         watchface.aod.date,
-        watchface.orderElements.orderElementsDate,
+        watchface.aod.date.orderElements,
         watchState,
         digitBorder
       );

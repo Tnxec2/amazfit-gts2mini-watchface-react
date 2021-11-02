@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import { Card } from 'react-bootstrap';
 import BlocksArrayComponent from '../../blocks/blocksArray.component';
 import { BlockType } from '../../model/blocks.model';
-import { WatchWidgetElement } from '../../model/watchFace.model';
+import { WatchDate, WatchWidgetElement } from '../../model/watchFace.model';
 import ActivityListComponent from './activitylist.component';
+import DateComponent from './date.component';
 
 interface IProps {
     index: number,
@@ -16,9 +17,15 @@ interface IProps {
 const WidgetElementComponent: FC<IProps> = ({index, element, onDelete, onUpdate, defaultCount}) => {
 
   function onChangePreviewImageIndex(index: number) {
-      const ip = { ...element };
-      ip.previewImageIndex = index;
-      onUpdate(ip);
+      const _we = { ...element };
+      _we.previewImageIndex = index;
+      onUpdate(_we);
+  }
+  
+  function updateDate(d: WatchDate) {
+    let _we = { ...element }
+    _we.date = d
+    onUpdate(_we)
   }
 
   return (
@@ -42,6 +49,16 @@ const WidgetElementComponent: FC<IProps> = ({index, element, onDelete, onUpdate,
                 ]}
               ]
             } />
+          <DateComponent
+              date={element.date}
+              onUpdate={updateDate}
+              collapsed={element.date.collapsed}
+              setCollapsed={(c) => {
+                let _we = { ...element };
+                _we.date.collapsed = c;
+                onUpdate(_we)
+              }}
+           />
           <ActivityListComponent
               activitys={element.activitys}
               onUpdate={(al) => {

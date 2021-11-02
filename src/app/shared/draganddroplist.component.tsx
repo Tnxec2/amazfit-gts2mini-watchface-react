@@ -115,6 +115,7 @@ const DnDListComponent: FC<IProps> = ({ _list, updateOrder }) => {
                   ? "dropArea"
                   : ""
               }`}
+              title="Drag and Drop to change order"
             >
                 {item.reactItem}
             </li>

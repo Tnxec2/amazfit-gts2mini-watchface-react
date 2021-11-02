@@ -5,9 +5,9 @@ import { WatchState } from "../model/watchState";
 import drawDigit from "./digit.element";
 import drawImageCoords from "./imageCoords.element";
 import drawImageProgress from "./imageProgress.element";
-import drawPointer from "./pointer.element";
 import drawProgressBarCircle from "./progressBarCircle.element";
 import drawProgressBarLinear from "./progressBarLinear.element";
+import drawclockhand from "./clockHand.element";
 import { getSystemFontText } from "./systemfont.element";
 
 interface IDigitDraw {
@@ -218,7 +218,7 @@ function drawActivity(ctx: CanvasRenderingContext2D, images: IImage[], a: WatchA
         drawProgressBarCircle(ctx, images, a.progressBar, values.cur.value, values.cur.total)
     }
     if (a.pointerProgress.enabled) {
-        drawPointer(ctx, images, a.pointerProgress, values.cur.value, values.cur.total, a.progressBar.enabledLinear || a.progressBar.enabledCircle)
+        drawclockhand(ctx, images, a.pointerProgress, values.cur.value, values.cur.total)
     }
     if (a.icon.enabled) {
         drawImageCoords(ctx, images, a.icon.json)

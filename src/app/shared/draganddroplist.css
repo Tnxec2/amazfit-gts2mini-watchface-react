@@ -8,6 +8,7 @@ ul.droplist > li {
     align-items: center;
     padding: 0;
     border: 0;
+    border-bottom: 1px dotted #b1b1b1;
     /* cursor: move; */
  }
 

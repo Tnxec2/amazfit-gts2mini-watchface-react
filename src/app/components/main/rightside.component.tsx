@@ -1,19 +1,17 @@
 import { FC, useState } from "react";
 import { Constant } from "../../shared/constant";
-import ElementOrderComponent from "./elementOrder.component";
 import JsonComponent from "./json.component";
 import PreviewComponent from "./preview.component";
 import UploadedImagesomponent from "./uploadedImages.component";
 
 const tabs = [
-  { id: 0, name: "Preview" },
-  { id: 1, name: "Element Order" },
-  { id: 2, name: "Uploaded Images" },
-  { id: 3, name: "Json" },
+  { id: 0, name: "Preview", el: <PreviewComponent width={Constant.width} height={Constant.height} /> },
+  { id: 1, name: "Uploaded Images", el:  <UploadedImagesomponent />},
+  { id: 2, name: "Json", el: <JsonComponent /> },
 ];
 
 const RightSideComponent: FC = () => {
-  const [tabRight, setTabRight] = useState<number>(0);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
 
   return (
     <div>
@@ -22,8 +20,8 @@ const RightSideComponent: FC = () => {
           return (
             <li key={tab.id} className="nav-item">
               <button
-                className={`nav-link ${tabRight === tab.id ? "active" : ""} `}
-                onClick={() => setTabRight(tab.id)}
+                className={`nav-link ${selectedTab === tab.id ? "active" : ""} `}
+                onClick={() => setSelectedTab(tab.id)}
               >
                 {tab.name}
               </button>
@@ -31,15 +29,7 @@ const RightSideComponent: FC = () => {
           );
         })}
       </ul>
-      {tabRight === 0 ? (
-        <PreviewComponent width={Constant.width} height={Constant.height} />
-      ) : tabRight === 1 ? (
-        <ElementOrderComponent />
-      ) : tabRight === 2 ? (
-        <UploadedImagesomponent />
-      ) : (
-        <JsonComponent />
-      )}
+      { tabs[selectedTab].el }
     </div>
   );
 };

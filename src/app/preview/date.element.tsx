@@ -5,7 +5,7 @@ import { WatchState } from "../model/watchState";
 import drawDigit from "./digit.element";
 import { addUnitsAndSeparator } from "./systemfont.element";
 
-export default function draw(ctx: CanvasRenderingContext2D, 
+export default function drawDate(ctx: CanvasRenderingContext2D, 
     images: IImage[],
     date: WatchDate,
     orderElementsDate: ElementOrderItem[],

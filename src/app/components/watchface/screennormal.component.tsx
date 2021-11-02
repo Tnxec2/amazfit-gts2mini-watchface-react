@@ -6,14 +6,20 @@ import StatusComponent from "../watchface/status.component";
 import TimeAnalogComponent from "../watchface/timeAnalog.component";
 import TimeDigitalComponent from "../watchface/timeDigital.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { WatchActivity } from "../../model/watchFace.model";
+import { WatchActivity, WatchDate } from "../../model/watchFace.model";
 
 const ScreenNormalcomponent: FC = () => {
 
-  const { watchface, setWatchface }  = useContext<IWatchContext>(WatchfaceContext)
+  const { watchface, setWatchface } = useContext<IWatchContext>(WatchfaceContext)
+
+  function updateDate(d: WatchDate) {
+    let w = { ...watchface }
+    w.date = d
+    setWatchface(w)
+  }
 
   function updateActivitys(al: WatchActivity[]) {
-    let w = {...watchface}
+    let w = { ...watchface }
     w.activity = al
     w.activitylistCollapsed = false;
     setWatchface(w)
@@ -25,34 +31,36 @@ const ScreenNormalcomponent: FC = () => {
       <TimeDigitalComponent
         collapsed={watchface.dialFace.collapsedDigital}
         setCollapsed={(c) => {
-          let wf = {...watchface};
+          let wf = { ...watchface };
           wf.dialFace.collapsedDigital = c;
           setWatchface(wf)
         }}
       />
-      <TimeAnalogComponent 
-              collapsed={watchface.dialFace.collapsedAnalog}
-              setCollapsed={(c) => {
-                let wf = {...watchface};
-                wf.dialFace.collapsedAnalog = c;
-                setWatchface(wf)
-              }}
+      <TimeAnalogComponent
+        collapsed={watchface.dialFace.collapsedAnalog}
+        setCollapsed={(c) => {
+          let wf = { ...watchface };
+          wf.dialFace.collapsedAnalog = c;
+          setWatchface(wf)
+        }}
       />
       <DateComponent
-              collapsed={watchface.date.collapsed}
-              setCollapsed={(c) => {
-                let wf = {...watchface};
-                wf.date.collapsed = c;
-                setWatchface(wf)
-              }}
-      
+        date={watchface.date}
+        onUpdate={updateDate}
+        collapsed={watchface.date.collapsed}
+        setCollapsed={(c) => {
+          let wf = { ...watchface };
+          wf.date.collapsed = c;
+          setWatchface(wf)
+        }}
+
       />
-      <ActivityListComponent 
+      <ActivityListComponent
         activitys={watchface.activity}
         onUpdate={updateActivitys}
         collapsed={watchface.activitylistCollapsed}
         setCollapsed={(collapsed) => {
-          let w = {...watchface};
+          let w = { ...watchface };
           w.activitylistCollapsed = collapsed;
           setWatchface(w);
         }}

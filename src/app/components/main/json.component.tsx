@@ -4,7 +4,7 @@ import { IWatchContext, WatchfaceContext } from "../../context";
 import { Activity, DigitalDigit, Shortcut, WatchJson, Widget, Widgets } from "../../model/json.model";
 import { WidgetElement } from "../../model/json.model";
 import { DateType, LangCodeType } from "../../model/types.model";
-import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchImageCoords, WatchImageProgress, WatchProgressBar, WatchWidget, WatchWidgetElement, WatchWidgets } from "../../model/watchFace.model";
+import WatchFace, { WatchActivity, WatchAOD, WatchClockHand, WatchCommonDigit, WatchDate, WatchImageCoords, WatchImageProgress, WatchProgressBar, WatchWidget, WatchWidgetElement, WatchWidgets } from "../../model/watchFace.model";
 import Color from "../../shared/color";
 import { Constant } from "../../shared/constant";
 import cl from './JsonComponent.module.css';
@@ -37,8 +37,8 @@ const JsonComponent: FC = () => {
         let timeDigits = getTimeDigital(watchface)
         let timeDigitsAod = getTimeDigital(watchface.aod)
 
-        let dateDigits = getDate(watchface)
-        let dateDigitsAod = getDate(watchface.aod)
+        let dateDigits = getDate(watchface.date)
+        let dateDigitsAod = getDate(watchface.aod.date)
         
         let activitys = activitysToJson(watchface.activity)
         let activitysAod = activitysToJson(watchface.aod.activitylist)
@@ -210,20 +210,20 @@ function getTimeDigital(w: WatchFace | WatchAOD): DigitalDigit[] {
     return timeDigits
 }
 
-function getDate(w: WatchFace| WatchAOD): DigitalDigit[] {
+function getDate(_date: WatchDate): DigitalDigit[] {
     let dateDigits: DigitalDigit[] = []
-    w.orderElements.orderElementsDate.forEach(item => {
+    _date.orderElements.forEach(item => {
         let digit: WatchCommonDigit = null
         let enabled = false
         if ( item.type === DateType.Year.index) {
-            if (w.date.year.enabled) enabled = true
-                digit = w.date.year
+            if (_date.year.enabled) enabled = true
+                digit = _date.year
         } else if ( item.type === DateType.Month.index) {
-            if (w.date.month.enabled ) { enabled = true;  digit = w.date.month}
-            else if (w.date.monthAsWord.enabled ) { enabled = true;  digit = w.date.monthAsWord}
+            if (_date.month.enabled ) { enabled = true;  digit = _date.month}
+            else if (_date.monthAsWord.enabled ) { enabled = true;  digit = _date.monthAsWord}
         } else  if ( item.type === DateType.Day.index) {
-            if (w.date.day.enabled) enabled = true
-            digit = w.date.day
+            if (_date.day.enabled) enabled = true
+            digit = _date.day
         }
         if (enabled) dateDigits.push(digit.json)
     })
@@ -259,6 +259,11 @@ function getWidget(widget: WatchWidget): Widget | null {
 
 function getWidgetElement(we: WatchWidgetElement): WidgetElement {
     let activitys = activitysToJson(we.activitys)
+
+    let dateEnabled = we.date.day.enabled || we.date.month.enabled || we.date.monthAsWord.enabled || 
+                      we.date.weekDay.enabled || we.date.year.enabled
+    let dateDigits = getDate(we.date)
+
     return {
         Preview: [
             {
@@ -269,7 +274,12 @@ function getWidgetElement(we: WatchWidgetElement): WidgetElement {
                 }
             }
         ],
-        Date: null,
+        Date: dateEnabled ? {
+            DateDigits: dateDigits.length > 0 ? dateDigits : null,
+            WeeksDigits: we.date.weekDay.enabled ? we.date.weekDay.json : null,
+            DateProgressBar: null,
+            DateClockHand: null
+        } : null,
         Activity: activitys?.length > 0 ? activitys : null
     }
 }

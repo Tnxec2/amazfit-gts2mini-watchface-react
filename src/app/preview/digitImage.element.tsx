@@ -92,20 +92,24 @@ function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[],
     paddingLenght: number, 
     drawborder: boolean): [number, number] | null  {
     if ( ar.length === 0) return
-    let imageWidth: number = 0
     
     if (!spacing) spacing = 0
-
+    
+    let imageWidth: number = 0
+    let maxWidth: number = 0
     ar.forEach(img => {
-        if (imageWidth && spacing) imageWidth += spacing
         imageWidth += img.width
+        imageWidth += spacing
+        maxWidth += img.width
+        maxWidth += spacing > 0 ? spacing : 0
     })
+    imageWidth -= spacing
+    maxWidth -= spacing > 0 ? spacing : 0
 
-    let maxWidth: number = imageWidth
-
-    if (paddingLenght) {
-        maxWidth = imageWidth + ( spacing + ar[0].width ) * paddingLenght
+    if (paddingLenght > 0) {
+        maxWidth +=  ar[0].width * paddingLenght +  ( spacing > 0 ? Math.abs(spacing) * (paddingLenght - 1) : 0)
     }
+
     let x = startx
     let y = starty
     if (alignment === AlignmentType.Right.json) { // right
@@ -113,9 +117,6 @@ function drawImages(ctx: CanvasRenderingContext2D, ar: HTMLImageElement[],
     } else if (alignment === AlignmentType.Center.json) { // center
         x = x + (maxWidth - imageWidth) / 2
     }
-
-    //console.log(x, y, maxWidth, imageWidth);
-    
 
     let height = 0
 

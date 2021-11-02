@@ -8,9 +8,9 @@ interface IProps {
 const BlocksArrayComponent: FC<IProps> = ({ar}) => {
     return (
         <>
-            { ar.map((row) => 
+            { ar.map((row, index) => 
                  !row.disabled ?
-                    <RowComponent row={row} /> : ''  )
+                    <RowComponent key={index} row={row} /> : ''  )
             }
         </>
     );

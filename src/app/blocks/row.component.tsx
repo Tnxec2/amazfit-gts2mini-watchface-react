@@ -11,15 +11,16 @@ interface IProps {
 }
 const RowComponent: FC<IProps> = ({ row }) => {
 
-    function getBlock(block: IBlock) {
+    function getBlock(block: IBlock, index: number) {
         let result: any = '';
         switch (block.type) {
             case BlockType.Empty:
-                result = <span className="input-group-text">{block.title}</span>
+                result = <span key={index} className="input-group-text">{block.title}</span>
                 break;
             case BlockType.SelectFile:
                 result =
                     <SelectFileListComponent
+                        key={index} 
                         title={block.title}
                         onChange={block.onChange}
                         value={block.nvalue}
@@ -28,6 +29,7 @@ const RowComponent: FC<IProps> = ({ row }) => {
             case BlockType.Number:
                 result =
                     <NumberBlockComponent
+                        key={index} 
                         title={block.title}
                         onChange={block.onChange}
                         value={block.nvalue}
@@ -37,6 +39,7 @@ const RowComponent: FC<IProps> = ({ row }) => {
             case BlockType.Checkbox:
                 result =
                     <CheckBoxBlockComponent
+                        key={index} 
                         title={block.title}
                         onChange={block.onChange}
                         checked={block.checked}
@@ -46,6 +49,7 @@ const RowComponent: FC<IProps> = ({ row }) => {
             case BlockType.Select:
                 result = 
                     <SelectBlockComponent
+                        key={index} 
                         title={block.title}
                         onChange={block.onChange}
                         value={block.svalue}
@@ -56,6 +60,7 @@ const RowComponent: FC<IProps> = ({ row }) => {
             case BlockType.Color:
                 result =
                     <ColorBlockComponent
+                        key={index} 
                         title={block.title}
                         onChange={block.onChange}
                         value={block.svalue}
@@ -69,8 +74,8 @@ const RowComponent: FC<IProps> = ({ row }) => {
     return (
         <>
             <div className={`input-group input-group-sm d-flex ${ row.showDelete ? 'justify-content-between' : ''}`}>
-                {row.blocks.map((block) =>
-                    getBlock(block))
+                {row.blocks.map((block, index) =>
+                    getBlock(block, index))
                 }
                 { row.showDelete ?
                     <button className="btn btn-outline-danger" type="button" onClick={row.onDelete} disabled={!row.onDelete}>Delete</button> : ''}

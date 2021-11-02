@@ -9,7 +9,7 @@ const PreviewStatesComponent: FC = () => {
 
   useEffect(() => {
     const ws = { ...watchState };
-    if ( watchface.widgets?.widgets ) {
+    if ( watchface.widgets?.widgets && watchface.widgets.widgets.length > 0 ) {
       if ( watchState.widgets.length > watchface.widgets.widgets.length) {
         ws.widgets.splice(watchface.widgets.widgets.length-1)
         setWatchState(ws)

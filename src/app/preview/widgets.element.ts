@@ -3,6 +3,7 @@ import { WatchWidget, WatchWidgets } from "../model/watchFace.model";
 import { WatchState } from "../model/watchState";
 import { findImageById } from "../shared/helper";
 import drawActivityList from "./activity.element";
+import drawDate from "./date.element";
 
 export default function drawWidgets(
     ctx: CanvasRenderingContext2D,
@@ -49,7 +50,17 @@ function drawWidget(
             } else {
                 // show all activities
                 let ar = widget.widgetElements[previewIndex].activitys;
-                drawActivityList(ctx, images, ar, watchState, digitBorder)
+                if ( ar ) drawActivityList(ctx, images, ar, watchState, digitBorder);
+                if (widget.widgetElements[previewIndex].date) {
+                    drawDate(
+                      ctx,
+                      images,
+                      widget.widgetElements[previewIndex].date,
+                      widget.widgetElements[previewIndex].date.orderElements,
+                      watchState,
+                      digitBorder
+                    );
+                  }
             }
         }
         if (borderWidget) {
