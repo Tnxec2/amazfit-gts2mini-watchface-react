@@ -4,6 +4,7 @@ import { IWatchContext, WatchfaceContext } from "../../context";
 import { IImage } from "../../model/image.model";
 import { WatchJson } from "../../model/json.model";
 import WatchFace from "../../model/watchFace.model";
+import { Constant } from "../../shared/constant";
 
 const FileLoaderComponent: FC = () => {
   const { images, setImages, setWatchface, setJsonName } =
@@ -47,7 +48,7 @@ const FileLoaderComponent: FC = () => {
           if (index < files.length) 
             getImages(files, ar, index);
           else {
-            setImages(ar);
+            checkImagesCount(ar);
           }
         });
         img.src = URL.createObjectURL(files[index]);
@@ -60,9 +61,22 @@ const FileLoaderComponent: FC = () => {
       } else {
         index += 1;
         if (index < files.length) getImages(files, ar, index);
-        else setImages(ar);
+        else checkImagesCount(ar);
       }
     }
+  }
+
+  function checkImagesCount(ar: IImage[]) {
+    
+    let sortedAr = ar.sort((a, b) => a.id - b.id)
+
+    if ( sortedAr[sortedAr.length-1].id !== sortedAr.length - Constant.startImageIndex) {
+      window.alert('Images files go out of order or some of the files are missing. Name the PNG files in ascending order.')
+    }
+    if ( sortedAr[0].id !== Constant.startImageIndex) {
+      window.alert(`Images file numbering must start at ${Constant.startImageIndex}.`)
+    }
+    setImages(sortedAr)
   }
 
   function clearInput() {
