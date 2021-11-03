@@ -127,13 +127,15 @@ function drawImages(
     let maxWidth: number = width * ar.length + width * paddingLenght
     if (spacing > 0 ) maxWidth += spacing * (ar.length + paddingLenght - 1)
 
+    if ( imageWidth > maxWidth ) maxWidth = imageWidth;
+
     let x = startx
     let y = starty
     if (alignment === AlignmentType.Right.json) { // right
         x = x + maxWidth - imageWidth
     } else if (alignment === AlignmentType.Center.json) { // center
         if (weatherIconCenterX) {
-            console.log(alignment, weatherIconCenterX, widthUnit, startx, x);
+            //console.log(alignment, weatherIconCenterX, widthUnit, startx, x);
             x = weatherIconCenterX - (imageWidth - widthUnit) / 2
         } else {
             x = x + maxWidth / 2 - imageWidth / 2
