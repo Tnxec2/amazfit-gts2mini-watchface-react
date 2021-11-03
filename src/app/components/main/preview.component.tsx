@@ -91,7 +91,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       drawWidgets(ctx, images, watchface.widgets, watchState, digitBorder, borderWidget, showWidgetPreview)
     }
     if (watchface.dialFace) {
-      if (!showWidgetPreview || watchface.widgets?.showTimeOnEditScreen) {
+      if ( !showWidgetPreview || watchface.widgets?.showTimeOnEditScreen || ( watchface.widgets?.widgets && watchface.widgets.widgets.length === 0 ) ) {
         drawTimeDigital(
           ctx,
           images,
@@ -268,6 +268,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
             />
           </div>
         </div>
+        { watchface.widgets?.widgets && watchface.widgets.widgets.length > 0 ? 
         <div className="input-group input-group-sm" style={{ width: "max-content" }}>
           <span className="input-group-text" id="addon-wrapping">
             border on widgets
@@ -291,7 +292,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
               onChange={() => setShowWidgetPreview(!showWidgetPreview)}
             />
           </div>
-        </div>
+        </div> : '' }
         </div>
       </div>
     </>

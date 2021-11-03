@@ -55,6 +55,12 @@ const WidgetsComponent: FC = () => {
     ws.underMaskImageIndex = index;
     updateWidgets(ws);
   }  
+
+  function onChangeShowtime(checked: boolean) {
+    const ws = { ...watchface.widgets };
+    ws.showTimeOnEditScreen = checked ? 1 : 0;
+    updateWidgets(ws);
+  }
   
   return (
     <>
@@ -68,6 +74,9 @@ const WidgetsComponent: FC = () => {
                 { blocks: [
                   { title: 'Top mask', type: BlockType.SelectFile, nvalue: watchface.widgets?.topMaskImageIndex, onChange: onChangeTopMask },
                   { title: 'Bottom mask', type: BlockType.SelectFile, nvalue: watchface.widgets?.underMaskImageIndex, onChange: onChangeBottomMask },
+                ]},
+                { blocks: [
+                  { title: 'show time on Edit screen', type: BlockType.Checkbox, checked: watchface.widgets?.showTimeOnEditScreen > 0, onChange: onChangeShowtime },
                 ]}
             ]
           } />
