@@ -44,9 +44,13 @@ export default function drawActivityList(
         if (!activitys) return
 
         let weatherIconCenterX = 0
+        let weatherTemperatureActivityIndex: number;
         if ( mainScreen) {
-            activitys.forEach((activity) => {
+            activitys.forEach((activity, index) => {
                 if (activity.type === ActivityType.Weather) {
+                    if (activity.digit.enabledImage) {
+                        weatherTemperatureActivityIndex = index
+                    }
                     if (activity.imageProgress.enabled && activity.imageProgress.json?.ImageSet?.ImageIndex &&
                         activity.imageProgress.json?.Coordinates && oneCoordinates(activity.imageProgress.json.Coordinates)
                         ) {
@@ -56,6 +60,7 @@ export default function drawActivityList(
                         let img = findImageById(imageIndexWeather, images);
                         if (img) {
                             weatherIconCenterX = _image_x + img.width / 2;
+                            if ( weatherTemperatureActivityIndex && index >= weatherTemperatureActivityIndex) weatherIconCenterX = 0;
                         }
                     }
                 }

@@ -43,43 +43,46 @@ const ActivityComponent: FC<IProps> = ({
 }) => {
 
   function onUpdateDigit(d: WatchCommonDigit) {
-    let a = {...activity}
-    a.digit = {...d}
+    let a = { ...activity }
+    a.digit = { ...d }
     onUpdateActivity(a)
   }
-  
+
   function onUpdateDigitMin(d: WatchCommonDigit) {
-    let a = {...activity}
-    a.digitMin = {...d}
+    let a = { ...activity }
+    a.digitMin = { ...d }
     onUpdateActivity(a)
   }
 
   function onUpdateDigitMax(d: WatchCommonDigit) {
-    let a = {...activity}
-    a.digitMax = {...d}
+    let a = { ...activity }
+    a.digitMax = { ...d }
     onUpdateActivity(a)
   }
 
   return (
     <Card className="activity w-100">
       <Card.Header
-      className="d-flex justify-content-between align-items-center"
-      onClick={() => {
-        let a = {...activity};
-        a.collapsed = !a.collapsed;
-        onUpdateActivity(a);
-      }}>
-          <span className="input-group-text">{title}</span>
-          <button className="btn btn-outline-danger" type="button" onClick={(e) => {e.stopPropagation(); onDelete(e);}}>Delete</button>
+        className="d-flex justify-content-between align-items-center"
+        onClick={() => {
+          let a = { ...activity };
+          a.collapsed = !a.collapsed;
+          onUpdateActivity(a);
+        }}>
+        <span className="input-group-text">{title}</span>
+        <button className="btn btn-outline-danger" type="button" onClick={(e) => { e.stopPropagation(); onDelete(e); }}>Delete</button>
       </Card.Header>
       {!activity.collapsed ? (
         <Card.Body>
-          { !onCopy ? '' :<button className='btn btn-outline-secondary btn-sm' onClick={onCopy}>Copy from normal screen</button> }
+          {!onCopy ? '' : <button className='btn btn-outline-secondary btn-sm' onClick={onCopy}>Copy from normal screen</button>}
 
-          { activity.type === ActivityType.Weather ?
-          <div className="alert alert-info" role="alert">
-            In order to center the temperature correctly (only if weather icon as ImageProgress is enabled), weather icon should be defined in separated activity and placed before activity with temperature. 
-          </div> : '' }
+          {activity.type === ActivityType.Weather ?
+            <div className="alert alert-info" role="alert">
+              In order to center the temperature correctly under the weather Icon 
+              (only if weather icon as ImageProgress is enabled), weather icon should 
+              be defined in separated activity and placed before 
+              activity with temperature.
+            </div> : ''}
           <ActivityDigitComponent
             digit={activity.digit}
             title={titleDefault ? titleDefault : title}
@@ -90,29 +93,29 @@ const ActivityComponent: FC<IProps> = ({
             paddingZeroFix={paddingZeroFix}
           />
 
-        { titleMin ?
-          <ActivityDigitComponent
-            digit={activity.digitMin}
-            title={titleMin}
-            onUpdate={onUpdateDigitMin}
-            showDecimalPointer={showDecimalPointer}
-            showDelimiter={showDelimiter}
-            showNoData={showNoData}
-            paddingZeroFix={paddingZeroFix}
-          /> : '' }
+          {titleMin ?
+            <ActivityDigitComponent
+              digit={activity.digitMin}
+              title={titleMin}
+              onUpdate={onUpdateDigitMin}
+              showDecimalPointer={showDecimalPointer}
+              showDelimiter={showDelimiter}
+              showNoData={showNoData}
+              paddingZeroFix={paddingZeroFix}
+            /> : ''}
 
-        { titleMax ? 
-          <ActivityDigitComponent
-            digit={activity.digitMax}
-            title={titleMax}
-            onUpdate={onUpdateDigitMax}
-            showDecimalPointer={showDecimalPointer}
-            showDelimiter={showDelimiter}
-            showNoData={showNoData}
-            paddingZeroFix={paddingZeroFix}
-          /> : '' }
+          {titleMax ?
+            <ActivityDigitComponent
+              digit={activity.digitMax}
+              title={titleMax}
+              onUpdate={onUpdateDigitMax}
+              showDecimalPointer={showDecimalPointer}
+              showDelimiter={showDelimiter}
+              showNoData={showNoData}
+              paddingZeroFix={paddingZeroFix}
+            /> : ''}
 
-          {showProgress === undefined || showProgress === true ? 
+          {showProgress === undefined || showProgress === true ?
             <>
               <ImageProgressComponent
                 imageProgress={activity.imageProgress}
@@ -138,16 +141,16 @@ const ActivityComponent: FC<IProps> = ({
                   onUpdateActivity(a);
                 }}
               />
-            <ClockHandComponent
-              title="Pointer Progress"
-              clockHand={activity.pointerProgress}
-              onUpdate={(ch) => {
-                const a = { ...activity };
-                a.pointerProgress = ch;
-                onUpdateActivity(a);
-              }}
-              showAngle={true}
-            />
+              <ClockHandComponent
+                title="Pointer Progress"
+                clockHand={activity.pointerProgress}
+                onUpdate={(ch) => {
+                  const a = { ...activity };
+                  a.pointerProgress = ch;
+                  onUpdateActivity(a);
+                }}
+                showAngle={true}
+              />
             </> : ""}
           {activity.icon ? (
             <ImageCoordsComponent
@@ -165,7 +168,7 @@ const ActivityComponent: FC<IProps> = ({
         </Card.Body>
       ) : (
         ""
-        )}
+      )}
     </Card>
   );
 };
