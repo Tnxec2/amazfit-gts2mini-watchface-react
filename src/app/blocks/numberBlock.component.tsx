@@ -17,7 +17,7 @@ const NumberBlockComponent: FC<IProps> = ({ title, value, onChange, disabled, mi
             <input
                 type="number"
                 className="form-control form-control-sm"
-                value={value}
+                value={value || 0}
                 min={min}
                 max={max}
                 onChange={(e) => {
