@@ -41,12 +41,16 @@ function drawWidget(
                 const imgBack = findImageById(bottomMask, images)
                 if (imgBack) ctx.drawImage(imgBack, 0, 0)
                 
-                let preview = widget.widgetElements[previewIndex].previewImageIndex;
-                const img = findImageById(preview[preview].ImageSet.ImageIndex, images)
-                if (img) ctx.drawImage(img, widget.x, widget.y)
-
                 const imgTop = findImageById(topMask, images)
                 if (imgTop) ctx.drawImage(imgTop, 0, 0)
+                
+                let previewImageIndex = widget.widgetElements[previewIndex].previewImageIndex;
+                const img = findImageById(previewImageIndex, images)
+                if (img) ctx.drawImage(img, widget.x, widget.y)
+                const imgFrame: HTMLImageElement = (watchState.activeWidget === index) ?
+                    findImageById(widget.borderActivImageIndex, images) :
+                    findImageById(widget.borderInactivImageIndex, images)
+                if (imgFrame) ctx.drawImage(imgFrame, widget.x, widget.y)
             } else {
                 // show all activities
                 let ar = widget.widgetElements[previewIndex].activitys;

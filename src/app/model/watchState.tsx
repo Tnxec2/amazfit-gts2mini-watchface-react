@@ -53,4 +53,5 @@ export class WatchState {
   fatBurning = Math.round(Math.random() * this.fatBurningGoal)
 
   widgets: number[] = []
+  activeWidget: number = 0;
 }

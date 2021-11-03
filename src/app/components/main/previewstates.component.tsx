@@ -1,6 +1,7 @@
 import React, { FC, useContext, useEffect, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
+import WatchFace from "../../model/watchFace.model";
 import { WeatherStates } from "../../model/weather.states";
 
 const PreviewStatesComponent: FC = () => {
@@ -440,6 +441,24 @@ const PreviewStatesComponent: FC = () => {
             <h3>Preview of widgets element</h3>
           </Card.Header>
           <Card.Body>
+            { watchState.widgets?.length > 0 ? 
+              <div className="input-group input-group-sm mb-1">
+              <span className="input-group-text">Active widget</span>
+              <input
+                type="number"
+                className="form-control form-control-sm"
+                value={watchState.activeWidget + 1}
+                min={1}
+                max={watchface.widgets?.widgets.length}
+                onChange={(e) => {
+                  const ws = { ...watchState };
+                  const v = parseInt(e.target.value);
+                  ws.activeWidget = !isNaN(v) ? Math.max(0, v-1) : 0;
+                  setWatchState(ws);
+                }}
+              />
+            </div>
+             : '' }
             { watchState.widgets?.length > 0 ? watchState.widgets.map((w, index) =>
             <div key={index} className="input-group input-group-sm mb-1">
               <span className="input-group-text">Widget {index+1}. Element for preview </span>

@@ -91,7 +91,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       drawWidgets(ctx, images, watchface.widgets, watchState, digitBorder, borderWidget, showWidgetPreview)
     }
     if (watchface.dialFace) {
-      if (!showWidgetPreview || watchface.widgets?.showTimeOnEditScreen === 1) {
+      if (!showWidgetPreview || watchface.widgets?.showTimeOnEditScreen) {
         drawTimeDigital(
           ctx,
           images,

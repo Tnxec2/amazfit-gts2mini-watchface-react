@@ -696,7 +696,7 @@ export class WatchWidgetElement {
     if (j) {
       if (!j.Preview) return null
       let index = j.Preview.findIndex((item) => item.LangCode === LangCodeType.All.json)
-      this.previewImageIndex = index >= 0 ? index : 0
+      this.previewImageIndex = index >= 0 ? j.Preview[index].ImageSet.ImageIndex : 0
       this.activitys = getActivityListFromJson(j.Activity)
 
       this.date = new WatchDate();
