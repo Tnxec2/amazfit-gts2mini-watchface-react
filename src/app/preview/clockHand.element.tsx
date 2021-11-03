@@ -27,13 +27,13 @@ export default function drawclockhand(ctx: CanvasRenderingContext2D,
             }
             let img = findImageById(clockHand.json.Pointer?.ImageIndex, images)
             if (img) {
-                let offsetX = clockHand.json.Pointer.Coordinates?.X ? clockHand.json.Pointer.Coordinates?.X : img.width / 2
-                let offsetY = clockHand.json.Pointer.Coordinates?.Y ? clockHand.json.Pointer.Coordinates?.Y : img.height / 2
+                let offsetX = clockHand.json.Pointer.Coordinates?.X ? clockHand.json.Pointer.Coordinates?.X : 0
+                let offsetY = clockHand.json.Pointer.Coordinates?.Y ? clockHand.json.Pointer.Coordinates?.Y : 0
                 
                 let _startAngle = clockHand.json.StartAngle ? clockHand.json.StartAngle: 0
                 let _endAngle = clockHand.json.EndAngle ? clockHand.json.EndAngle: 360
                 if (value > total) value = total
-                let angle = _startAngle + Math.round(value * (_endAngle - _startAngle ) / total)
+                let angle = _startAngle + (value * (_endAngle - _startAngle ) / total)
                 //angle = Math.min(angle, _endAngle)
                 //angle = Math.max(angle, _startAngle)
                 let radians = (Math.PI/180) * angle

@@ -18,7 +18,7 @@ export default function drawProgressBarCircle(ctx: CanvasRenderingContext2D,
             if (value > total) value = total
             let startAngle = angleSettings.StartAngle ? angleSettings.StartAngle : 0
             let endAngle = angleSettings.EndAngle ? angleSettings.EndAngle : 360
-            let sector_angle = startAngle + Math.round(value * (endAngle - startAngle ) / total)
+            let sector_angle = startAngle + (value * (endAngle - startAngle ) / total)
             let radius = angleSettings.Radius  
             
             if (progressBar.jsonObj?.ForegroundImageIndex) {

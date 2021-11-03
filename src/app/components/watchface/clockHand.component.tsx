@@ -28,14 +28,14 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
       blocks: [
         { title: 'Center of rotation', type: BlockType.Empty },
         { title: 'X', type: BlockType.Number, nvalue: clockHand.json?.X ? clockHand.json.X : 0, onChange: changeX },
-        { title: 'Y', type: BlockType.Number, nvalue: clockHand.json?.Y ? clockHand.json?.Y : 0, onChange: changeY },
+        { title: 'Y', type: BlockType.Number, nvalue: clockHand.json?.Y ? clockHand.json.Y : 0, onChange: changeY },
       ]
     },
     {
       blocks: [
         { title: 'Pointer offset', type: BlockType.Empty },
-        { title: 'X', type: BlockType.Number, nvalue: clockHand.json?.Pointer?.Coordinates?.X ? clockHand.json?.Pointer?.Coordinates?.X : 0, onChange: changePointerX },
-        { title: 'Y', type: BlockType.Number, nvalue: clockHand.json?.Pointer?.Coordinates?.Y ? clockHand.json?.Pointer?.Coordinates?.Y : 0, onChange: changePointerY },
+        { title: 'X', type: BlockType.Number, nvalue: clockHand.json?.Pointer?.Coordinates?.X ? clockHand.json.Pointer.Coordinates.X : 0, onChange: changePointerX },
+        { title: 'Y', type: BlockType.Number, nvalue: clockHand.json?.Pointer?.Coordinates?.Y ? clockHand.json.Pointer.Coordinates.Y : 0, onChange: changePointerY },
       ]
     },
     {
