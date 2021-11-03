@@ -51,7 +51,7 @@ const SystemFontCircleComponent: FC<IProps> = ({
     {
       blocks: [
         { title: 'padding zero', type: BlockType.Checkbox, checked: digit.json?.Digit?.PaddingZero || paddingZeroFix, onChange: onChangePaddingZero, disabled: paddingZeroFix },
-        { title: 'follow', type: BlockType.Checkbox, checked: digit.json?.CombingMode === FollowType.Follow.json, onChange: onChangeFollow, disabled: followDisabled },
+        { title: 'follow', type: BlockType.Checkbox, checked: digit.json?.CombingMode !== FollowType.Single.json, onChange: onChangeFollow, disabled: followDisabled },
         { title: 'spacing', type: BlockType.Number, nvalue: digit.json?.Digit?.Spacing ? digit.json.Digit.Spacing : 0, onChange: onChangeSpacing },
       ]
     },

@@ -79,7 +79,7 @@ const ImageDigitComponent: FC<IProps> = ({
     {
       disabled: digit.json.Digit.DisplayFormAnalog,
       blocks: [
-        { title: 'follow', type: BlockType.Checkbox, checked: digit.json?.CombingMode === FollowType.Follow.json, onChange: onChangeFollow, disabled: followDisabled },
+        { title: 'follow', type: BlockType.Checkbox, checked: digit.json?.CombingMode !== FollowType.Single.json, onChange: onChangeFollow, disabled: followDisabled },
         { title: 'alignment', type: BlockType.Select, svalue: AlignmentType.fromJson(digit.json?.Digit?.Alignment).toString(), selectOptions: OptionsAlignment,  onChange: onChangeAlignment },
       ]
     },

@@ -1,7 +1,6 @@
 import React, { FC, useContext, useEffect, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import WatchFace from "../../model/watchFace.model";
 import { WeatherStates } from "../../model/weather.states";
 
 const PreviewStatesComponent: FC = () => {

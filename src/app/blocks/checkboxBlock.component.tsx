@@ -18,7 +18,7 @@ const CheckBoxBlockComponent: FC<IProps> = ({ title, checked, onChange, disabled
                     className="form-check-input form-check-input-sm"
                     type="checkbox"
                     disabled={disabled}
-                    checked={checked}
+                    checked={checked ? true : false}
                     onChange={() => onChange(!checked)}
                     />
             </div>
