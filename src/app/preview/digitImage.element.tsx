@@ -1,83 +1,118 @@
 import { findImageById } from "../shared/helper"
 import { IImage } from "../model/image.model"
-import { AlignmentType, LangCodeType } from "../model/types.model"
-import { MultilangImage } from "../model/json.model"
-import { WatchCommonDigit } from "../model/watchFace.model"
-import drawSeparator from './imageCoords.element'
+
+import { WatchNumber } from "../model/watchFace.gts2mini.model"
+import { AlignmentType } from "../model/types.gts2mini.model"
+
+export function drawDigitImageArray(
+    ctx: CanvasRenderingContext2D, 
+    images: IImage[], 
+    digit: WatchNumber, 
+    number: string[], 
+    delimiter?: number,
+    drawBorder?: boolean,
+    suffix?: number,
+    prefix?: number,
+    minus?: number
+): void {
+    const x =  digit.json?.TopLeftX ? digit.json?.TopLeftX : 0 
+    const y =  digit.json?.TopLeftY ? digit.json?.TopLeftY : 0 
+    const bottomx = digit.json?.BottomRightX ? digit.json?.BottomRightX : x
+    const bottomy = digit.json?.BottomRightY ? digit.json?.BottomRightY : y 
+
+    if (digit.json.ImageIndex) {
+
+        let ar: HTMLImageElement[] = []
+
+        let delImg = null
+        if (delimiter) delImg = findImageById(delimiter, images)
+
+        let prefixImg = null
+        if (prefix) prefixImg = findImageById(prefix, images)
+
+        let suffixImg = null
+        if (suffix) suffixImg = findImageById(suffix, images)
+
+        if (prefixImg) ar.push(prefixImg)
+        number.forEach((n, index) => {
+            ar = ar.concat(getImages(images, n, 
+                digit.json.ImageIndex, 
+                digit.json.ImagesCount,
+                null,
+                minus
+                ))
+            if (delImg && index < number.length - 1) ar.push(delImg)
+        });
+        if (suffixImg) ar.push(suffixImg)
+        drawImages(ctx, ar, x, y, bottomx, bottomy, digit.json.Spacing, digit.json.VerticalOffset,
+            digit.json.Alignment, drawBorder)
+    }
+}
 
 export default function drawDigitImage(
     ctx: CanvasRenderingContext2D, 
     images: IImage[], 
-    digit: WatchCommonDigit, 
+    digit: WatchNumber, 
     number: number, 
     followXY?: [number, number], 
     drawBorder?: boolean,
     paddingZeroFix?: boolean,
-    weatherIconCenterX?: number
+    minus?: number,
+    prefix?: number,
+    decimalPointer?: number,
+    suffix?: number,
+    suffixKM?: number,
     ): [number, number] | null  {
-    const x = followXY ? followXY[0] : ( digit.json?.Digit?.Image?.X ? digit.json?.Digit?.Image?.X : 0 )
-    const y = followXY ? followXY[1] : ( digit.json?.Digit?.Image?.Y ? digit.json?.Digit?.Image?.Y : 0 )
-    const imageSetIndex = findImageIndex(digit.json.Digit?.Image?.MultilangImage);
-    const unitImageSetIndex =findImageIndex(digit.json.Digit?.Image?.MultilangImageUnit);
+        
+    const x = digit.follow && followXY ? followXY[0] : ( digit.json?.TopLeftX ? digit.json?.TopLeftX : 0 )
+    const y = digit.follow && followXY ? followXY[1] : ( digit.json?.TopLeftY ? digit.json?.TopLeftY : 0 )
+    const bottomx = digit.follow && followXY ? followXY[0] + ( digit.json?.BottomRightX - digit.json?.TopLeftX) : ( digit.json?.BottomRightX ? digit.json?.BottomRightX : 0 )
+    const bottomy = digit.follow && followXY ? followXY[1] + ( digit.json?.BottomRightY - digit.json?.TopLeftY) : ( digit.json?.BottomRightY ? digit.json?.BottomRightY : 0 )
 
-    //console.log(number, x, y, imageSetIndex, digit.json.Digit.Image.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex);
-    
-
-    if (digit.json.Digit?.Image?.MultilangImage &&
-        digit.json.Digit.Image.MultilangImage[imageSetIndex]?.ImageSet?.ImageIndex) {
-            let strNumber = number.toString()
-            if (number < 0) strNumber = (-number).toString()
-            if ( !digit.json.Digit.DisplayFormAnalog && (digit.json.Digit.PaddingZero || paddingZeroFix)) {
-                strNumber = strNumber.padStart(digit.con.numberLenght, '0' )
-            }
-            let ar: HTMLImageElement[] = []
-            if (digit.json.Digit.Image.DelimiterImageIndex) {
-                if (number < 0){
-                    const img = findImageById(digit.json.Digit.Image.DelimiterImageIndex, images)
-                    if (img) ar.push(img)
-                }
-            }
-
-            if (digit.json.Digit.DisplayFormAnalog) {
-                const img = findImageById(digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex + number, images)
-                if (img) ar.push(img)
-            } else {
-                ar = ar.concat(getImages(images, strNumber, 
-                    digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex, 
-                    digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImagesCount,
-                    digit.json.Digit.Image.DecimalPointImageIndex ))
-            }
-
-            let widthZero = 0
-            const img = findImageById(digit.json.Digit.Image.MultilangImage[imageSetIndex].ImageSet.ImageIndex, images)
-            if (img) { widthZero = img.width }
-
-            let widthUnit = 0
-            if (digit.json.Digit.Image.MultilangImageUnit && digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex]) {
-                const img = findImageById(digit.json.Digit.Image.MultilangImageUnit[unitImageSetIndex].ImageSet.ImageIndex, images)
-                if (img) {
-                    ar.push(img)
-                    widthUnit = img.width
-                }
-            }
-
-            const followXY = drawImages(ctx, ar, x, y, digit.json.Digit.Spacing, 
-                digit.json.Digit.Alignment, digit.con.numberLenght, strNumber.length, 
-                drawBorder, weatherIconCenterX, widthUnit, widthZero)
-
-            if ( digit.json.Separator) {
-                drawSeparator(ctx, images, digit.json.Separator)
-            }
-            return followXY
+    if (digit.json.ImageIndex) {
+        let strNumber = number.toString()
+        if (number < 0) strNumber = (-number).toString()
+        if ( digit.paddingZero || paddingZeroFix) {
+            strNumber = strNumber.padStart(digit.con.numberLenght, '0' )
         }
-        return followXY;
+        let ar: HTMLImageElement[] = []
+
+        if (prefix) {
+            const img = findImageById(prefix, images)
+            if (img) { ar.push(img) }
+        }
+        if (number < 0 && minus) {
+            const img = findImageById(minus, images)
+            if (img) { ar.push(img) }
+        }
+        ar = ar.concat(getImages(images, strNumber, 
+                digit.json.ImageIndex, 
+                digit.json.ImagesCount,
+                decimalPointer
+                ))
+        if (decimalPointer && suffixKM) {
+            const img = findImageById(suffixKM, images)
+            if (img) { ar.push(img) }
+        } else if (suffix) {
+            const img = findImageById(suffix, images)
+            if (img) { ar.push(img) }
+        }
+   
+        const followXY = drawImages(ctx, ar, x, y, bottomx, bottomy, digit.json.Spacing, digit.json.VerticalOffset,
+            digit.json.Alignment, drawBorder)
+
+        return followXY
     }
+    return followXY;
+}
 
 function getImages(
     images: IImage[], 
     strNumber: string, 
     startImageIndex: number, 
-    count: number, decimalPointer: number): HTMLImageElement[] {
+    count: number, 
+    decimalPointer: number,
+    minus?: number): HTMLImageElement[] {
     const ar: HTMLImageElement[] = []
     for (let i = 0; i < strNumber.length; i++) {
         if (decimalPointer && i === strNumber.length - 2) {
@@ -85,12 +120,17 @@ function getImages(
             if (img) { ar.push(img) }
         }
         var chr = strNumber.charAt(i);
-        var n = parseInt(chr)
-        if (!isNaN(n) && n < count) {
-            const img = findImageById(startImageIndex + n, images)
-            if (img) { ar.push(img) }
+        if ( chr === '-' ) {
+            if (minus) {
+                const img = findImageById(minus, images)
+                if (img) { ar.push(img) }
+            }
         } else {
-            alert('cant parse number string: ' + strNumber + ' at index ' + i)
+            var n = parseInt(chr)
+            if (!isNaN(n) && n < count) {
+                const img = findImageById(startImageIndex + n, images)
+                if (img) { ar.push(img) }
+            } 
         }
     }
     return ar;
@@ -101,79 +141,68 @@ function drawImages(
     ar: HTMLImageElement[], 
     startx: number, 
     starty: number, 
+    endx: number,
+    endy: number,
     spacing: number, 
+    vspacing: number,
     alignment: string, 
-    numberLenght: number, 
-    strLenght: number, 
-    drawborder: boolean,
-    weatherIconCenterX?: number,
-    widthUnit?: number,
-    widthZero?: number): [number, number] | null  {
+    drawborder: boolean): [number, number] | null  {
     if ( ar.length === 0) return
     
     if (!spacing) spacing = 0
     
     let imageWidth: number = 0
-    //let maxWidth: number = 0
-    ar.forEach(img => {
+    let imageHeight: number = 0
+
+    let top: number = starty
+    let bottom: number = starty
+    let _tempY: number = starty
+
+    ar.forEach( (img, index) => {
         imageWidth += img.width
         imageWidth += spacing
-        //maxWidth += img.width
-        //maxWidth += spacing > 0 ? spacing : 0
+
+        if ( ! vspacing) {
+            if (img.height > imageHeight) imageHeight = img.height
+        } else {
+            if (index > 0) _tempY = _tempY + vspacing
+            top = Math.min(top, _tempY)
+            bottom = Math.max(bottom, _tempY + img.height)
+        }
     })
     imageWidth -= spacing
-    //maxWidth -= spacing > 0 ? spacing : 0
-
-    //if (paddingLenght > 0) {
-        //maxWidth +=  widthZero * paddingLenght + 1
-        //if (spacing > 0) maxWidth += Math.abs(spacing) * (paddingLenght - 1)
-    //}
-
-    let maxWidth: number = widthZero * strLenght + widthZero * (numberLenght - strLenght)
-    if (spacing > 0 ) maxWidth += spacing * (ar.length + numberLenght - strLenght - 1)
-
-    if ( imageWidth > maxWidth ) maxWidth = imageWidth;
+    if ( vspacing ) imageHeight = bottom - top
+    
+    let  maxWidth = endx - startx
+    let  maxHeight = endy - starty
 
     let x = startx
     let y = starty
-    if (alignment === AlignmentType.Right.json) { // right
+    if (alignment === AlignmentType.Right.json || alignment === AlignmentType.TopRight.json || alignment === AlignmentType.CenterRight.json || alignment === AlignmentType.BottomRight.json ) { // right
         x = x + maxWidth - imageWidth
-    } else if (alignment === AlignmentType.Center.json) { // center
-        if (weatherIconCenterX) {
-            x = weatherIconCenterX - (imageWidth - widthUnit) / 2
-        } else {
-            x = x + maxWidth / 2 - imageWidth / 2
-        }
+    } else if (alignment === AlignmentType.Center.json || alignment === AlignmentType.TopCenter.json || alignment === AlignmentType.BottomCenter.json ) { // center
+        x = x + maxWidth / 2 - imageWidth / 2
+    }
+
+    if (alignment === AlignmentType.Bottom.json || alignment === AlignmentType.BottomLeft.json || alignment === AlignmentType.BottomCenter.json || alignment === AlignmentType.BottomRight.json  ) { // bottom
+        y = y + maxHeight - imageHeight
+    } else if (alignment === AlignmentType.Center.json || alignment === AlignmentType.CenterLeft.json || alignment === AlignmentType.CenterRight.json ) { // center
+        y = y + maxHeight / 2 - imageHeight / 2
     }
     
 
-    let height = 0
-
     ar.forEach(img => {
         ctx.drawImage(img, x, y);
-        height = Math.max(img.height, height)
         x += img.width
         if ( spacing ) x += spacing
+        if ( vspacing ) y += spacing
     })
     if ( drawborder) {
         ctx.beginPath();
         ctx.strokeStyle = 'gray'
-        ctx.rect(startx, starty, maxWidth, height);
+        ctx.rect(startx, starty, endx - startx, endy-starty);
         ctx.stroke();
     }
 
     return [x, y]
 }
-
-
-function findImageIndex(ar: MultilangImage[]): number {
-    if (!ar) return null
-    let resultIndex = 0
-    ar.forEach((item, index) => {
-        if ( item.LangCode === LangCodeType.All.json) {
-            resultIndex = index
-        }
-    })
-   
-    return resultIndex
-  }

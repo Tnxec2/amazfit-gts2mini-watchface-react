@@ -3,12 +3,7 @@ import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import ClockHandComponent from "./clockHand.component";
 
-interface IProps {
-  collapsed: boolean,
-  setCollapsed(collapsed: boolean): void,
-}
-
-const TimeAnalogComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
+const TimeAnalogComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 
@@ -16,29 +11,31 @@ const TimeAnalogComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
     <Card>
       <Card.Header
         onClick={() => {
-          setCollapsed(!collapsed);
+          let w = {...watchface};
+          w.time.timeAnalog.collapsed = !watchface.time.timeAnalog.collapsed;
+          setWatchface(w);
         }}
       >
         Time Analog
       </Card.Header>
-      <Card.Body className={`${collapsed ? "collapse" : ""}`}>
+      <Card.Body className={`${watchface.time.timeAnalog.collapsed ? "collapse" : ""}`}>
         <ClockHandComponent
           title="Hours"
-          clockHand={watchface.dialFace.hoursClockhand}
+          clockHand={watchface.time.timeAnalog.hours}
           showAngle={false}
           onUpdate={(ch) => {
             const w = { ...watchface };
-            w.dialFace.hoursClockhand = ch;
+            w.time.timeAnalog.hours = ch;
             setWatchface(w);
           }}
         />
 
         <ClockHandComponent
           title="Minutes"
-          clockHand={watchface.dialFace.minutesClockhand}
+          clockHand={watchface.time.timeAnalog.minutes}
           onUpdate={(ch) => {
             const d = { ...watchface };
-            d.dialFace.minutesClockhand = ch;
+            d.time.timeAnalog.minutes = ch;
             setWatchface(d);
           }}
           showAngle={false}
@@ -46,10 +43,10 @@ const TimeAnalogComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
 
         <ClockHandComponent
           title="Seconds"
-          clockHand={watchface.dialFace.secondsClockhand}
+          clockHand={watchface.time.timeAnalog.seconds}
           onUpdate={(ch) => {
             const w = { ...watchface };
-            w.dialFace.secondsClockhand = ch;
+            w.time.timeAnalog.seconds = ch;
             setWatchface(w);
           }}
           showAngle={false}

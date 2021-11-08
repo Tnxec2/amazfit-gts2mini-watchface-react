@@ -1,82 +1,66 @@
 import { IImage } from "../model/image.model";
-import { FollowType } from "../model/types.model";
-import { WatchDialFace } from "../model/watchFace.model";
+import { WatchTime } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
-import drawDigit from "./digit.element";
-import drawMultilangImageCoords from "./multiLangImageCoords.element";
-import { addUnitsAndSeparator } from "./systemfont.element";
+import { findImageById } from "../shared/helper";
+import drawDigitImage from "./digitImage.element";
+import drawImage from "./image.element";
+import { drawTwoDigits } from "./separateDigits.element";
 
 export default function drawTimeDigital(
     ctx: CanvasRenderingContext2D, 
     images: IImage[],
-    timeDigital: WatchDialFace,
+    time: WatchTime,
     watchState: WatchState,
     digitBorder: boolean
     ) {
     let followXY = null
-
-    let s_hours = ''
-    let s_minutes = ''
-    let s_seconds = ''
    
-    if (timeDigital.secondsDigital?.enabled) {
-        s_seconds = watchState.seconds.toString().padStart(timeDigital.secondsDigital.con.numberLenght, '0')
-        s_seconds = addUnitsAndSeparator(s_seconds, timeDigital.secondsDigital)
-    }
-    
-    if (timeDigital.minutesDigital?.enabled) {
-        s_minutes = watchState.minutes.toString().padStart(timeDigital.minutesDigital.con.numberLenght, '0')
-        s_minutes = addUnitsAndSeparator(s_minutes, timeDigital.minutesDigital)
-        if (timeDigital.secondsDigital?.enabled ) {
-            if (timeDigital.secondsDigital.json.CombingMode === FollowType.Follow.json) {
-                s_minutes = s_minutes + s_seconds
-                s_seconds = ''
-            } else {
-                s_seconds = s_minutes + s_seconds
-            }
+
+    if (time.timeDigitalCommon.hours.enabled) {
+        followXY = drawDigitImage(ctx, images, time.timeDigitalCommon.hours, watchState.hours, null, digitBorder,
+            false, null, null, null, time.timeDigitalCommon.hours.delimiter)
+        if (time.timeDigitalCommon.hours.dataType && time.timeDigitalCommon.hours.dataTypeCoords) {
+            let img = findImageById(time.timeDigitalCommon.hours.dataType, images)
+            if (img)
+                ctx.drawImage(img, time.timeDigitalCommon.hours.dataTypeCoords.X, time.timeDigitalCommon.hours.dataTypeCoords.Y)
         }
     }
-
-    if (timeDigital.hoursDigital?.enabled) {
-        s_hours = watchState.hours.toString()
-        if (timeDigital.hoursDigital.json.Digit.PaddingZero) s_hours = s_hours.padStart(timeDigital.hoursDigital.con.numberLenght, '0')
-        s_hours = addUnitsAndSeparator(s_hours, timeDigital.hoursDigital)
-        if (timeDigital.minutesDigital.json.CombingMode === FollowType.Follow.json) {
-            if (timeDigital.secondsDigital?.enabled ) {
-                if (timeDigital.secondsDigital.json.CombingMode !== FollowType.Follow.json) 
-                    s_seconds = s_hours + s_seconds
-            }
-            s_hours = s_hours + s_minutes
-            s_minutes = ''
-        } else {
-            s_minutes = s_hours + s_minutes
-            if (timeDigital.secondsDigital?.enabled ) {
-                if (timeDigital.secondsDigital.json.CombingMode !== FollowType.Follow.json) 
-                    s_seconds = s_hours + s_seconds
-            }
+    if (time.timeDigitalCommon.minutes.enabled) {
+        followXY = drawDigitImage(ctx, images, time.timeDigitalCommon.minutes, watchState.minutes, followXY, digitBorder,
+            false, null, null, null, time.timeDigitalCommon.minutes.delimiter)
+        if (time.timeDigitalCommon.minutes.dataType && time.timeDigitalCommon.minutes.dataTypeCoords) {
+            let img = findImageById(time.timeDigitalCommon.minutes.dataType, images)
+            if (img)
+                ctx.drawImage(img, time.timeDigitalCommon.minutes.dataTypeCoords.X, time.timeDigitalCommon.minutes.dataTypeCoords.Y)
         }
     }
+    if (time.timeDigitalCommon.seconds.enabled) {
+        drawDigitImage(ctx, images, time.timeDigitalCommon.seconds, watchState.seconds, followXY, digitBorder,
+            false, null, null, null, time.timeDigitalCommon.seconds.delimiter)
+            if (time.timeDigitalCommon.seconds.dataType && time.timeDigitalCommon.seconds.dataTypeCoords) {
+                let img = findImageById(time.timeDigitalCommon.seconds.dataType, images)
+                if (img)
+                    ctx.drawImage(img, time.timeDigitalCommon.seconds.dataTypeCoords.X, time.timeDigitalCommon.seconds.dataTypeCoords.Y)
+            }
+        }
+   
+    if (time.timeDigitalSeparated.hours.enabled) {
+        drawTwoDigits(ctx, images, time.timeDigitalSeparated.hours.json, watchState.hours, 
+          time.timeDigitalSeparated.paddingZeroHours)
+        if ( time.timeDigitalSeparated.separatorHours?.enabled) {
+            drawImage(ctx, images, time.timeDigitalSeparated.separatorHours.json)
+        }
+    }
+    if (time.timeDigitalSeparated.minutes.enabled) {
+        drawTwoDigits(ctx, images, time.timeDigitalSeparated.minutes.json, watchState.hours, 
+          time.timeDigitalSeparated.paddingZeroMinutes)
+        if ( time.timeDigitalSeparated.separatorMinutes?.enabled) {
+            drawImage(ctx, images, time.timeDigitalSeparated.separatorMinutes.json)
+        }
 
-    if (timeDigital.hoursDigital?.enabled) {
-        followXY = drawDigit(ctx, images, timeDigital.hoursDigital, watchState.hours,
-            timeDigital.hoursDigital.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, false, s_hours)
     }
-
-    if (timeDigital.minutesDigital?.enabled) {
-        followXY = drawDigit(ctx, images, timeDigital.minutesDigital, watchState.minutes, 
-            timeDigital.minutesDigital.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, true, s_minutes)
-    }
-
-    if (timeDigital.secondsDigital?.enabled) {
-        drawDigit(ctx, images, timeDigital.secondsDigital, watchState.seconds, 
-            timeDigital.secondsDigital.json.CombingMode === FollowType.Single.json ? null : followXY, digitBorder, true, s_seconds)
-    }
-    
-    if (timeDigital.am && timeDigital.am.enabled && watchState.hours < 12) {
-        drawMultilangImageCoords(ctx, images, timeDigital.am)
-    }
-    if (timeDigital.pm && timeDigital.pm.enabled && watchState.hours >= 12) {
-        drawMultilangImageCoords(ctx, images, timeDigital.pm)
+    if (time.timeDigitalSeparated.seconds.enabled) {
+        drawTwoDigits(ctx, images, time.timeDigitalSeparated.seconds.json, watchState.seconds, true)
     }
 }
 

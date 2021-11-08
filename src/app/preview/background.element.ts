@@ -1,19 +1,29 @@
 import Color from "../shared/color";
 import { findImageById } from "../shared/helper";
 import { IImage } from "../model/image.model";
-import { Background } from "../model/watchFace.model";
+import { WatchBackground } from "../model/watchFace.gts2mini.model";
   
-export default function draw(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, 
-                images: IImage[], background: Background) {
-    if (background?.imageIndex !== undefined && background?.imageIndex !== null) {
-        const i = findImageById(background.imageIndex, images)
-        //images[Constant.getImageIndex(background.imageIndex, images.length)]
-        if (i) {
-            const img = i
-            ctx.drawImage(img, 0, 0, img.width, img.height);
-        }
-    } else if (background.color && Color.GFG_Fun(background.color)) {
+export default function draw(
+    canvas: HTMLCanvasElement, 
+    ctx: CanvasRenderingContext2D, 
+    images: IImage[], 
+    background: WatchBackground) {
+
+    if (background.color && Color.GFG_Fun(background.color)) {
         ctx.fillStyle = background.color
         ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
+    if (background?.image?.json?.ImageIndex >= 0) {
+        const img = findImageById(background.image.json.ImageIndex, images)
+        if (img) {
+            ctx.drawImage(img, background.image.json.X, background.image.json.Y);
+        }
+    }
+    if (background?.floatingLayer?.json?.ImageIndex) {
+        const img = findImageById(background.floatingLayer?.json.ImageIndex, images)
+        if (img) {
+            ctx.drawImage(img, background.floatingLayer?.json.X, background.floatingLayer?.json.Y);
+        }
+    }
+
 }

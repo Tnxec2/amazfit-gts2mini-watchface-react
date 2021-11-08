@@ -6,9 +6,10 @@ import FileLoaderComponent from "./app/components/main/fileLoader.component";
 import LeftSideComponent from "./app/components/main/leftside.component";
 import RightSideComponent from "./app/components/main/rightside.component";
 import { IImage } from "./app/model/image.model";
-import WatchFace from "./app/model/watchFace.model";
+
 import { WatchState } from "./app/model/watchState";
 import { WatchfaceContext } from "./app/context";
+import { WatchFace } from "./app/model/watchFace.gts2mini.model";
 
 const App: FC = () => {
   const [images, setImages] = useState<IImage[]>([]);

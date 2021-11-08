@@ -2,41 +2,51 @@ import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { BlockType, IRow } from "../../model/blocks.model";
-import { WatchImageCoords } from "../../model/watchFace.model";
+import { WatchImageSet } from "../../model/watchFace.gts2mini.model";
 
 interface IProps {
   title: string;
-  imageCoords: WatchImageCoords;
-  onUpdate(imageCoords: WatchImageCoords): void;
+  imageSet: WatchImageSet;
+  onUpdate(imageSet: WatchImageSet): void;
 }
 
-const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
+const ImageSetComponent: FC<IProps> = ({ title, imageSet, onUpdate }) => {
 
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Image', type: BlockType.SelectFile, nvalue: imageCoords.json.ImageIndex, onChange: onChangeImageIndex },
-        { title: 'X', type: BlockType.Number, nvalue: imageCoords.json.Coordinates.X, onChange: onChangeX },
-        { title: 'Y', type: BlockType.Number, nvalue: imageCoords.json.Coordinates.Y, onChange: onChangeY },
+        { title: 'Image', type: BlockType.SelectFile, nvalue: imageSet.json.ImageIndex, onChange: onChangeImageIndex },
+        { title: 'Count', type: BlockType.Number, nvalue: imageSet.json.ImagesCount, onChange: onChangeCount },
+      ]
+    },
+    {
+      blocks: [
+        { title: 'X', type: BlockType.Number, nvalue: imageSet.json.X, onChange: onChangeX },
+        { title: 'Y', type: BlockType.Number, nvalue: imageSet.json.Y, onChange: onChangeY },
       ]
     }
-  ], [imageCoords]) // eslint-disable-line react-hooks/exhaustive-deps
+  ], [imageSet]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function onChangeImageIndex(index: number) {
-    const ip = { ...imageCoords };
+    const ip = { ...imageSet };
     ip.json.ImageIndex = index;
     onUpdate(ip);
   }
 
   function onChangeX(val: number) {
-    const ip = { ...imageCoords };
-    ip.json.Coordinates.X = val;
+    const ip = { ...imageSet };
+    ip.json.X = val;
+    onUpdate(ip);
+  }
+  function onChangeCount(val: number) {
+    const ip = { ...imageSet };
+    ip.json.ImagesCount = val;
     onUpdate(ip);
   }
 
   function onChangeY(val: number) {
-    const ip = { ...imageCoords };
-    ip.json.Coordinates.Y = val;
+    const ip = { ...imageSet };
+    ip.json.Y = val;
     onUpdate(ip);
   }
 
@@ -49,9 +59,9 @@ const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
             <input
               className="form-check-input mt-0"
               type="checkbox"
-              checked={imageCoords.enabled}
+              checked={imageSet.enabled}
               onChange={() => {
-                const ic: WatchImageCoords = { ...imageCoords };
+                const ic = { ...imageSet };
                 ic.enabled = !ic.enabled;
                 onUpdate(ic);
               }}
@@ -59,7 +69,7 @@ const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
           </div>
         </div>
       </Card.Header>
-      {imageCoords.enabled ? (
+      {imageSet.enabled ? (
         <Card.Body>
           <BlocksArrayComponent ar={ar} />
         </Card.Body>
@@ -70,4 +80,4 @@ const ImageCoordsComponent: FC<IProps> = ({ title, imageCoords, onUpdate }) => {
   );
 };
 
-export default ImageCoordsComponent;
+export default ImageSetComponent;

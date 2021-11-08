@@ -1,62 +1,162 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
-import { ActivityType } from "../../model/types.model";
-import { WatchActivity, WatchCommonDigit } from "../../model/watchFace.model";
-import ActivityDigitComponent from "./activityDigit.component";
-import ClockHandComponent from "./clockHand.component";
-import ImageCoordsComponent from "./imageCoords.component";
-import ImageProgressComponent from "./imageProgress.component";
-import ProgressbarCircleCodmponent from "./progressbarCircle.component";
-import ProgressbarLinearCodmponent from "./progressbarLinear.component";
-
+import { BlockType, IRow } from "../../model/blocks.model";
+import { WatchActivity, WatchNumber, WatchProgress } from "../../model/watchFace.gts2mini.model";
+import { Image } from "../../model/json.gts2minit.model";
+import { Coordinates, ShortcutElement } from "../../model/json.gts2minit.model";
+import BlocksArrayComponent from "../../blocks/blocksArray.component";
+import WatchNumberComponent from "./number.component";
+import ProgressComponent from "./progress.component";
+import { ActivityType } from "../../model/types.gts2mini.model";
 
 interface IProps {
   activity: WatchActivity;
   title: string;
   onUpdateActivity(activity: WatchActivity): void;
-  onDelete(e): void;
-  showDecimalPointer?: boolean;
-  showDelimiter?: boolean;
-  showNoData?: boolean;
-  paddingZeroFix?: boolean;
-  showProgress?: boolean;
-  onCopy?(): void;
-  titleDefault?: string;
-  titleMin?: string;
-  titleMax?: string;
+  type: ActivityType
 }
 
 const ActivityComponent: FC<IProps> = ({
   activity,
   title,
   onUpdateActivity,
-  showDecimalPointer,
-  showDelimiter,
-  showNoData,
-  paddingZeroFix,
-  showProgress,
-  onCopy,
-  onDelete,
-  titleDefault,
-  titleMin,
-  titleMax,
+  type
 }) => {
 
-  function onUpdateDigit(d: WatchCommonDigit) {
-    let a = { ...activity }
-    a.digit = { ...d }
+  const ar = useMemo<IRow[]>(() => [
+    {
+      disabled: !( type === ActivityType.Steps || type === ActivityType.Calories ),
+      blocks: [
+        { title: 'Prefix', type: BlockType.SelectFile, nvalue: activity.aElement.json.PrefixImageIndex, onChange: onChangePrefix },
+      ]
+    },
+    {
+      disabled: ( type === ActivityType.Distance  ),
+      blocks: [
+        { title: 'NoData', type: BlockType.SelectFile, nvalue: activity.aElement.json.NoDataImageIndex, onChange: onChangeNoData },
+      ]
+    },
+    {
+      disabled: !( type === ActivityType.Steps || type === ActivityType.HeartRate ),
+      blocks: [
+        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.json.SuffixImageIndex, onChange: onChangeSuffix },
+      ]
+    },
+    {
+      disabled: !( type === ActivityType.Distance ),
+      blocks: [
+        { title: 'DecimalPointer', type: BlockType.SelectFile, nvalue: activity.aElement.json.DecimalPointImageIndex, onChange: onChangeDecimalPointer },
+        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.json.SuffixImageIndex, onChange: onChangeSuffixKM },
+        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.json.SuffixImageCoordinates?.X ? activity.aElement.json.SuffixImageCoordinates.X : 0, onChange: onChangeSuffixCoordsX },
+        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.json.SuffixImageCoordinates?.Y ? activity.aElement.json.SuffixImageCoordinates.Y : 0, onChange: onChangeSuffixCoordsY },
+      ]
+    },
+    {
+      blocks: [
+        { title: 'Shorcut', type: BlockType.Empty },
+        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.TopLeftX ? activity.aElement.json.Shortcut.TopLeftX : 0, onChange: onChangeShortCutX },
+        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.TopLeftY ? activity.aElement.json.Shortcut.TopLeftY : 0, onChange: onChangeShortCutY },
+        { title: 'Width', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.BottomRightX && activity.aElement.json.Shortcut?.TopLeftX  ? activity.aElement.json.Shortcut?.BottomRightX - activity.aElement.json.Shortcut?.TopLeftX : 0, onChange: onChangeShortCutWidth },
+        { title: 'Height', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.BottomRightY && activity.aElement.json.Shortcut?.TopLeftY  ? activity.aElement.json.Shortcut?.BottomRightY - activity.aElement.json.Shortcut?.TopLeftY : 0, onChange: onChangeShortCutHeight },
+      ]
+    },
+    {
+      blocks: [
+        { title: 'Icon', type: BlockType.SelectFile, nvalue: activity.aElement.json.Icon?.ImageIndex, onChange: onChangeIcon },
+        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.json.Icon?.X ? activity.aElement.json.Icon.X : 0, onChange: onChangeIconX },
+        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.json.Icon?.Y ? activity.aElement.json.Icon.Y : 0, onChange: onChangeIconY },
+      ]
+    }
+  ], [activity]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function onChangePrefix(val: number) {
+    const a = {...activity};
+    a.aElement.json.PrefixImageIndex = val
+    onUpdateActivity(a)
+  }
+  function onChangeNoData(val: number) {
+    const a = {...activity};
+    a.aElement.json.NoDataImageIndex = val
+    onUpdateActivity(a)
+  }
+  function onChangeSuffix(val: number) {
+    const a = {...activity};
+    a.aElement.json.SuffixImageIndex = val
+    onUpdateActivity(a)
+  }
+  function onChangeDecimalPointer(val: number) {
+    const a = {...activity};
+    a.aElement.json.DecimalPointImageIndex = val
+    onUpdateActivity(a)
+  }
+  function onChangeSuffixKM(val: number) {
+    const a = {...activity};
+    a.aElement.json.SuffixKMImageIndex = val
+    onUpdateActivity(a)
+  }
+  function onChangeSuffixCoordsX(val: number) {
+    const a = {...activity};
+    if (!a.aElement.json.SuffixImageCoordinates) a.aElement.json.SuffixImageCoordinates = new Coordinates()
+    a.aElement.json.SuffixImageCoordinates.X = val
+    onUpdateActivity(a)
+  }
+  function onChangeSuffixCoordsY(val: number) {
+    const a = {...activity};
+    if (!a.aElement.json.SuffixImageCoordinates) a.aElement.json.SuffixImageCoordinates = new Coordinates()
+    a.aElement.json.SuffixImageCoordinates.X = val
+    onUpdateActivity(a)
+  }
+  function onChangeIcon(val: number) {
+    const a = {...activity};
+    if ( !a.aElement.json.Icon) a.aElement.json.Icon = new Image()
+    a.aElement.json.Icon.ImageIndex = val
+    onUpdateActivity(a)
+  }
+  function onChangeIconX(val: number) {
+    const a = {...activity};
+    if ( !a.aElement.json.Icon) a.aElement.json.Icon = new Image()
+    a.aElement.json.Icon.X = val
+    onUpdateActivity(a)
+  }
+  function onChangeIconY(val: number) {
+    const a = {...activity};
+    if ( !a.aElement.json.Icon) a.aElement.json.Icon = new Image()
+    a.aElement.json.Icon.Y = val
+    onUpdateActivity(a)
+  }
+  function onChangeShortCutX(val: number) {
+    const a = {...activity};
+    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
+    a.aElement.json.Shortcut.TopLeftX = val
+    onUpdateActivity(a)
+  }
+  function onChangeShortCutY(val: number) {
+    const a = {...activity};
+    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
+    a.aElement.json.Shortcut.TopLeftY = val
+    onUpdateActivity(a)
+  }
+  function onChangeShortCutWidth(val: number) {
+    const a = {...activity};
+    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
+    a.aElement.json.Shortcut.BottomRightX = a.aElement.json.Shortcut.TopLeftX + val
+    onUpdateActivity(a)
+  }
+  function onChangeShortCutHeight(val: number) {
+    const a = {...activity};
+    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
+    a.aElement.json.Shortcut.BottomRightY = a.aElement.json.Shortcut.TopLeftY + val
     onUpdateActivity(a)
   }
 
-  function onUpdateDigitMin(d: WatchCommonDigit) {
-    let a = { ...activity }
-    a.digitMin = { ...d }
+  function udpateDigit(d: WatchNumber) {
+    const a = {...activity};
+    a.aElement.json.ImageNumber = d.json
     onUpdateActivity(a)
   }
-
-  function onUpdateDigitMax(d: WatchCommonDigit) {
-    let a = { ...activity }
-    a.digitMax = { ...d }
+  function updateProgress(d: WatchProgress) {
+    const a = {...activity};
+    a.aProgress = d
     onUpdateActivity(a)
   }
 
@@ -70,101 +170,21 @@ const ActivityComponent: FC<IProps> = ({
           onUpdateActivity(a);
         }}>
         <span className="input-group-text">{title}</span>
-        <button className="btn btn-outline-danger" type="button" onClick={(e) => { e.stopPropagation(); onDelete(e); }}>Delete</button>
       </Card.Header>
       {!activity.collapsed ? (
         <Card.Body>
-          {!onCopy ? '' : <button className='btn btn-outline-secondary btn-sm' onClick={onCopy}>Copy from normal screen</button>}
-
-          {activity.type === ActivityType.Weather ?
-            <div className="alert alert-info" role="alert">
-              In order to center the temperature correctly under the weather Icon 
-              (only if weather icon as ImageProgress is enabled), weather icon should 
-              be defined in separated activity and placed before 
-              activity with temperature.
-            </div> : ''}
-          <ActivityDigitComponent
-            digit={activity.digit}
-            title={titleDefault ? titleDefault : title}
-            onUpdate={onUpdateDigit}
-            showDecimalPointer={showDecimalPointer}
-            showDelimiter={showDelimiter}
-            showNoData={showNoData}
-            paddingZeroFix={paddingZeroFix}
+          <WatchNumberComponent
+            title='Number'
+            digit={new WatchNumber(activity.aElement.json.ImageNumber, activity.con)}
+            onUpdate={udpateDigit}
+          />
+          <BlocksArrayComponent ar={ar} />
+          <ProgressComponent
+            progress={activity.aProgress}
+            title='Progress'
+            onUpdate={updateProgress}
           />
 
-          {titleMin ?
-            <ActivityDigitComponent
-              digit={activity.digitMin}
-              title={titleMin}
-              onUpdate={onUpdateDigitMin}
-              showDecimalPointer={showDecimalPointer}
-              showDelimiter={showDelimiter}
-              showNoData={showNoData}
-              paddingZeroFix={paddingZeroFix}
-            /> : ''}
-
-          {titleMax ?
-            <ActivityDigitComponent
-              digit={activity.digitMax}
-              title={titleMax}
-              onUpdate={onUpdateDigitMax}
-              showDecimalPointer={showDecimalPointer}
-              showDelimiter={showDelimiter}
-              showNoData={showNoData}
-              paddingZeroFix={paddingZeroFix}
-            /> : ''}
-
-          {showProgress === undefined || showProgress === true ?
-            <>
-              <ImageProgressComponent
-                imageProgress={activity.imageProgress}
-                onUpdate={(d) => {
-                  const a = { ...activity };
-                  a.imageProgress = d;
-                  onUpdateActivity(a);
-                }}
-              />
-              <ProgressbarCircleCodmponent
-                progressBar={activity.progressBar}
-                onUpdate={(d) => {
-                  const a = { ...activity };
-                  a.progressBar = d;
-                  onUpdateActivity(a);
-                }}
-              />
-              <ProgressbarLinearCodmponent
-                progressBar={activity.progressBar}
-                onUpdate={(d) => {
-                  const a = { ...activity };
-                  a.progressBar = d;
-                  onUpdateActivity(a);
-                }}
-              />
-              <ClockHandComponent
-                title="Pointer Progress"
-                clockHand={activity.pointerProgress}
-                onUpdate={(ch) => {
-                  const a = { ...activity };
-                  a.pointerProgress = ch;
-                  onUpdateActivity(a);
-                }}
-                showAngle={true}
-              />
-            </> : ""}
-          {activity.icon ? (
-            <ImageCoordsComponent
-              title="Icon"
-              imageCoords={activity.icon}
-              onUpdate={(ip) => {
-                const a = { ...activity };
-                a.icon = ip;
-                onUpdateActivity(a);
-              }}
-            />
-          ) : (
-            ""
-          )}
         </Card.Body>
       ) : (
         ""

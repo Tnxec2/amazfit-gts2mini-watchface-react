@@ -1,6 +1,7 @@
 import React, { FC, useContext, useEffect, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
+import { digitTypes } from "../../model/watchFace.gts2mini.model";
 import { WeatherStates } from "../../model/weather.states";
 
 const PreviewStatesComponent: FC = () => {
@@ -9,22 +10,23 @@ const PreviewStatesComponent: FC = () => {
 
   useEffect(() => {
     const ws = { ...watchState };
-    if ( watchface.widgets?.widgets && watchface.widgets.widgets.length > 0 ) {
-      if ( watchState.widgets.length > watchface.widgets.widgets.length) {
-        ws.widgets.splice(watchface.widgets.widgets.length-1)
+    if ( watchface.animation?.imageSetAnimation && watchface.animation.imageSetAnimation.length > 0 ) {
+      if ( watchState.animation.length > watchface.animation.imageSetAnimation.length) {
+        ws.animation.splice(watchface.animation.imageSetAnimation.length-1)
         setWatchState(ws)
-      } else if ( watchState.widgets.length < watchface.widgets.widgets.length) {
-        for(let i = watchState.widgets.length; i < watchface.widgets.widgets.length; i++) {
-          ws.widgets.push(0)
+      } else if ( watchState.animation.length < watchface.animation.imageSetAnimation.length) {
+        for(let i = watchState.animation.length; i < watchface.animation.imageSetAnimation.length; i++) {
+          ws.animation.push(0)
         }
         setWatchState(ws)
       }
     } else {
-      ws.widgets = []
+      ws.animation = []
       setWatchState(ws)
     }
   }, [watchface]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    
   const date = useMemo(
     () =>
       `${watchState.year.toString().padStart(4, "0")}-${watchState.month
@@ -241,12 +243,12 @@ const PreviewStatesComponent: FC = () => {
             type="number"
             className="form-control form-control-sm"
             min="0"
-            max="28"
+            max="25"
             value={watchState.weatherIcon}
             onChange={(e) => {
               const ws = { ...watchState };
               const v = parseInt(e.target.value);
-              ws.weatherIcon = !isNaN(v) ? Math.min(v, 28) : 0;
+              ws.weatherIcon = !isNaN(v) ? Math.min(v, digitTypes.weather.imageProgressTotal) : 0;
               setWatchState(ws);
             }}
           />
@@ -434,43 +436,24 @@ const PreviewStatesComponent: FC = () => {
             />
           </div>
         </div>
-        
         <Card className='mt-3'>
           <Card.Header>
-            <h3>Preview of widgets element</h3>
+            <h3>Preview of animations</h3>
           </Card.Header>
           <Card.Body>
-            { watchState.widgets?.length > 0 ? 
-              <div className="input-group input-group-sm mb-1">
-              <span className="input-group-text">Active widget</span>
-              <input
-                type="number"
-                className="form-control form-control-sm"
-                value={watchState.activeWidget + 1}
-                min={1}
-                max={watchface.widgets?.widgets.length}
-                onChange={(e) => {
-                  const ws = { ...watchState };
-                  const v = parseInt(e.target.value);
-                  ws.activeWidget = !isNaN(v) ? Math.max(0, v-1) : 0;
-                  setWatchState(ws);
-                }}
-              />
-            </div>
-             : '' }
-            { watchState.widgets?.length > 0 ? watchState.widgets.map((w, index) =>
+            { watchState.animation?.length > 0 ? watchState.animation.map((w, index) =>
             <div key={index} className="input-group input-group-sm mb-1">
-              <span className="input-group-text">Widget {index+1}. Element for preview </span>
+              <span className="input-group-text">Animation {index+1}. Frame for preview </span>
               <input
                 type="number"
                 className="form-control form-control-sm"
                 value={w+1}
                 min={1}
-                max={watchface.widgets?.widgets[index]?.widgetElements?.length}
+                max={watchface.animation?.imageSetAnimation[index]?.ImageProgress?.ImagesCount}
                 onChange={(e) => {
                   const ws = { ...watchState };
                   const v = parseInt(e.target.value);
-                  ws.widgets[index] = !isNaN(v) ? Math.max(0, v-1) : 0;
+                  ws.animation[index] = !isNaN(v) ? Math.max(0, v-1) : 0;
                   setWatchState(ws);
                 }}
               />

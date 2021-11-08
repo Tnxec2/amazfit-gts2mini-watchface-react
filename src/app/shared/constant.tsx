@@ -1,9 +1,9 @@
 export class Constant {
   static readonly NONE = "None";
-  static readonly startImageIndex = 1;
-  static readonly width: number = 348;
-  static readonly height: number = 442;
-  static readonly deviceId: number = 65;
+  static readonly startImageIndex = 0;
+  static readonly width: number = 306;
+  static readonly height: number = 354;
+  static readonly deviceId: number = 73;
 
   static getImageIndex(index: number, max: number) {
     const resultIndex = index - Constant.startImageIndex;

@@ -1,140 +1,139 @@
-import { FC, useState } from "react";
+import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
-import { ElementOrderItem, WatchCommonDigit, WatchDate } from "../../model/watchFace.model";
-import DnDListComponent, { IDNDItem } from "../../shared/draganddroplist.component";
-import ImageDigitComponent from "./imageDigit.component";
-import SystemFontComponent from "./systemFont.component";
-import SystemFontCircleComponent from "./systemFontCircle.component";
+import BlocksArrayComponent from "../../blocks/blocksArray.component";
+import { IWatchContext, WatchfaceContext } from "../../context";
+import { BlockType } from "../../model/blocks.model";
+import { WatchAmPmIcon, WatchImageSet, WatchNumber } from "../../model/watchFace.gts2mini.model";
+import WatchNumberComponent from "./number.component";
+import ImageSetComponent from "./imageSet.component";
+import AmPmComponent from "./ampm.component";
 
-interface IProps {
-  date: WatchDate,
-  onUpdate(date: WatchDate): void,
-  collapsed: boolean,
-  setCollapsed(collapsed: boolean): void,
-}
 
-const DateComponent: FC<IProps> = ({ date, onUpdate, collapsed, setCollapsed }) => {
+const DateComponent: FC = () => {
+  const { watchface, setWatchface } =
+  useContext<IWatchContext>(WatchfaceContext);
 
-  const [collapsedOrderElement, setCollapsedOrderelement] = useState<boolean>(true)
-
-  function updateDay(d: WatchCommonDigit) {
-    const _date = { ...date };
-    _date.day = d;
-    onUpdate(_date);
-  }
-  function updateMonth(d: WatchCommonDigit) {
-    const _date = { ...date };
-    _date.month = d;
-    onUpdate(_date);
-  }
-  function updateMonthAsWord(d: WatchCommonDigit) {
-    const _date = { ...date };
-    _date.monthAsWord = d;
-    onUpdate(_date);
-  }
-  function updateYear(d: WatchCommonDigit) {
-    const _date = { ...date };
-    _date.year = d;
-    onUpdate(_date);
-  }
-  function updateWeekday(d: WatchCommonDigit) {
-    const _date = { ...date };
-    _date.weekDay = d;
-    onUpdate(_date);
+  function updateAmPm(d: WatchAmPmIcon) {
+    const w = {...watchface}
+    w.date.ampm = d;
+    setWatchface(w);
   }
 
-  function ononUpdateOrder(list: IDNDItem<ElementOrderItem>[]) {
-    const _date = { ...date };
-    _date.orderElements = list.map((item) => item.item)
-    onUpdate(_date)
+  function updateDay(d: WatchNumber) {
+    const w = {...watchface}
+    w.date.day = d;
+    setWatchface(w);
+  }
+
+  function updateMonth(d: WatchNumber) {
+    const w = {...watchface}
+    w.date.month = d;
+    setWatchface(w);
+  }
+  function updateMonthAsWord(d: WatchImageSet) {
+    const w = {...watchface}
+    w.date.monthAsWord = d;
+    setWatchface(w);
+  }
+  function updateYear(d: WatchNumber) {
+    const w = {...watchface}
+    w.date.year = d;
+    setWatchface(w);
+  }
+  function updateWeekday(d: WatchImageSet) {
+    const w = {...watchface}
+    w.date.weekday = d;
+    setWatchface(w);
+  }
+  
+  function onChangeOneLineYear(val: boolean) {
+    const w = {...watchface}
+    w.date.oneLineYear = val;
+    setWatchface(w);
+  }
+  function onChangeOneLineMonth(val: boolean) {
+    const w = {...watchface}
+    w.date.oneLineMonth = val;
+    setWatchface(w);
+  }
+  
+  function onChangeDelimiter(val: number) {
+    const w = {...watchface}
+    w.date.oneLineDelimiter = val;
+    setWatchface(w);
   }
 
   return (
     <>
       <Card>
         <Card.Header
-          onClick={() => {
-            setCollapsed(!collapsed);
-          }}
+                  onClick={() => {
+                    let w = {...watchface};
+                    w.date.collapsed = !watchface.date.collapsed;
+                    setWatchface(w);
+                  }}
         >
           Date
         </Card.Header>
-        <Card.Body className={`${collapsed ? "collapse" : ""}`}>
+        <Card.Body className={`${watchface.date.collapsed ? "collapse" : ""}`}>
 
-          <Card className='mb-1'>
-            <Card.Header
-                      onClick={() => {
-                        setCollapsedOrderelement(!collapsedOrderElement);
-                      }}>
-              Order of date elements
-            </Card.Header>
-              { !collapsedOrderElement ? 
-            <Card.Body>
-              <DnDListComponent
-                _list={date.orderElements.map((value) => ({ item: value, reactItem: value.title }))}
-                updateOrder={ononUpdateOrder} />
-            </Card.Body>
-               : '' }
-          </Card>
+          <BlocksArrayComponent ar={[
+            {
+              blocks: [
+                { title: 'One Line Year', type: BlockType.Checkbox, checked: watchface.date.oneLineYear, onChange: onChangeOneLineYear},
+                { title: 'One Line Month', type: BlockType.Checkbox, checked: watchface.date.oneLineMonth, onChange: onChangeOneLineMonth},
+                { title: 'Delimiter', type: BlockType.SelectFile, nvalue: watchface.date.oneLineDelimiter, onChange: onChangeDelimiter },
+              ]
+            }
+          ]} />
 
-          <ImageDigitComponent
-            title="Day Digit"
-            digit={date.day}
-            onUpdate={updateDay}
-          />
-          <SystemFontComponent
-            title="Day Systemfont Rotated"
-            digit={date.day}
-            onUpdate={updateDay}
-          />
-          <SystemFontCircleComponent
-            title="Day Systemfont Circle"
-            digit={date.day}
-            onUpdate={updateDay}
-          />
-
-          <ImageDigitComponent
-            title="Month"
-            digit={date.month}
-            onUpdate={updateMonth}
-          />
-          <SystemFontComponent
-            title="Month Systemfont Rotated"
-            digit={date.month}
-            onUpdate={updateMonth}
-          />
-          <SystemFontCircleComponent
-            title="Month Systemfont Circle"
-            digit={date.month}
-            onUpdate={updateMonth}
-          />
-          <ImageDigitComponent
-            title="Month as word"
-            digit={date.monthAsWord}
-            onUpdate={updateMonthAsWord}
-            paddingZeroFix={true}
-          />
-          <ImageDigitComponent
+          { ! watchface.date.oneLineMonth ? 
+          <WatchNumberComponent
             title="Year"
-            digit={date.year}
+            digit={watchface.date.year}
             onUpdate={updateYear}
+            followDisabled={true}
+            showDelimiter={!watchface.date.oneLineYear}
+            showDataType={!watchface.date.oneLineYear}
+          /> : '' }
+         
+         { ! watchface.date.oneLineYear ? 
+         <>
+          <WatchNumberComponent
+            title="Month"
+            digit={watchface.date.month}
+            onUpdate={updateMonth}
+            showDelimiter={!watchface.date.oneLineMonth}
+            showDataType={!watchface.date.oneLineMonth}
           />
-          <SystemFontComponent
-            title="Year Systemfont Rotated"
-            digit={date.year}
-            onUpdate={updateYear}
+          { ! watchface.date.oneLineMonth ? 
+          <WatchNumberComponent
+            title="Day Digit"
+            digit={watchface.date.day}
+            onUpdate={updateDay}
+            showDelimiter={true}
+            showDataType={true}
+          /> : '' }
+          </>
+           : ''
+         }
+          <ImageSetComponent
+            title="Month as word"
+            imageSet={watchface.date.monthAsWord}
+            onUpdate={updateMonthAsWord}
           />
-          <SystemFontCircleComponent
-            title="Year Systemfont Circle"
-            digit={date.year}
-            onUpdate={updateYear}
-          />
-          <ImageDigitComponent
+          
+          <ImageSetComponent
             title="Weekday"
-            digit={date.weekDay}
+            imageSet={watchface.date.weekday}
             onUpdate={updateWeekday}
-            paddingZeroFix={true}
           />
+
+          <AmPmComponent 
+            title='AmPm' 
+            ampm={watchface.date.ampm}
+            onUpdate={updateAmPm}
+            />
         </Card.Body>
       </Card>
     </>

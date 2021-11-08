@@ -2,8 +2,10 @@ import { FC, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { IImage } from "../../model/image.model";
-import { WatchJson } from "../../model/json.model";
-import WatchFace from "../../model/watchFace.model";
+import { WatchJson } from "../../model/json.gts2minit.model";
+
+import { WatchFace } from "../../model/watchFace.gts2mini.model";
+
 import { Constant } from "../../shared/constant";
 
 const FileLoaderComponent: FC = () => {

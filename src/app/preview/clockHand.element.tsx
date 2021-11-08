@@ -1,41 +1,43 @@
 import { findImageById } from "../shared/helper";
 import { Constant } from "../shared/constant";
 import { IImage } from "../model/image.model";
-import { MultilangImage } from "../model/json.model";
-import { WatchClockHand } from "../model/watchFace.model";
-import { LangCodeType } from "../model/types.model";
+import { WatchClockHand } from "../model/watchFace.gts2mini.model";
+import { Coordinates } from "../model/json.gts2minit.model";
 
-export default function drawclockhand(ctx: CanvasRenderingContext2D, 
+export default function drawclockhand(
+    ctx: CanvasRenderingContext2D, 
     images: IImage[], 
-    clockHand: WatchClockHand, value: number, total: number) {
+    clockHand: WatchClockHand, 
+    value: number, 
+    total: number,
+    commonCenterCoordinates: Coordinates ) {
         if (total === null) return
-        if (clockHand.json.Scale) {
-            const scaleImageSetIndex = findImageIndex(clockHand.json.Scale?.ImageSet);
-            if (clockHand.json.Scale.ImageSet[scaleImageSetIndex].ImageSet.ImageIndex >= 0) {
-                let x = clockHand.json.Scale.Coordinates?.X ? clockHand.json.Scale.Coordinates?.X : 0
-                let y = clockHand.json.Scale.Coordinates?.Y ? clockHand.json.Scale.Coordinates?.Y : 0
-                let img = findImageById(clockHand.json.Scale.ImageSet[scaleImageSetIndex].ImageSet.ImageIndex, images)
-                if (img) ctx.drawImage(img, x, y, img.width, img.height);
-            }
-        }
-        if (clockHand.json.Pointer?.ImageIndex >= 0) {
-            let x = clockHand.json.X ? clockHand.json.X : 0
-            let y = clockHand.json.Y ? clockHand.json.Y : 0
-            if ( ! (clockHand.json.X > 0) && ! (clockHand.json.Y > 0)) {
-                x = clockHand.json.X ? clockHand.json.X : Constant.width / 2
-                y = clockHand.json.Y ? clockHand.json.Y : Constant.height / 2
-            }
-            let img = findImageById(clockHand.json.Pointer?.ImageIndex, images)
-            if (img) {
-                let offsetX = clockHand.json.Pointer.Coordinates?.X ? clockHand.json.Pointer.Coordinates?.X : 0
-                let offsetY = clockHand.json.Pointer.Coordinates?.Y ? clockHand.json.Pointer.Coordinates?.Y : 0
+        if (clockHand.json.ImageIndex >= 0) {
+            let x = 0
+            let y = 0
+            if (!commonCenterCoordinates) {
+                x = clockHand.json.CenterCoordinates ? clockHand.json.CenterCoordinates.X : 0
+                y = clockHand.json.CenterCoordinates ? clockHand.json.CenterCoordinates.Y : 0
                 
-                let _startAngle = clockHand.json.StartAngle ? clockHand.json.StartAngle: 0
-                let _endAngle = clockHand.json.EndAngle ? clockHand.json.EndAngle: 360
+                if ( ! clockHand.json.CenterCoordinates?.X && !clockHand.json.CenterCoordinates?.X ) {
+                    x = clockHand.json.CenterCoordinates?.X ? clockHand.json.CenterCoordinates?.X : Constant.width / 2
+                    y = clockHand.json.CenterCoordinates?.Y ? clockHand.json.CenterCoordinates?.X : Constant.height / 2
+                }
+            } else {
+                x = commonCenterCoordinates.X ? commonCenterCoordinates.X : 0
+                y = commonCenterCoordinates.Y ? commonCenterCoordinates.Y : 0
+            }
+
+            let img = findImageById(clockHand.json.ImageIndex, images)
+            if (img) {
+                let offsetX = img.width / 2
+                let offsetY = clockHand.json.PointerCenterOfRotationY ? clockHand.json.PointerCenterOfRotationY : 0
+                
+                let _startAngle = 0
+                let _endAngle = 360
                 if (value > total) value = total
                 let angle = _startAngle + (value * (_endAngle - _startAngle ) / total)
-                //angle = Math.min(angle, _endAngle)
-                //angle = Math.max(angle, _startAngle)
+
                 let radians = (Math.PI/180) * angle
                 
                 ctx.save(); // save current state
@@ -45,15 +47,10 @@ export default function drawclockhand(ctx: CanvasRenderingContext2D,
                 ctx.restore(); // restore original states (no rotation etc)
             }
         }
-        if (clockHand.json.Cover?.ImageIndex >= 0) {
-            let x = clockHand.json.Cover?.Coordinates?.X ? clockHand.json.Cover.Coordinates.X : 0
-            let y = clockHand.json.Cover?.Coordinates?.Y ? clockHand.json.Cover.Coordinates?.Y : 0
-            let img = findImageById(clockHand.json.Cover.ImageIndex, images)
-            if ( img ) ctx.drawImage(img, x, y, img.width, img.height);
+        if (clockHand.json.CoverImage?.ImageIndex >= 0) {
+            let x = clockHand.json.CoverImage?.X ? clockHand.json.CoverImage.X : 0
+            let y = clockHand.json.CoverImage?.Y ? clockHand.json.CoverImage.Y : 0
+            let img = findImageById(clockHand.json.CoverImage.ImageIndex, images)
+            if ( img ) ctx.drawImage(img, x, y);
         }
 }
-
-function findImageIndex(ar: MultilangImage[]): number {
-    let index = ar.findIndex((item) => item.LangCode === LangCodeType.All.json)
-    return index ? index : 0
-  }

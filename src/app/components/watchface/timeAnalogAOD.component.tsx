@@ -1,61 +1,72 @@
 import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
+import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
+import { BlockType } from "../../model/blocks.model";
+import { Coordinates } from "../../model/json.gts2minit.model";
+import { WatchClockHand } from "../../model/watchFace.gts2mini.model";
 import ClockHandComponent from "./clockHand.component";
 
-interface IProps {
-  collapsed: boolean,
-  setCollapsed(collapsed: boolean): void,
-}
 
-const TimeAnalogAODComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
+const TimeAnalogAODComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 
-  function copyHoursFromNormal() {
-    const t = {...watchface.aod.dialFace}
-    t.hoursClockhand = {...watchface.dialFace.hoursClockhand}
-    setWatchface({ ...watchface, aod: {...watchface.aod, dialFace: t} });
+  function updateHours(cl: WatchClockHand) {
+    const w = {...watchface}
+    w.aod.time.timeAnalog.hours  = cl
+    setWatchface(w)
   }
-  function copyMinutesFromNormal() {
-    const t = {...watchface.aod.dialFace}
-    t.minutesClockhand = {...watchface.dialFace.minutesClockhand}
-    setWatchface({ ...watchface, aod: {...watchface.aod, dialFace: t} });
+  function updateMinutes(cl: WatchClockHand) {
+    const w = {...watchface}
+    w.aod.time.timeAnalog.minutes  = cl
+    setWatchface(w)
   }
-
+  function updatecommonCenterCoordinatesX(val: number) {
+    const w = {...watchface}
+    if (!w.aod.time.timeAnalog.commonCenterCoordinates) w.aod.time.timeAnalog.commonCenterCoordinates= new Coordinates()
+    w.aod.time.timeAnalog.commonCenterCoordinates.X  = val
+    setWatchface(w)
+  }
+  function updatecommonCenterCoordinatesY(val: number) {
+    const w = {...watchface}
+    if (!w.aod.time.timeAnalog.commonCenterCoordinates) w.aod.time.timeAnalog.commonCenterCoordinates = new Coordinates()
+    w.aod.time.timeAnalog.commonCenterCoordinates.Y  = val
+    setWatchface(w)
+  }
   return (
     <Card>
       <Card.Header
         onClick={() => {
-          setCollapsed(!collapsed);
+          const w = {...watchface}
+          w.aod.time.timeAnalog.collapsed  = !watchface.aod.time.timeAnalog.collapsed
+          setWatchface(w)
         }}
       >
         Time Analog
       </Card.Header>
-      <Card.Body className={`${collapsed ? "collapse" : ""}`}>
+      <Card.Body className={`${watchface.aod.time.timeAnalog.collapsed ? "collapse" : ""}`}>
         <ClockHandComponent
           title="Hours"
-          clockHand={watchface.aod.dialFace.hoursClockhand}
+          clockHand={watchface.aod.time.timeAnalog.hours}
           showAngle={false}
-          onUpdate={(ch) => {
-            const w = { ...watchface };
-            w.aod.dialFace.hoursClockhand = ch;
-            setWatchface(w);
-          }}
-          onCopyFromNormal={copyHoursFromNormal}
+          onUpdate={updateHours}
         />
 
         <ClockHandComponent
           title="Minutes"
-          clockHand={watchface.aod.dialFace.minutesClockhand}
-          onUpdate={(ch) => {
-            const w = { ...watchface };
-            w.aod.dialFace.minutesClockhand = ch;
-            setWatchface(w);
-          }}
+          clockHand={watchface.aod.time.timeAnalog.minutes}
+          onUpdate={updateMinutes}
           showAngle={false}
-          onCopyFromNormal={copyMinutesFromNormal}
         />
+
+        <BlocksArrayComponent ar={[
+          { blocks: [
+            { title: 'X', type: BlockType.Number, nvalue: watchface.aod.time.timeAnalog?.commonCenterCoordinates?.X ? watchface.aod.time.timeAnalog?.commonCenterCoordinates.X : 0, onChange: updatecommonCenterCoordinatesX },
+            { title: 'Y', type: BlockType.Number, nvalue: watchface.aod.time.timeAnalog?.commonCenterCoordinates?.Y ? watchface.aod.time.timeAnalog?.commonCenterCoordinates.Y : 0, onChange: updatecommonCenterCoordinatesY },
+          ]
+          }
+        ]} />
       </Card.Body>
     </Card>
   );

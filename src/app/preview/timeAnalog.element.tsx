@@ -1,23 +1,23 @@
 import { IImage } from "../model/image.model";
-import { WatchDialFace } from "../model/watchFace.model";
+import { WatchTime } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
 import drawClockHand from "./clockHand.element";
 
     export default function drawTimeAnalog(ctx: CanvasRenderingContext2D, 
         images: IImage[],
-        dialFace: WatchDialFace,
+        time: WatchTime,
         watchState: WatchState
         ) {
-        if ( dialFace.hoursClockhand?.enabled) {
+        if ( time.timeAnalog.hours?.enabled) {
             if ( watchState.hours < 12)
-                drawClockHand(ctx, images, dialFace.hoursClockhand, watchState.hours, 12 )
+                drawClockHand(ctx, images, time.timeAnalog.hours, watchState.hours, 12, time.timeAnalog.commonCenterCoordinates )
             else 
-            drawClockHand(ctx, images, dialFace.hoursClockhand, watchState.hours-12, 12 )
+                drawClockHand(ctx, images, time.timeAnalog.hours, watchState.hours-12, 12, time.timeAnalog.commonCenterCoordinates  )
         }
-        if ( dialFace.minutesClockhand?.enabled) {
-            drawClockHand(ctx, images, dialFace.minutesClockhand, watchState.minutes, 60 )
+        if ( time.timeAnalog.minutes?.enabled) {
+            drawClockHand(ctx, images, time.timeAnalog.minutes, watchState.minutes, 60, time.timeAnalog.commonCenterCoordinates  )
         }
-        if ( dialFace.secondsClockhand?.enabled) {
-            drawClockHand(ctx, images, dialFace.secondsClockhand, watchState.seconds, 60 )
+        if ( time.timeAnalog.seconds?.enabled) {
+            drawClockHand(ctx, images, time.timeAnalog.seconds, watchState.seconds, 60, time.timeAnalog.commonCenterCoordinates  )
         }
     }

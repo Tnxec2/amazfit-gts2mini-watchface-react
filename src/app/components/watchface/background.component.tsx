@@ -3,6 +3,8 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType, IRow } from "../../model/blocks.model";
+import { WatchImage } from "../../model/watchFace.gts2mini.model";
+import ImageComponent from "./image.component";
 
 const BackgroundComponent: FC = () => {
   const { watchface, setWatchface } = useContext<IWatchContext>(WatchfaceContext)
@@ -10,28 +12,27 @@ const BackgroundComponent: FC = () => {
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Preview', type: BlockType.SelectFile, nvalue: watchface.background.previewIndex, onChange: onChangeBackgroundPreviewImage },
-        { title: 'Background', type: BlockType.SelectFile, nvalue: watchface.background.imageIndex, onChange: onChangeBackgroundImageIndex },
-      ]
-    },
-    {
-      blocks: [
         { title: 'Color', type: BlockType.Color, svalue: watchface.background.color, onChange: onChangeBackgroundColor },
       ]
     }
   ], [watchface.background])  // eslint-disable-line react-hooks/exhaustive-deps
 
-  function onChangeBackgroundPreviewImage(index: number) {
+  function onChangePreview(i: WatchImage) {
     setWatchface({
       ...watchface,
-      background: { ...watchface.background, previewIndex: index },
+      background: { ...watchface.background, preview: i },
     });
   }
-
-  function onChangeBackgroundImageIndex(index: number) {
+  function onChangeImage(i: WatchImage) {
     setWatchface({
       ...watchface,
-      background: { ...watchface.background, imageIndex: index },
+      background: { ...watchface.background, image: i },
+    });
+  }
+  function onChangeFloatingLayer(i: WatchImage) {
+    setWatchface({
+      ...watchface,
+      background: { ...watchface.background, floatingLayer: i },
     });
   }
 
@@ -57,6 +58,21 @@ const BackgroundComponent: FC = () => {
       {!watchface.background.collapsed ? (
         <Card.Body>
           <BlocksArrayComponent ar={ar} />
+          <ImageComponent 
+            title='Preview'
+            image={watchface.background.preview}
+            onUpdate={onChangePreview}
+            />
+          <ImageComponent 
+            title='Background'
+            image={watchface.background.image}
+            onUpdate={onChangeImage}
+            />
+          <ImageComponent 
+            title='Floating layer'
+            image={watchface.background.floatingLayer}
+            onUpdate={onChangeFloatingLayer}
+            />
         </Card.Body>
       ) : (
         ""

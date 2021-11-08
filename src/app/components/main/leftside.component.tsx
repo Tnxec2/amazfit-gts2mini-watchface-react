@@ -3,7 +3,6 @@ import { WatchfaceContext } from "../../context";
 import ScreenNormalcomponent from "../watchface/screennormal.component";
 import PreviewStatesComponent from "./previewstates.component";
 import AodComponent from "../watchface/aod.component";
-import WidgetsComponent from "../watchface/widgets.component";
 
 const tabs = [
   {
@@ -17,12 +16,7 @@ const tabs = [
     </div>
   },
   {
-    id: 2, name: "Widgets", el: <div className="mt-3 blocks">
-      <WidgetsComponent />
-    </div>
-  },
-  {
-    id: 3, name: "Preview State", el: <div className="mt-3">
+    id: 2, name: "Preview State", el: <div className="mt-3">
       <PreviewStatesComponent />
     </div>
   },

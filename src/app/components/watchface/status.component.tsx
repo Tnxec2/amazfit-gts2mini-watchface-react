@@ -1,14 +1,12 @@
-import { FC, useContext, useState } from "react";
+import { FC, useContext} from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { WatchStatus } from "../../model/watchFace.model";
-import ImageCoordsComponent from "./imageCoords.component";
+import { WatchStatus } from "../../model/watchFace.gts2mini.model";
+import SwitchComponent from "./switch.component";
 
 const StatusComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
-
-  const [collapsed, setCollapsed] = useState<boolean>(true);
 
   function updateStatus(status: WatchStatus) {
     setWatchface({ ...watchface, status: status });
@@ -18,39 +16,41 @@ const StatusComponent: FC = () => {
     <Card>
       <Card.Header
         onClick={() => {
-          setCollapsed(!collapsed);
+          const w = {...watchface}
+          w.status.collapsed = !w.status.collapsed
+          setWatchface(w)
         }}
       >
         Status
       </Card.Header>
-      <Card.Body className={`${collapsed ? "collapse" : ""}`}>
-        <ImageCoordsComponent
+      <Card.Body className={`${watchface.status.collapsed ? "collapse" : ""}`}>
+        <SwitchComponent
           title="Bluetooth"
-          imageCoords={watchface.status.bluetooth}
+          sw={watchface.status.bluetooth}
           onUpdate={(ic) => {
             const status: WatchStatus = {...watchface.status, bluetooth: ic}
             updateStatus(status)
           }}
         />
-        <ImageCoordsComponent
+        <SwitchComponent
           title="Do Not Disturb"
-          imageCoords={watchface.status.dnd}
+          sw={watchface.status.doNotDisturb}
           onUpdate={(ic) => {
-            const status: WatchStatus = {...watchface.status, dnd: ic}
+            const status: WatchStatus = {...watchface.status, doNotDisturb: ic}
             updateStatus(status)
           }}
         />
-        <ImageCoordsComponent
+        <SwitchComponent
           title="Alarm"
-          imageCoords={watchface.status.alarm}
+          sw={watchface.status.alarm}
           onUpdate={(ic) => {
             const status: WatchStatus = {...watchface.status, alarm: ic}
             updateStatus(status)
           }}
         />
-        <ImageCoordsComponent
+        <SwitchComponent
           title="Lock"
-          imageCoords={watchface.status.lock}
+          sw={watchface.status.lock}
           onUpdate={(ic) => {
             const status: WatchStatus = {...watchface.status, lock: ic}
             updateStatus(status)

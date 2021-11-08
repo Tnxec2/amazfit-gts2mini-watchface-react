@@ -1,121 +1,47 @@
 import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { WatchCommonDigit, WatchDialFace, WatchMultilangImageCoords } from "../../model/watchFace.model";
-import ImageDigitComponent from "./imageDigit.component";
-import MultilangImageCoordsComponent from "./multiLangImageCoords.component";
-import SystemFontComponent from "./systemFont.component";
-import SystemFontCircleComponent from "./systemFontCircle.component";
+import { WatchNumber } from "../../model/watchFace.gts2mini.model";
+import WatchNumberComponent from "./number.component";
 
-interface IProps {
-  collapsed: boolean,
-  setCollapsed(collapsed: boolean): void,
-}
-
-const TimeDigitalAODComponent: FC<IProps> = ({collapsed = true, setCollapsed}) => {
+const TimeDigitalAODComponent: FC = () => {
   const { watchface, setWatchface } =
     useContext<IWatchContext>(WatchfaceContext);
 
-  function updateHoursDigit(h: WatchCommonDigit) {
-    const t = {...watchface.aod.dialFace};
-    t.hoursDigital = h;
-    updateTimeDigital(t);
+  function updateHoursDigit(d: WatchNumber) {
+    const w = {...watchface}
+    w.aod.time.timeDigital.hours = d
+    setWatchface(w)
   }
-
-  function updateMinutesDigit(m: WatchCommonDigit) {
-    const t = {...watchface.aod.dialFace};
-    t.minutesDigital = m;
-    updateTimeDigital(t);
-  }
-
-
-  function copyHoursFromNormal() {
-    const t = {...watchface.aod.dialFace}
-    t.hoursDigital = {...watchface.dialFace.hoursDigital}
-    updateTimeDigital(t)
-  }
-  function copyMinutesFromNormal() {
-    const t = {...watchface.aod.dialFace}
-    t.minutesDigital = {...watchface.dialFace.minutesDigital}
-    updateTimeDigital(t)
-  }
-
-  function updateAm(s: WatchMultilangImageCoords) {
-    const t = {...watchface.aod.dialFace};
-    t.am = s;
-    updateTimeDigital(t);
-  }
-  function updatePm(s: WatchMultilangImageCoords) {
-    const t = {...watchface.aod.dialFace};
-    t.pm = s;
-    updateTimeDigital(t);
-  }
-
-  function updateTimeDigital(wdf: WatchDialFace) {
-    setWatchface({ ...watchface, aod: {...watchface.aod, dialFace: wdf} });
+  function updateMinutesDigit(d: WatchNumber) {
+    const w = {...watchface}
+    w.aod.time.timeDigital.minutes = d
+    setWatchface(w)
   }
 
   return (
     <Card>
       <Card.Header
         onClick={() => {
-          setCollapsed(!collapsed);
+          const w = {...watchface}
+          w.aod.time.timeDigital.collapsed = !watchface.aod.time.timeDigital.collapsed
+          setWatchface(w)
         }}
       >
         Time Digital
       </Card.Header>
-      <Card.Body className={`${collapsed ? "collapse" : ""}`}>
-        <ImageDigitComponent
+      <Card.Body className={`${watchface.aod.time.timeDigital.collapsed ? "collapse" : ""}`}>
+        <WatchNumberComponent
           title="Hours"
-          digit={watchface.aod.dialFace.hoursDigital}
+          digit={watchface.aod.time.timeDigital.hours}
           onUpdate={updateHoursDigit}
-          showDecimalPointer={false}
-          showDelimiter={false}
-          showNoData={false}
-          paddingZeroFix={false}
-          onCopyFromNormal={copyHoursFromNormal}
           followDisabled={true}
         />
-        <SystemFontComponent
-            title="Hours Systemfont Rotated"
-            digit={watchface.aod.dialFace.hoursDigital}
-            onUpdate={updateHoursDigit}
-            followDisabled={true}
-          />
-        <SystemFontCircleComponent
-            title="Hours Systemfont Circle"
-            digit={watchface.aod.dialFace.hoursDigital}
-            onUpdate={updateHoursDigit}
-            followDisabled={true}
-        />
-        <ImageDigitComponent
+        <WatchNumberComponent
           title="Minutes"
-          digit={watchface.aod.dialFace.minutesDigital}
+          digit={watchface.aod.time.timeDigital.minutes}
           onUpdate={updateMinutesDigit}
-          showDecimalPointer={false}
-          showDelimiter={false}
-          showNoData={false}
-          paddingZeroFix={true}
-          onCopyFromNormal={copyMinutesFromNormal}
         />
-        <SystemFontComponent
-            title="Minutes Systemfont Rotated"
-            digit={watchface.aod.dialFace.minutesDigital}
-            onUpdate={updateMinutesDigit}
-          />
-        <SystemFontCircleComponent
-            title="Minutes Systemfont Circle"
-            digit={watchface.aod.dialFace.minutesDigital}
-            onUpdate={updateMinutesDigit}
-        />
-        <MultilangImageCoordsComponent
-          title="AM"
-          imageCoords={watchface.aod.dialFace.am}
-          onUpdate={updateAm} />
-        <MultilangImageCoordsComponent
-          title="PM"
-          imageCoords={watchface.aod.dialFace.pm}
-          onUpdate={updatePm} />
       </Card.Body>
     </Card>
   );
