@@ -14,7 +14,6 @@ const ColorBlockComponent: FC<IProps> = ({ title, value, onChange }) => {
             <input
               type="color"
               className="form-control form-control-sm"
-              style={{ width: 40 }}
               onChange={(e) => {
                 onChange(e.target.value)
               }}

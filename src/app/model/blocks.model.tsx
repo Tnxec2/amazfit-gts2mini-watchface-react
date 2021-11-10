@@ -35,8 +35,7 @@ export const OptionsAlignmentGTs2Mini: IOption[] =  [
     { value: 'BottomRight', title:'BottomRight'},
 ]
 
-export const OptionsLineEndingLine: IOption[] =  [ {value:'0', title: 'Circle'}, {value:'180', title: 'Flat'}]
-export const OptionsLineEndingCircle: IOption[] =  [ {value:'0', title: 'Circle'}, {value: '90', title: 'Triangle'}, {value:'180', title: 'Flat'}]
+export const OptionsLineEndingCircle: IOption[] =  [ {value:'0', title: 'Circle'}, {value:'180', title: 'Flat'}]
 
 
 export interface IBlock {

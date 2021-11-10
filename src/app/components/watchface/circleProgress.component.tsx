@@ -17,7 +17,7 @@ const CircleProgressComponent: FC<IProps> = ({ title, scale, onUpdate }) => {
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Color', type: BlockType.Color, svalue: scale.json?.Color, onChange: changeColor },
+        { title: 'Color', type: BlockType.Color, svalue: Color.colorRead(scale.json?.Color), onChange: changeColor },
         { title: 'Image', type: BlockType.SelectFile, nvalue: scale.json?.ImageIndex, onChange: changeImage },
       ]
     },
