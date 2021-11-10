@@ -5,9 +5,9 @@ import { WatchActivity, WatchNumber, WatchProgress } from "../../model/watchFace
 import { Image } from "../../model/json.gts2minit.model";
 import { Coordinates, ShortcutElement } from "../../model/json.gts2minit.model";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
+import { ActivityType } from "../../model/types.gts2mini.model";
 import WatchNumberComponent from "./number.component";
 import ProgressComponent from "./progress.component";
-import { ActivityType } from "../../model/types.gts2mini.model";
 
 interface IProps {
   activity: WatchActivity;

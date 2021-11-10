@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { WatchIconSet, WatchImageSet, WatchProgress, WatchScale } from '../../model/watchFace.gts2mini.model';
+import { WatchCircleScale, WatchIconSet, WatchImageSet, WatchProgress, WatchScale } from '../../model/watchFace.gts2mini.model';
+import CircleProgressComponent from './circleProgress.component';
 import IconSetComponent from './iconSet.component';
 import ImageSetComponent from './imageSet.component';
 import PointerProgressComponent from './pointerProgress.component';
@@ -39,6 +40,11 @@ const ProgressComponent: FC<IProps> = ({
       p.scale = ip;
       onUpdate(p);
     }
+    function updateCircle(ip: WatchCircleScale) {
+      const p = {...progress};
+      p.circleScale = ip;
+      onUpdate(p);
+    }
 
     return (
         <div>
@@ -59,6 +65,12 @@ const ProgressComponent: FC<IProps> = ({
               title='Pointer progress'
               onUpdate={updateScale}
               scale={progress.scale}
+            /> : '' }
+          { showCircleScaleProgress ?
+            <CircleProgressComponent
+              title='Circle progress'
+              onUpdate={updateCircle}
+              scale={progress.circleScale}
             /> : '' }
         </div>
     );

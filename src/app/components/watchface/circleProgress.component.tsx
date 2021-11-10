@@ -1,15 +1,15 @@
 import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
-import { BlockType, IRow } from "../../model/blocks.model";
-import { PointerScale } from "../../model/json.gts2minit.model";
-import { WatchCircleScale, WatchScale } from "../../model/watchFace.gts2mini.model";
+import { BlockType, IRow, OptionsLineEndingCircle } from "../../model/blocks.model";
+import { CircleScale } from "../../model/json.gts2minit.model";
+import { WatchCircleScale } from "../../model/watchFace.gts2mini.model";
+import Color from "../../shared/color";
 
 interface IProps {
   title: string,
   scale: WatchCircleScale;
-  onUpdate(scale: WatchScale): void;
-  onCopyFromNormal?(): void
+  onUpdate(scale: WatchCircleScale): void;
 }
 
 const CircleProgressComponent: FC<IProps> = ({ title, scale, onUpdate }) => {
@@ -40,7 +40,11 @@ const CircleProgressComponent: FC<IProps> = ({ title, scale, onUpdate }) => {
         { title: 'Width',  type: BlockType.Number, nvalue: scale.json?.Width ? scale.json.Width : 1, onChange: changeWidth },
       ]
     },
-
+    {
+      blocks: [
+        { title: 'Line ending', type: BlockType.Select, svalue: scale.json.Flatness ? scale.json.Flatness.toString() : '0', onChange: changeLineEnding, selectOptions: OptionsLineEndingCircle },
+      ]
+    },
   ], [scale]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -49,15 +53,21 @@ const CircleProgressComponent: FC<IProps> = ({ title, scale, onUpdate }) => {
     const ch = { ...scale };
     ch.enabled = !ch.enabled;
     if (ch.enabled && !ch.json) { 
-      ch.json = new PointerScale(); 
+      ch.json = new CircleScale(); 
     }
     onUpdate(ch);
+  }
+
+  function changeColor(color: string) {
+    const d = { ...scale };
+    d.json.Color = Color.colorWrite(color);
+    onUpdate(d);
   }
 
 
   function changeImage(i: number) {
     let ch = {...scale};
-    ch.json.PointerImageIndex = i;
+    ch.json.ImageIndex = i;
     onUpdate(ch);
   }
 
@@ -73,22 +83,35 @@ const CircleProgressComponent: FC<IProps> = ({ title, scale, onUpdate }) => {
     onUpdate(ch);
   }
 
-  function changePointerY(val: number) {
-    const ch = {...scale};
-    ch.json.PointerCenterOfRotationY = val;
-    onUpdate(ch);
-  }
-
   function changeStartAngle(val: number) {
     const ch = {...scale};
-    ch.json.RangeFrom = val;
+    ch.json.StartAngle = val;
     onUpdate(ch);
   }
 
   function changeEndAngle(val: number) {
     const ch = {...scale};
-    ch.json.RangeTo = val;
+    ch.json.EndAngle = val;
     onUpdate(ch);
+  }
+
+  function changeRadius(val: number) {
+    const ch = {...scale};
+    ch.json.RadiusX = val;
+    ch.json.RadiusY = val;
+    onUpdate(ch);
+  }
+
+  function changeWidth(val: number) {
+    const ch = {...scale};
+    ch.json.Width = val;
+    onUpdate(ch);
+  }
+
+  function changeLineEnding(val: string) {
+    const pBar = { ...scale };
+    pBar.json.Flatness = parseInt(val)
+    onUpdate(pBar);
   }
 
   return (
