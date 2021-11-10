@@ -1,5 +1,6 @@
 import { IImage } from "../model/image.model";
 import { WatchActivity, WatchNumber } from "../model/watchFace.gts2mini.model";
+import drawCircleProgress from "./circleProgress.element";
 import drawDigitImage from "./digitImage.element";
 import drawIconSet from "./iconSet.element";
 import drawImage from "./image.element";
@@ -32,6 +33,9 @@ export function drawActivity(ctx: CanvasRenderingContext2D,
     }
     if (activity.aProgress.iconSetProgress.enabled) {
         drawIconSet(ctx, images, activity.aProgress.iconSetProgress.json, value, total);
+    }
+    if (activity.aProgress.circleScale.enabled) {
+        drawCircleProgress(ctx, images, activity.aProgress.circleScale.json, value, total);
     }
     if (activity.aProgress.scale.enabled) {
         drawPointerProgress(ctx, images, activity.aProgress.scale.json, value, total);

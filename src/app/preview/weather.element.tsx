@@ -33,9 +33,11 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
         drawImageSet(ctx, images, weather.icon.json, watchState.weatherIcon, 26);
     }
     if (weather.oneLineMinMax.enabled) {
+        let min = watchState.temperatureMin
+        let max = watchState.temperatureMax
         let ar = [
-            watchState.temperatureMin.toString().padStart(2, '0'),
-            watchState.temperatureMax.toString().padStart(2, '0')
+            weather.oneLineMinMax.paddingZero ? ( min < 0 ? '-' + Math.abs(min).toString().padStart(2, '0') : min.toString().padStart(2, '0') ) : min.toString(),
+            weather.oneLineMinMax.paddingZero ? ( max < 0 ? '-' + Math.abs(max).toString().padStart(2, '0') : max.toString().padStart(2, '0') ) : max.toString()
         ]
         drawDigitsOneLine(ctx, images, weather.oneLineMinMax, ar, weather.oneLineDelimiter, drawBorder, weather.oneLineDegrees, null, weather.oneLineMinus)
     }
