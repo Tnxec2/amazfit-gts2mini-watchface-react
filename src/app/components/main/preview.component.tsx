@@ -4,6 +4,7 @@ import { IImage } from "../../model/image.model";
 import { WatchFace } from "../../model/watchFace.gts2mini.model";
 import { WatchState } from "../../model/watchState";
 import { drawActivity } from "../../preview/activity.element";
+import drawAlarm from "../../preview/alarm.element";
 import drawBackground from "../../preview/background.element";
 import { drawBattery } from "../../preview/battery.element";
 import drawDate from "../../preview/date.element";
@@ -11,6 +12,7 @@ import drawImage from "../../preview/image.element";
 import drawImageSet from "../../preview/imageSet.element";
 import drawShortcutElement from "../../preview/shortcut.element";
 import drawStatus from "../../preview/status.element";
+import drawSunset from "../../preview/sunset.element";
 import drawTimeAnalog from "../../preview/timeAnalog.element";
 import drawTimeDigital from "../../preview/timeDigital.element";
 import { drawWeather } from "../../preview/weather.element";
@@ -80,18 +82,6 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         digitBorder
       );
     }
-    /*
-     if (watchface.activity) {
-      drawActivity(
-        ctx,
-        images,
-        watchface.activity,
-        watchState,
-        digitBorder,
-        true
-      );
-    }
-    */
     if (watchface.status) {
       drawStatus(ctx, images, watchface.status, watchState);
     }
@@ -105,6 +95,8 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       drawActivitys(ctx, images, watchface, watchState, digitBorder, shortCutBorder);
     }
     if (watchface.time) {
+      drawAlarm(ctx, images, watchface.time.alarm, watchState, digitBorder, shortCutBorder);
+      drawSunset(ctx, images, watchface.time.sunset, watchState, digitBorder, shortCutBorder);
       drawTimeDigital(
         ctx,
         images,

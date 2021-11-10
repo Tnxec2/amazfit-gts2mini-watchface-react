@@ -3,7 +3,9 @@ import { WatchBattery, WatchNumber } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
 import { findImageById } from "../shared/helper";
 import drawDigitImage from "./digitImage.element";
+import drawIconSet from "./iconSet.element";
 import drawImageSet from "./imageSet.element";
+import drawPointerProgress from "./pointerProgress.element";
 
 export function drawBattery(ctx: CanvasRenderingContext2D,
     images: IImage[],
@@ -23,7 +25,14 @@ export function drawBattery(ctx: CanvasRenderingContext2D,
             if (img) ctx.drawImage(img, battery.icon.json.X, battery.icon.json.Y)
         }
     }
-    if (battery.imageProgress) {
+    if (battery.imageProgress.enabled) {
         drawImageSet(ctx, images, battery.imageProgress.json, watchState.battery, watchState.batteryGoal);
     }
+    if (battery.iconSetProgress.enabled) {
+        drawIconSet(ctx, images, battery.iconSetProgress.json, watchState.battery, watchState.batteryGoal);
+    }
+    if (battery.scale.enabled) {
+        drawPointerProgress(ctx, images, battery.scale.json, watchState.battery, watchState.batteryGoal);
+    }
+
 }

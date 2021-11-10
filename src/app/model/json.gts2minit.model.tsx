@@ -372,7 +372,7 @@ export class TimeDigital{
   DelimiterHoursImageIndex: number
   DelimiterMinutesImageIndex: number
   HoursFollowPosition: boolean = false
-  Unknown7: number = 0
+  DelimiterSecondsImageIndex: number
   Time: Time
 }
 

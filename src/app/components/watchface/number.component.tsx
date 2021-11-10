@@ -12,6 +12,7 @@ interface IProps {
   followDisabled?: boolean;
   showDelimiter?: boolean,
   showDataType?: boolean,
+  showPrefix?: boolean,
 }
 
 const WatchNumberComponent: FC<IProps> = ({
@@ -22,6 +23,7 @@ const WatchNumberComponent: FC<IProps> = ({
   onCopyFromNormal,
   showDelimiter,
   showDataType,
+  showPrefix
 }) => {
 
   const ar = useMemo<IRow[]>(() => [
@@ -54,6 +56,12 @@ const WatchNumberComponent: FC<IProps> = ({
       blocks: [
         { title: 'follow', type: BlockType.Checkbox, checked: digit.follow, onChange: onChangeFollow, disabled: followDisabled },
         { title: 'alignment', type: BlockType.Select, svalue: digit.json?.Alignment, selectOptions: OptionsAlignmentGTs2Mini,  onChange: onChangeAlignment },
+      ]
+    },
+    {
+      disabled: ! showPrefix,
+      blocks: [
+        { title: 'Prefix', type: BlockType.SelectFile, nvalue: digit.prefix, onChange: onChangePrefix },
       ]
     },
     {
@@ -152,6 +160,12 @@ const WatchNumberComponent: FC<IProps> = ({
   function onChangeDelimiter(index: number) {
     const d = {...digit};
     d.delimiter = index;
+    onUpdate(d);
+  }
+
+  function onChangePrefix(index: number) {
+    const d = {...digit};
+    d.prefix = index;
     onUpdate(d);
   }
 

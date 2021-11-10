@@ -86,6 +86,7 @@ const UvIndexComponent: FC = () => {
             />
 
           <WatchShortCutComponent
+            title='UV Shortcut'
             shortcut={watchface.weatherext.uvShortcut}
             onUpdate={updateShortcut}
           />

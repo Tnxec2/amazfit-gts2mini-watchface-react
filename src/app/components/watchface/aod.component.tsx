@@ -29,6 +29,10 @@ const AodComponent: FC = () => {
         title='Steps'
         type={ActivityType.Steps}
         onUpdateActivity={updateSteps}
+        showImageProgress={true}
+        showIconProgress={true}
+        showPointerProgress={true}
+        showCircleScaleProgress={true}
        />
     </>
   );

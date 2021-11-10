@@ -108,7 +108,7 @@ const DateComponent: FC = () => {
           />
           { ! watchface.date.oneLineMonth ? 
           <WatchNumberComponent
-            title="Day Digit"
+            title="Day"
             digit={watchface.date.day}
             onUpdate={updateDay}
             showDelimiter={true}

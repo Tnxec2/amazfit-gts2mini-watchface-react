@@ -4,7 +4,56 @@ import { IImage } from "../model/image.model"
 import { WatchNumber } from "../model/watchFace.gts2mini.model"
 import { AlignmentType } from "../model/types.gts2mini.model"
 
-export function drawDigitImageArray(
+export interface DigitValueItem {
+    snumber: string,
+    prefix?: number,
+    suffix?: number,
+    dataType?: number
+}
+
+export function drawDigitsFollowedArray(
+    ctx: CanvasRenderingContext2D, 
+    images: IImage[], 
+    digit: WatchNumber, 
+    numbers: DigitValueItem[], 
+    drawBorder: boolean
+): void {
+    const x =  digit.json?.TopLeftX ? digit.json?.TopLeftX : 0 
+    const y =  digit.json?.TopLeftY ? digit.json?.TopLeftY : 0 
+    const bottomx = digit.json?.BottomRightX ? digit.json?.BottomRightX : x
+    const bottomy = digit.json?.BottomRightY ? digit.json?.BottomRightY : y 
+
+    if (digit.json.ImageIndex) {
+
+        let ar: HTMLImageElement[] = []
+
+        numbers.forEach((n, index) => {
+            if (n.prefix) {
+                const img = findImageById(n.prefix, images)
+                if (img) ar.push(img)
+            }
+            ar = ar.concat(getImages(images, n.snumber, 
+                digit.json.ImageIndex, 
+                digit.json.ImagesCount,
+                null
+                ))
+            if (n.suffix) {
+                const img = findImageById(n.suffix, images)
+                if (img) ar.push(img)
+            }
+            if (n.dataType) {
+                const img = findImageById(n.dataType, images)
+                if (img) ar.push(img)
+            }
+        });
+
+        drawImages(ctx, ar, x, y, bottomx, bottomy, digit.json.Spacing, digit.json.VerticalOffset,
+            digit.json.Alignment, drawBorder)
+    }
+}
+
+
+export function drawDigitsOneLine(
     ctx: CanvasRenderingContext2D, 
     images: IImage[], 
     digit: WatchNumber, 
@@ -13,7 +62,7 @@ export function drawDigitImageArray(
     drawBorder?: boolean,
     suffix?: number,
     prefix?: number,
-    minus?: number
+    minus?: number,
 ): void {
     const x =  digit.json?.TopLeftX ? digit.json?.TopLeftX : 0 
     const y =  digit.json?.TopLeftY ? digit.json?.TopLeftY : 0 
@@ -64,10 +113,10 @@ export default function drawDigitImage(
     suffixKM?: number,
     ): [number, number] | null  {
         
-    const x = digit.follow && followXY ? followXY[0] : ( digit.json?.TopLeftX ? digit.json?.TopLeftX : 0 )
-    const y = digit.follow && followXY ? followXY[1] : ( digit.json?.TopLeftY ? digit.json?.TopLeftY : 0 )
-    const bottomx = digit.follow && followXY ? followXY[0] + ( digit.json?.BottomRightX - digit.json?.TopLeftX) : ( digit.json?.BottomRightX ? digit.json?.BottomRightX : 0 )
-    const bottomy = digit.follow && followXY ? followXY[1] + ( digit.json?.BottomRightY - digit.json?.TopLeftY) : ( digit.json?.BottomRightY ? digit.json?.BottomRightY : 0 )
+    const x = followXY ? followXY[0] : ( digit.json?.TopLeftX ? digit.json?.TopLeftX : 0 )
+    const y = followXY ? followXY[1] : ( digit.json?.TopLeftY ? digit.json?.TopLeftY : 0 )
+    const bottomx = followXY ? followXY[0] + ( digit.json?.BottomRightX - digit.json?.TopLeftX) : ( digit.json?.BottomRightX ? digit.json?.BottomRightX : 0 )
+    const bottomy = followXY ? followXY[1] + ( digit.json?.BottomRightY - digit.json?.TopLeftY) : ( digit.json?.BottomRightY ? digit.json?.BottomRightY : 0 )
 
     if (digit.json.ImageIndex) {
         let strNumber = number.toString()

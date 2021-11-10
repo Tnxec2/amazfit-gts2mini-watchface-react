@@ -43,6 +43,12 @@ const PreviewStatesComponent: FC = () => {
     [watchState]
   );
 
+  const alarmTime = useMemo(
+    () =>
+      `${watchState.alarmHours.toString().padStart(2, "0")}:${watchState.alarmMinutes.toString().padStart(2, "0")}`,
+    [watchState]
+  );
+
   function updateDate(e: React.ChangeEvent<HTMLInputElement>) {
     let date = new Date(e.target.value);
     const ws = { ...watchState };
@@ -62,6 +68,14 @@ const PreviewStatesComponent: FC = () => {
     if (!isNaN(parseInt(s))) ws.seconds = parseInt(s);
     setWatchState(ws);
   }
+  function updateAlarm(e: React.ChangeEvent<HTMLInputElement>) {
+    let [h, m, s] = e.target.value.split(":");
+    const ws = { ...watchState };
+    if (!isNaN(parseInt(h))) ws.alarmHours = parseInt(h);
+    if (!isNaN(parseInt(m))) ws.alarmMinutes = parseInt(m);
+    setWatchState(ws);
+  }
+
   return (
     <div>
       <>
@@ -81,6 +95,30 @@ const PreviewStatesComponent: FC = () => {
             value={time}
             onChange={updateTime}
           />
+        </div>
+        <div className="input-group input-group-sm mb-1">
+          <span className="input-group-text" id="addon-wrapping">
+            Alarm
+          </span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={watchState.alarmEnabled}
+              onChange={() => {
+                let ws = { ...watchState };
+                ws.alarmEnabled = !ws.alarmEnabled;
+                setWatchState(ws);
+              }}
+            />
+          </div>
+          <input
+            type="time"
+            className="form-control form-control-sm"
+            step="1"
+            value={alarmTime}
+            onChange={updateAlarm}
+            />
         </div>
 
         <div className="input-group input-group-sm mb-1">

@@ -42,7 +42,7 @@ const JsonComponent: FC = () => {
             HumidityProgress: getProgress(w.weatherext.humidityProgress),
             Alarm: getAlarm(w.time.alarm),
             Shortcuts: getShortCuts(w.shortcuts),
-            TimeAnalog: timeClockHandEnabled ? {
+            TimeAnalog: timeClockHandEnabled ? { 
                 CommonCenterCoordinates: w.time.timeAnalog.commonCenterCoordinates,
                 Hours:  w.time.timeAnalog.hours.enabled ? w.time.timeAnalog.hours.json : null,
                 Minutes: w.time.timeAnalog.minutes.enabled ? w.time.timeAnalog.minutes.json : null,
@@ -106,15 +106,15 @@ function getTimeExtended(time: WatchTime): TimeExtended {
                 PaddingZeroMinutes: time?.timeDigitalSeparated?.paddingZeroMinutes,
         } : null,
         SunsetTimeOneLine: time.sunset.sunsetOneLine.enabled ? time.sunset.sunsetOneLine.json : null,
-        DelimiterSunsetImageIndex: time.sunset.sunsetOneLine.enabled ? time.sunset.delimiterSunset : null,
+        DelimiterSunsetImageIndex: time.sunset.sunsetOneLine.enabled ? time.sunset.sunsetOneLine.delimiter : null,
         SunriseTimeOneLine: time.sunset.sunriseOneLine.enabled ? time.sunset.sunriseOneLine.json : null,
-        DelimiterSunriseImageIndex: time.sunset.sunriseOneLine.enabled ? time.sunset.delimiterSunrise : null,
+        DelimiterSunriseImageIndex: time.sunset.sunriseOneLine.enabled ? time.sunset.sunriseOneLine.delimiter : null,
         SunsetIcon: time.sunset.sunsetIcon.enabled ? time.sunset.sunsetIcon.json : null,
         SunriseIcon: time.sunset.sunriseIcon.enabled ? time.sunset.sunriseIcon.json : null,
         SunsetShortcut: time.sunset.sunsetShortcut.enabled ? time.sunset.sunsetShortcut.json : null,
         SunriseShortcut: time.sunset.sunriseShortcut.enabled ? time.sunset.sunriseShortcut.json : null,
-        SunsetImageIndex: time.sunset.sunsetOneLine.enabled ? time.sunset.sunsetImageIndex : null,
-        SunriseImageIndex: time.sunset.sunriseOneLine.enabled ? time.sunset.sunriseImageIndex : null,
+        SunsetImageIndex: time.sunset.sunsetOneLine.enabled ? time.sunset.sunsetOneLine.prefix : null,
+        SunriseImageIndex: time.sunset.sunriseOneLine.enabled ? time.sunset.sunriseOneLine.prefix : null,
     }
 }
 
@@ -150,9 +150,9 @@ function getDate(date: WatchDate): DateBlock {
                 DelimiterYearImageIndex: date.year.enabled ? date.year.dataType : null,
                 DelimiterMonthImageIndex: date.month.enabled ? date.month.dataType : null,
                 DelimiterDayImageIndex: date.day.enabled ? date.day.dataType : null,
-                DelimiterYearCoordinates: date.year.enabled ? date.year.dataTypeCoords : null,
-                DelimiterMonthCoordinates: date.month.enabled ? date.month.dataTypeCoords : null,
-                DelimiterDayCoordinates: date.day.enabled ? date.day.dataTypeCoords : null
+                DelimiterYearCoordinates: date.year.enabled && date.year.dataType ? date.year.dataTypeCoords : null,
+                DelimiterMonthCoordinates: date.month.enabled && date.month.dataType ? date.month.dataTypeCoords : null,
+                DelimiterDayCoordinates: date.day.enabled && date.day.dataType ? date.day.dataTypeCoords : null
             } : null
         } : null,
         AmPm: date.ampm.enabled ? date.ampm.json : null,
@@ -194,7 +194,7 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
         DelimiterHoursImageIndex: time.hours.delimiter,
         DelimiterMinutesImageIndex: time.minutes.delimiter,
         HoursFollowPosition: false,
-        Unknown7: time.unknown7,
+        DelimiterSecondsImageIndex: time.seconds.delimiter,
         Time: time.minutes.enabled || time.seconds.enabled ? {
             Unknown1:  time.time_unknown1,
             Minutes: time.minutes.enabled ? time.minutes.json : null,
@@ -205,9 +205,9 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
             SecondsDataTypeImageIndex:  time.seconds.enabled ? time.seconds.dataType : null,
             MinutesFollowHours:  time.minutes.follow,
             SecondsFollowMinutes:  time.seconds.follow,
-            HoursDataTypeCoordinates: time.hours.enabled && time.minutes.enabled && time.minutes.follow ? time.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
-            MinutesDataTypeCoordinates: time.minutes.enabled && time.seconds.enabled && time.seconds.follow ? time.minutes.dataTypeCoords : null, // needed only when SecondsFollowMinutes == False
-            SecondsDataTypeCoordinates: time.seconds.enabled ? time.seconds.dataTypeCoords : null
+            HoursDataTypeCoordinates: time.hours.enabled && time.hours.dataType ? time.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
+            MinutesDataTypeCoordinates: time.minutes.enabled && !time.minutes.follow  && time.minutes.dataType ? time.minutes.dataTypeCoords : null, // needed only when SecondsFollowMinutes == False
+            SecondsDataTypeCoordinates: time.seconds.enabled && !time.seconds.follow && time.seconds.dataType ? time.seconds.dataTypeCoords : null
         } : null
     }
 
@@ -335,13 +335,13 @@ function getAlarm(alarm: WatchAlarm): Alarm {
         AlarmTime: alarm.alarmTime.hours.enabled || alarm.alarmTime.minutes.enabled ? {
             Hours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.json : null,
             Minutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.json : null,
-            DataTypeHoursImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.dataTypeHoursImageIndex : null,
-            DelimiterHoursImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.delimiterHoursImageIndex : null,
-            DelimiterMinutesImageIndex: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.delimiterMinutesImageIndex : null,
-            PaddingZeroHours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.paddingZeroHours : null,
-            PaddingZeroMinutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.paddingZeroMinutes : null,
-            DataTypeHoursCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.minutesFollowHours ? alarm.alarmTime.dataTypeHoursCoordinates : null, // needed only when MinutesFollowHours == False
-            MinutesFollowHours: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutesFollowHours : null,
+            DataTypeHoursImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.dataType : null,
+            DelimiterHoursImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.delimiter : null,
+            DelimiterMinutesImageIndex: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.delimiter : null,
+            PaddingZeroHours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.paddingZero : null,
+            PaddingZeroMinutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.paddingZero : null,
+            DataTypeHoursCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
+            MinutesFollowHours: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.follow : null,
         } : null,
     }
 }

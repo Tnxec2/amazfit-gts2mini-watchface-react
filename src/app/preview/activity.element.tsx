@@ -1,8 +1,10 @@
 import { IImage } from "../model/image.model";
 import { WatchActivity, WatchNumber } from "../model/watchFace.gts2mini.model";
 import drawDigitImage from "./digitImage.element";
+import drawIconSet from "./iconSet.element";
 import drawImage from "./image.element";
 import drawImageSet from "./imageSet.element";
+import drawPointerProgress from "./pointerProgress.element";
 import drawShortcutElement from "./shortcut.element";
 
 export function drawActivity(ctx: CanvasRenderingContext2D,
@@ -27,6 +29,12 @@ export function drawActivity(ctx: CanvasRenderingContext2D,
     }
     if (activity.aProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, activity.aProgress.imageProgress.json, value, total);
+    }
+    if (activity.aProgress.iconSetProgress.enabled) {
+        drawIconSet(ctx, images, activity.aProgress.iconSetProgress.json, value, total);
+    }
+    if (activity.aProgress.scale.enabled) {
+        drawPointerProgress(ctx, images, activity.aProgress.scale.json, value, total);
     }
     if (activity.aElement.json.Shortcut) {
         drawShortcutElement(ctx, activity.aElement.json.Shortcut, drawShortcutBorder)

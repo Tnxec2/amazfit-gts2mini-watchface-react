@@ -6,6 +6,16 @@ export class WatchState {
   day = this._date.getDate();
   hours = this._date.getHours();
   minutes = this._date.getMinutes();
+  
+  alarmEnabled = true;
+  alarmHours = this._date.getHours();
+  alarmMinutes = this._date.getMinutes();
+
+  sunsetHours = 5;
+  sunsetMinutes = 38;
+  sunriseHours = 17;
+  sunriseMinutes = 42;
+
   seconds = this._date.getSeconds();
   weekday = this._date.getDay() > 0 ? this._date.getDay() - 1 : 6;
   batteryGoal = 100;

@@ -72,7 +72,7 @@ const DateAODComponent: FC = () => {
             showDataType={true}
           />
           <WatchNumberComponent
-            title="Day Digit"
+            title="Day"
             digit={watchface.aod?.date?.day}
             onUpdate={updateDay}
             followDisabled={true}

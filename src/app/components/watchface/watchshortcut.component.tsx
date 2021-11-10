@@ -5,11 +5,12 @@ import { BlockType, IRow } from "../../model/blocks.model";
 import { WatchShortcutElement, } from "../../model/watchFace.gts2mini.model";
 
 interface IProps {
+  title: string,
   shortcut: WatchShortcutElement,
   onUpdate(shortcut: WatchShortcutElement): void
 }
 
-const WatchShortCutComponent: FC<IProps> = ({shortcut, onUpdate}) => {
+const WatchShortCutComponent: FC<IProps> = ({title, shortcut, onUpdate}) => {
   
   const ar = useMemo<IRow[]>(() => [
     {
@@ -48,7 +49,7 @@ const WatchShortCutComponent: FC<IProps> = ({shortcut, onUpdate}) => {
     <Card className="activity w-100">
       <Card.Header>
       <div className="input-group input-group-sm">
-          <span className="input-group-text">ShortCut</span>
+          <span className="input-group-text">{title}</span>
           <div className="input-group-text">
             <input
               className="form-check-input mt-0"

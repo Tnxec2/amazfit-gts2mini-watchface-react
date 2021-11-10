@@ -83,7 +83,7 @@ const SelectFileListComponent: FC<IProps> = ({
         className="btn btn-outline-secondary"
         type="button"
         onClick={onRemove}
-        disabled={!value}
+        disabled={!(value >= 0)}
       >
         x
       </button>

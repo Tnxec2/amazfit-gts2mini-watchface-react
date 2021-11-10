@@ -1,7 +1,7 @@
 import { IImage } from "../model/image.model";
 import { WatchWeather, WatchWeatherExt } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
-import drawDigitImage, { drawDigitImageArray } from "./digitImage.element";
+import drawDigitImage, { drawDigitsOneLine } from "./digitImage.element";
 import drawImage from "./image.element";
 import drawImageSet from "./imageSet.element";
 import drawShortcutElement from "./shortcut.element";
@@ -37,7 +37,7 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
             watchState.temperatureMin.toString().padStart(2, '0'),
             watchState.temperatureMax.toString().padStart(2, '0')
         ]
-        drawDigitImageArray(ctx, images, weather.oneLineMinMax, ar, weather.oneLineDelimiter, drawBorder, weather.oneLineDegrees, null, weather.oneLineMinus)
+        drawDigitsOneLine(ctx, images, weather.oneLineMinMax, ar, weather.oneLineDelimiter, drawBorder, weather.oneLineDegrees, null, weather.oneLineMinus)
     }
     // 
     if (weatherext.humidityIcon.enabled) {

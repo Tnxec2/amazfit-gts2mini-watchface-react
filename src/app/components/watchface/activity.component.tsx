@@ -13,14 +13,22 @@ interface IProps {
   activity: WatchActivity;
   title: string;
   onUpdateActivity(activity: WatchActivity): void;
-  type: ActivityType
+  type: ActivityType,
+  showImageProgress: boolean,
+  showIconProgress: boolean,
+  showPointerProgress: boolean,
+  showCircleScaleProgress: boolean,
 }
 
 const ActivityComponent: FC<IProps> = ({
   activity,
   title,
   onUpdateActivity,
-  type
+  type,
+  showImageProgress,
+  showIconProgress,
+  showPointerProgress,
+  showCircleScaleProgress,
 }) => {
 
   const ar = useMemo<IRow[]>(() => [
@@ -183,6 +191,10 @@ const ActivityComponent: FC<IProps> = ({
             progress={activity.aProgress}
             title='Progress'
             onUpdate={updateProgress}
+            showImageProgress={showImageProgress}
+            showIconProgress={showIconProgress}
+            showPointerProgress={showPointerProgress}
+            showCircleScaleProgress={showCircleScaleProgress}
           />
 
         </Card.Body>

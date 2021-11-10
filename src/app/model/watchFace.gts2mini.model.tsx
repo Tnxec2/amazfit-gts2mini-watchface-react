@@ -18,13 +18,13 @@ export const digitTypes = {
     title: 'Hours',
     timeDelimiter: true,
     displayAnalog: false,
-    imageProgressTotal: null,
+    imageProgressTotal: 12,
   },
   min: {
     count: 10,
     numberLenght: 2,
     title: 'Minutes',
-    imageProgressTotal: null,
+    imageProgressTotal: 60,
     displayAnalog: false,
     timeDelimiter: true,
   },
@@ -34,7 +34,7 @@ export const digitTypes = {
     title: 'Seconds',
     timeDelimiter: true,
     displayAnalog: false,
-    imageProgressTotal: null,
+    imageProgressTotal: 60,
   },
   year: {
     count: 10,
@@ -47,7 +47,7 @@ export const digitTypes = {
     count: 10,
     numberLenght: 2,
     displayAnalog: false,
-    imageProgressTotal: null,
+    imageProgressTotal: 12,
     title: 'Month',
   },
   monthasword: {
@@ -61,7 +61,7 @@ export const digitTypes = {
     count: 10,
     numberLenght: 2,
     displayAnalog: false,
-    imageProgressTotal: null,
+    imageProgressTotal: 30,
     title: 'Day',
   },
   weekday: {
@@ -176,6 +176,8 @@ export class WatchNumber {
 
   delimiter: number
   dataType: number
+  prefix: number
+
   dataTypeCoords: Coordinates = new Coordinates()
 
   paddingZero: boolean
@@ -695,7 +697,7 @@ export class WatchActivityList {
         this.heartRate = new WatchActivity(digitTypes.heartRate, j.Activity.HeartRate, j.HearthProgress)
         this.distance = new WatchActivity(digitTypes.distance, j.Activity.Distance, null)
         this.pai = new WatchActivity(digitTypes.pai, j.Activity.PAI, j.PaiProgress)
-        this.pai = new WatchActivity(digitTypes.standUp, j.Activity.StandUp, j.StandUpProgress)
+        this.standUp = new WatchActivity(digitTypes.standUp, j.Activity.StandUp, j.StandUpProgress)
       }
     }
   }
@@ -827,12 +829,10 @@ export class WatchTimeDigitalCommon {
   minutes: WatchNumber = new WatchNumber(null, digitTypes.min)
   seconds: WatchNumber = new WatchNumber(null, digitTypes.sec)
 
-  unknown7: number = 0
   time_unknown1: number = 0
 
   constructor(j?: TimeDigital) {
     if (j) {
-      this.unknown7 = j.Unknown7
       this.hours = new WatchNumber(j.Hours, digitTypes.hour)
       if (this.hours) {
         this.hours.delimiter = j.DelimiterHoursImageIndex ? j.DelimiterHoursImageIndex : null  
@@ -853,6 +853,7 @@ export class WatchTimeDigitalCommon {
         }
         this.seconds = new WatchNumber(j.Time?.Seconds, digitTypes.sec)
         if (this.seconds) {
+          this.seconds.delimiter = j.DelimiterSecondsImageIndex ? j.DelimiterSecondsImageIndex : null  
           this.seconds.dataType = j.Time?.SecondsDataTypeImageIndex ? j.Time.SecondsDataTypeImageIndex : null
           this.seconds.paddingZero = j.Time?.PaddingZeroSeconds ? true : false
           this.seconds.follow = j.Time?.SecondsFollowMinutes ? true : false
@@ -868,32 +869,31 @@ export class WatchSunset {
   collapsed = true
 
   sunsetOneLine: WatchNumber = new WatchNumber(null, digitTypes.sunrise)
-  delimiterSunset: number
   sunriseOneLine: WatchNumber = new WatchNumber(null, digitTypes.sunrise)
-  delimiterSunrise: number
 
   sunsetIcon: WatchImage = new WatchImage()
   sunsetShortcut: WatchShortcutElement = new WatchShortcutElement()
-  sunsetImageIndex: number
   
   sunriseIcon: WatchImage = new WatchImage()
   sunriseShortcut: WatchShortcutElement = new WatchShortcutElement()
-  sunriseImageIndex: number
 
   constructor(j?: TimeExtended) {
     if (j) {
       this.sunsetOneLine = new WatchNumber(j.SunsetTimeOneLine)
       this.sunriseOneLine = new WatchNumber(j.SunriseTimeOneLine)
-      this.delimiterSunset = j.DelimiterSunsetImageIndex
-      this.delimiterSunrise = j.DelimiterSunriseImageIndex
+      if (this.sunsetOneLine) {
+        this.sunsetOneLine.delimiter = j.DelimiterSunsetImageIndex
+        this.sunsetOneLine.prefix = j.SunsetImageIndex
+      }
+      if ( this.sunriseOneLine) {
+        this.sunriseOneLine.delimiter = j.DelimiterSunriseImageIndex
+        this.sunriseOneLine.prefix = j.SunriseImageIndex
+      }
       this.sunsetIcon = new WatchImage(j.SunsetIcon)
       this.sunriseIcon = new WatchImage(j.SunriseIcon)
       this.sunsetShortcut = new WatchShortcutElement(j.SunsetShortcut)
       this.sunriseShortcut = new WatchShortcutElement(j.SunriseShortcut)
-      this.sunsetImageIndex = j.SunsetImageIndex
-      this.sunriseImageIndex = j.SunriseImageIndex
     }
-    
   }
 }
 
@@ -903,31 +903,29 @@ export class WatchAlarmTime {
 
   hours: WatchNumber = new WatchNumber(null, digitTypes.hour)
   minutes: WatchNumber = new WatchNumber(null, digitTypes.min)
-  dataTypeHoursImageIndex: number
-  delimiterHoursImageIndex: number
-  delimiterMinutesImageIndex: number
-  paddingZeroHours: boolean = false
-  paddingZeroMinutes: boolean = false
-  dataTypeHoursCoordinates: Coordinates // needed only when MinutesFollowHours == False
-  minutesFollowHours: boolean = false
+
 
   constructor(j?: AlarmTime) {
     if(j) {
       this.hours = new WatchNumber(j.Hours)
       this.minutes = new WatchNumber(j.Minutes)
-      this.dataTypeHoursImageIndex = j.DataTypeHoursImageIndex
-      this.delimiterHoursImageIndex = j.DelimiterHoursImageIndex
-      this.delimiterMinutesImageIndex = j.DelimiterMinutesImageIndex
-      this.paddingZeroHours = j.PaddingZeroHours ? true : false
-      this.paddingZeroMinutes = j.PaddingZeroMinutes ? true : false
-      this.dataTypeHoursCoordinates = j.DataTypeHoursCoordinates
-      this.minutesFollowHours = j.MinutesFollowHours ? true : false
+      if (this.hours) {
+        this.hours.dataType = j.DataTypeHoursImageIndex
+        this.hours.delimiter = j.DelimiterHoursImageIndex
+        this.hours.paddingZero = j.PaddingZeroHours ? true : false
+        this.hours.dataTypeCoords = j.DataTypeHoursCoordinates
+      }
+      if (this.minutes) {
+        this.minutes.delimiter = j.DelimiterMinutesImageIndex
+        this.minutes.paddingZero = j.PaddingZeroMinutes ? true : false
+        this.minutes.follow = j.MinutesFollowHours ? true : false
+      }
     }
   }
 }
 
 export class WatchAlarm {
-  collapsed: boolean = false
+  collapsed: boolean = true
   
   noAlarm: WatchImage = new WatchImage()
   alarmImage: WatchImage = new WatchImage()
