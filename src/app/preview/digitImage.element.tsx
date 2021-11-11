@@ -244,7 +244,7 @@ function drawImages(
         ctx.drawImage(img, x, y);
         x += img.width
         if ( spacing ) x += spacing
-        if ( vspacing ) y += spacing
+        if ( vspacing ) y += vspacing
     })
     if ( drawborder) {
         ctx.beginPath();

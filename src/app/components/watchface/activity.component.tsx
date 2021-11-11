@@ -160,6 +160,7 @@ const ActivityComponent: FC<IProps> = ({
 
   function udpateDigit(d: WatchNumber) {
     const a = {...activity};
+    a.aElement.enabled = d.enabled
     a.aElement.json.ImageNumber = d.json
     onUpdateActivity(a)
   }
@@ -184,8 +185,13 @@ const ActivityComponent: FC<IProps> = ({
         <Card.Body>
           <WatchNumberComponent
             title='Number'
-            digit={new WatchNumber(activity.aElement.json.ImageNumber, activity.con)}
+            digit={
+              new WatchNumber(activity.aElement.json.ImageNumber, activity.con, activity.aElement.enabled)
+            }
             onUpdate={udpateDigit}
+            followDisabled={true}
+            showDelimiter={false}
+            paddingDisabled={true}
           />
           <BlocksArrayComponent ar={ar} />
           <ProgressComponent

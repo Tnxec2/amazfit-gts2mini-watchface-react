@@ -185,7 +185,7 @@ export class WatchNumber {
 
   con: IDigitConstructor
 
-  constructor(j?: NumberJson, con?: IDigitConstructor) {
+  constructor(j?: NumberJson, con?: IDigitConstructor, enabled?: boolean) {
     if (j) {
       this.json = j
       this.enabled = true
@@ -196,6 +196,7 @@ export class WatchNumber {
       this.json.ImagesCount = con.count
       this.con = con
     }
+    if ( enabled !== undefined && enabled !== null) this.enabled = enabled
   }
 }
 
@@ -1047,7 +1048,6 @@ export class WatchFace {
 
     this.background = new WatchBackground(j.Background);
     this.time = new WatchTime(j)
-    
     this.date = new WatchDate(j.DateBlock)
     this.activity = new WatchActivityList(j)
     this.status = new WatchStatus(j.Status)

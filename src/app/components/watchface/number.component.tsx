@@ -13,6 +13,7 @@ interface IProps {
   showDelimiter?: boolean,
   showDataType?: boolean,
   showPrefix?: boolean,
+  paddingDisabled?: boolean,
 }
 
 const WatchNumberComponent: FC<IProps> = ({
@@ -23,7 +24,8 @@ const WatchNumberComponent: FC<IProps> = ({
   onCopyFromNormal,
   showDelimiter,
   showDataType,
-  showPrefix
+  showPrefix,
+  paddingDisabled,
 }) => {
 
   const ar = useMemo<IRow[]>(() => [
@@ -47,7 +49,7 @@ const WatchNumberComponent: FC<IProps> = ({
     },
     {
       blocks: [
-        { title: 'padding zero', type: BlockType.Checkbox, checked: digit.paddingZero, onChange: onChagePaddingZero},
+        { title: 'padding zero', type: BlockType.Checkbox, checked: digit.paddingZero, onChange: onChagePaddingZero, disabled: paddingDisabled},
         { title: 'spacing', type: BlockType.Number, nvalue: digit.json?.Spacing ? digit.json.Spacing : 0, onChange: onChangeSpacing },
         { title: 'vertical offset', type: BlockType.Number, nvalue: digit.json?.VerticalOffset ? digit.json.VerticalOffset : 0, onChange: onChangeVerticalOffset },
       ]
