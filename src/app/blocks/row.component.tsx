@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { IRow, BlockType, IBlock } from '../model/blocks.model';
 import SelectFileListComponent from '../shared/selectFileList.component';
+import ButtonBlockComponent from './buttonBlock.component';
 import CheckBoxBlockComponent from './checkboxBlock.component';
 import ColorBlockComponent from './colorBlock.component';
 import NumberBlockComponent from './numberBlock.component';
@@ -64,6 +65,16 @@ const RowComponent: FC<IProps> = ({ row }) => {
                         title={block.title}
                         onChange={block.onChange}
                         value={block.svalue}
+                    />
+                break;
+            case BlockType.Button:
+                result =
+                    <ButtonBlockComponent
+                        key={index} 
+                        title={block.title}
+                        onClick={block.onClick}
+                        className={block.className}
+                        disabled={block.disabled}
                     />
                 break;
             default:

@@ -3,9 +3,10 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType } from "../../model/blocks.model";
-import { WatchAOD, WatchAodDate, WatchImageSet, WatchNumber } from "../../model/watchFace.gts2mini.model";
+import { WatchAmPmIcon, WatchAOD, WatchAodDate, WatchImageSet, WatchNumber } from "../../model/watchFace.gts2mini.model";
 import WatchNumberComponent from "./number.component";
 import ImageSetComponent from "./imageSet.component";
+import AmPmComponent from "./ampm.component";
 
 
 const DateAODComponent: FC = () => {
@@ -40,6 +41,12 @@ const DateAODComponent: FC = () => {
     setWatchface(w);
   }
 
+  function updateAmPm(d: WatchAmPmIcon) {
+    const w = {...watchface}
+    w.aod.time.amPm = d;
+    setWatchface(w);
+  }
+
   return (
     <>
       <Card>
@@ -68,21 +75,21 @@ const DateAODComponent: FC = () => {
             digit={watchface.aod?.date?.month}
             onUpdate={updateMonth}
             followDisabled={true}
-            showDelimiter={true}
-            showDataType={true}
           />
           <WatchNumberComponent
             title="Day"
             digit={watchface.aod?.date?.day}
             onUpdate={updateDay}
-            followDisabled={true}
-            showDelimiter={true}
-            showDataType={true}
           />          
           <ImageSetComponent
             title="Weekday"
             imageSet={watchface.aod?.weekday}
             onUpdate={updateWeekday}
+          />
+          <AmPmComponent 
+            title='Am / PM'
+            ampm={watchface.aod.time.amPm}
+            onUpdate={updateAmPm}
           />
         </Card.Body>
       </Card>

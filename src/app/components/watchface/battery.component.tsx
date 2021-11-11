@@ -4,9 +4,11 @@ import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType, IRow } from "../../model/blocks.model";
 import { Image, ShortcutElement } from "../../model/json.gts2minit.model";
-import { digitTypes, WatchImageSet, WatchNumber } from "../../model/watchFace.gts2mini.model";
+import { digitTypes, WatchIconSet, WatchImageSet, WatchNumber, WatchScale } from "../../model/watchFace.gts2mini.model";
 import WatchNumberComponent from "./number.component";
 import ImageSetComponent from "./imageSet.component";
+import IconSetComponent from "./iconSet.component";
+import PointerProgressComponent from "./pointerProgress.component";
 
 
 const BatteryComponent: FC = () => {
@@ -108,6 +110,16 @@ const BatteryComponent: FC = () => {
     w.battery.imageProgress = d
     setWatchface(w)
   }
+  function updateIconSet(d: WatchIconSet) {
+    const w = {...watchface};
+    w.battery.iconSetProgress = d
+    setWatchface(w)
+  }
+  function updateScale(d: WatchScale) {
+    const w = {...watchface};
+    w.battery.scale = d
+    setWatchface(w)
+  }
 
 
   return (
@@ -134,6 +146,16 @@ const BatteryComponent: FC = () => {
             imageSet={watchface.battery.imageProgress}
             onUpdate={updateImageSet}
           />
+          <IconSetComponent
+            title='Icon set'
+            iconSet={watchface.battery.iconSetProgress}
+            onUpdate={updateIconSet}
+            />
+          <PointerProgressComponent
+            title='Pointer scale'
+            scale={watchface.battery.scale}
+            onUpdate={updateScale}
+            />
         </Card.Body>
       ) : (
         ""

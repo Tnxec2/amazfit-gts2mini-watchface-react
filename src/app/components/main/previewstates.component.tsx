@@ -69,7 +69,7 @@ const PreviewStatesComponent: FC = () => {
     setWatchState(ws);
   }
   function updateAlarm(e: React.ChangeEvent<HTMLInputElement>) {
-    let [h, m, s] = e.target.value.split(":");
+    let [h, m] = e.target.value.split(":");
     const ws = { ...watchState };
     if (!isNaN(parseInt(h))) ws.alarmHours = parseInt(h);
     if (!isNaN(parseInt(m))) ws.alarmMinutes = parseInt(m);
@@ -141,12 +141,12 @@ const PreviewStatesComponent: FC = () => {
             type="number"
             className="form-control form-control-sm"
             min="0"
-            max="999"
+            max="9999"
             value={watchState.calories}
             onChange={(e) => {
               let ws = { ...watchState };
               const v = parseInt(e.target.value);
-              ws.calories = !isNaN(v) ? Math.min(v, 999) : 0;
+              ws.calories = !isNaN(v) ? Math.min(v, 9999) : 0;
               setWatchState(ws);
             }}
           />
@@ -496,7 +496,7 @@ const PreviewStatesComponent: FC = () => {
                 }}
               />
             </div>
-          ) : 'no widgets in watchface' }
+          ) : 'no animation in watchface' }
           </Card.Body>
         </Card>
       </>

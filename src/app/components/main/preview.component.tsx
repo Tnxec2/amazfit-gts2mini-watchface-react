@@ -6,15 +6,20 @@ import { WatchState } from "../../model/watchState";
 import { drawActivity } from "../../preview/activity.element";
 import drawAlarm from "../../preview/alarm.element";
 import drawBackground from "../../preview/background.element";
+import drawAodBackground from "../../preview/backgroundaod.element";
 import { drawBattery } from "../../preview/battery.element";
 import drawDate from "../../preview/date.element";
+import drawDateAod from "../../preview/dateAod.element";
 import drawImage from "../../preview/image.element";
 import drawImageSet from "../../preview/imageSet.element";
+import { drawFiveDigits, drawFourDigits, drawThreeDigits } from "../../preview/separateDigits.element";
 import drawShortcutElement from "../../preview/shortcut.element";
 import drawStatus from "../../preview/status.element";
 import drawSunset from "../../preview/sunset.element";
 import drawTimeAnalog from "../../preview/timeAnalog.element";
+import drawTimeAnalogAod from "../../preview/timeAnalogAod.element";
 import drawTimeDigital from "../../preview/timeDigital.element";
+import drawTimeDigitalAod from "../../preview/timeDigitalAod.element";
 import { drawWeather } from "../../preview/weather.element";
 import Canvas from "./canvas.function";
 import cl from "./previewComponent.module.css";
@@ -62,8 +67,8 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
     if (images && watchface) {
       if (canvas) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (previewScreenNormal) drawNormal(canvas, ctx, images)
-        //else drawAod(canvas, ctx, images)
+        if (previewScreenNormal) drawNormal(canvas, ctx, images);
+        else drawAod(canvas, ctx, images);
         drawGrid(ctx);
       } else {
         console.error("don't find canvas with id canvasPreview");
@@ -72,89 +77,125 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
   }
 
   function drawNormal(canvas, ctx: CanvasRenderingContext2D, images: IImage[]) {
-    if (watchface.background) drawBackground(canvas, ctx, images, watchface.background);
+    if (watchface.background)
+      drawBackground(canvas, ctx, images, watchface.background);
     if (watchface.date) {
-      drawDate(
-        ctx,
-        images,
-        watchface.date,
-        watchState,
-        digitBorder
-      );
+      drawDate(ctx, images, watchface.date, watchState, digitBorder);
     }
     if (watchface.status) {
       drawStatus(ctx, images, watchface.status, watchState);
     }
     if (watchface.battery) {
-      drawBattery(ctx, images, watchface.battery, watchState, digitBorder, shortCutBorder); 
-    }
-    if (watchface.weather) {
-      drawWeather(ctx, images, watchface.weather, watchface.weatherext, watchState, digitBorder, shortCutBorder);
-    }
-    if (watchface.activity) {
-      drawActivitys(ctx, images, watchface, watchState, digitBorder, shortCutBorder);
-    }
-    if (watchface.time) {
-      drawAlarm(ctx, images, watchface.time.alarm, watchState, digitBorder, shortCutBorder);
-      drawSunset(ctx, images, watchface.time.sunset, watchState, digitBorder, shortCutBorder);
-      drawTimeDigital(
+      drawBattery(
         ctx,
         images,
-        watchface.time,
+        watchface.battery,
         watchState,
-        digitBorder
+        digitBorder,
+        shortCutBorder
       );
+    }
+    if (watchface.weather) {
+      drawWeather(
+        ctx,
+        images,
+        watchface.weather,
+        watchface.weatherext,
+        watchState,
+        digitBorder,
+        shortCutBorder
+      );
+    }
+    if (watchface.activity) {
+      drawActivitys(
+        ctx,
+        images,
+        watchface,
+        watchState,
+        digitBorder,
+        shortCutBorder
+      );
+    }
+    if (watchface.activity.caloriesSeparatedDigits.enabled) drawFourDigits(ctx, images, watchface.activity.caloriesSeparatedDigits.json, watchState.calories, false)
+    if (watchface.activity.stepsSeparatedDigits.enabled) drawFiveDigits(ctx, images, watchface.activity.stepsSeparatedDigits.json, watchState.steps, false)
+    if (watchface.activity.batterySeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.batterySeparatedDigits.json, watchState.battery, false)
+    if (watchface.activity.heartRateSeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.heartRateSeparatedDigits.json, watchState.hearthrate, false)
+    if (watchface.time) {
+      drawAlarm(
+        ctx,
+        images,
+        watchface.time.alarm,
+        watchState,
+        digitBorder,
+        shortCutBorder
+      );
+      drawSunset(
+        ctx,
+        images,
+        watchface.time.sunset,
+        watchState,
+        digitBorder,
+        shortCutBorder
+      );
+      drawTimeDigital(ctx, images, watchface.time, watchState, digitBorder);
       drawTimeAnalog(ctx, images, watchface.time, watchState);
     }
 
     if (watchface.animation.imageSetAnimation) {
-      watchface.animation.imageSetAnimation.forEach( (item, index) => {
-        drawImageSet(ctx, images, item.ImageProgress, watchState.animation[index], item.ImageProgress.ImagesCount)
-      })
+      watchface.animation.imageSetAnimation.forEach((item, index) => {
+        drawImageSet(
+          ctx,
+          images,
+          item.ImageProgress,
+          watchState.animation[index],
+          item.ImageProgress.ImagesCount
+        );
+      });
     }
     if (watchface.shortcuts.json) {
-      watchface.shortcuts.json.forEach( (item) => {
-        drawImage(ctx, images, item.Icon)
-        drawShortcutElement(ctx, item.Element, shortCutBorder)
-      })
+      watchface.shortcuts.json.forEach((item) => {
+        drawImage(ctx, images, item.Icon);
+        drawShortcutElement(ctx, item.Element, shortCutBorder);
+      });
     }
   }
 
   function drawAod(canvas, ctx: CanvasRenderingContext2D, images: IImage[]) {
-    /*
     if (watchface.aod) {
-      drawAodBackground(canvas, ctx, images, watchface.aod.backgroundImageIndex);
+      drawAodBackground(canvas, ctx);
     }
     if (watchface.aod.date) {
-      drawDate(
+      drawDateAod(
         ctx,
         images,
         watchface.aod.date,
-        watchface.aod.date.orderElements,
+        watchface.aod.dateOneLine,
+        watchface.aod.weekday,
         watchState,
         digitBorder
       );
     }
-    if (watchface.aod.activitylist) {
+    if (watchface.aod.steps) {
       drawActivity(
         ctx,
         images,
-        watchface.aod.activitylist,
-        watchState,
-        digitBorder
+        watchface.aod.steps,
+        watchState.steps,
+        watchState.stepsGoal,
+        digitBorder,
+        shortCutBorder
       );
     }
-    if (watchface.aod.dialFace) {
-      drawTimeDigital(
+    if (watchface.aod.time) {
+      drawTimeDigitalAod(
         ctx,
         images,
-        watchface.aod.dialFace,
+        watchface.aod.time,
         watchState,
         digitBorder
       );
-      drawTimeAnalog(ctx, images, watchface.aod.dialFace, watchState);
+      drawTimeAnalogAod(ctx, images, watchface.aod.time.timeAnalog, watchState);
     }
-    */
   }
 
   function getCursorPosition(event) {
@@ -243,12 +284,12 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
   return (
     <>
       <div className={cl.canvasCcontainer}>
-        {previewScreenNormal ? 'Screen Normal' : 'AOD'}
+        {previewScreenNormal ? "Screen Normal" : "AOD"}
         <div>
           x: {x}, y: {y}
         </div>
         <Canvas
-          id='canvasPreview'
+          id="canvasPreview"
           draw={draw}
           className={cl.canvasPreview}
           width={width}
@@ -259,7 +300,10 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
 
       <div className="container d-flex justify-content-center">
         <div>
-          <div className="input-group input-group-sm" style={{ width: "max-content" }}>
+          <div
+            className="input-group input-group-sm"
+            style={{ width: "max-content" }}
+          >
             <span className="input-group-text" id="addon-wrapping">
               White grid
             </span>
@@ -309,22 +353,70 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
       </div>
     </>
   );
-}
-
+};
 
 export default PreviewComponent;
 
-
-
-
-function drawActivitys(ctx: CanvasRenderingContext2D, images: IImage[], 
-  watchface: WatchFace, watchState: WatchState, digitBorder: boolean, shortCutBorder: boolean) {
-  
-    drawActivity(ctx, images, watchface.activity.steps, watchState.steps, watchState.stepsGoal, digitBorder, shortCutBorder)
-    drawActivity(ctx, images, watchface.activity.calories, watchState.calories, watchState.caloriesGoal, digitBorder, shortCutBorder)
-    drawActivity(ctx, images, watchface.activity.distance, watchState.distance, null, digitBorder, shortCutBorder)
-    drawActivity(ctx, images, watchface.activity.heartRate, watchState.hearthrate, watchState.hearthrateGoal, digitBorder, shortCutBorder)
-    drawActivity(ctx, images, watchface.activity.pai, watchState.pai, watchState.paiGoal, digitBorder, shortCutBorder)
-    drawActivity(ctx, images, watchface.activity.standUp, watchState.standup, watchState.standupGoal, digitBorder, shortCutBorder)
+function drawActivitys(
+  ctx: CanvasRenderingContext2D,
+  images: IImage[],
+  watchface: WatchFace,
+  watchState: WatchState,
+  digitBorder: boolean,
+  shortCutBorder: boolean
+) {
+  drawActivity(
+    ctx,
+    images,
+    watchface.activity.steps,
+    watchState.steps,
+    watchState.stepsGoal,
+    digitBorder,
+    shortCutBorder
+  );
+  drawActivity(
+    ctx,
+    images,
+    watchface.activity.calories,
+    watchState.calories,
+    watchState.caloriesGoal,
+    digitBorder,
+    shortCutBorder
+  );
+  drawActivity(
+    ctx,
+    images,
+    watchface.activity.distance,
+    watchState.distance,
+    null,
+    digitBorder,
+    shortCutBorder
+  );
+  drawActivity(
+    ctx,
+    images,
+    watchface.activity.heartRate,
+    watchState.hearthrate,
+    watchState.hearthrateGoal,
+    digitBorder,
+    shortCutBorder
+  );
+  drawActivity(
+    ctx,
+    images,
+    watchface.activity.pai,
+    watchState.pai,
+    watchState.paiGoal,
+    digitBorder,
+    shortCutBorder
+  );
+  drawActivity(
+    ctx,
+    images,
+    watchface.activity.standUp,
+    watchState.standup,
+    watchState.standupGoal,
+    digitBorder,
+    shortCutBorder
+  );
 }
-

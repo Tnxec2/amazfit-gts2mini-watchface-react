@@ -35,7 +35,7 @@ const DateAODOneLineComponent: FC = () => {
             setWatchface(w);
           }}
         >
-          Date
+          Date OneLine
         </Card.Header>
         <Card.Body className={`${watchface.aod?.dateOneLine?.enabled ? "collapse" : ""}`}>
           <BlocksArrayComponent ar={[

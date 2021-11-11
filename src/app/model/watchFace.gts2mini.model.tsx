@@ -1,5 +1,5 @@
 import Color from "../shared/color";
-import { ActivityElement, ActivitySeparateDigits, Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, CircleScale, ClockHand, Coordinates, DateBlock, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PointerScale, Progress, Shortcut, ShortcutElement, Shortcuts, Status, Switch, TextTemperature, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
+import { ActivityElement, ActivitySeparateDigits, Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, CircleScale, ClockHand, Coordinates, DateBlock, FiveDigits, FourDigits, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PointerScale, Progress, Shortcut, ShortcutElement, Shortcuts, Status, Switch, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
   count: number;
@@ -442,6 +442,39 @@ export class WatchAoDTimeDigital {
   }
 }
 
+export class WatchFiveDigitsSeparated {
+  json: FiveDigits = new FiveDigits()
+  enabled: boolean = false
+
+  constructor(j?: FiveDigits) {
+    if (j) {
+      this.enabled = true
+      this.json = j
+    }
+  }
+}
+export class WatchFourDigitsSeparated {
+  json: FourDigits = new FourDigits()
+  enabled: boolean = false
+
+  constructor(j?: FourDigits) {
+    if (j) {
+      this.enabled = true
+      this.json = j
+    }
+  }
+}
+export class WatchThreeDigitsSeparated {
+  json: ThreeDigits = new ThreeDigits()
+  enabled: boolean = false
+
+  constructor(j?: ThreeDigits) {
+    if (j) {
+      this.enabled = true
+      this.json = j
+    }
+  }
+}
 export class WatchTwoDigitsSeparated {
   json: TwoDigits = new TwoDigits()
   enabled: boolean = false
@@ -585,10 +618,10 @@ export class WatchAOD {
   collapsed = true
   
   time: WatchAodTime = new WatchAodTime()
+  date: WatchAodDate = new WatchAodDate()
   dateOneLine: WatchAodDateOneLine = new WatchAodDateOneLine()
   weekday: WatchImageSet = new WatchImageSet(digitTypes.weekday.imageProgressTotal)
   steps: WatchActivity = new WatchActivity(digitTypes.steps)
-  date: WatchAodDate = new WatchAodDate()
 
   constructor(j?: AlwaysOnDisplay) {
     if (j) {
@@ -597,19 +630,6 @@ export class WatchAOD {
       this.weekday = new WatchImageSet(digitTypes.weekday.imageProgressTotal, j.Week?.Weekday)
       this.steps = new WatchActivity(digitTypes.steps, j.Steps)
       this.date = new WatchAodDate(j.Date)
-    }
-  }
-}
-
-export class WatchActivitySeparatedDigits {
-  collapsed = true
-  enabled: boolean = false
-
-  json: ActivitySeparateDigits = new ActivitySeparateDigits()
-  constructor(j?: ActivitySeparateDigits ) {
-    if (j) {
-      this.enabled = true
-      this.json = j
     }
   }
 }
@@ -681,6 +701,7 @@ export class WatchStatus {
 
 export class WatchActivityList {
   collapsed = true
+  collapsedSeparated = true
 
   steps: WatchActivity = new WatchActivity(digitTypes.steps)
   calories: WatchActivity = new WatchActivity(digitTypes.calories)
@@ -689,15 +710,25 @@ export class WatchActivityList {
   pai: WatchActivity = new WatchActivity(digitTypes.pai)
   standUp: WatchActivity = new WatchActivity(digitTypes.standUp)
 
+  caloriesSeparatedDigits: WatchFourDigitsSeparated = new WatchFourDigitsSeparated()
+  batterySeparatedDigits: WatchThreeDigitsSeparated = new WatchThreeDigitsSeparated()
+  stepsSeparatedDigits: WatchFiveDigitsSeparated = new WatchFiveDigitsSeparated()
+  heartRateSeparatedDigits: WatchThreeDigitsSeparated = new WatchThreeDigitsSeparated()
+
     constructor(j?: WatchJson) {
     if (j) {
-      if (j.Activity) {
-        this.steps = new WatchActivity(digitTypes.steps, j.Activity.Steps, j.StepProgress)
-        this.calories = new WatchActivity(digitTypes.calories, j.Activity.Calories, j.CaloriesProgress)
-        this.heartRate = new WatchActivity(digitTypes.heartRate, j.Activity.HeartRate, j.HearthProgress)
-        this.distance = new WatchActivity(digitTypes.distance, j.Activity.Distance, null)
-        this.pai = new WatchActivity(digitTypes.pai, j.Activity.PAI, j.PaiProgress)
-        this.standUp = new WatchActivity(digitTypes.standUp, j.Activity.StandUp, j.StandUpProgress)
+      if (j.Activity?.Steps || j.StepProgress) this.steps = new WatchActivity(digitTypes.steps, j.Activity?.Steps, j.StepProgress)
+      if (j.Activity?.Calories || j.CaloriesProgress)   this.calories = new WatchActivity(digitTypes.calories, j.Activity?.Calories, j.CaloriesProgress)
+      if (j.Activity?.HeartRate || j.HearthProgress) this.heartRate = new WatchActivity(digitTypes.heartRate, j.Activity?.HeartRate, j.HearthProgress)
+      if (j.Activity?.Distance) this.distance = new WatchActivity(digitTypes.distance, j.Activity?.Distance, null)
+      if (j.Activity?.PAI || j.PaiProgress) this.pai = new WatchActivity(digitTypes.pai, j.Activity?.PAI, j.PaiProgress)
+      if (j.Activity?.StandUp || j.StandUpProgress) this.standUp = new WatchActivity(digitTypes.standUp, j.Activity?.StandUp, j.StandUpProgress)
+      
+      if (j.ActivitySeparateDigits) {
+        this.stepsSeparatedDigits = new WatchFiveDigitsSeparated(j.ActivitySeparateDigits.Steps)
+        this.batterySeparatedDigits = new WatchThreeDigitsSeparated(j.ActivitySeparateDigits.Battery)
+        this.caloriesSeparatedDigits = new WatchFourDigitsSeparated(j.ActivitySeparateDigits.Calories)
+        this.heartRateSeparatedDigits = new WatchThreeDigitsSeparated(j.ActivitySeparateDigits.HeartRate)
       }
     }
   }
@@ -1011,8 +1042,6 @@ export class WatchFace {
   weatherext: WatchWeatherExt = new WatchWeatherExt()
   shortcuts: WatchShortcuts = new WatchShortcuts()
 
-  activitySeparatedDigits = new WatchActivitySeparatedDigits()
-
   constructor(j?: WatchJson) {
     if (!j) return;
 
@@ -1028,6 +1057,5 @@ export class WatchFace {
     this.weather = new WatchWeather(j)
     this.weatherext = new WatchWeatherExt(j)
     this.shortcuts = new WatchShortcuts(j.Shortcuts)
-    this.activitySeparatedDigits = new WatchActivitySeparatedDigits(j.ActivitySeparateDigits)
   }
 }

@@ -1,13 +1,14 @@
 import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import { BlockType, IRow } from "../../model/blocks.model";
-import { WatchActivity, WatchNumber, WatchProgress } from "../../model/watchFace.gts2mini.model";
+import { WatchActivity, WatchFiveDigitsSeparated, WatchFourDigitsSeparated, WatchNumber, WatchProgress, WatchThreeDigitsSeparated } from "../../model/watchFace.gts2mini.model";
 import { Image } from "../../model/json.gts2minit.model";
 import { Coordinates, ShortcutElement } from "../../model/json.gts2minit.model";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { ActivityType } from "../../model/types.gts2mini.model";
 import WatchNumberComponent from "./number.component";
 import ProgressComponent from "./progress.component";
+import SeparatedDigitsComponent from "./separatedDigits.component";
 
 interface IProps {
   activity: WatchActivity;
@@ -177,7 +178,7 @@ const ActivityComponent: FC<IProps> = ({
           a.collapsed = !a.collapsed;
           onUpdateActivity(a);
         }}>
-        <span className="input-group-text">{title}</span>
+        {title}
       </Card.Header>
       {!activity.collapsed ? (
         <Card.Body>

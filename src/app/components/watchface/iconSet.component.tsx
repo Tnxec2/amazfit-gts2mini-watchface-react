@@ -16,6 +16,7 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate }) => {
     {
       blocks: [
         { title: 'Image', type: BlockType.SelectFile, nvalue: iconSet.json.ImageIndex, onChange: onChangeImageIndex },
+        { title: 'Add coordinates', type: BlockType.Button, onClick: addCoordinates, className: 'btn-outline-success' },
       ]
     },
   ], [iconSet]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -31,8 +32,8 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate }) => {
     if (!ip.json.Coordinates) ip.json.Coordinates = []
     let lastCoords = ip.json.Coordinates[ip.json.Coordinates.length-1]
     ip.json.Coordinates.push( {
-      X: lastCoords.X,
-      Y: lastCoords.Y,
+      X: lastCoords ? lastCoords.X : 0,
+      Y: lastCoords ? lastCoords.Y : 0,
     })
     onUpdate(ip);
   }
@@ -55,7 +56,7 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate }) => {
   function onChangeY(index: number, val: number) {
     const ip = { ...iconSet };
     if (!ip.json.Coordinates) ip.json.Coordinates = []
-    ip.json.Coordinates[index].X = val
+    ip.json.Coordinates[index].Y = val
     onUpdate(ip);
   }
 
@@ -72,7 +73,7 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate }) => {
               checked={iconSet.enabled}
               onChange={() => {
                 const ic = { ...iconSet };
-                if (!ic.json.Coordinates) ic.json.Coordinates = []
+                if (!ic.json.Coordinates) ic.json.Coordinates = [ { X: 0, Y: 0}]
                 ic.enabled = !ic.enabled;
                 onUpdate(ic);
               }}
@@ -83,14 +84,14 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate }) => {
       {iconSet.enabled ? (
         <Card.Body>
           <BlocksArrayComponent ar={ar} />
-          <button className="btn btn-outline-success" type="button" onClick={addCoordinates}>Add</button>
           { iconSet.json.Coordinates.map((item, index) => 
             <BlocksArrayComponent ar={[
               {
                 blocks: [
+                  { title: (index + 1).toString(), type: BlockType.Empty },
                   { title: 'X', type: BlockType.Number, nvalue: item.X, onChange: (val) => onChangeX(index, val) },
                   { title: 'Y', type: BlockType.Number, nvalue: item.Y, onChange: (val) => onChangeY(index, val) },
-                  { title: 'Del', type: BlockType.Button, disabled: iconSet.json.Coordinates.length === 0, className: 'btn-outline-danger', onClick: (e) => deleteCoordinates(index) },
+                  { title: 'Del', type: BlockType.Button, disabled: iconSet.json.Coordinates.length <= 1, className: 'btn-outline-danger', onClick: (e) => deleteCoordinates(index) },
                 ]
               }
             ]} />

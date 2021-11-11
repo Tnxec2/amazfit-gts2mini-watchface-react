@@ -7,6 +7,7 @@ import DateAODComponent from "./dateAOD.component";
 import DateAODOneLineComponent from "./dateAODOneLine.component";
 import TimeAnalogAODComponent from "./timeAnalogAOD.component";
 import TimeDigitalAODComponent from "./timeDigitalAOD.component";
+import TimeDigitalAODSeparatedComponent from "./timeDigitalAODSeparated.component";
 
 const AodComponent: FC = () => {
 
@@ -21,6 +22,7 @@ const AodComponent: FC = () => {
   return (
     <>
       <TimeDigitalAODComponent />
+      <TimeDigitalAODSeparatedComponent />
       <TimeAnalogAODComponent />
       <DateAODComponent />
       <DateAODOneLineComponent />

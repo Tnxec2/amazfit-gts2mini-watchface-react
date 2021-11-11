@@ -32,7 +32,6 @@ const LeftSideComponent: FC = () => {
     setSelectedTab(tabid)
     if (tabid === 0) setPreviewScreenNormal(true)
     if (tabid === 1) setPreviewScreenNormal(false)
-    if (tabid === 2) setPreviewScreenNormal(true)
   }
   
   return (

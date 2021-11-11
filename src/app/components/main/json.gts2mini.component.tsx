@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { Activity, Alarm, AlwaysOnDisplay, Background, Battery, DateBlock, Progress, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather } from "../../model/json.gts2minit.model";
+import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, Background, Battery, DateBlock, Progress, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather } from "../../model/json.gts2minit.model";
 import { WatchActivityList, WatchAlarm, WatchAOD, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt } from "../../model/watchFace.gts2mini.model";
 import { Constant } from "../../shared/constant";
 import cl from './JsonComponent.module.css';
@@ -53,7 +53,7 @@ const JsonComponent: FC = () => {
             StandUpProgress: getProgress(w.activity.standUp.aProgress),
             UviProgress: getProgress(w.weatherext.uvProgress),
             AlwaysOnDisplay: getAod(w.aod),
-            ActivitySeparateDigits: w.activitySeparatedDigits.enabled ? w.activitySeparatedDigits.json : null,
+            ActivitySeparateDigits: getActivitySeparatedDigits(w.activity),
         }
         return JSON.stringify(j, (key, value) => {
             if (value !== null && value !== undefined) return value
@@ -424,5 +424,17 @@ function getBackground(b: WatchBackground): Background {
         PreviewChinese: b.previewc.enabled ? b.previewc.json : null,
         PreviewKorean: b.previewk.enabled ? b.previewk.json : null,
         FloatingLayer: b.floatingLayer.enabled ? b.floatingLayer.json : null,
+    }
+}
+
+function getActivitySeparatedDigits(list: WatchActivityList): ActivitySeparateDigits {
+    let enabled = list.stepsSeparatedDigits.enabled || list.caloriesSeparatedDigits.enabled
+    || list.heartRateSeparatedDigits.enabled || list.batterySeparatedDigits.enabled
+    if (!enabled) return null
+    else return {
+        Calories: list.caloriesSeparatedDigits.enabled ? list.caloriesSeparatedDigits.json : null,
+        Steps: list.stepsSeparatedDigits.enabled ? list.stepsSeparatedDigits.json : null,
+        Battery: list.batterySeparatedDigits.enabled ? list.batterySeparatedDigits.json : null,
+        HeartRate: list.heartRateSeparatedDigits.enabled ? list.heartRateSeparatedDigits.json : null
     }
 }

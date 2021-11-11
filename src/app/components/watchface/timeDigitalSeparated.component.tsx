@@ -6,7 +6,7 @@ import { BlockType } from "../../model/blocks.model";
 import { WatchImage, WatchTwoDigitsSeparated } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
 
-import TwoDigitsComponent from "./twodigits.component";
+import SeparatedDigitsComponent from "./separatedDigits.component";
 
 const TimeDigitalSeparatedComponent: FC = () => {
   const { watchface, setWatchface } =
@@ -80,21 +80,24 @@ const TimeDigitalSeparatedComponent: FC = () => {
           }
         ]} />
 
-        <TwoDigitsComponent
+        <SeparatedDigitsComponent
           title="Hours Digits"
           digit={watchface.time.timeDigitalSeparated.hours}
+          amountOfDigits={2}
           onUpdate={updateHours}
         />
         
-        <TwoDigitsComponent
+        <SeparatedDigitsComponent
           title="Minutes Digits"
           digit={watchface.time.timeDigitalSeparated.minutes}
+          amountOfDigits={2}
           onUpdate={updateMinutes}
         />
 
-        <TwoDigitsComponent
+        <SeparatedDigitsComponent
           title="Seconds Digits"
           digit={watchface.time.timeDigitalSeparated.seconds}
+          amountOfDigits={2}
           onUpdate={updateDigitSeconds}
         />
 
