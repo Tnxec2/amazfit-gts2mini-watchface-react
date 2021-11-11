@@ -12,16 +12,18 @@ export default function drawIconSet(
             
             if (value > total) value = total
             
-            let count = iconSet.Coordinates.length
-            
-            let index = Math.floor(value / (total / count))
+            let count = iconSet.Coordinates?.length
 
-            index = Math.max(index, 0)
-            index = Math.min(index, count-1)
+            if (count) {
+                let index = Math.floor(value / (total / count))
 
-            console.log('iconset', value, total, count, index, iconSet.ImageIndex + index, iconSet.Coordinates[index].X, iconSet.Coordinates[index].Y);
-            
-            const img = findImageById(iconSet.ImageIndex + index, images)
-            if (img) ctx.drawImage(img, iconSet.Coordinates[index].X, iconSet.Coordinates[index].Y);
+                index = Math.max(index, 0)
+                index = Math.min(index, count-1)
+
+                console.log('iconset', value, total, count, index, iconSet.ImageIndex + index, iconSet.Coordinates[index].X, iconSet.Coordinates[index].Y);
+                
+                const img = findImageById(iconSet.ImageIndex + index, images)
+                if (img) ctx.drawImage(img, iconSet.Coordinates[index].X, iconSet.Coordinates[index].Y);
+            }
         }
 }
