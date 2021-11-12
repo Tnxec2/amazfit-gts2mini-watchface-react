@@ -75,30 +75,40 @@ const SeparatedDigitsComponent: FC<IProps> = ({
             title='Ten Thousands'
             imageSet={new WatchImageSet(10, digit.json.TenThousands)}
             onUpdate={updateTenThousands}
+            disableCount={true}
+            disableCollapse={true}
           /> : '' }
           { amountOfDigits > 3 ?
           <ImageSetComponent 
             title='Thousands'
             imageSet={new WatchImageSet(10, digit.json.Thousands)}
             onUpdate={updateThousands}
+            disableCount={true}
+            disableCollapse={true}
           /> : '' }
           { amountOfDigits > 2 ?
           <ImageSetComponent 
             title='Hundreds'
             imageSet={new WatchImageSet(10, digit.json.Hundreds)}
             onUpdate={updateHundreds}
+            disableCount={true}
+            disableCollapse={true}
           /> : '' }
           { amountOfDigits > 1 ?
           <ImageSetComponent 
             title='Tens'
             imageSet={new WatchImageSet(10, digit.json.Tens)}
             onUpdate={updateTens}
+            disableCount={true}
+            disableCollapse={true}
           /> : '' }
           { amountOfDigits > 0 ?
           <ImageSetComponent 
             title='Ones'
             imageSet={new WatchImageSet(10, digit.json.Ones)}
             onUpdate={updateOnes}
+            disableCount={true}
+            disableCollapse={true}
           /> : '' }
         </Card.Body>
       ) : (

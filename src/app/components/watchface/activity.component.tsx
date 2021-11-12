@@ -1,14 +1,14 @@
 import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
-import { BlockType, IRow } from "../../model/blocks.model";
-import { WatchActivity, WatchFiveDigitsSeparated, WatchFourDigitsSeparated, WatchNumber, WatchProgress, WatchThreeDigitsSeparated } from "../../model/watchFace.gts2mini.model";
-import { Image } from "../../model/json.gts2minit.model";
-import { Coordinates, ShortcutElement } from "../../model/json.gts2minit.model";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
+import { BlockType, IRow } from "../../model/blocks.model";
+import { Coordinates } from "../../model/json.gts2minit.model";
 import { ActivityType } from "../../model/types.gts2mini.model";
+import { WatchActivity, WatchImage, WatchNumber, WatchProgress, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
+import ImageComponent from "./image.component";
 import WatchNumberComponent from "./number.component";
 import ProgressComponent from "./progress.component";
-import SeparatedDigitsComponent from "./separatedDigits.component";
+import WatchShortCutComponent from "./watchshortcut.component";
 
 interface IProps {
   activity: WatchActivity;
@@ -36,134 +36,91 @@ const ActivityComponent: FC<IProps> = ({
     {
       disabled: !( type === ActivityType.Steps || type === ActivityType.Calories ),
       blocks: [
-        { title: 'Prefix', type: BlockType.SelectFile, nvalue: activity.aElement.json.PrefixImageIndex, onChange: onChangePrefix },
+        { title: 'Prefix', type: BlockType.SelectFile, nvalue: activity.aElement.prefix, onChange: onChangePrefix },
       ]
     },
     {
       disabled: ( type === ActivityType.Distance  ),
       blocks: [
-        { title: 'NoData', type: BlockType.SelectFile, nvalue: activity.aElement.json.NoDataImageIndex, onChange: onChangeNoData },
+        { title: 'NoData', type: BlockType.SelectFile, nvalue: activity.aElement.noData, onChange: onChangeNoData },
       ]
     },
     {
       disabled: !( type === ActivityType.Steps || type === ActivityType.HeartRate ),
       blocks: [
-        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.json.SuffixImageIndex, onChange: onChangeSuffix },
+        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffix },
       ]
     },
     {
       disabled: !( type === ActivityType.Distance ),
       blocks: [
-        { title: 'DecimalPointer', type: BlockType.SelectFile, nvalue: activity.aElement.json.DecimalPointImageIndex, onChange: onChangeDecimalPointer },
-        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.json.SuffixImageIndex, onChange: onChangeSuffixKM },
-        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.json.SuffixImageCoordinates?.X ? activity.aElement.json.SuffixImageCoordinates.X : 0, onChange: onChangeSuffixCoordsX },
-        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.json.SuffixImageCoordinates?.Y ? activity.aElement.json.SuffixImageCoordinates.Y : 0, onChange: onChangeSuffixCoordsY },
-      ]
-    },
-    {
-      blocks: [
-        { title: 'Shorcut', type: BlockType.Empty },
-        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.TopLeftX ? activity.aElement.json.Shortcut.TopLeftX : 0, onChange: onChangeShortCutX },
-        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.TopLeftY ? activity.aElement.json.Shortcut.TopLeftY : 0, onChange: onChangeShortCutY },
-        { title: 'Width', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.BottomRightX && activity.aElement.json.Shortcut?.TopLeftX  ? activity.aElement.json.Shortcut?.BottomRightX - activity.aElement.json.Shortcut?.TopLeftX : 0, onChange: onChangeShortCutWidth },
-        { title: 'Height', type: BlockType.Number, nvalue: activity.aElement.json.Shortcut?.BottomRightY && activity.aElement.json.Shortcut?.TopLeftY  ? activity.aElement.json.Shortcut?.BottomRightY - activity.aElement.json.Shortcut?.TopLeftY : 0, onChange: onChangeShortCutHeight },
-      ]
-    },
-    {
-      blocks: [
-        { title: 'Icon', type: BlockType.SelectFile, nvalue: activity.aElement.json.Icon?.ImageIndex, onChange: onChangeIcon },
-        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.json.Icon?.X ? activity.aElement.json.Icon.X : 0, onChange: onChangeIconX },
-        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.json.Icon?.Y ? activity.aElement.json.Icon.Y : 0, onChange: onChangeIconY },
+        { title: 'DecimalPointer', type: BlockType.SelectFile, nvalue: activity.aElement.decimalPoint, onChange: onChangeDecimalPointer },
+        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffixKM },
+        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.X ? activity.aElement.suffixImageCoordinates.X : 0, onChange: onChangeSuffixCoordsX },
+        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.Y ? activity.aElement.suffixImageCoordinates.Y : 0, onChange: onChangeSuffixCoordsY },
       ]
     }
   ], [activity]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function onChangePrefix(val: number) {
     const a = {...activity};
-    a.aElement.json.PrefixImageIndex = val
+    a.aElement.prefix = val
     onUpdateActivity(a)
   }
   function onChangeNoData(val: number) {
     const a = {...activity};
-    a.aElement.json.NoDataImageIndex = val
+    a.aElement.noData = val
     onUpdateActivity(a)
   }
   function onChangeSuffix(val: number) {
     const a = {...activity};
-    a.aElement.json.SuffixImageIndex = val
+    a.aElement.suffix = val
     onUpdateActivity(a)
   }
   function onChangeDecimalPointer(val: number) {
     const a = {...activity};
-    a.aElement.json.DecimalPointImageIndex = val
+    a.aElement.decimalPoint = val
     onUpdateActivity(a)
   }
   function onChangeSuffixKM(val: number) {
     const a = {...activity};
-    a.aElement.json.SuffixKMImageIndex = val
+    a.aElement.suffixKM = val
     onUpdateActivity(a)
   }
   function onChangeSuffixCoordsX(val: number) {
     const a = {...activity};
-    if (!a.aElement.json.SuffixImageCoordinates) a.aElement.json.SuffixImageCoordinates = new Coordinates()
-    a.aElement.json.SuffixImageCoordinates.X = val
+    if (!a.aElement.suffixImageCoordinates) a.aElement.suffixImageCoordinates = new Coordinates()
+    a.aElement.suffixImageCoordinates.X = val
     onUpdateActivity(a)
   }
   function onChangeSuffixCoordsY(val: number) {
     const a = {...activity};
-    if (!a.aElement.json.SuffixImageCoordinates) a.aElement.json.SuffixImageCoordinates = new Coordinates()
-    a.aElement.json.SuffixImageCoordinates.X = val
+    if (!a.aElement.suffixImageCoordinates) a.aElement.suffixImageCoordinates = new Coordinates()
+    a.aElement.suffixImageCoordinates.X = val
     onUpdateActivity(a)
   }
-  function onChangeIcon(val: number) {
+
+  function updateIcon(val: WatchImage) {
     const a = {...activity};
-    if ( !a.aElement.json.Icon) a.aElement.json.Icon = new Image()
-    a.aElement.json.Icon.ImageIndex = val
+    a.aElement.icon = val
+    a.aElement.enabled = a.aElement.icon.enabled || a.aElement.imageNumber.enabled || a.aElement.shortcut.enabled
     onUpdateActivity(a)
   }
-  function onChangeIconX(val: number) {
+
+  function updateShortcut(d: WatchShortcutElement) {
     const a = {...activity};
-    if ( !a.aElement.json.Icon) a.aElement.json.Icon = new Image()
-    a.aElement.json.Icon.X = val
-    onUpdateActivity(a)
-  }
-  function onChangeIconY(val: number) {
-    const a = {...activity};
-    if ( !a.aElement.json.Icon) a.aElement.json.Icon = new Image()
-    a.aElement.json.Icon.Y = val
-    onUpdateActivity(a)
-  }
-  function onChangeShortCutX(val: number) {
-    const a = {...activity};
-    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
-    a.aElement.json.Shortcut.TopLeftX = val
-    onUpdateActivity(a)
-  }
-  function onChangeShortCutY(val: number) {
-    const a = {...activity};
-    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
-    a.aElement.json.Shortcut.TopLeftY = val
-    onUpdateActivity(a)
-  }
-  function onChangeShortCutWidth(val: number) {
-    const a = {...activity};
-    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
-    a.aElement.json.Shortcut.BottomRightX = a.aElement.json.Shortcut.TopLeftX + val
-    onUpdateActivity(a)
-  }
-  function onChangeShortCutHeight(val: number) {
-    const a = {...activity};
-    if ( !a.aElement.json.Shortcut) a.aElement.json.Shortcut = new ShortcutElement()
-    a.aElement.json.Shortcut.BottomRightY = a.aElement.json.Shortcut.TopLeftY + val
+    a.aElement.shortcut = d
+    a.aElement.enabled = a.aElement.icon.enabled || a.aElement.imageNumber.enabled || a.aElement.shortcut.enabled
     onUpdateActivity(a)
   }
 
   function udpateDigit(d: WatchNumber) {
     const a = {...activity};
-    a.aElement.enabled = d.enabled
-    a.aElement.json.ImageNumber = d.json
+    a.aElement.imageNumber = d
+    a.aElement.enabled = a.aElement.icon.enabled || a.aElement.imageNumber.enabled || a.aElement.shortcut.enabled
     onUpdateActivity(a)
   }
+
   function updateProgress(d: WatchProgress) {
     const a = {...activity};
     a.aProgress = d
@@ -185,15 +142,23 @@ const ActivityComponent: FC<IProps> = ({
         <Card.Body>
           <WatchNumberComponent
             title='Number'
-            digit={
-              new WatchNumber(activity.aElement.json.ImageNumber, activity.con, activity.aElement.enabled)
-            }
+            digit={activity.aElement.imageNumber}
             onUpdate={udpateDigit}
             followDisabled={true}
             showDelimiter={false}
             paddingDisabled={true}
           />
           <BlocksArrayComponent ar={ar} />
+          <ImageComponent
+            title='Icon'
+            image={activity.aElement.icon}
+            onUpdate={updateIcon}
+          />
+          <WatchShortCutComponent
+            title='Shortcut'
+            shortcut={activity.aElement.shortcut}
+            onUpdate={updateShortcut}
+          />
           <ProgressComponent
             progress={activity.aProgress}
             title='Progress'

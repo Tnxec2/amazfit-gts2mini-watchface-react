@@ -8,7 +8,7 @@ export default function drawImageSet(
     imageSet: ImageSet,
     value: number,
     total: number) {
-        if (imageSet.ImageIndex) {
+        if (imageSet?.ImageIndex) {
             let x = imageSet.X ? imageSet.X : 0
             let y = imageSet.Y ? imageSet.Y : 0
 

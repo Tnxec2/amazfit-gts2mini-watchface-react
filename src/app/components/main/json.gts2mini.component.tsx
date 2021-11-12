@@ -296,7 +296,18 @@ function getBattery(battery: WatchBattery): Battery {
     let enabled = battery.text.enabled || battery.imageProgress.enabled || battery.iconSetProgress.enabled || battery.scale.enabled || battery.icon.enabled
     if (!enabled ) return null
     return {
-        BatteryText: battery.text.enabled ? battery.text.json : null,
+        BatteryText: battery.text.enabled ? {
+            ImageNumber: battery.text.imageNumber.enabled ? battery.text.imageNumber.json : null,
+            PrefixImageIndex: battery.text.prefix,
+            NoDataImageIndex: battery.text.noData,
+            Icon: battery.text.icon.enabled ? battery.text.icon.json : null,
+            Shortcut: battery.text.shortcut.enabled ? battery.text.shortcut.json : null,
+            SuffixImageIndex: battery.text.suffix,
+            SuffixImageCoordinates: battery.text.suffixImageCoordinates,
+            DecimalPointImageIndex: null,
+            SuffixKMImageIndex: null,
+            SuffixMIImageIndex: null
+        } : null,
         ImageProgress: battery.imageProgress.enabled ? battery.imageProgress.json : null,
         IconSetProgress: battery.iconSetProgress.enabled ? battery.iconSetProgress.json : null,
         Scale: battery.scale.enabled ? {
@@ -313,13 +324,79 @@ function getActivity(activity: WatchActivityList): Activity {
 
    if (!enabled) return null;
    else return {
-    Steps: activity.steps.aElement.enabled ? activity.steps.aElement.json : null,
-    Calories: activity.calories.aElement.enabled ? activity.calories.aElement.json : null,
-    HeartRate: activity.heartRate.aElement.enabled ? activity.heartRate.aElement.json : null,
-    Distance: activity.distance.aElement.enabled ? activity.distance.aElement.json : null,
-    PAI: activity.pai.aElement.enabled ? activity.pai.aElement.json : null,
+    Steps: activity.steps.aElement.enabled ? {
+        ImageNumber: activity.steps.aElement.imageNumber.enabled ? activity.steps.aElement.imageNumber.json : null,
+        PrefixImageIndex: activity.steps.aElement.prefix,
+        NoDataImageIndex: activity.steps.aElement.noData,
+        Icon: activity.steps.aElement.icon.enabled ? activity.steps.aElement.icon.json : null,
+        Shortcut: activity.steps.aElement.shortcut.enabled ? activity.steps.aElement.shortcut.json : null,
+        SuffixImageIndex: activity.steps.aElement.suffix,
+        SuffixImageCoordinates: activity.steps.aElement.suffixImageCoordinates,
+        DecimalPointImageIndex: null,
+        SuffixKMImageIndex: null,
+        SuffixMIImageIndex: null
+    } : null,
+    Calories: activity.calories.aElement.enabled ? {
+        ImageNumber: activity.calories.aElement.imageNumber.enabled ? activity.calories.aElement.imageNumber.json : null,
+        PrefixImageIndex: activity.calories.aElement.prefix,
+        NoDataImageIndex: activity.calories.aElement.noData,
+        Icon: activity.calories.aElement.icon.enabled ? activity.calories.aElement.icon.json : null,
+        Shortcut: activity.calories.aElement.shortcut.enabled ? activity.calories.aElement.shortcut.json : null,
+        SuffixImageIndex: activity.calories.aElement.suffix,
+        SuffixImageCoordinates: activity.calories.aElement.suffixImageCoordinates,
+        DecimalPointImageIndex: null,
+        SuffixKMImageIndex: null,
+        SuffixMIImageIndex: null
+    } : null,
+    HeartRate: activity.heartRate.aElement.enabled ? {
+        ImageNumber: activity.heartRate.aElement.imageNumber.enabled ? activity.heartRate.aElement.imageNumber.json : null,
+        PrefixImageIndex: activity.heartRate.aElement.prefix,
+        NoDataImageIndex: activity.heartRate.aElement.noData,
+        Icon: activity.heartRate.aElement.icon.enabled ? activity.heartRate.aElement.icon.json : null,
+        Shortcut: activity.heartRate.aElement.shortcut.enabled ? activity.heartRate.aElement.shortcut.json : null,
+        SuffixImageIndex: activity.heartRate.aElement.suffix,
+        SuffixImageCoordinates: activity.heartRate.aElement.suffixImageCoordinates,
+        DecimalPointImageIndex: null,
+        SuffixKMImageIndex: null,
+        SuffixMIImageIndex: null
+    } : null,
+    Distance: activity.distance.aElement.enabled ? {
+        ImageNumber: activity.distance.aElement.imageNumber.enabled ? activity.distance.aElement.imageNumber.json : null,
+        PrefixImageIndex: activity.distance.aElement.prefix,
+        NoDataImageIndex: activity.distance.aElement.noData,
+        Icon: activity.distance.aElement.icon.enabled ? activity.distance.aElement.icon.json : null,
+        Shortcut: activity.distance.aElement.shortcut.enabled ? activity.distance.aElement.shortcut.json : null,
+        SuffixImageIndex: activity.distance.aElement.suffix,
+        SuffixImageCoordinates: null,
+        DecimalPointImageIndex: activity.distance.aElement.decimalPoint,
+        SuffixKMImageIndex: activity.distance.aElement.suffixKM,
+        SuffixMIImageIndex: activity.distance.aElement.suffixMI
+    } : null,
+    PAI: activity.pai.aElement.enabled ? {
+        ImageNumber: activity.pai.aElement.imageNumber.enabled ? activity.pai.aElement.imageNumber.json : null,
+        PrefixImageIndex: activity.pai.aElement.prefix,
+        NoDataImageIndex: activity.pai.aElement.noData,
+        Icon: activity.pai.aElement.icon.enabled ? activity.pai.aElement.icon.json : null,
+        Shortcut: activity.pai.aElement.shortcut.enabled ? activity.pai.aElement.shortcut.json : null,
+        SuffixImageIndex: activity.pai.aElement.suffix,
+        SuffixImageCoordinates: activity.pai.aElement.suffixImageCoordinates,
+        DecimalPointImageIndex: null,
+        SuffixKMImageIndex: null,
+        SuffixMIImageIndex: null
+    } : null,
     UnknownLongValue7: 0,
-    StandUp: activity.standUp.aElement.enabled ? activity.standUp.aElement.json : null,
+    StandUp: activity.standUp.aElement.enabled ? {
+        ImageNumber: activity.standUp.aElement.imageNumber.enabled ? activity.standUp.aElement.imageNumber.json : null,
+        PrefixImageIndex: activity.standUp.aElement.prefix,
+        NoDataImageIndex: activity.standUp.aElement.noData,
+        Icon: activity.standUp.aElement.icon.enabled ? activity.standUp.aElement.icon.json : null,
+        Shortcut: activity.standUp.aElement.shortcut.enabled ? activity.standUp.aElement.shortcut.json : null,
+        SuffixImageIndex: activity.standUp.aElement.suffix,
+        SuffixImageCoordinates: activity.standUp.aElement.suffixImageCoordinates,
+        DecimalPointImageIndex: null,
+        SuffixKMImageIndex: null,
+        SuffixMIImageIndex: null
+    } : null,
    }
 }
 
@@ -400,7 +477,18 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
             WeekdayChinese: null,
             WeekdayKorean: null
         } : null,
-        Steps: aod.steps.aElement.enabled ? aod.steps.aElement.json : null,
+        Steps: aod.steps.aElement.enabled ? {
+            ImageNumber: aod.steps.aElement.imageNumber.enabled ? aod.steps.aElement.imageNumber.json : null,
+            PrefixImageIndex: aod.steps.aElement.prefix,
+            NoDataImageIndex: aod.steps.aElement.noData,
+            Icon: aod.steps.aElement.icon.enabled ? aod.steps.aElement.icon.json : null,
+            Shortcut: aod.steps.aElement.shortcut.enabled ? aod.steps.aElement.shortcut.json : null,
+            SuffixImageIndex: aod.steps.aElement.suffix,
+            SuffixImageCoordinates: aod.steps.aElement.suffixImageCoordinates,
+            DecimalPointImageIndex: null,
+            SuffixKMImageIndex: null,
+            SuffixMIImageIndex: null
+        } : null,
         Date: enabledDate ? {
             Month: aod.date.month.enabled ? aod.date.month.json : null,
             Day: aod.date.day.enabled ? aod.date.day.json : null,

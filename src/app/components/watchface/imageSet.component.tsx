@@ -8,15 +8,17 @@ interface IProps {
   title: string;
   imageSet: WatchImageSet;
   onUpdate(imageSet: WatchImageSet): void;
+  disableCount?: boolean;
+  disableCollapse?: boolean
 }
 
-const ImageSetComponent: FC<IProps> = ({ title, imageSet, onUpdate }) => {
+const ImageSetComponent: FC<IProps> = ({ title, imageSet, onUpdate, disableCount, disableCollapse }) => {
 
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
         { title: 'Image', type: BlockType.SelectFile, nvalue: imageSet.json.ImageIndex, onChange: onChangeImageIndex },
-        { title: 'Count', type: BlockType.Number, nvalue: imageSet.json.ImagesCount, onChange: onChangeCount },
+        { title: 'Count', type: BlockType.Number, nvalue: imageSet.json.ImagesCount, onChange: onChangeCount, disabled: disableCount },
       ]
     },
     {
@@ -55,6 +57,7 @@ const ImageSetComponent: FC<IProps> = ({ title, imageSet, onUpdate }) => {
       <Card.Header>
         <div className="input-group input-group-sm">
           <span className="input-group-text">{title}</span>
+          { !disableCollapse ? 
           <div className="input-group-text">
             <input
               className="form-check-input mt-0"
@@ -66,10 +69,10 @@ const ImageSetComponent: FC<IProps> = ({ title, imageSet, onUpdate }) => {
                 onUpdate(ic);
               }}
             />
-          </div>
+          </div> : '' }
         </div>
       </Card.Header>
-      {imageSet.enabled ? (
+      {imageSet.enabled || disableCollapse? (
         <Card.Body>
           <BlocksArrayComponent ar={ar} />
         </Card.Body>

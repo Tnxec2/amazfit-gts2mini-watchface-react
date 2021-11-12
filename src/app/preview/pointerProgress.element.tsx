@@ -9,7 +9,7 @@ export default function drawPointerProgress(
     value: number, 
     total: number ) {
         if (total === null) return
-        if (pointer.PointerImageIndex >= 0) {
+        if (pointer?.PointerImageIndex >= 0) {
             let x = 0
             let y = 0
             x = pointer.CenterX ? pointer.CenterX : 0

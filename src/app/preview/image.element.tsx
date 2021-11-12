@@ -6,7 +6,7 @@ export default function drawImage(
     ctx: CanvasRenderingContext2D,
     images: IImage[], 
     image: Image) {
-        if (image.ImageIndex) {
+        if (image?.ImageIndex) {
             let x = image.X ? image.X : 0
             let y = image.Y ? image.Y : 0
             const img = findImageById(image.ImageIndex, images)

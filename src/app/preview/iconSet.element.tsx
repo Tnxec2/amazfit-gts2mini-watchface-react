@@ -8,7 +8,7 @@ export default function drawIconSet(
     iconSet: IconSet,
     value: number,
     total: number) {
-        if (iconSet.ImageIndex && iconSet.Coordinates) {
+        if (iconSet?.ImageIndex && iconSet?.Coordinates) {
             
             if (value > total) value = total
             

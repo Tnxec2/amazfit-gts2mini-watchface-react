@@ -1,5 +1,5 @@
 import { IImage } from "../model/image.model";
-import { WatchBattery, WatchNumber } from "../model/watchFace.gts2mini.model";
+import { WatchBattery } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
 import { findImageById } from "../shared/helper";
 import drawDigitImage from "./digitImage.element";
@@ -16,8 +16,8 @@ export function drawBattery(ctx: CanvasRenderingContext2D,
     ) {
     if (!battery) return;
     if (battery.text.enabled) {
-        drawDigitImage(ctx, images, new WatchNumber(battery.text.json.ImageNumber), watchState.battery, null, drawBorder, false, null,
-            battery.text.json.PrefixImageIndex, null, battery.text.json.SuffixImageIndex)
+        drawDigitImage(ctx, images, battery.text.imageNumber, watchState.battery, null, drawBorder, false, null,
+            battery.text.prefix, null, battery.text.suffix) 
     }
     if (battery.icon.enabled) {
         if (battery.icon.json.ImageIndex) {
