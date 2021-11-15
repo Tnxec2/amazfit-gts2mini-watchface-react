@@ -443,7 +443,7 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
     let enabledTimeDigital = aod.time.timeDigital.hours.enabled || aod.time.timeDigital.minutes.enabled
     let enabledTimeSeparated = aod.time.timeSeparateDigits.hours.enabled || aod.time.timeSeparateDigits.minutes.enabled
     let enabledTimeExt = enabledAmPm || enabledTimeAnalog || enabledTimeDigital || enabledTimeSeparated
-    let enabledDate = aod.date.day.enabled || aod.date.month.enabled || enabledTimeExt
+    let enabledDate = aod.date.day.enabled || aod.date.month.enabled
     let enabled = enabledTimeExt || enabledDate || aod.steps.aElement.enabled || aod.weekday.enabled
     if (!enabled) return null
     else return  {
