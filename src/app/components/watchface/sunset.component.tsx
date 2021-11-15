@@ -52,35 +52,17 @@ const SunsetComponent: FC = () => {
           setWatchface(w);
         }}
       >
-        Sunset / Sunrise
+        Sunrise / Sunset
       </Card.Header>
       <Card.Body className={`${watchface.time.sunset.collapsed ? "collapse" : ""}`}>
-        <WatchNumberComponent
-          title="Sunset OneLine"
-          digit={watchface.time.sunset.sunsetOneLine}
-          onUpdate={updateSunsetOneLine}
-          followDisabled={true}
-          showDelimiter={true}
-          showPrefix={true}
-        />
-        <ImageComponent 
-          title='Sunset icon'
-          image={watchface.time.sunset.sunsetIcon}
-          onUpdate={updateSunsetIcon}
-        />
-        <WatchShortCutComponent 
-          title='Sunset shortcut'
-          shortcut={watchface.time.sunset.sunsetShortcut}
-          onUpdate={updateSunsetShortcut}
-        />
-
-        <WatchNumberComponent
+      <WatchNumberComponent
           title="Sunrise OneLine"
           digit={watchface.time.sunset.sunriseOneLine}
           onUpdate={updateSunRiseOneLine}
           followDisabled={true}
           showDelimiter={true}
           showPrefix={true}
+          paddingDisabled={true}
         />
         <ImageComponent 
           title='Sunrise icon'
@@ -91,6 +73,26 @@ const SunsetComponent: FC = () => {
           title='Sunrise shortcut'
           shortcut={watchface.time.sunset.sunsetShortcut}
           onUpdate={updateSunRiseShortcut}
+        />
+
+        <WatchNumberComponent
+          title="Sunset OneLine"
+          digit={watchface.time.sunset.sunsetOneLine}
+          onUpdate={updateSunsetOneLine}
+          followDisabled={true}
+          showDelimiter={true}
+          showPrefix={true}
+          paddingDisabled={true}
+        />
+        <ImageComponent 
+          title='Sunset icon'
+          image={watchface.time.sunset.sunsetIcon}
+          onUpdate={updateSunsetIcon}
+        />
+        <WatchShortCutComponent 
+          title='Sunset shortcut'
+          shortcut={watchface.time.sunset.sunsetShortcut}
+          onUpdate={updateSunsetShortcut}
         />
       </Card.Body>
     </Card>

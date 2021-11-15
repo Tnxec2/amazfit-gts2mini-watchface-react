@@ -16,15 +16,15 @@ export default function drawSunset(
 
     if (sunset.sunsetOneLine.enabled) {
         let ar = [
-            sunset.sunsetOneLine.paddingZero ? watchState.sunsetHours.toString().padStart(2, '0') : watchState.sunsetHours.toString(),
-            sunset.sunsetOneLine.paddingZero ? watchState.sunsetMinutes.toString().padStart(2, '0') : watchState.sunsetMinutes.toString(),
+            watchState.sunsetHours.toString().padStart(2, '0'),
+            watchState.sunsetMinutes.toString().padStart(2, '0'),
         ]
         drawDigitsOneLine(ctx, images, sunset.sunsetOneLine, ar, sunset.sunsetOneLine.delimiter, digitBorder, null, sunset.sunsetOneLine.prefix, null)
     }
     if (sunset.sunriseOneLine.enabled) {
         let ar = [
-            sunset.sunriseOneLine.paddingZero ? watchState.sunriseHours.toString().padStart(2, '0') : watchState.sunriseHours.toString(),
-            sunset.sunriseOneLine.paddingZero ? watchState.sunriseMinutes.toString().padStart(2, '0') : watchState.sunriseMinutes.toString(),
+            watchState.sunriseHours.toString().padStart(2, '0'),
+            watchState.sunriseMinutes.toString().padStart(2, '0'),
         ]
         drawDigitsOneLine(ctx, images, sunset.sunriseOneLine, ar, sunset.sunriseOneLine.delimiter, digitBorder, null, sunset.sunriseOneLine.prefix, null)
     }
@@ -36,6 +36,3 @@ export default function drawSunset(
     if ( sunset.sunriseShortcut.enabled)
         drawShortcutElement(ctx, sunset.sunriseShortcut.json, shortcutBorder)
 }
-
-
-

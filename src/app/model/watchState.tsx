@@ -11,10 +11,10 @@ export class WatchState {
   alarmHours = this._date.getHours();
   alarmMinutes = this._date.getMinutes();
 
-  sunsetHours = 5;
-  sunsetMinutes = 38;
-  sunriseHours = 17;
-  sunriseMinutes = 42;
+  sunsetHours = 17;
+  sunsetMinutes = 42;
+  sunriseHours = 5;
+  sunriseMinutes = 38;
 
   seconds = this._date.getSeconds();
   weekday = this._date.getDay() > 0 ? this._date.getDay() - 1 : 6;
@@ -48,9 +48,6 @@ export class WatchState {
   humidityGoal = 100
   humidity = Math.round(Math.random() * this.humidityGoal)
   
-  sunrise = 536
-  sunset = 1742
-
   windForce = Math.round(Math.random() * 12)
 
   airPressureGoal = 100

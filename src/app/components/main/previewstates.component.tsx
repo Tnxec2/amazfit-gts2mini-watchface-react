@@ -122,6 +122,63 @@ const PreviewStatesComponent: FC = () => {
         </div>
 
         <div className="input-group input-group-sm mb-1">
+          <span className="input-group-text">Sunrise</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="23"
+            value={watchState.sunriseHours}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.sunriseHours = !isNaN(v) ? Math.min(v, 23) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="59"
+            value={watchState.sunriseMinutes}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.sunriseMinutes = !isNaN(v) ? Math.min(v, 23) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <span className="input-group-text">Sunset</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="23"
+            value={watchState.sunsetHours}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.sunsetHours = !isNaN(v) ? Math.min(v, 23) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="59"
+            value={watchState.sunsetMinutes}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.sunsetMinutes = !isNaN(v) ? Math.min(v, 23) : 0;
+              setWatchState(ws);
+            }}
+          />
+        </div>
+
+        <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Battery</span>
           <input
             type="number"
