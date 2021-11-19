@@ -47,7 +47,7 @@ const DateAODOneLineComponent: FC = () => {
           ]} />
           <WatchNumberComponent
             title="MonthAndDay"
-            digit={watchface.aod.dateOneLine.monthAndDay}
+            digit={{...watchface.aod.dateOneLine.monthAndDay}}
             onUpdate={updateMonthAndDay}
             followDisabled={true}
             showDelimiter={false}

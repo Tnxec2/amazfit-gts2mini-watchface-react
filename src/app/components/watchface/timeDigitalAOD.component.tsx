@@ -33,13 +33,13 @@ const TimeDigitalAODComponent: FC = () => {
       <Card.Body className={`${watchface.aod.time.timeDigital.collapsed ? "collapse" : ""}`}>
         <WatchNumberComponent
           title="Hours"
-          digit={watchface.aod.time.timeDigital.hours}
+          digit={{...watchface.aod.time.timeDigital.hours}}
           onUpdate={updateHoursDigit}
           followDisabled={true}
         />
         <WatchNumberComponent
           title="Minutes"
-          digit={watchface.aod.time.timeDigital.minutes}
+          digit={{...watchface.aod.time.timeDigital.minutes}}
           onUpdate={updateMinutesDigit}
         />
       </Card.Body>

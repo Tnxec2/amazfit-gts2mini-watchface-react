@@ -48,14 +48,14 @@ const TimeAnalogAODComponent: FC = () => {
       <Card.Body className={`${watchface.aod.time.timeAnalog.collapsed ? "collapse" : ""}`}>
         <ClockHandComponent
           title="Hours"
-          clockHand={watchface.aod.time.timeAnalog.hours}
+          clockHand={{...watchface.aod.time.timeAnalog.hours}}
           showAngle={false}
           onUpdate={updateHours}
         />
 
         <ClockHandComponent
           title="Minutes"
-          clockHand={watchface.aod.time.timeAnalog.minutes}
+          clockHand={{...watchface.aod.time.timeAnalog.minutes}}
           onUpdate={updateMinutes}
           showAngle={false}
         />

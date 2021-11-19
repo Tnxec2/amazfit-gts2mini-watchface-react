@@ -54,7 +54,7 @@ const HumidityComponent: FC = () => {
 
           <WatchNumberComponent
             title='Text'
-            digit={watchface.weatherext.humidityNumber}
+            digit={{...watchface.weatherext.humidityNumber}}
             onUpdate={onChangeNumber}
             followDisabled={true}
           />
@@ -69,12 +69,12 @@ const HumidityComponent: FC = () => {
         }
           <ImageComponent
             title='Icon'
-            image={watchface.weatherext.humidityIcon}
+            image={{...watchface.weatherext.humidityIcon}}
             onUpdate={onChangeIcon}
             />
           <ImageSetComponent
             title='Image progress'
-            imageSet={watchface.weatherext.humidityProgress.imageProgress}
+            imageSet={{...watchface.weatherext.humidityProgress.imageProgress}}
             onUpdate={onChangeImageProgress}
             />
         </Card.Body>

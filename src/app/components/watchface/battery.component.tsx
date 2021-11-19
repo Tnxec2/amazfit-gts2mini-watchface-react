@@ -95,7 +95,7 @@ const BatteryComponent: FC = () => {
         <Card.Body>
           <WatchNumberComponent
             title='Number'
-            digit={watchface.battery.text.imageNumber}
+            digit={{...watchface.battery.text.imageNumber}}
             onUpdate={udpateDigit}
             followDisabled={true}
             showDataType={false}
@@ -105,27 +105,27 @@ const BatteryComponent: FC = () => {
           <BlocksArrayComponent ar={ar} />
           <ImageComponent
             title='Icon'
-            image={watchface.battery.icon}
+            image={{...watchface.battery.icon}}
             onUpdate={updateIcon}
           />
           <WatchShortCutComponent
             title='Shortcut'
-            shortcut={watchface.battery.text.shortcut}
+            shortcut={{...watchface.battery.text.shortcut}}
             onUpdate={updateShortcut}
           />
           <ImageSetComponent 
             title='Image set'
-            imageSet={watchface.battery.imageProgress}
+            imageSet={{...watchface.battery.imageProgress}}
             onUpdate={updateImageSet}
           />
           <IconSetComponent
             title='Icon set'
-            iconSet={watchface.battery.iconSetProgress}
+            iconSet={{...watchface.battery.iconSetProgress}}
             onUpdate={updateIconSet}
             />
           <PointerProgressComponent
             title='Pointer scale'
-            scale={watchface.battery.scale}
+            scale={{...watchface.battery.scale}}
             onUpdate={updateScale}
             />
         </Card.Body>

@@ -38,13 +38,13 @@ const AirQualityComponent: FC = () => {
 
           <WatchNumberComponent
             title='Text'
-            digit={watchface.weatherext.airQualityNumber}
+            digit={{...watchface.weatherext.airQualityNumber}}
             onUpdate={onChangeNumber}
             followDisabled={true}
           />
           <ImageComponent
             title='Icon'
-            image={watchface.weatherext.airQualityIcon}
+            image={{...watchface.weatherext.airQualityIcon}}
             onUpdate={onChangeIcon}
             />
         </Card.Body>

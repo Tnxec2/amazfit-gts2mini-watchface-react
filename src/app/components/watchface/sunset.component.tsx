@@ -57,7 +57,7 @@ const SunsetComponent: FC = () => {
       <Card.Body className={`${watchface.time.sunset.collapsed ? "collapse" : ""}`}>
       <WatchNumberComponent
           title="Sunrise OneLine"
-          digit={watchface.time.sunset.sunriseOneLine}
+          digit={{...watchface.time.sunset.sunriseOneLine}}
           onUpdate={updateSunRiseOneLine}
           followDisabled={true}
           showDelimiter={true}
@@ -66,18 +66,18 @@ const SunsetComponent: FC = () => {
         />
         <ImageComponent 
           title='Sunrise icon'
-          image={watchface.time.sunset.sunsetIcon}
+          image={{...watchface.time.sunset.sunsetIcon}}
           onUpdate={updateSunRiseIcon}
         />
         <WatchShortCutComponent 
           title='Sunrise shortcut'
-          shortcut={watchface.time.sunset.sunsetShortcut}
+          shortcut={{...watchface.time.sunset.sunsetShortcut}}
           onUpdate={updateSunRiseShortcut}
         />
 
         <WatchNumberComponent
           title="Sunset OneLine"
-          digit={watchface.time.sunset.sunsetOneLine}
+          digit={{...watchface.time.sunset.sunsetOneLine}}
           onUpdate={updateSunsetOneLine}
           followDisabled={true}
           showDelimiter={true}
@@ -86,12 +86,12 @@ const SunsetComponent: FC = () => {
         />
         <ImageComponent 
           title='Sunset icon'
-          image={watchface.time.sunset.sunsetIcon}
+          image={{...watchface.time.sunset.sunsetIcon}}
           onUpdate={updateSunsetIcon}
         />
         <WatchShortCutComponent 
           title='Sunset shortcut'
-          shortcut={watchface.time.sunset.sunsetShortcut}
+          shortcut={{...watchface.time.sunset.sunsetShortcut}}
           onUpdate={updateSunsetShortcut}
         />
       </Card.Body>

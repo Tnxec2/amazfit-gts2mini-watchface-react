@@ -21,7 +21,7 @@ const TimeAnalogComponent: FC = () => {
       <Card.Body className={`${watchface.time.timeAnalog.collapsed ? "collapse" : ""}`}>
         <ClockHandComponent
           title="Hours"
-          clockHand={watchface.time.timeAnalog.hours}
+          clockHand={{...watchface.time.timeAnalog.hours}}
           showAngle={false}
           onUpdate={(ch) => {
             const w = { ...watchface };
@@ -32,7 +32,7 @@ const TimeAnalogComponent: FC = () => {
 
         <ClockHandComponent
           title="Minutes"
-          clockHand={watchface.time.timeAnalog.minutes}
+          clockHand={{...watchface.time.timeAnalog.minutes}}
           onUpdate={(ch) => {
             const d = { ...watchface };
             d.time.timeAnalog.minutes = ch;
@@ -43,7 +43,7 @@ const TimeAnalogComponent: FC = () => {
 
         <ClockHandComponent
           title="Seconds"
-          clockHand={watchface.time.timeAnalog.seconds}
+          clockHand={{...watchface.time.timeAnalog.seconds}}
           onUpdate={(ch) => {
             const w = { ...watchface };
             w.time.timeAnalog.seconds = ch;

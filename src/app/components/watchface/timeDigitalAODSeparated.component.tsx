@@ -61,21 +61,21 @@ const TimeDigitalAODSeparatedComponent: FC = () => {
 
         <SeparatedDigitsComponent
           title="Hours Digits"
-          digit={watchface.aod.time.timeSeparateDigits.hours}
+          digit={{...watchface.aod.time.timeSeparateDigits.hours}}
           amountOfDigits={2}
           onUpdate={updateHours}
         />
         
         <SeparatedDigitsComponent
           title="Minutes Digits"
-          digit={watchface.aod.time.timeSeparateDigits.minutes}
+          digit={{...watchface.aod.time.timeSeparateDigits.minutes}}
           amountOfDigits={2}
           onUpdate={updateMinutes}
         />
 
         <ImageComponent 
           title='Separator'
-          image={watchface.aod.time.timeSeparateDigits.separator}
+          image={{...watchface.aod.time.timeSeparateDigits.separator}}
           onUpdate={updateSeparatorHours}
         />
       </Card.Body>

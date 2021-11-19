@@ -42,7 +42,7 @@ const TimeDigitalComponent: FC = () => {
       <Card.Body className={`${watchface.time.timeDigitalCommon.collapsed ? "collapse" : ""}`}>
         <WatchNumberComponent
           title="Hours"
-          digit={watchface.time.timeDigitalCommon.hours}
+          digit={{...watchface.time.timeDigitalCommon.hours}}
           onUpdate={updateHoursDigit}
           followDisabled={true}
           showDelimiter={true}
@@ -51,7 +51,7 @@ const TimeDigitalComponent: FC = () => {
         
         <WatchNumberComponent
           title="Minutes"
-          digit={watchface.time.timeDigitalCommon.minutes}
+          digit={{...watchface.time.timeDigitalCommon.minutes}}
           onUpdate={updateDigitMinutes}
           showDelimiter={true}
           showDataType={true}
@@ -59,7 +59,7 @@ const TimeDigitalComponent: FC = () => {
 
         <WatchNumberComponent
           title="Second"
-          digit={watchface.time.timeDigitalCommon.seconds}
+          digit={{...watchface.time.timeDigitalCommon.seconds}}
           onUpdate={updateDigitSeconds}
           showDelimiter={true}
           showDataType={true}

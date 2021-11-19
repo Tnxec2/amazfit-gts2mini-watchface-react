@@ -56,7 +56,7 @@ const AlarmComponent: FC = () => {
       <Card.Body className={`${watchface.time.alarm.collapsed ? "collapse" : ""}`}>
         <WatchNumberComponent
           title="Hours"
-          digit={watchface.time.alarm.alarmTime.hours}
+          digit={{...watchface.time.alarm.alarmTime.hours}}
           onUpdate={updateHoursDigit}
           followDisabled={true}
           showDelimiter={true}
@@ -65,24 +65,24 @@ const AlarmComponent: FC = () => {
         
         <WatchNumberComponent
           title="Minutes"
-          digit={watchface.time.alarm.alarmTime.minutes}
+          digit={{...watchface.time.alarm.alarmTime.minutes}}
           onUpdate={updateDigitMinutes}
           showDelimiter={true}
           showDataType={true}
         />
         <ImageComponent 
           title='Alarm ON'
-          image={watchface.time.alarm.alarmImage}
+          image={{...watchface.time.alarm.alarmImage}}
           onUpdate={updateAlarmImage}
         />
         <ImageComponent 
           title='Alarm OFF'
-          image={watchface.time.alarm.noAlarm}
+          image={{...watchface.time.alarm.noAlarm}}
           onUpdate={updateNoAlarmImage}
         />
         <WatchShortCutComponent 
           title='Sunrise shortcut'
-          shortcut={watchface.time.alarm.shortcut}
+          shortcut={{...watchface.time.alarm.shortcut}}
           onUpdate={updateShortcut}
         />
       </Card.Body>

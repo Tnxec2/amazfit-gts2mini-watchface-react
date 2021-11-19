@@ -48,28 +48,28 @@ const ActivitySeparatedComponent: FC = () => {
 
         <SeparatedDigitsComponent
           title="Steps"
-          digit={watchface.activity.stepsSeparatedDigits}
+          digit={{...watchface.activity.stepsSeparatedDigits}}
           amountOfDigits={5}
           onUpdate={updateSteps}
         />
         
         <SeparatedDigitsComponent
           title="Calories"
-          digit={watchface.activity.caloriesSeparatedDigits}
+          digit={{...watchface.activity.caloriesSeparatedDigits}}
           amountOfDigits={4}
           onUpdate={updateCalories}
         />
 
         <SeparatedDigitsComponent
           title="Heart rate"
-          digit={watchface.activity.heartRateSeparatedDigits}
+          digit={{...watchface.activity.heartRateSeparatedDigits}}
           amountOfDigits={3}
           onUpdate={updateHeartRate}
         />
 
         <SeparatedDigitsComponent
           title="Battery"
-          digit={watchface.activity.batterySeparatedDigits}
+          digit={{...watchface.activity.batterySeparatedDigits}}
           amountOfDigits={3}
           onUpdate={updateBattery}
         />

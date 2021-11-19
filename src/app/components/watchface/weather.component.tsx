@@ -257,12 +257,12 @@ function onChangeHighestMinus(val: number) {
         <Card.Body>
           <ImageSetComponent
             title='Icon'
-            imageSet={watchface.weather.icon}
+            imageSet={{...watchface.weather.icon}}
             onUpdate={updateIcon}
           />
           <WatchNumberComponent
             title='Current'
-            digit={watchface.weather.current.imageNumber}
+            digit={{...watchface.weather.current.imageNumber}}
             onUpdate={udpateCurrent}
             followDisabled={true}
           />
@@ -271,7 +271,7 @@ function onChangeHighestMinus(val: number) {
           </Card> : '' }
           <WatchNumberComponent
             title='Lowest'
-            digit={watchface.weather.lowest.imageNumber}
+            digit={{...watchface.weather.lowest.imageNumber}}
             onUpdate={udpateLowest}
             followDisabled={true}
           />
@@ -280,7 +280,7 @@ function onChangeHighestMinus(val: number) {
           </Card> : '' }
           <WatchNumberComponent
             title='Highest'
-            digit={watchface.weather.highest.imageNumber}
+            digit={{...watchface.weather.highest.imageNumber}}
             onUpdate={udpateHighes}
             followDisabled={true}
           />
@@ -290,7 +290,7 @@ function onChangeHighestMinus(val: number) {
 
           <WatchNumberComponent
             title='One line min/max'
-            digit={watchface.weather.oneLineMinMax}
+            digit={{...watchface.weather.oneLineMinMax}}
             onUpdate={updateOneLineMinMax}
             followDisabled={true}
             />

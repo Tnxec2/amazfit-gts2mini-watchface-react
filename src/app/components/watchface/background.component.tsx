@@ -60,17 +60,17 @@ const BackgroundComponent: FC = () => {
           <BlocksArrayComponent ar={ar} />
           <ImageComponent 
             title='Preview'
-            image={watchface.background.preview}
+            image={{...watchface.background.preview}}
             onUpdate={onChangePreview}
             />
           <ImageComponent 
             title='Background'
-            image={watchface.background.image}
+            image={{...watchface.background.image}}
             onUpdate={onChangeImage}
             />
           <ImageComponent 
             title='Floating layer'
-            image={watchface.background.floatingLayer}
+            image={{...watchface.background.floatingLayer}}
             onUpdate={onChangeFloatingLayer}
             />
         </Card.Body>

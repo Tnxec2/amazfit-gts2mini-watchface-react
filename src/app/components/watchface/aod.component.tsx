@@ -27,7 +27,7 @@ const AodComponent: FC = () => {
       <DateAODComponent />
       <DateAODOneLineComponent />
       <ActivityComponent
-        activity={watchface.aod.steps}
+        activity={{...watchface.aod.steps}}
         title='Steps'
         type={ActivityType.Steps}
         onUpdateActivity={updateSteps}

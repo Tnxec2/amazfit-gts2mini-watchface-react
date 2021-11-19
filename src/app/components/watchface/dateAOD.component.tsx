@@ -72,23 +72,23 @@ const DateAODComponent: FC = () => {
           ]} />
           <WatchNumberComponent
             title="Month"
-            digit={watchface.aod?.date?.month}
+            digit={{...watchface.aod?.date?.month}}
             onUpdate={updateMonth}
             followDisabled={true}
           />
           <WatchNumberComponent
             title="Day"
-            digit={watchface.aod?.date?.day}
+            digit={{...watchface.aod?.date?.day}}
             onUpdate={updateDay}
           />          
           <ImageSetComponent
             title="Weekday"
-            imageSet={watchface.aod?.weekday}
+            imageSet={{...watchface.aod?.weekday}}
             onUpdate={updateWeekday}
           />
           <AmPmComponent 
             title='Am / PM'
-            ampm={watchface.aod.time.amPm}
+            ampm={{...watchface.aod.time.amPm}}
             onUpdate={updateAmPm}
           />
         </Card.Body>

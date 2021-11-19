@@ -61,7 +61,7 @@ const UvIndexComponent: FC = () => {
 
           <WatchNumberComponent
             title='Text'
-            digit={watchface.weatherext.uvNumber}
+            digit={{...watchface.weatherext.uvNumber}}
             onUpdate={onChangeNumber}
             followDisabled={true}
           />
@@ -76,18 +76,18 @@ const UvIndexComponent: FC = () => {
         }
           <ImageComponent
             title='Icon'
-            image={watchface.weatherext.uvIcon}
+            image={{...watchface.weatherext.uvIcon}}
             onUpdate={onChangeIcon}
             />
           <ImageSetComponent
             title='Image progress'
-            imageSet={watchface.weatherext.uvProgress.imageProgress}
+            imageSet={{...watchface.weatherext.uvProgress.imageProgress}}
             onUpdate={onChangeImageProgress}
             />
 
           <WatchShortCutComponent
             title='UV Shortcut'
-            shortcut={watchface.weatherext.uvShortcut}
+            shortcut={{...watchface.weatherext.uvShortcut}}
             onUpdate={updateShortcut}
           />
             

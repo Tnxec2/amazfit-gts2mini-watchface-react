@@ -56,7 +56,7 @@ const ActivityListComponent: FC = () => {
         <Card.Body>
             <ActivityComponent
               title='Steps'
-              activity={watchface.activity.steps}
+              activity={{...watchface.activity.steps}}
               onUpdateActivity={updateSteps}
               type={ActivityType.Steps}
               showImageProgress={true}
@@ -66,7 +66,7 @@ const ActivityListComponent: FC = () => {
             />
             <ActivityComponent
               title='Calories'
-              activity={watchface.activity.calories}
+              activity={{...watchface.activity.calories}}
               onUpdateActivity={updateCaloris}
               type={ActivityType.Calories}
               showImageProgress={true}
@@ -76,7 +76,7 @@ const ActivityListComponent: FC = () => {
             />
             <ActivityComponent
               title='Hearth rate'
-              activity={watchface.activity.heartRate}
+              activity={{...watchface.activity.heartRate}}
               onUpdateActivity={updateHearthrate}
               type={ActivityType.HeartRate}
               showImageProgress={true}
@@ -86,7 +86,7 @@ const ActivityListComponent: FC = () => {
             />
             <ActivityComponent
               title='Distance'
-              activity={watchface.activity.distance}
+              activity={{...watchface.activity.distance}}
               onUpdateActivity={updateDistance}
               type={ActivityType.Distance}
               showImageProgress={false}
@@ -96,7 +96,7 @@ const ActivityListComponent: FC = () => {
             />
             <ActivityComponent
               title='PAI'
-              activity={watchface.activity.pai}
+              activity={{...watchface.activity.pai}}
               onUpdateActivity={updatePai}
               type={ActivityType.Pai}
               showImageProgress={true}
@@ -106,7 +106,7 @@ const ActivityListComponent: FC = () => {
             />
             <ActivityComponent
               title='Stand up'
-              activity={watchface.activity.standUp}
+              activity={{...watchface.activity.standUp}}
               onUpdateActivity={updateStandUp}
               type={ActivityType.StandUp}
               showImageProgress={true}

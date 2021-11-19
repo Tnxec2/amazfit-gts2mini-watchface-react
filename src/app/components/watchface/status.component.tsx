@@ -26,7 +26,7 @@ const StatusComponent: FC = () => {
       <Card.Body className={`${watchface.status.collapsed ? "collapse" : ""}`}>
         <SwitchComponent
           title="Bluetooth"
-          sw={watchface.status.bluetooth}
+          sw={{...watchface.status.bluetooth}}
           onUpdate={(ic) => {
             const status: WatchStatus = {...watchface.status, bluetooth: ic}
             updateStatus(status)
@@ -34,7 +34,7 @@ const StatusComponent: FC = () => {
         />
         <SwitchComponent
           title="Do Not Disturb"
-          sw={watchface.status.doNotDisturb}
+          sw={{...watchface.status.doNotDisturb}}
           onUpdate={(ic) => {
             const status: WatchStatus = {...watchface.status, doNotDisturb: ic}
             updateStatus(status)
@@ -42,7 +42,7 @@ const StatusComponent: FC = () => {
         />
         <SwitchComponent
           title="Alarm"
-          sw={watchface.status.alarm}
+          sw={{...watchface.status.alarm}}
           onUpdate={(ic) => {
             const status: WatchStatus = {...watchface.status, alarm: ic}
             updateStatus(status)
@@ -50,7 +50,7 @@ const StatusComponent: FC = () => {
         />
         <SwitchComponent
           title="Lock"
-          sw={watchface.status.lock}
+          sw={{...watchface.status.lock}}
           onUpdate={(ic) => {
             const status: WatchStatus = {...watchface.status, lock: ic}
             updateStatus(status)

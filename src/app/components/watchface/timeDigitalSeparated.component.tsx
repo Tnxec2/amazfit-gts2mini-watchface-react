@@ -82,33 +82,33 @@ const TimeDigitalSeparatedComponent: FC = () => {
 
         <SeparatedDigitsComponent
           title="Hours Digits"
-          digit={watchface.time.timeDigitalSeparated.hours}
+          digit={{...watchface.time.timeDigitalSeparated.hours}}
           amountOfDigits={2}
           onUpdate={updateHours}
         />
         
         <SeparatedDigitsComponent
           title="Minutes Digits"
-          digit={watchface.time.timeDigitalSeparated.minutes}
+          digit={{...watchface.time.timeDigitalSeparated.minutes}}
           amountOfDigits={2}
           onUpdate={updateMinutes}
         />
 
         <SeparatedDigitsComponent
           title="Seconds Digits"
-          digit={watchface.time.timeDigitalSeparated.seconds}
+          digit={{...watchface.time.timeDigitalSeparated.seconds}}
           amountOfDigits={2}
           onUpdate={updateDigitSeconds}
         />
 
         <ImageComponent 
           title='Separator hours'
-          image={watchface.time.timeDigitalSeparated.separatorHours}
+          image={{...watchface.time.timeDigitalSeparated.separatorHours}}
           onUpdate={updateSeparatorHours}
         />
         <ImageComponent 
           title='Separator minutes'
-          image={watchface.time.timeDigitalSeparated.separatorMinutes}
+          image={{...watchface.time.timeDigitalSeparated.separatorMinutes}}
           onUpdate={updateSeparatorMinutes}
         />
                

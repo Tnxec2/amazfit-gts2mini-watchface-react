@@ -90,7 +90,7 @@ const DateComponent: FC = () => {
           { ! watchface.date.oneLineMonth ? 
           <WatchNumberComponent
             title="Year"
-            digit={watchface.date.year}
+            digit={{...watchface.date.year}}
             onUpdate={updateYear}
             followDisabled={true}
             showDelimiter={!watchface.date.oneLineYear}
@@ -101,7 +101,7 @@ const DateComponent: FC = () => {
          <>
           <WatchNumberComponent
             title="Month"
-            digit={watchface.date.month}
+            digit={{...watchface.date.month}}
             onUpdate={updateMonth}
             showDelimiter={!watchface.date.oneLineMonth}
             showDataType={!watchface.date.oneLineMonth}
@@ -109,7 +109,7 @@ const DateComponent: FC = () => {
           { ! watchface.date.oneLineMonth ? 
           <WatchNumberComponent
             title="Day"
-            digit={watchface.date.day}
+            digit={{...watchface.date.day}}
             onUpdate={updateDay}
             showDelimiter={true}
             showDataType={true}
@@ -119,19 +119,19 @@ const DateComponent: FC = () => {
          }
           <ImageSetComponent
             title="Month as word"
-            imageSet={watchface.date.monthAsWord}
+            imageSet={{...watchface.date.monthAsWord}}
             onUpdate={updateMonthAsWord}
           />
           
           <ImageSetComponent
             title="Weekday"
-            imageSet={watchface.date.weekday}
+            imageSet={{...watchface.date.weekday}}
             onUpdate={updateWeekday}
           />
 
           <AmPmComponent 
             title='AmPm' 
-            ampm={watchface.date.ampm}
+            ampm={{...watchface.date.ampm}}
             onUpdate={updateAmPm}
             />
         </Card.Body>
