@@ -4,5 +4,6 @@ export class Constant {
   static readonly width: number = 306;
   static readonly height: number = 354;
   static readonly deviceId: number = 73;
+  static readonly DEVICE = 'Gts2 mini';
 
 }
