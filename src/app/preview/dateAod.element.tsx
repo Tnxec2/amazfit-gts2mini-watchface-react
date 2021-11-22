@@ -14,7 +14,7 @@ export default function drawDateAod(ctx: CanvasRenderingContext2D,
     drawborder: boolean
     ) {
         
-    if (dateOneLine.enabled) {
+    if (dateOneLine.monthAndDay.enabled) {
         if (dateOneLine.monthAndDay.enabled) {
             let ar = [
                 dateOneLine.monthAndDay.paddingZero ? watchState.month.toString().padStart(2, '0') : watchState.month.toString(),

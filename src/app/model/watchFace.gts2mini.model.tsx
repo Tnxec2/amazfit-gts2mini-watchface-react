@@ -544,14 +544,13 @@ export class WatchAodTime {
 }
 
 export class WatchAodDateOneLine {
-  enabled = false
+  collapsed = true
 
   monthAndDay: WatchNumber = new WatchNumber(null, digitTypes.month)
   separatorImageIndex: number
 
   constructor(j?: AoDDateOneLine) {
     if(j) {
-      this.enabled = true;
       this.monthAndDay = new WatchNumber(j.MonthAndDay, digitTypes.month)
       this.separatorImageIndex = j.SeparatorImageIndex
     }
@@ -559,7 +558,7 @@ export class WatchAodDateOneLine {
 }
 
 export class WatchAodDate {
-  enabled = false;
+  collapsed = true
 
   month: WatchNumber = new WatchNumber(null, digitTypes.month)
   day: WatchNumber = new WatchNumber(null, digitTypes.day)
@@ -570,7 +569,6 @@ export class WatchAodDate {
 
   constructor(j?: AoDDate) {
     if(j) {
-      this.enabled = true;
       this.month = new WatchNumber(j.Month, digitTypes.month)
       this.day = new WatchNumber(j.Day, digitTypes.day)
       if ( this.month) this.month.paddingZero = j.PaddingZeroMonth

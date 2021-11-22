@@ -444,7 +444,8 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
     let enabledTimeSeparated = aod.time.timeSeparateDigits.hours.enabled || aod.time.timeSeparateDigits.minutes.enabled
     let enabledTimeExt = enabledAmPm || enabledTimeAnalog || enabledTimeDigital || enabledTimeSeparated
     let enabledDate = aod.date.day.enabled || aod.date.month.enabled
-    let enabled = enabledTimeExt || enabledDate || aod.steps.aElement.enabled || aod.weekday.enabled
+    let enabledDateOneLine = aod.dateOneLine.monthAndDay.enabled
+    let enabled = enabledTimeExt || enabledDate || enabledDateOneLine || aod.steps.aElement.enabled || aod.weekday.enabled
     if (!enabled) return null
     else return  {
         TimeExtended: enabledTimeExt ? {
@@ -452,7 +453,7 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
                 Hours: aod.time.timeSeparateDigits.hours.enabled ? aod.time.timeSeparateDigits.hours.json : null,
                 Minutes: aod.time.timeSeparateDigits.minutes.enabled ? aod.time.timeSeparateDigits.minutes.json : null,
                 Separator: aod.time.timeSeparateDigits.separator.enabled ? aod.time.timeSeparateDigits.separator.json : null,
-                PaddingZeroHours: aod.time.timeSeparateDigits.hours.enabled ? aod.time.timeSeparateDigits.paddingZero : null
+                PaddingZeroHours: aod.time.timeSeparateDigits.hours.enabled ? aod.time.timeSeparateDigits.paddingZero ? true : false : null
             } : null,
             TimeAnalog: enabledTimeAnalog ? {
                 CommonCenterCoordinates: aod.time.timeAnalog.commonCenterCoordinates ? aod.time.timeAnalog.commonCenterCoordinates : null,
@@ -463,9 +464,9 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
             TimeDigital: enabledTimeDigital ? {
                 Hours: aod.time.timeDigital.hours.enabled ? aod.time.timeDigital.hours.json : null,
                 Minutes: aod.time.timeDigital.minutes.enabled ? aod.time.timeDigital.minutes.json : null,
-                PaddingZeroHours: aod.time.timeDigital.hours.enabled ? aod.time.timeDigital.hours.paddingZero : null,
-                PaddingZeroMinutes: aod.time.timeDigital.hours.enabled ? aod.time.timeDigital.minutes.paddingZero : null,
-                MinutesFollowHours: aod.time.timeDigital.hours.enabled ? aod.time.timeDigital.minutes.follow : null,
+                PaddingZeroHours: aod.time.timeDigital.hours.enabled ? aod.time.timeDigital.hours.paddingZero ? true : false : null,
+                PaddingZeroMinutes: aod.time.timeDigital.hours.enabled ? aod.time.timeDigital.minutes.paddingZero ? true : false : null,
+                MinutesFollowHours: aod.time.timeDigital.hours.enabled ? aod.time.timeDigital.minutes.follow ? true : false : null,
             } : null
         }: null,
         DateOneLine: aod.dateOneLine.monthAndDay.enabled ? {

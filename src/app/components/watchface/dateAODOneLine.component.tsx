@@ -31,13 +31,13 @@ const DateAODOneLineComponent: FC = () => {
             let w = {...watchface};
             if (!w.aod) w.aod = new WatchAOD()
             if (!w.aod.dateOneLine) w.aod.dateOneLine =new WatchAodDateOneLine()
-            w.aod.dateOneLine.enabled = !watchface.aod.dateOneLine.enabled;
+            w.aod.dateOneLine.collapsed = !watchface.aod.dateOneLine.collapsed;
             setWatchface(w);
           }}
         >
           Date OneLine
         </Card.Header>
-        <Card.Body className={`${watchface.aod?.dateOneLine?.enabled ? "collapse" : ""}`}>
+        <Card.Body className={`${watchface.aod?.dateOneLine?.collapsed ? "collapse" : ""}`}>
           <BlocksArrayComponent ar={[
             {
               blocks: [

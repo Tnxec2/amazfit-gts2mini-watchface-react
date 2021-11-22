@@ -72,7 +72,7 @@ export class NumberJson {
   TopLeftY: number = 0
   BottomRightX: number = 0
   BottomRightY: number = 0
-  Alignment: string = AlignmentType.Left.json
+  Alignment: string = AlignmentType.TopLeft.json
   Spacing: number = 0
   VerticalOffset: number = 0
   ImageIndex: number

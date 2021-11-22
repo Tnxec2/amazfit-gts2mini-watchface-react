@@ -55,13 +55,13 @@ const DateAODComponent: FC = () => {
                     let w = {...watchface};
                     if (!w.aod) w.aod = new WatchAOD()
                     if (!w.aod.date) w.aod.date = new WatchAodDate()
-                    w.aod.date.enabled = !watchface.aod.date.enabled;
+                    w.aod.date.collapsed = !watchface.aod.date.collapsed;
                     setWatchface(w);
                   }}
         >
           Date
         </Card.Header>
-        <Card.Body className={`${watchface.aod?.date?.enabled ? "collapse" : ""}`}>
+        <Card.Body className={`${watchface.aod?.date?.collapsed ? "collapse" : ""}`}>
 
           <BlocksArrayComponent ar={[
             {
