@@ -2,6 +2,7 @@ import {createContext} from 'react'
 import { IImage } from '../model/image.model';
 import { WatchFace } from '../model/watchFace.gts2mini.model';
 import { WatchState } from '../model/watchState';
+import { IDevice } from '../shared/constant';
 
 export const WatchfaceContext = createContext(null);
 
@@ -16,4 +17,6 @@ export interface IWatchContext {
     setJsonName(jsonName: string): void,
     previewScreenNormal: boolean,
     setPreviewScreenNormal(s: boolean): void,
+    device: IDevice,
+    setDevice(device: IDevice): void,
   }

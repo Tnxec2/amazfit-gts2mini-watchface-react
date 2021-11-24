@@ -1,9 +1,19 @@
+export interface IDevice {
+  width: number,
+  height: number,
+  deviceId: number,
+  title: string,
+}
+
 export class Constant {
+  static readonly DEVICE_KEY = "com.kontranik.gts2editor.device";
   static readonly NONE = "None";
   static readonly startImageIndex = 0;
-  static readonly width: number = 306;
-  static readonly height: number = 354;
-  static readonly deviceId: number = 73;
-  static readonly DEVICE = 'Gts2 mini';
+  static readonly default_device_id = 73;
 
+
+  static readonly devices = {
+    gts2minie: { width: 306, height: 354, deviceId: 73, title: 'Gts2 mini' },
+    bipu: { width: 302, height: 320, deviceId: 71, title: 'Bip U' },
+  }
 }

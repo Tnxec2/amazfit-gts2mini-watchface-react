@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "./App.css";
 import FileLoaderComponent from "./app/components/main/fileLoader.component";
@@ -10,6 +10,8 @@ import { IImage } from "./app/model/image.model";
 import { WatchState } from "./app/model/watchState";
 import { WatchfaceContext } from "./app/context";
 import { WatchFace } from "./app/model/watchFace.gts2mini.model";
+import { Constant, IDevice } from "./app/shared/constant";
+import { getDeviceFromStorage } from "./app/components/main/settings.component";
 
 const App: FC = () => {
   const [images, setImages] = useState<IImage[]>([]);
@@ -18,6 +20,12 @@ const App: FC = () => {
 
   const [jsonName, setJsonName] = useState<string>(null);
   const [previewScreenNormal, setPreviewScreenNormal] = useState<boolean>(true);
+
+  const [device, setDevice] = useState<IDevice>(Constant.devices.gts2minie);
+
+  useEffect( () => {
+    setDevice(getDeviceFromStorage())
+  }, [])
 
   return (
     <WatchfaceContext.Provider
@@ -32,6 +40,8 @@ const App: FC = () => {
         setJsonName,
         previewScreenNormal,
         setPreviewScreenNormal,
+        device,
+        setDevice
       }}
     >
       <Container className="App d-flex flex-column min-vh-100 vh-100">

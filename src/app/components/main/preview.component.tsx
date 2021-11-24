@@ -24,11 +24,6 @@ import { drawWeather } from "../../preview/weather.element";
 import Canvas from "./canvas.function";
 import cl from "./previewComponent.module.css";
 
-interface IProps {
-  width: number;
-  height: number;
-}
-
 const storage_items = {
   preview_white_grid: "preview_white_grid",
   preview_black_grid: "preview_black_grid",
@@ -36,8 +31,8 @@ const storage_items = {
   preview_shortcut_border: "preview_shortcut_border",
 };
 
-const PreviewComponent: FC<IProps> = ({ width, height }) => {
-  const { images, watchface, watchState, previewScreenNormal } =
+const PreviewComponent: FC = () => {
+  const { images, watchface, watchState, previewScreenNormal, device } =
     useContext<IWatchContext>(WatchfaceContext);
 
   const [x, setX] = useState<number>(0);
@@ -138,7 +133,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         shortCutBorder
       );
       drawTimeDigital(ctx, images, watchface.time, watchState, digitBorder);
-      drawTimeAnalog(ctx, images, watchface.time, watchState);
+      drawTimeAnalog(ctx, images, watchface.time, watchState, device.width, device.height);
     }
 
     if (watchface.animation.imageSetAnimation) {
@@ -194,7 +189,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
         watchState,
         digitBorder
       );
-      drawTimeAnalogAod(ctx, images, watchface.aod.time.timeAnalog, watchState);
+      drawTimeAnalogAod(ctx, images, watchface.aod.time.timeAnalog, watchState, device.width, device.height);
     }
   }
 
@@ -205,8 +200,8 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
     const rect = canvas.getBoundingClientRect();
     let x = event.clientX - rect.left;
     let y = event.clientY - rect.top;
-    x = Math.min(width, Math.max(0, Math.round(x)));
-    y = Math.min(height, Math.max(0, Math.round(y)));
+    x = Math.min(device.width, Math.max(0, Math.round(x)));
+    y = Math.min(device.height, Math.max(0, Math.round(y)));
     setX(x);
     setY(y);
   }
@@ -244,20 +239,20 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
     if (!whiteGrid && !blackGrid) return;
     const stroke = whiteGrid ? "white" : "black";
     const step = 20;
-    for (let i = width / 2; i > 0; i -= step) {
-      drawLine(ctx, [i, 0], [i, height], stroke, 1);
+    for (let i = device.width / 2; i > 0; i -= step) {
+      drawLine(ctx, [i, 0], [i, device.height], stroke, 1);
     }
-    for (let i = width / 2; i < width; i += step) {
-      drawLine(ctx, [i, 0], [i, height], stroke, 1);
+    for (let i = device.width / 2; i < device.width; i += step) {
+      drawLine(ctx, [i, 0], [i, device.height], stroke, 1);
     }
-    for (let i = height / 2; i > 0; i -= step) {
-      drawLine(ctx, [0, i], [width, i], stroke, 1);
+    for (let i = device.height / 2; i > 0; i -= step) {
+      drawLine(ctx, [0, i], [device.width, i], stroke, 1);
     }
-    for (let i = height / 2; i < height; i += step) {
-      drawLine(ctx, [0, i], [width, i], stroke, 1);
+    for (let i = device.height / 2; i < device.height; i += step) {
+      drawLine(ctx, [0, i], [device.width, i], stroke, 1);
     }
-    drawLine(ctx, [width / 2 - 1, 0], [width / 2 - 1, height], stroke, 2);
-    drawLine(ctx, [0, height / 2 - 1], [width, height / 2 - 1], stroke, 2);
+    drawLine(ctx, [device.width / 2 - 1, 0], [device.width / 2 - 1, device.height], stroke, 2);
+    drawLine(ctx, [0, device.height / 2 - 1], [device.width, device.height / 2 - 1], stroke, 2);
   }
 
   function drawLine(
@@ -284,7 +279,7 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
   return (
     <>
       <div className={cl.canvasCcontainer}>
-        {previewScreenNormal ? "Screen Normal" : "AOD"}
+        {previewScreenNormal ? "Screen Normal" : "AOD"} ({device.width} x {device.height})
         <div>
           x: {x}, y: {y}
         </div>
@@ -292,18 +287,14 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
           id="canvasPreview"
           draw={draw}
           className={cl.canvasPreview}
-          width={width}
-          height={height}
+          width={device.width}
+          height={device.height}
           onClick={getCursorPosition}
         />
       </div>
 
       <div className="container d-flex justify-content-center">
-        <div>
-          <div
-            className="input-group input-group-sm"
-            style={{ width: "max-content" }}
-          >
+          <div className="input-group input-group-sm" style={{ width: "max-content" }}>
             <span className="input-group-text" id="addon-wrapping">
               White grid
             </span>
@@ -326,6 +317,10 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
                 onChange={onToggleBlackGrid}
               />
             </div>
+          </div>
+        </div>
+        <div className="container d-flex justify-content-center">
+          <div className="input-group input-group-sm" style={{ width: "max-content" }}>
             <span className="input-group-text" id="addon-wrapping">
               border on digit
             </span>
@@ -350,7 +345,6 @@ const PreviewComponent: FC<IProps> = ({ width, height }) => {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 };

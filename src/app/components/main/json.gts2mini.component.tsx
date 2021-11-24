@@ -3,12 +3,11 @@ import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, Background, Battery, DateBlock, Progress, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather } from "../../model/json.gts2minit.model";
 import { WatchActivityList, WatchAlarm, WatchAOD, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt } from "../../model/watchFace.gts2mini.model";
-import { Constant } from "../../shared/constant";
 import cl from './JsonComponent.module.css';
 
 const JsonComponent: FC = () => {
 
-    const {watchface, jsonName } = useContext<IWatchContext>(WatchfaceContext);
+    const {watchface, jsonName, device } = useContext<IWatchContext>(WatchfaceContext);
 
     const [json, setJson] = useState<string>('')
 
@@ -24,7 +23,7 @@ const JsonComponent: FC = () => {
 
         let j: WatchJson = {
             Info: {
-                DeviceId: Constant.deviceId
+                DeviceId: device.deviceId
             },
             Background: getBackground(w.background),
             TimeExtended: getTimeExtended(w.time),

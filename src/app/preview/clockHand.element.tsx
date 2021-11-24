@@ -1,5 +1,4 @@
 import { findImageById } from "../shared/helper";
-import { Constant } from "../shared/constant";
 import { IImage } from "../model/image.model";
 import { WatchClockHand } from "../model/watchFace.gts2mini.model";
 import { Coordinates } from "../model/json.gts2minit.model";
@@ -10,7 +9,9 @@ export default function drawclockhand(
     clockHand: WatchClockHand, 
     value: number, 
     total: number,
-    commonCenterCoordinates: Coordinates ) {
+    commonCenterCoordinates: Coordinates,
+    width: number,
+    height: number ) {
         if (total === null) return
         if (clockHand.json.ImageIndex >= 0) {
             let x = 0
@@ -20,8 +21,8 @@ export default function drawclockhand(
                 y = clockHand.json.CenterCoordinates ? clockHand.json.CenterCoordinates.Y : 0
                 
                 if ( ! clockHand.json.CenterCoordinates?.X && !clockHand.json.CenterCoordinates?.X ) {
-                    x = clockHand.json.CenterCoordinates?.X ? clockHand.json.CenterCoordinates?.X : Constant.width / 2
-                    y = clockHand.json.CenterCoordinates?.Y ? clockHand.json.CenterCoordinates?.X : Constant.height / 2
+                    x = clockHand.json.CenterCoordinates?.X ? clockHand.json.CenterCoordinates?.X : width / 2
+                    y = clockHand.json.CenterCoordinates?.Y ? clockHand.json.CenterCoordinates?.X : height / 2
                 }
             } else {
                 x = commonCenterCoordinates.X ? commonCenterCoordinates.X : 0
