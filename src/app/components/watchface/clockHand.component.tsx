@@ -10,10 +10,11 @@ interface IProps {
   clockHand: WatchClockHand;
   onUpdate(clockHand: WatchClockHand): void;
   showAngle: boolean;
-  onCopyFromNormal?(): void
+  disableCenter: boolean,
+  onCopyFromNormal?(): void,
 }
 
-const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle, onCopyFromNormal }) => {
+const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle, onCopyFromNormal, disableCenter }) => {
 
   const ar = useMemo<IRow[]>(() => [
     {
@@ -22,6 +23,7 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
       ]
     },
     {
+      disabled: disableCenter,
       blocks: [
         { title: 'Center of rotation', type: BlockType.Empty },
         { title: 'X', type: BlockType.Number, nvalue: clockHand.json?.CenterCoordinates.X ? clockHand.json.CenterCoordinates.X : 0, onChange: changeX },

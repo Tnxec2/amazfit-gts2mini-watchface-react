@@ -51,6 +51,7 @@ const TimeAnalogAODComponent: FC = () => {
           clockHand={{...watchface.aod.time.timeAnalog.hours}}
           showAngle={false}
           onUpdate={updateHours}
+          disableCenter={true}
         />
 
         <ClockHandComponent
@@ -58,6 +59,7 @@ const TimeAnalogAODComponent: FC = () => {
           clockHand={{...watchface.aod.time.timeAnalog.minutes}}
           onUpdate={updateMinutes}
           showAngle={false}
+          disableCenter={true}
         />
 
         <BlocksArrayComponent ar={[

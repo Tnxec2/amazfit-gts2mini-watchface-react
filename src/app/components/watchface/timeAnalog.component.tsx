@@ -28,6 +28,7 @@ const TimeAnalogComponent: FC = () => {
             w.time.timeAnalog.hours = ch;
             setWatchface(w);
           }}
+          disableCenter={false}
         />
 
         <ClockHandComponent
@@ -39,6 +40,7 @@ const TimeAnalogComponent: FC = () => {
             setWatchface(d);
           }}
           showAngle={false}
+          disableCenter={false}
         />
 
         <ClockHandComponent
@@ -50,6 +52,7 @@ const TimeAnalogComponent: FC = () => {
             setWatchface(w);
           }}
           showAngle={false}
+          disableCenter={false}
         />
       </Card.Body>
     </Card>

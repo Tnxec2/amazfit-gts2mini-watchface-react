@@ -132,15 +132,15 @@ function getDate(date: WatchDate): DateBlock {
                 Number: date.year.enabled ? date.year.json : null,
                 DelimiterImageIndex: date.oneLineDelimiter
             } : null,
-            PaddingZeroMonth: date.oneLineYear ? date.year?.paddingZero : date.month?.paddingZero,
-            PaddingZeroDay: date.oneLineYear ? date.year?.paddingZero : (date.oneLineMonth ? date.month?.paddingZero :  date.day?.paddingZero),
+            PaddingZeroMonth: date.oneLineYear ? date.year?.paddingZero : date.month?.paddingZero ? true : false,
+            PaddingZeroDay: date.oneLineYear ? date.year?.paddingZero : (date.oneLineMonth ? date.month?.paddingZero :  date.day?.paddingZero ? true : false),
             Unknown6: 0,
             MonthAndDay: ! date.oneLineYear && ! date.oneLineMonth ? {
                 Year: date.year?.enabled ? date.year.json : null,
                 Month: date.month?.enabled ? date.month.json : null,
                 Day: date.day?.enabled ? date.day.json : null,
-                MonthFollowsYear: date.month?.follow,
-                DayFollowsMonth: date.day?.follow,
+                MonthFollowsYear: date.month?.follow ? true : false,
+                DayFollowsMonth: date.day?.follow ? true : false,
                 MonthAsWord: date.monthAsWord?.enabled ? date.monthAsWord.json : null,
                 MonthAsWordChinese: date.monthAsWord?.enabled ? date.monthAsWord.json : null,
                 YearDataTypeImageIndex: date.year.enabled ? date.year?.delimiter : null,
@@ -455,9 +455,20 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
                 PaddingZeroHours: aod.time.timeSeparateDigits.hours.enabled ? aod.time.timeSeparateDigits.paddingZero ? true : false : null
             } : null,
             TimeAnalog: enabledTimeAnalog ? {
-                CommonCenterCoordinates: aod.time.timeAnalog.commonCenterCoordinates ? aod.time.timeAnalog.commonCenterCoordinates : null,
-                Hours: aod.time.timeAnalog.hours.enabled ? aod.time.timeAnalog.hours.json : null,
-                Minutes: aod.time.timeAnalog.minutes.enabled ? aod.time.timeAnalog.minutes.json : null,
+                CommonCenterCoordinates: aod.time.timeAnalog.commonCenterCoordinates ? 
+                    aod.time.timeAnalog.commonCenterCoordinates : null,
+                Hours: aod.time.timeAnalog.hours.enabled ? {
+                    ImageIndex: aod.time.timeAnalog.hours.json.ImageIndex,
+                    CenterCoordinates: null,
+                    PointerCenterOfRotationY: aod.time.timeAnalog.hours.json.PointerCenterOfRotationY,
+                    CoverImage: aod.time.timeAnalog.hours.json.CoverImage
+                } : null,
+                Minutes: aod.time.timeAnalog.minutes.enabled ? {
+                    ImageIndex: aod.time.timeAnalog.minutes.json.ImageIndex,
+                    CenterCoordinates: null,
+                    PointerCenterOfRotationY: aod.time.timeAnalog.minutes.json.PointerCenterOfRotationY,
+                    CoverImage: aod.time.timeAnalog.minutes.json.CoverImage
+                } : null,
             } : null,
             AmPm: enabledAmPm ? aod.time.amPm.json : null,
             TimeDigital: enabledTimeDigital ? {
@@ -494,8 +505,8 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
             Day: aod.date.day.enabled ? aod.date.day.json : null,
             UnknownImageIndex: aod.date.unknown,
             SeparatorImageIndex: aod.date.separator,
-            PaddingZeroMonth: aod.date.month.enabled ? aod.date.month.paddingZero : null,
-            PaddingZeroDay: aod.date.day.enabled ? aod.date.day.paddingZero : null,
+            PaddingZeroMonth: aod.date.month.enabled ? (aod.date.month.paddingZero ? true : false) : false,
+            PaddingZeroDay: aod.date.day.enabled ? (aod.date.day.paddingZero ? true : false) : false,
             Unknown11: aod.date.unknown11
         } : null
     }

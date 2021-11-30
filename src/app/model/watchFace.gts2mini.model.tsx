@@ -565,7 +565,7 @@ export class WatchAodDate {
 
   unknown: number
   separator: number
-  unknown11: number
+  unknown11: number = 0
 
   constructor(j?: AoDDate) {
     if(j) {
@@ -575,7 +575,7 @@ export class WatchAodDate {
       if ( this.day) this.day.paddingZero = j.PaddingZeroDay
       this.unknown = j.UnknownImageIndex
       this.separator = j.SeparatorImageIndex
-      this.unknown11 = j.Unknown11
+      this.unknown11 = j.Unknown11 ? j.Unknown11 : 0
     }
   }
 }
