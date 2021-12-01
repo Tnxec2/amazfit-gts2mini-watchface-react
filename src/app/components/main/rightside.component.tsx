@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { Constant } from "../../shared/constant";
 import JsonComponent from "./json.gts2mini.component";
 import PreviewComponent from "./preview.component";
 import SettingsComponent from "./settings.component";
@@ -29,6 +30,7 @@ const RightSideComponent: FC = () => {
             </li>
           );
         })}
+        <li className="navbar-text" style={{marginRight: 0,  marginLeft: "auto"}}>v. {Constant.version}</li>
       </ul>
       { tabs[selectedTab].el }
     </div>
