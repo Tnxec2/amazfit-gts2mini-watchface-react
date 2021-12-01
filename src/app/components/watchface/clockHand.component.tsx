@@ -26,8 +26,8 @@ const ClockHandComponent: FC<IProps> = ({ title, clockHand, onUpdate, showAngle,
       disabled: disableCenter,
       blocks: [
         { title: 'Center of rotation', type: BlockType.Empty },
-        { title: 'X', type: BlockType.Number, nvalue: clockHand.json?.CenterCoordinates.X ? clockHand.json.CenterCoordinates.X : 0, onChange: changeX },
-        { title: 'Y', type: BlockType.Number, nvalue: clockHand.json?.CenterCoordinates.Y ? clockHand.json.CenterCoordinates.Y : 0, onChange: changeY },
+        { title: 'X', type: BlockType.Number, nvalue: clockHand.json?.CenterCoordinates?.X ? clockHand.json.CenterCoordinates?.X : 0, onChange: changeX },
+        { title: 'Y', type: BlockType.Number, nvalue: clockHand.json?.CenterCoordinates?.Y ? clockHand.json.CenterCoordinates?.Y : 0, onChange: changeY },
       ]
     },
     {
