@@ -461,13 +461,13 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
                     ImageIndex: aod.time.timeAnalog.hours.json.ImageIndex,
                     CenterCoordinates: null,
                     PointerCenterOfRotationY: aod.time.timeAnalog.hours.json.PointerCenterOfRotationY,
-                    CoverImage: aod.time.timeAnalog.hours.json.CoverImage
+                    CoverImage: aod.time.timeAnalog.hours.json.CoverImage?.ImageIndex ? aod.time.timeAnalog.hours.json.CoverImage : null
                 } : null,
                 Minutes: aod.time.timeAnalog.minutes.enabled ? {
                     ImageIndex: aod.time.timeAnalog.minutes.json.ImageIndex,
                     CenterCoordinates: null,
                     PointerCenterOfRotationY: aod.time.timeAnalog.minutes.json.PointerCenterOfRotationY,
-                    CoverImage: aod.time.timeAnalog.minutes.json.CoverImage
+                    CoverImage: aod.time.timeAnalog.minutes.json.CoverImage?.ImageIndex ? aod.time.timeAnalog.minutes.json.CoverImage : null
                 } : null,
             } : null,
             AmPm: enabledAmPm ? aod.time.amPm.json : null,
