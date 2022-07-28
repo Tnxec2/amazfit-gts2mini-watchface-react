@@ -21,7 +21,7 @@ const AodComponent: FC = () => {
   
   return (
     <>
-      <TimeDigitalAODComponent />
+      {/* dont work on watch: <TimeDigitalAODComponent /> */}
       <TimeDigitalAODSeparatedComponent />
       <TimeAnalogAODComponent />
       <DateAODComponent />
