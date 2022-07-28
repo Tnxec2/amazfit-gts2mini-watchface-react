@@ -185,7 +185,7 @@ export class WatchNumber {
 
   con: IDigitConstructor
 
-  constructor(j?: NumberJson, con?: IDigitConstructor) {
+  constructor(j: NumberJson, con: IDigitConstructor) {
     if (j) {
       this.json = j
       this.enabled = true
@@ -583,7 +583,7 @@ export class WatchAodDate {
 export class WatchActivityElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber()
+  imageNumber: WatchNumber = new WatchNumber(null, null)
   prefix: number
   noData: number
   icon: WatchImage = new WatchImage()
@@ -933,8 +933,8 @@ export class WatchSunset {
 
   constructor(j?: TimeExtended) {
     if (j) {
-      this.sunsetOneLine = new WatchNumber(j.SunsetTimeOneLine)
-      this.sunriseOneLine = new WatchNumber(j.SunriseTimeOneLine)
+      this.sunsetOneLine = new WatchNumber(j.SunsetTimeOneLine, digitTypes.sunrise)
+      this.sunriseOneLine = new WatchNumber(j.SunriseTimeOneLine, digitTypes.sunrise)
       if (this.sunsetOneLine) {
         this.sunsetOneLine.delimiter = j.DelimiterSunsetImageIndex
         this.sunsetOneLine.prefix = j.SunsetImageIndex
@@ -961,8 +961,8 @@ export class WatchAlarmTime {
 
   constructor(j?: AlarmTime) {
     if(j) {
-      this.hours = new WatchNumber(j.Hours)
-      this.minutes = new WatchNumber(j.Minutes)
+      this.hours = new WatchNumber(j.Hours, digitTypes.hour)
+      this.minutes = new WatchNumber(j.Minutes, digitTypes.min)
       if (this.hours) {
         this.hours.dataType = j.DataTypeHoursImageIndex
         this.hours.delimiter = j.DelimiterHoursImageIndex
