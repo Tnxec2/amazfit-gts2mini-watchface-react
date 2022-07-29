@@ -22,7 +22,7 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     if (weather.lowest.imageNumber.enabled) {
         drawDigitImage(ctx, images, weather.lowest.imageNumber, 
             watchState.temperatureMin, null, drawBorder, false,
-            weather.lowest.suffix, null, null, weather.lowest.suffix)
+            weather.lowest.minus, null, null, weather.lowest.suffix)
     }
     if (weather.highest.imageNumber.enabled) {
         drawDigitImage(ctx, images, weather.highest.imageNumber, 
