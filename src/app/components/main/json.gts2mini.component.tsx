@@ -214,7 +214,8 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
 
 function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather {
     let iconEnabled = weather.icon.enabled
-    let tempEnabled = weather.current.enabled || weather.oneLineMinMax.enabled || weather.lowest.enabled || weather.highest.enabled 
+    let tempEnabled = weather.current.enabled || weather.oneLineMinMax.enabled 
+    || weather.lowest.enabled || weather.highest.enabled 
     let airQualityEnabled = weatherext.airQualityNumber.enabled || weatherext.airQualityIcon.enabled
 
     let humidityEnabled = weatherext.humidityNumber.enabled || weatherext.humidityIcon.enabled
@@ -230,7 +231,7 @@ function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather 
         } : null,
         Temperature: tempEnabled ? {
             Current: weather.current.enabled ? {
-                ImageNumber: weather.current.imageNumber.json,
+                ImageNumber: weather.current.watchNumber.enabled ? weather.current.watchNumber.json : null,
                 MinusImageIndex: weather.current.minus,
                 SuffixImageIndexC: weather.current.suffix,
                 SuffixImageIndexF: weather.current.suffix,
@@ -239,7 +240,7 @@ function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather 
             } : null,
             OneLine: weather.oneLineMinMax.enabled ? {
                 OneLineMinMax: {
-                    Number: weather.oneLineMinMax.json,
+                    Number: weather.oneLineMinMax.enabled ? weather.oneLineMinMax.json : null,
                     MinusImageIndex:  weather.oneLineMinus,
                     DelimiterImageIndex:  weather.oneLineDelimiter,
                     UnknownLong4:  0,
@@ -247,7 +248,7 @@ function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather 
              }
             } : null,
             Lowest: weather.lowest.enabled ? {
-                ImageNumber: weather.lowest.imageNumber.json,
+                ImageNumber: weather.lowest.watchNumber.enabled ? weather.lowest.watchNumber.json : null,
                 MinusImageIndex: weather.lowest.minus,
                 SuffixImageIndexC: weather.lowest.suffix,
                 SuffixImageIndexF: weather.lowest.suffix,
@@ -255,7 +256,7 @@ function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather 
                 Shortcut: weather.lowest.shortcut.enabled ? weather.lowest.shortcut.json : null,
             } : null,
             Highest: weather.highest.enabled ? {
-                ImageNumber: weather.highest.imageNumber.json,
+                ImageNumber: weather.highest.watchNumber.enabled ? weather.highest.watchNumber.json : null, 
                 MinusImageIndex: weather.highest.minus,
                 SuffixImageIndexC: weather.highest.suffix,
                 SuffixImageIndexF: weather.highest.suffix,

@@ -14,18 +14,18 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     drawBorder: boolean,
     drawShortcutBorder) {
     if (!weather) return;
-    if (weather.current.imageNumber.enabled) {
-        drawDigitImage(ctx, images, weather.current.imageNumber, 
+    if (weather.current.watchNumber.enabled) {
+        drawDigitImage(ctx, images, weather.current.watchNumber, 
             watchState.temperature, null, drawBorder, false,
             weather.current.minus, null, null, weather.current.suffix)
     }
-    if (weather.lowest.imageNumber.enabled) {
-        drawDigitImage(ctx, images, weather.lowest.imageNumber, 
+    if (weather.lowest.watchNumber.enabled) {
+        drawDigitImage(ctx, images, weather.lowest.watchNumber, 
             watchState.temperatureMin, null, drawBorder, false,
             weather.lowest.minus, null, null, weather.lowest.suffix)
     }
-    if (weather.highest.imageNumber.enabled) {
-        drawDigitImage(ctx, images, weather.highest.imageNumber, 
+    if (weather.highest.watchNumber.enabled) {
+        drawDigitImage(ctx, images, weather.highest.watchNumber, 
             watchState.temperatureMax, null, drawBorder, false,
             weather.highest.minus, null, null, weather.highest.suffix)
     }

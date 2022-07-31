@@ -213,9 +213,8 @@ export class WatchShortcutElement {
 }
 
 export class WatchTextTemperature {
-  enabled: boolean = false
-  
-  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.weather)
+  enabled = false
+  watchNumber: WatchNumber = new WatchNumber(null, digitTypes.weather)
   minus: number
   suffix: number
   nodata: number
@@ -224,7 +223,7 @@ export class WatchTextTemperature {
   constructor(j?: TextTemperature) {
     if (j) {
       this.enabled = true
-      this.imageNumber = new WatchNumber(j.ImageNumber, digitTypes.weather)
+      this.watchNumber = new WatchNumber(j.ImageNumber, digitTypes.weather)
       this.minus = j.MinusImageIndex
       this.suffix = j.SuffixImageIndexC
       this.nodata = j.NoDataImageIndex
