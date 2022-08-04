@@ -143,15 +143,15 @@ function getDate(date: WatchDate): DateBlock {
                 DayFollowsMonth: date.day?.follow ? true : false,
                 MonthAsWord: date.monthAsWord?.enabled ? date.monthAsWord.json : null,
                 MonthAsWordChinese: date.monthAsWord?.enabled ? date.monthAsWord.json : null,
-                YearDataTypeImageIndex: date.year.enabled ? date.year?.delimiter : null,
-                MonthDataTypeImageIndex: date.month.enabled ? date.month?.delimiter : null,
-                DayDataTypeImageIndex: date.day.enabled ? date.day.delimiter : null,
-                DelimiterYearImageIndex: date.year.enabled ? date.year.dataType : null,
-                DelimiterMonthImageIndex: date.month.enabled ? date.month.dataType : null,
-                DelimiterDayImageIndex: date.day.enabled ? date.day.dataType : null,
-                DelimiterYearCoordinates: date.year.enabled && date.year.dataType ? date.year.dataTypeCoords : null,
-                DelimiterMonthCoordinates: date.month.enabled && date.month.dataType ? date.month.dataTypeCoords : null,
-                DelimiterDayCoordinates: date.day.enabled && date.day.dataType ? date.day.dataTypeCoords : null
+                YearDataTypeImageIndex: date.year?.enabled ? date.year?.dataType : null,
+                MonthDataTypeImageIndex: date.month?.enabled ? date.month?.dataType : null,
+                DayDataTypeImageIndex: date.day?.enabled ? date.day?.dataType : null,
+                DelimiterYearImageIndex: date.year?.enabled ? date.year?.delimiter : null,
+                DelimiterMonthImageIndex: date.month?.enabled ? date.month?.delimiter : null,
+                DelimiterDayImageIndex: date.day?.enabled ? date.day?.delimiter : null,
+                DelimiterYearCoordinates: date.year?.enabled && date.year?.delimiter ? date.year.delimiterCoords : null,
+                DelimiterMonthCoordinates: date.month?.enabled && date.month?.delimiter ? date.month.delimiterCoords : null,
+                DelimiterDayCoordinates: date.day?.enabled && date.day?.delimiter ? date.day.delimiterCoords : null
             } : null
         } : null,
         AmPm: date.ampm.enabled ? date.ampm.json : null,
@@ -204,9 +204,9 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
             SecondsDataTypeImageIndex:  time.seconds.enabled ? time.seconds.dataType : null,
             MinutesFollowHours:  time.minutes.follow,
             SecondsFollowMinutes:  time.seconds.follow,
-            HoursDataTypeCoordinates: time.hours.enabled && time.hours.dataType ? time.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
-            MinutesDataTypeCoordinates: time.minutes.enabled && !time.minutes.follow  && time.minutes.dataType ? time.minutes.dataTypeCoords : null, // needed only when SecondsFollowMinutes == False
-            SecondsDataTypeCoordinates: time.seconds.enabled && !time.seconds.follow && time.seconds.dataType ? time.seconds.dataTypeCoords : null
+            HoursDataTypeCoordinates: time.hours.enabled && time.hours.dataType ? time.hours.delimiterCoords : null, // needed only when MinutesFollowHours == False
+            MinutesDataTypeCoordinates: time.minutes.enabled && !time.minutes.follow  && time.minutes.dataType ? time.minutes.delimiterCoords : null, // needed only when SecondsFollowMinutes == False
+            SecondsDataTypeCoordinates: time.seconds.enabled && !time.seconds.follow && time.seconds.dataType ? time.seconds.delimiterCoords : null
         } : null
     }
 
@@ -417,7 +417,7 @@ function getAlarm(alarm: WatchAlarm): Alarm {
             DelimiterMinutesImageIndex: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.delimiter : null,
             PaddingZeroHours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.paddingZero : null,
             PaddingZeroMinutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.paddingZero : null,
-            DataTypeHoursCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
+            DataTypeHoursCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.delimiterCoords : null, // needed only when MinutesFollowHours == False
             MinutesFollowHours: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.follow : null,
         } : null,
     }

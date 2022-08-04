@@ -30,17 +30,17 @@ export default function drawAlarm(
         } else {
             drawDigitImage(ctx, images, alarm.alarmTime.hours, watchState.alarmHours, null, digitBorder,
                             false, null, null, null, alarm.alarmTime.hours.delimiter)
-            if (alarm.alarmTime.hours.dataType && alarm.alarmTime.hours.dataTypeCoords) {
+            if (alarm.alarmTime.hours.dataType && alarm.alarmTime.hours.delimiterCoords) {
                 let img = findImageById(alarm.alarmTime.hours.dataType, images)
-                if (img) ctx.drawImage(img, alarm.alarmTime.hours.dataTypeCoords.X, alarm.alarmTime.hours.dataTypeCoords.Y)
+                if (img) ctx.drawImage(img, alarm.alarmTime.hours.delimiterCoords.X, alarm.alarmTime.hours.delimiterCoords.Y)
             }
         }
     }
     if (alarm.alarmTime.minutes.enabled && !alarm.alarmTime.minutes.follow) {
         drawDigitImage(ctx, images, alarm.alarmTime.minutes, watchState.alarmMinutes, null, digitBorder, false, null, null, null, alarm.alarmTime.minutes.delimiter)
-        if (alarm.alarmTime.minutes.dataType && alarm.alarmTime.minutes.dataTypeCoords) {
+        if (alarm.alarmTime.minutes.dataType && alarm.alarmTime.minutes.delimiterCoords) {
             let img = findImageById(alarm.alarmTime.minutes.dataType, images)
-            if (img) ctx.drawImage(img, alarm.alarmTime.minutes.dataTypeCoords.X, alarm.alarmTime.minutes.dataTypeCoords.Y)
+            if (img) ctx.drawImage(img, alarm.alarmTime.minutes.delimiterCoords.X, alarm.alarmTime.minutes.delimiterCoords.Y)
         }
     }
 

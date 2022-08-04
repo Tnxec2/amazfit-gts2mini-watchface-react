@@ -67,17 +67,17 @@ const WatchNumberComponent: FC<IProps> = ({
       ]
     },
     {
-      disabled: ! showDelimiter,
+      disabled: ! showDataType,
       blocks: [
-        { title: 'Delimiter', type: BlockType.SelectFile, nvalue: digit.delimiter, onChange: onChangeDelimiter },
+        { title: 'Data Type', type: BlockType.SelectFile, nvalue: digit.dataType, onChange: onChangeDatatype },
       ]
     },
     {
-      disabled: ! showDataType,
+      disabled: ! showDelimiter,
       blocks: [
-        { title: 'Data Type', type: BlockType.SelectFile, nvalue: digit.dataType, onChange: onChangeDataType },
-        { title: 'X', type: BlockType.Number, nvalue: digit.dataTypeCoords?.X ? digit.dataTypeCoords.X : 0, onChange: onChangedataTypeCoordsX },
-        { title: 'Y', type: BlockType.Number, nvalue: digit.dataTypeCoords?.Y ? digit.dataTypeCoords.Y : 0, onChange: onChangedataTypeCoordsY },
+        { title: 'Delimiter', type: BlockType.SelectFile, nvalue: digit.delimiter, onChange: onChangeDelimiter },
+        { title: 'X', type: BlockType.Number, nvalue: digit.delimiterCoords?.X ? digit.delimiterCoords.X : 0, onChange: onChangeDelimiterCoordsX },
+        { title: 'Y', type: BlockType.Number, nvalue: digit.delimiterCoords?.Y ? digit.delimiterCoords.Y : 0, onChange: onChangeDelimiterCoordsY },
       ]
     },
   ], [digit]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -88,15 +88,15 @@ const WatchNumberComponent: FC<IProps> = ({
     onUpdate(d);
   }
 
-  function onChangedataTypeCoordsX(val: number) {
+  function onChangeDelimiterCoordsX(val: number) {
     const d = {...digit};
-    d.dataTypeCoords.X = val;
+    d.delimiterCoords.X = val;
     onUpdate(d);
   }
 
-  function onChangedataTypeCoordsY(val: number) {
+  function onChangeDelimiterCoordsY(val: number) {
     const d = {...digit};
-    d.dataTypeCoords.Y = val;
+    d.delimiterCoords.Y = val;
     onUpdate(d);
   }
 
@@ -153,15 +153,15 @@ const WatchNumberComponent: FC<IProps> = ({
     onUpdate(d);
   }
 
-  function onChangeDataType(index: number) {
-    const d = {...digit};
-    d.dataType = index;
-    onUpdate(d);
-  }
-
   function onChangeDelimiter(index: number) {
     const d = {...digit};
     d.delimiter = index;
+    onUpdate(d);
+  }
+
+  function onChangeDatatype(index: number) {
+    const d = {...digit};
+    d.dataType = index;
     onUpdate(d);
   }
 

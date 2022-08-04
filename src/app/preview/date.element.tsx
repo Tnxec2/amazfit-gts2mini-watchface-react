@@ -52,10 +52,10 @@ export default function drawDate(ctx: CanvasRenderingContext2D,
                 }
                 drawDigitsFollowedArray(ctx, images, date.year, ar, drawborder)
             } else {
-                drawDigitImage(ctx, images, date.year, watchState.year, null, drawborder, true, null, null, null, date.year.delimiter)
-                if (date.year.dataType && date.year.dataTypeCoords) {
-                    let img = findImageById(date.year.dataType, images)
-                    if (img) ctx.drawImage(img, date.year.dataTypeCoords.X, date.year.dataTypeCoords.Y)
+                drawDigitImage(ctx, images, date.year, watchState.year, null, drawborder, true, null, null, null, date.year.dataType)
+                if (date.year.delimiter && date.year.delimiterCoords) {
+                    let img = findImageById(date.year.delimiter, images)
+                    if (img) ctx.drawImage(img, date.year.delimiterCoords.X, date.year.delimiterCoords.Y)
                 }
             }
         }
@@ -63,27 +63,27 @@ export default function drawDate(ctx: CanvasRenderingContext2D,
             if (date.day.enabled && date.day.follow) {
                 let ar: DigitValueItem[] = [{
                     snumber: date.month.paddingZero ? watchState.month.toString().padStart(2, '0') : watchState.month.toString(),
-                    suffix: date.month.delimiter,
+                    suffix: date.month.dataType,
                     dataType: date.month.dataType,
                 },{
                     snumber: date.day.paddingZero ? watchState.day.toString().padStart(2, '0') : watchState.day.toString(),
-                    suffix: date.day.delimiter,
+                    suffix: date.day.dataType,
                     dataType: date.day.dataType,
                 }];
                 drawDigitsFollowedArray(ctx, images, date.month, ar, drawborder)
             } else {
-                drawDigitImage(ctx, images, date.month, watchState.month, null, drawborder, false, null, null, null, date.month.delimiter)
-                if (date.month.dataType && date.month.dataTypeCoords) {
-                    let img = findImageById(date.month.dataType, images)
-                    if (img) ctx.drawImage(img, date.month.dataTypeCoords.X, date.month.dataTypeCoords.Y)
+                drawDigitImage(ctx, images, date.month, watchState.month, null, drawborder, false, null, null, null, date.month.dataType)
+                if (date.month.delimiter && date.month.delimiterCoords) {
+                    let img = findImageById(date.month.delimiter, images)
+                    if (img) ctx.drawImage(img, date.month.delimiterCoords.X, date.month.delimiterCoords.Y)
                 }
             }
         } 
         if (date.day.enabled && !date.day.follow) {
-            drawDigitImage(ctx, images, date.day, watchState.day, null, drawborder, true, null, null, null, date.day.delimiter)
-            if (date.day.dataType && date.day.dataTypeCoords) {
-                let img = findImageById(date.day.dataType, images)
-                if (img) ctx.drawImage(img, date.day.dataTypeCoords.X, date.day.dataTypeCoords.Y)
+            drawDigitImage(ctx, images, date.day, watchState.day, null, drawborder, true, null, null, null, date.day.dataType)
+            if (date.day.delimiter && date.day.delimiterCoords) {
+                let img = findImageById(date.day.delimiter, images)
+                if (img) ctx.drawImage(img, date.day.delimiterCoords.X, date.day.delimiterCoords.Y)
             }
         }
     }
