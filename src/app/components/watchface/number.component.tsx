@@ -2,6 +2,7 @@ import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { BlockType, IRow, OptionsAlignmentGTs2Mini } from "../../model/blocks.model";
+import { Coordinates } from "../../model/json.gts2minit.model";
 import { WatchNumber } from "../../model/watchFace.gts2mini.model";
 
 interface IProps {
@@ -90,12 +91,14 @@ const WatchNumberComponent: FC<IProps> = ({
 
   function onChangeDelimiterCoordsX(val: number) {
     const d = {...digit};
+    if (!d.delimiterCoords) d.delimiterCoords = new Coordinates()
     d.delimiterCoords.X = val;
     onUpdate(d);
   }
 
   function onChangeDelimiterCoordsY(val: number) {
     const d = {...digit};
+    if (!d.delimiterCoords) d.delimiterCoords = new Coordinates()
     d.delimiterCoords.Y = val;
     onUpdate(d);
   }

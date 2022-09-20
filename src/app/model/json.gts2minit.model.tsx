@@ -15,7 +15,7 @@ export class Background {
   Image: Image;
   BackgroundColor: string = Color.DEFAULT_COLOR;
   Preview: Image
-  PreviewKorean: Image
+  PreviewTradChinese: Image
   PreviewChinese: Image
   FloatingLayer: Image
 }
@@ -84,7 +84,7 @@ export class ShortcutElement {
   TopLeftY: number = 0
   BottomRightX: number = 0
   BottomRightY: number = 0
-  Unknown5: number = 0
+  UnknownBoolean5: boolean = true
 }
 
 export class TimeExtended {
@@ -107,6 +107,7 @@ export class Coordinates {
   X: number = 0;
   Y: number = 0;
 }
+
 
 export class ActivityElement {
   ImageNumber: NumberJson
@@ -145,7 +146,7 @@ export class OneLineNumber{
   DelimiterImageIndex: number
 }
 
-export class MonthAndDay{
+export class YearMonthAndDay{
   Year: NumberJson
   Month: NumberJson
   Day: NumberJson
@@ -163,14 +164,14 @@ export class MonthAndDay{
   DelimiterMonthCoordinates: Coordinates
   DelimiterDayCoordinates: Coordinates
 }
-export class Date{
+export class DateElement{
   MonthAndDayAlt: MonthAndDayAlt
   OneLineMonthAndDay: OneLineNumber
   OneLineYearMonthAndDay: OneLineNumber
   PaddingZeroMonth: boolean = false
   PaddingZeroDay: boolean = false
-  Unknown6: number = 0
-  MonthAndDay: MonthAndDay
+  UnknownBoolean6: boolean = false
+  YearMonthAndDay: YearMonthAndDay
 }
 export class AmPmIcon{
   CommonX: number
@@ -211,6 +212,9 @@ export class PointerScale{
 
 export class Scale{
   PointerScale: PointerScale
+  BottomImage: Image
+  BottomImageChinese: Image
+  BottomImageTradChinese: Image
 }
 
 export class Progress{
@@ -223,12 +227,12 @@ export class Progress{
 }
 
 export class DateBlock{
-  Date: Date
+  Date: DateElement
   AmPm: AmPmIcon
   Unknown3: number = 0
   Weekday: ImageSet
   WeekdayChinese: ImageSet
-  WeekdayKorean: ImageSet
+  WeekdayTradChinese: ImageSet
   WeekdayProgress: Progress
 }
 
@@ -393,9 +397,15 @@ export class AoDAnalogDialFace{
 export class AoDTimeDigital{
   Hours: NumberJson
   Minutes: NumberJson
+  HoursDataTypeImageIndex: number
+  MinutesDataTypeImageIndex: number
+  DelimiterHoursImageIndex: number
+  DelimiterMinutesImageIndex: number
   PaddingZeroHours: boolean = false
   PaddingZeroMinutes: boolean = false
   MinutesFollowHours: boolean = false
+  DataTypeHoursCoordinates: Coordinates
+  DataTypeMinutesCoordinates: Coordinates
 }
 
 export class AoDTimeExtended{
@@ -413,17 +423,21 @@ export class AoDDateOneLine{
 export class AoDWeek{
   Weekday: ImageSet
   WeekdayChinese: ImageSet
-  WeekdayKorean: ImageSet
+  WeekdayTradChinese: ImageSet
 }
 
 export class AoDDate{
  Month: NumberJson
  Day: NumberJson
- UnknownImageIndex: number
- SeparatorImageIndex: number
+ MonthDataTypeImageIndex: number
+ DayDataTypeImageIndex: number
+ DelimiterMonthImageIndex: number
+ DelimiterDayImageIndex: number
  PaddingZeroMonth: boolean = false
  PaddingZeroDay: boolean = false
- Unknown11: number
+ DelimiterMonthCoordinates: Coordinates
+ DelimiterDayCoordinates: Coordinates
+ DayFollowsMonth: boolean = false
 }
 
 export class AlwaysOnDisplay{
@@ -452,6 +466,21 @@ export class Animation{
   ImageSetAnimation: ImageSetAnimation[]
 }
 
+export class HourlyImages {
+  HourlyImage: HourlyImage
+}
+export class HourlyImage {
+  IconSet: IconSet
+  TimeSpans: TimeSpans[]
+}
+
+export class TimeSpans{
+  StartHour: number
+  StartMin: number
+  StopHour: number
+  StopMin: number
+}
+
 export class WatchJson{
   Info: DeviceId;
   Background: Background;
@@ -463,13 +492,14 @@ export class WatchJson{
   Status: Status;
   Battery: Battery;
   Animation: Animation;
-  HearthProgress: Progress;
+  HeartProgress: Progress;
   CaloriesProgress: Progress;
   HumidityProgress: Progress;
   Alarm: Alarm;
   Shortcuts: Shortcuts;
   TimeAnalog: AnalogDialFace;
   TimeDigital: TimeDigital;
+  HourlyImages: HourlyImages;
   PaiProgress: Progress;
   StandUpProgress: Progress;
   UviProgress: Progress;

@@ -38,7 +38,8 @@ export function drawActivity(ctx: CanvasRenderingContext2D,
         drawCircleProgress(ctx, images, activity.aProgress.circleScale.json, value, total);
     }
     if (activity.aProgress.scale.enabled) {
-        drawPointerProgress(ctx, images, activity.aProgress.scale.json, value, total);
+        if (activity.aProgress.scale.bottomImage.enabled) drawImage(ctx, images, activity.aProgress.scale.bottomImage.json);
+        drawPointerProgress(ctx, images, activity.aProgress.scale.pointerScaleJson, value, total);
     }
     if (activity.aElement.shortcut.enabled) {
         drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)

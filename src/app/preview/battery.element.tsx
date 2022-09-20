@@ -4,6 +4,7 @@ import { WatchState } from "../model/watchState";
 import { findImageById } from "../shared/helper";
 import drawDigitImage from "./digitImage.element";
 import drawIconSet from "./iconSet.element";
+import drawImage from "./image.element";
 import drawImageSet from "./imageSet.element";
 import drawPointerProgress from "./pointerProgress.element";
 
@@ -32,7 +33,8 @@ export function drawBattery(ctx: CanvasRenderingContext2D,
         drawIconSet(ctx, images, battery.iconSetProgress.json, watchState.battery, watchState.batteryGoal);
     }
     if (battery.scale.enabled) {
-        drawPointerProgress(ctx, images, battery.scale.json, watchState.battery, watchState.batteryGoal);
+        if (battery.scale.bottomImage.enabled) drawImage(ctx, images, battery.scale.bottomImage.json);
+        drawPointerProgress(ctx, images, battery.scale.pointerScaleJson, watchState.battery, watchState.batteryGoal);
     }
 
 }

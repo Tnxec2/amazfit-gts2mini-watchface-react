@@ -1,5 +1,5 @@
 import Color from "../shared/color";
-import { ActivityElement, Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, CircleScale, ClockHand, Coordinates, DateBlock, FiveDigits, FourDigits, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PointerScale, Progress, Shortcut, ShortcutElement, Shortcuts, Status, Switch, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
+import { ActivityElement, Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, CircleScale, ClockHand, Coordinates, DateBlock, FiveDigits, FourDigits, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PointerScale, Progress, Scale, Shortcut, ShortcutElement, Shortcuts, Status, Switch, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
   count: number;
@@ -289,11 +289,13 @@ export class WatchCircleScale {
 
 export class WatchScale {
   enabled: boolean = false
-  json: PointerScale = new PointerScale()
-  constructor(j?: PointerScale) {
+  pointerScaleJson: PointerScale = new PointerScale()
+  bottomImage: WatchImage = new WatchImage()
+  constructor(j?: Scale) {
     if (j) {
       this.enabled = true
-      this.json = j
+      this.pointerScaleJson = j.PointerScale
+      this.bottomImage = new WatchImage(j.BottomImage)
     }
   }
 }
@@ -310,7 +312,7 @@ export class WatchProgress {
       this.imageProgress = new WatchImageSet(count, j.ImageProgress)
       this.iconSetProgress = new WatchIconSet(j.IconSetProgress)
       this.circleScale = new WatchCircleScale(j.CircleScale)
-      this.scale = new WatchScale(j.Scale?.PointerScale)
+      this.scale = new WatchScale(j.Scale)
       this.noDataImage = new WatchImage(j.NoDataImage)
     }
   }
@@ -562,19 +564,23 @@ export class WatchAodDate {
   month: WatchNumber = new WatchNumber(null, digitTypes.month)
   day: WatchNumber = new WatchNumber(null, digitTypes.day)
 
-  unknown: number
-  separator: number
-  unknown11: number = 0
-
   constructor(j?: AoDDate) {
     if(j) {
       this.month = new WatchNumber(j.Month, digitTypes.month)
       this.day = new WatchNumber(j.Day, digitTypes.day)
-      if ( this.month) this.month.paddingZero = j.PaddingZeroMonth
-      if ( this.day) this.day.paddingZero = j.PaddingZeroDay
-      this.unknown = j.UnknownImageIndex
-      this.separator = j.SeparatorImageIndex
-      this.unknown11 = j.Unknown11 ? j.Unknown11 : 0
+      if ( this.month) {
+        this.month.paddingZero = j.PaddingZeroMonth
+        this.month.dataType = j.MonthDataTypeImageIndex
+        this.month.delimiter = j.DelimiterMonthImageIndex
+        this.month.delimiterCoords = j.DelimiterMonthCoordinates
+      }
+      if ( this.day) {
+        this.day.paddingZero = j.PaddingZeroDay
+        this.day.dataType = j.DayDataTypeImageIndex
+        this.day.delimiter = j.DelimiterDayImageIndex
+        this.day.follow = j.DayFollowsMonth ? j.DayFollowsMonth : false
+        this.day.delimiterCoords = j.DelimiterDayCoordinates
+      }      
     }
   }
 }
@@ -685,7 +691,7 @@ export class WatchBattery {
       if(j.BatteryText) { this.text = new WatchActivityElement(digitTypes.battery, j.BatteryText) }
       if(j.ImageProgress) { this.imageProgress = new WatchImageSet(digitTypes.battery.imageProgressTotal, j.ImageProgress) ;}
       if(j.IconSetProgress) { this.iconSetProgress = new WatchIconSet(j.IconSetProgress) ;}
-      if(j.Scale) { this.scale = new WatchScale(j.Scale.PointerScale) ;}
+      if(j.Scale) { this.scale = new WatchScale(j.Scale) ;}
       if(j.Icon) { this.icon = new WatchImage(j.Icon) ;}
     }
   }
@@ -741,7 +747,7 @@ export class WatchActivityList {
     if (j) {
       if (j.Activity?.Steps || j.StepProgress) this.steps = new WatchActivity(digitTypes.steps, j.Activity?.Steps, j.StepProgress)
       if (j.Activity?.Calories || j.CaloriesProgress)   this.calories = new WatchActivity(digitTypes.calories, j.Activity?.Calories, j.CaloriesProgress)
-      if (j.Activity?.HeartRate || j.HearthProgress) this.heartRate = new WatchActivity(digitTypes.heartRate, j.Activity?.HeartRate, j.HearthProgress)
+      if (j.Activity?.HeartRate || j.HeartProgress) this.heartRate = new WatchActivity(digitTypes.heartRate, j.Activity?.HeartRate, j.HeartProgress)
       if (j.Activity?.Distance) this.distance = new WatchActivity(digitTypes.distance, j.Activity?.Distance, null)
       if (j.Activity?.PAI || j.PaiProgress) this.pai = new WatchActivity(digitTypes.pai, j.Activity?.PAI, j.PaiProgress)
       if (j.Activity?.StandUp || j.StandUpProgress) this.standUp = new WatchActivity(digitTypes.standUp, j.Activity?.StandUp, j.StandUpProgress)
@@ -786,30 +792,30 @@ export class WatchDate {
           if (this.month) this.month.paddingZero = j.Date.PaddingZeroMonth
           if (this.day) this.day.paddingZero = j.Date.PaddingZeroDay
         } 
-        if (j.Date.MonthAndDay) {
-          this.year = new WatchNumber(j.Date.MonthAndDay.Year, digitTypes.year)
-          this.month = new WatchNumber(j.Date.MonthAndDay.Month, digitTypes.month)
-          this.monthAsWord = new WatchImageSet(digitTypes.monthasword.imageProgressTotal, j.Date.MonthAndDay.MonthAsWord)
-          this.day =  new WatchNumber(j.Date.MonthAndDay.Day, digitTypes.day)
+        if (j.Date.YearMonthAndDay) {
+          this.year = new WatchNumber(j.Date.YearMonthAndDay.Year, digitTypes.year)
+          this.month = new WatchNumber(j.Date.YearMonthAndDay.Month, digitTypes.month)
+          this.monthAsWord = new WatchImageSet(digitTypes.monthasword.imageProgressTotal, j.Date.YearMonthAndDay.MonthAsWord)
+          this.day =  new WatchNumber(j.Date.YearMonthAndDay.Day, digitTypes.day)
 
           if (this.month) {
-            this.month.delimiter = j.Date.MonthAndDay.DelimiterMonthImageIndex
-            this.month.follow = j.Date.MonthAndDay.MonthFollowsYear ? true : false
-            this.month.dataType = j.Date.MonthAndDay.MonthDataTypeImageIndex
-            this.month.delimiterCoords = j.Date.MonthAndDay.DelimiterMonthCoordinates
+            this.month.delimiter = j.Date.YearMonthAndDay.DelimiterMonthImageIndex
+            this.month.follow = j.Date.YearMonthAndDay.MonthFollowsYear ? true : false
+            this.month.dataType = j.Date.YearMonthAndDay.MonthDataTypeImageIndex
+            this.month.delimiterCoords = j.Date.YearMonthAndDay.DelimiterMonthCoordinates
             this.month.paddingZero = j.Date.PaddingZeroMonth
           }
           if (this.day) {
-            this.day.follow = j.Date.MonthAndDay.DayFollowsMonth ? true: false
-            this.day.delimiter = j.Date.MonthAndDay.DelimiterDayImageIndex
-            this.day.dataType = j.Date.MonthAndDay.DayDataTypeImageIndex
-            this.day.delimiterCoords = j.Date.MonthAndDay.DelimiterDayCoordinates
+            this.day.follow = j.Date.YearMonthAndDay.DayFollowsMonth ? true: false
+            this.day.delimiter = j.Date.YearMonthAndDay.DelimiterDayImageIndex
+            this.day.dataType = j.Date.YearMonthAndDay.DayDataTypeImageIndex
+            this.day.delimiterCoords = j.Date.YearMonthAndDay.DelimiterDayCoordinates
             this.day.paddingZero = j.Date.PaddingZeroDay
           }
           if ( this.year) {
-            this.year.delimiter = j.Date.MonthAndDay.DelimiterYearImageIndex
-            this.year.dataType = j.Date.MonthAndDay.YearDataTypeImageIndex
-            this.year.delimiterCoords = j.Date.MonthAndDay.DelimiterYearCoordinates
+            this.year.delimiter = j.Date.YearMonthAndDay.DelimiterYearImageIndex
+            this.year.dataType = j.Date.YearMonthAndDay.YearDataTypeImageIndex
+            this.year.delimiterCoords = j.Date.YearMonthAndDay.DelimiterYearCoordinates
             this.year.paddingZero = true
           }
         }
@@ -1023,7 +1029,7 @@ export class WatchBackground {
   image: WatchImage = new WatchImage()
   preview: WatchImage = new WatchImage()
   previewc: WatchImage = new WatchImage()
-  previewk: WatchImage = new WatchImage()
+  previewtradchin: WatchImage = new WatchImage()
   floatingLayer: WatchImage = new WatchImage()
   color: string = Color.DEFAULT_COLOR
 
@@ -1032,7 +1038,7 @@ export class WatchBackground {
       this.image = new WatchImage(j.Image)
       this.preview = new WatchImage(j.Preview)
       this.previewc = new WatchImage(j.PreviewChinese)
-      this.previewk = new WatchImage(j.PreviewKorean)
+      this.previewtradchin = new WatchImage(j.PreviewTradChinese)
       this.floatingLayer = new WatchImage(j.FloatingLayer)
       this.color = Color.colorRead(j.BackgroundColor)
     }
@@ -1053,16 +1059,17 @@ export class WatchShortcuts {
 export class WatchFace {
   background: WatchBackground = new WatchBackground();
   time: WatchTime = new WatchTime()
-  date: WatchDate = new WatchDate();
   activity: WatchActivityList = new WatchActivityList();
+  date: WatchDate = new WatchDate();
+  
   status = new WatchStatus();
   battery = new WatchBattery()
-  aod = new WatchAOD()
-  
+   
   animation: WatchAnimation = new WatchAnimation()
   weather: WatchWeather = new WatchWeather()
   weatherext: WatchWeatherExt = new WatchWeatherExt()
   shortcuts: WatchShortcuts = new WatchShortcuts()
+  aod = new WatchAOD()
 
   constructor(j?: WatchJson) {
     if (!j) return;
