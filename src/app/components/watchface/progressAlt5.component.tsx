@@ -1,18 +1,16 @@
 import { FC } from 'react';
-import { WatchCircleScale, WatchIconSet, WatchImage, WatchImageSet, WatchProgress, WatchScale } from '../../model/watchFace.gts2mini.model';
-import CircleProgressComponent from './circleProgress.component';
+import { WatchIconSet, WatchImageSet, WatchProgressAlt5, WatchScale } from '../../model/watchFace.gts2mini.model';
 import IconSetComponent from './iconSet.component';
-import ImageComponent from './image.component';
 import ImageSetComponent from './imageSet.component';
 import ScaleComponent from './scale.component';
 
 interface IProps {
     title: string;
-    progress: WatchProgress;
-    onUpdate(digit: WatchProgress): void;
+    progress: WatchProgressAlt5;
+    onUpdate(digit: WatchProgressAlt5): void;
   }
 
-const ProgressComponent: FC<IProps> = ({
+const ProgressAlt5Component: FC<IProps> = ({
     progress,
     title,
     onUpdate,
@@ -26,22 +24,12 @@ const ProgressComponent: FC<IProps> = ({
     }
     function updateIconSet(iconset: WatchIconSet) {
       const p = {...progress};
-      p.iconSetProgress = iconset;
+      p.iconsetProgress = iconset;
       onUpdate(p);
     }
     function updateScale(scale: WatchScale) {
       const p = {...progress};
       p.scale = scale;
-      onUpdate(p);
-    }
-    function updateCircle(scale: WatchCircleScale) {
-      const p = {...progress};
-      p.circleScale = scale;
-      onUpdate(p);
-    }
-    function updateNoData(image: WatchImage) {
-      const p = {...progress};
-      p.noDataImage = image;
       onUpdate(p);
     }
 
@@ -55,26 +43,16 @@ const ProgressComponent: FC<IProps> = ({
             <IconSetComponent
               title='Icon set progress'
               onUpdate={updateIconSet}
-              iconSet={{...progress.iconSetProgress}}
+              iconSet={{...progress.iconsetProgress}}
             />
-          <CircleProgressComponent
-              title='Circle progress'
-              onUpdate={updateCircle}
-              scale={{...progress.circleScale}}
-            /> 
             <ScaleComponent
               scale={{...progress.scale}}
               onUpdate={updateScale}
               title='Pointerscale'
               />
             
-            <ImageComponent
-            title='No data Image'
-            onUpdate={updateNoData}
-            image={{...progress.noDataImage}}
-            />
         </div>
     );
 };
 
-export default ProgressComponent
+export default ProgressAlt5Component

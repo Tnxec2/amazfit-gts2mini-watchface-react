@@ -61,6 +61,7 @@ export class TimeSeparateDigits {
   Hours: TwoDigits
   Minutes: TwoDigits
   Seconds: TwoDigits
+  DrawOrder: number
   SeparatorHours: Image
   SeparatorMinutes: Image
   PaddingZeroHours: boolean = false
@@ -109,35 +110,74 @@ export class Coordinates {
 }
 
 
-export class ActivityElement {
+
+
+export class Distance {
+  ImageNumber: NumberJson
+  SuffixKMImageIndex: number
+  DecimalPointImageIndex: number
+  SuffixMIImageIndex: number
+  Icon: Image
+  Shortcut: ShortcutElement
+  SuffixImageCoordinates: Coordinates
+}
+
+export class HeartRate {
   ImageNumber: NumberJson
   PrefixImageIndex: number
   NoDataImageIndex: number
   Icon: Image
   Shortcut: ShortcutElement
   SuffixImageIndex: number
-  DecimalPointImageIndex: number
-  SuffixKMImageIndex: number
-  SuffixMIImageIndex: number
-  SuffixImageCoordinates: Coordinates
+}
+
+export class Calories {
+  ImageNumber: NumberJson
+  SuffixImageIndex: number
+  Icon: Image
+  Shortcut: ShortcutElement
+}
+
+export class StandUp {
+  ImageNumber: NumberJson
+  SuffixImageIndex: number
+  Icon: Image
+  Shortcut: ShortcutElement
+}
+
+export class PAI {
+  ImageNumber: NumberJson
+  SuffixImageIndex: number
+  Icon: Image
+  Shortcut: ShortcutElement
+}
+
+export class Steps {
+  ImageNumber: NumberJson
+  PrefixImageIndex: number
+  NoDataImageIndex: number
+  Icon: Image
+  Shortcut: ShortcutElement
+  SuffixImageIndex: number
 }
 
 export class Activity {
-  Steps: ActivityElement
-  Calories: ActivityElement
-  HeartRate: ActivityElement
-  Distance: ActivityElement
-  PAI: ActivityElement
+  Steps: Steps
+  Icon: Image
+  Calories: Calories
+  HeartRate: HeartRate
+  Distance: Distance
+  PAI: PAI
   UnknownLongValue7: number = 0
-  StandUp: ActivityElement
+  StandUp: StandUp
 
 }
 
 
 export class MonthAndDayAlt{
   Month: NumberJson
-  MonthName: ImageSet
-  MonthNameChinese: ImageSet
+  MonthAsWord: ImageSet
+  MonthAsWordChinese: ImageSet
   Day: NumberJson
 }
 
@@ -160,9 +200,9 @@ export class YearMonthAndDay{
   DelimiterYearImageIndex: number
   DelimiterMonthImageIndex: number
   DelimiterDayImageIndex: number
-  DelimiterYearCoordinates: Coordinates
-  DelimiterMonthCoordinates: Coordinates
-  DelimiterDayCoordinates: Coordinates
+  YearDataTypeCoordinates: Coordinates
+  MonthDataTypeCoordinates: Coordinates
+  DayDataTypeCoordinates: Coordinates
 }
 export class DateElement{
   MonthAndDayAlt: MonthAndDayAlt
@@ -201,7 +241,7 @@ export class CircleScale{
   ImageIndex:  number
 }
 
-export class PointerScale{
+export class  PointerScale{
   CenterX: number = 0
   CenterY: number = 0
   RangeFrom: number = 0
@@ -226,14 +266,50 @@ export class Progress{
   UnknownImage: Image
 }
 
+export class Alt1PointerScale {
+  PointerScale: PointerScale
+}
+export class ProgressAlt1 {
+        PointerScale: PointerScale 
+        ImageProgress: ImageSet 
+        Alt1PointerScale: Alt1PointerScale 
+        NoDataImage: Image 
+    }
+
+export class ProgressAlt2 {
+        ImageProgress: ImageSet
+        NoDataImage: Image
+}
+
+export class ProgressAlt3 {
+        ImageProgress: ImageSet
+        NoDataImage: Image
+    }
+
+export class ProgressAlt4 {
+        ImageProgress: ImageSet
+        NoDataImage: Image
+    }
+
+export class ProgressAlt5 {
+        ImageProgress: ImageSet
+        IconSetProgress: IconSet
+        PointerProgress: Scale
+    }
+
 export class DateBlock{
   Date: DateElement
   AmPm: AmPmIcon
-  Unknown3: number = 0
+  // Unknown3: number = 0
   Weekday: ImageSet
   WeekdayChinese: ImageSet
   WeekdayTradChinese: ImageSet
   WeekdayProgress: Progress
+  WeekdayPointerScale: WeekdayPointerScale
+}
+
+export class WeekdayPointerScale {
+  PointerScale: PointerScale
 }
 
 export class Icon{
@@ -281,6 +357,7 @@ export class UVindex{
   UVindexNumber: NumberJson
   SuffixImageIndex: number
   Shortcut: ShortcutElement
+  NoDataImageIndex: number
   UVindexIcon: Image
 }
 export class Weather{
@@ -303,8 +380,17 @@ export class Status{
   Alarm: Switch
 }
 
+export class TextElement {
+  ImageNumber: NumberJson
+  PrefixImageIndex: number
+  NoDataImageIndex: number
+  SuffixImageIndex: number
+  Icon: Image
+  Shortcut: ShortcutElement
+}
+
 export class Battery{
-  BatteryText: ActivityElement
+  BatteryText: TextElement
   ImageProgress: ImageSet
   IconSetProgress: IconSet
   Scale: Scale
@@ -313,12 +399,12 @@ export class Battery{
 export class AlarmTime{
   Hours: NumberJson
   Minutes: NumberJson
-  DataTypeHoursImageIndex: number
+  HoursDataTypeImageIndex: number
   DelimiterHoursImageIndex: number
   DelimiterMinutesImageIndex: number
   PaddingZeroHours: boolean = false
   PaddingZeroMinutes: boolean = false
-  DataTypeHoursCoordinates: Coordinates // needed only when MinutesFollowHours == False
+  HoursDataTypeCoordinates: Coordinates // needed only when MinutesFollowHours == False
   MinutesFollowHours: boolean = false
 }
 
@@ -403,9 +489,10 @@ export class AoDTimeDigital{
   DelimiterMinutesImageIndex: number
   PaddingZeroHours: boolean = false
   PaddingZeroMinutes: boolean = false
+  
+  HoursDataTypeCoordinates: Coordinates
+  MinutesDataTypeCoordinates: Coordinates
   MinutesFollowHours: boolean = false
-  DataTypeHoursCoordinates: Coordinates
-  DataTypeMinutesCoordinates: Coordinates
 }
 
 export class AoDTimeExtended{
@@ -440,11 +527,16 @@ export class AoDDate{
  DayFollowsMonth: boolean = false
 }
 
+export class AODSteps {
+  ImageNumber: NumberJson
+  PrefixImageIndex: number
+  SuffixImageIndex: number
+}
 export class AlwaysOnDisplay{
   TimeExtended: AoDTimeExtended
   DateOneLine: AoDDateOneLine
   Week: AoDWeek
-  Steps: ActivityElement
+  Steps: AODSteps
   Date: AoDDate
 }
 
@@ -481,6 +573,16 @@ export class TimeSpans{
   StopMin: number
 }
 
+export class WeekDayImages {
+        Monday: Image
+        Tuesday: Image
+        Wednesday: Image
+        Thursday: Image
+        Friday: Image
+        Saturday: Image
+        Sunday: Image
+}
+
 export class WatchJson{
   Info: DeviceId;
   Background: Background;
@@ -493,16 +595,19 @@ export class WatchJson{
   Battery: Battery;
   Animation: Animation;
   HeartProgress: Progress;
+  WeekDayImages: WeekDayImages;
   CaloriesProgress: Progress;
-  HumidityProgress: Progress;
+  HumidityProgress: ProgressAlt3;
   Alarm: Alarm;
   Shortcuts: Shortcuts;
   TimeAnalog: AnalogDialFace;
   TimeDigital: TimeDigital;
   HourlyImages: HourlyImages;
-  PaiProgress: Progress;
-  StandUpProgress: Progress;
-  UviProgress: Progress;
+  PaiProgress: ProgressAlt1;
+  StandUpProgress: ProgressAlt5;
+  UviProgress: ProgressAlt2;
+  StressProgress: ProgressAlt4;
+  SPO2Progress: ProgressAlt4;
   AlwaysOnDisplay: AlwaysOnDisplay;
   ActivitySeparateDigits: ActivitySeparateDigits;
 }

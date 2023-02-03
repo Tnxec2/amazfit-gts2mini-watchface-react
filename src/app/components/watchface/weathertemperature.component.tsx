@@ -22,7 +22,7 @@ const WeatherTemperatureComponent: FC<IProps> = ({
       blocks: [
         { title: 'Minus', type: BlockType.SelectFile, nvalue: temp.minus, onChange: onChangeMinus },
         { title: 'NoData', type: BlockType.SelectFile, nvalue: temp.nodata, onChange: onChangeNoData },
-        { title: 'Suffix', type: BlockType.SelectFile, nvalue: temp.suffix, onChange: onChangeSuffix },
+        { title: 'Suffix C', type: BlockType.SelectFile, nvalue: temp.suffixC, onChange: onChangeSuffixC },
       ]
     },
   ], [temp]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -37,9 +37,10 @@ const WeatherTemperatureComponent: FC<IProps> = ({
     temp.nodata = val
     onUpdate(w)
   }
-  function onChangeSuffix(val: number) {
-    onUpdate({...temp, suffix: val})
+  function onChangeSuffixC(val: number) {
+    onUpdate({...temp, suffixC: val})
   }
+  
   function updateWatchNumber(n: WatchNumber) {
     onUpdate({...temp, watchNumber: {...n}})
   }

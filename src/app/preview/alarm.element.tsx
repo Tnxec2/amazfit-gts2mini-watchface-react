@@ -44,8 +44,6 @@ export default function drawAlarm(
         }
     }
 
-    console.log(watchState.alarmEnabled, alarm.alarmImage.enabled, alarm.noAlarm.enabled);
-    
     if (watchState.alarmEnabled) {
         if ( alarm.alarmImage.enabled) drawImage(ctx, images, alarm.alarmImage.json)
     } else {

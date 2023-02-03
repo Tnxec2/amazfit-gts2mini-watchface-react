@@ -3,10 +3,10 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType } from "../../model/blocks.model";
-import { WatchImage, WatchImageSet, WatchNumber, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
+import { WatchImage, WatchNumber, WatchProgressAlt2, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
-import ImageSetComponent from "./imageSet.component";
 import WatchNumberComponent from "./number.component";
+import ProgressAlt2Component from "./progressAlt2.component";
 import WatchShortCutComponent from "./watchshortcut.component";
 
 
@@ -34,14 +34,14 @@ const UvIndexComponent: FC = () => {
     setWatchface(w)
   }
 
-  function onChangeImageProgress(val: WatchImageSet) {
-    const w = {...watchface};
-    w.weatherext.uvProgress.imageProgress = val
-    setWatchface(w)
-  }
   function updateShortcut(val: WatchShortcutElement) {
     const w = {...watchface};
     w.weatherext.uvShortcut = val
+    setWatchface(w)
+  }
+  function updateProgress(val: WatchProgressAlt2) {
+    const w = {...watchface};
+    w.weatherext.uvProgress = val
     setWatchface(w)
   }
 
@@ -79,12 +79,11 @@ const UvIndexComponent: FC = () => {
             image={{...watchface.weatherext.uvIcon}}
             onUpdate={onChangeIcon}
             />
-          <ImageSetComponent
-            title='Image progress'
-            imageSet={{...watchface.weatherext.uvProgress.imageProgress}}
-            onUpdate={onChangeImageProgress}
-            />
-
+          <ProgressAlt2Component
+            title="Progress"
+            progress={{...watchface.weatherext.uvProgress}}
+            onUpdate={updateProgress}
+          />
           <WatchShortCutComponent
             title='UV Shortcut'
             shortcut={{...watchface.weatherext.uvShortcut}}

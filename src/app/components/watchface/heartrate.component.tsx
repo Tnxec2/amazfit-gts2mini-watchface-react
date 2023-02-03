@@ -2,64 +2,33 @@ import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { BlockType, IRow } from "../../model/blocks.model";
-import { Coordinates } from "../../model/json.gts2minit.model";
-import { ActivityType } from "../../model/types.gts2mini.model";
-import { WatchActivity, WatchImage, WatchNumber, WatchProgress, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
+import { WatchHeartRateActivity, WatchImage, WatchNumber, WatchProgress, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
 import WatchNumberComponent from "./number.component";
 import ProgressComponent from "./progress.component";
 import WatchShortCutComponent from "./watchshortcut.component";
 
 interface IProps {
-  activity: WatchActivity;
+  activity: WatchHeartRateActivity;
   title: string;
-  onUpdateActivity(activity: WatchActivity): void;
-  type: ActivityType,
-  showImageProgress: boolean,
-  showIconProgress: boolean,
-  showPointerProgress: boolean,
-  showCircleScaleProgress: boolean,
+  onUpdateActivity(activity: WatchHeartRateActivity): void;
 }
 
-const ActivityComponent: FC<IProps> = ({
+const HeartRateComponent: FC<IProps> = ({
   activity,
   title,
   onUpdateActivity,
-  type,
-  showImageProgress,
-  showIconProgress,
-  showPointerProgress,
-  showCircleScaleProgress,
 }) => {
 
   const ar = useMemo<IRow[]>(() => [
     {
-      disabled: !( type === ActivityType.Steps || type === ActivityType.Calories ),
       blocks: [
         { title: 'Prefix', type: BlockType.SelectFile, nvalue: activity.aElement.prefix, onChange: onChangePrefix },
-      ]
-    },
-    {
-      disabled: ( type === ActivityType.Distance  ),
-      blocks: [
+        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffix },
         { title: 'NoData', type: BlockType.SelectFile, nvalue: activity.aElement.noData, onChange: onChangeNoData },
       ]
     },
-    {
-      disabled: !( type === ActivityType.Steps || type === ActivityType.HeartRate ),
-      blocks: [
-        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffix },
-      ]
-    },
-    {
-      disabled: !( type === ActivityType.Distance ),
-      blocks: [
-        { title: 'DecimalPointer', type: BlockType.SelectFile, nvalue: activity.aElement.decimalPoint, onChange: onChangeDecimalPointer },
-        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffixKM },
-        { title: 'X', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.X ? activity.aElement.suffixImageCoordinates.X : 0, onChange: onChangeSuffixCoordsX },
-        { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.Y ? activity.aElement.suffixImageCoordinates.Y : 0, onChange: onChangeSuffixCoordsY },
-      ]
-    }
+   
   ], [activity]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function onChangePrefix(val: number) {
@@ -77,28 +46,7 @@ const ActivityComponent: FC<IProps> = ({
     a.aElement.suffix = val
     onUpdateActivity(a)
   }
-  function onChangeDecimalPointer(val: number) {
-    const a = {...activity};
-    a.aElement.decimalPoint = val
-    onUpdateActivity(a)
-  }
-  function onChangeSuffixKM(val: number) {
-    const a = {...activity};
-    a.aElement.suffixKM = val
-    onUpdateActivity(a)
-  }
-  function onChangeSuffixCoordsX(val: number) {
-    const a = {...activity};
-    if (!a.aElement.suffixImageCoordinates) a.aElement.suffixImageCoordinates = new Coordinates()
-    a.aElement.suffixImageCoordinates.X = val
-    onUpdateActivity(a)
-  }
-  function onChangeSuffixCoordsY(val: number) {
-    const a = {...activity};
-    if (!a.aElement.suffixImageCoordinates) a.aElement.suffixImageCoordinates = new Coordinates()
-    a.aElement.suffixImageCoordinates.X = val
-    onUpdateActivity(a)
-  }
+
 
   function updateIcon(val: WatchImage) {
     const a = {...activity};
@@ -142,7 +90,7 @@ const ActivityComponent: FC<IProps> = ({
         <Card.Body>
           <WatchNumberComponent
             title='Number'
-            digit={activity.aElement.imageNumber}
+            digit={{...activity.aElement.imageNumber}}
             onUpdate={udpateDigit}
             followDisabled={true}
             showDelimiter={false}
@@ -151,22 +99,18 @@ const ActivityComponent: FC<IProps> = ({
           <BlocksArrayComponent ar={ar} />
           <ImageComponent
             title='Icon'
-            image={activity.aElement.icon}
+            image={{...activity.aElement.icon}}
             onUpdate={updateIcon}
           />
           <WatchShortCutComponent
             title='Shortcut'
-            shortcut={activity.aElement.shortcut}
+            shortcut={{...activity.aElement.shortcut}}
             onUpdate={updateShortcut}
           />
           <ProgressComponent
-            progress={activity.aProgress}
+            progress={{...activity.aProgress}}
             title='Progress'
             onUpdate={updateProgress}
-            showImageProgress={showImageProgress}
-            showIconProgress={showIconProgress}
-            showPointerProgress={showPointerProgress}
-            showCircleScaleProgress={showCircleScaleProgress}
           />
 
         </Card.Body>
@@ -177,4 +121,4 @@ const ActivityComponent: FC<IProps> = ({
   );
 };
 
-export default ActivityComponent;
+export default HeartRateComponent;

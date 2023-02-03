@@ -1,16 +1,14 @@
 import { IImage } from "../model/image.model";
-import { WatchActivity } from "../model/watchFace.gts2mini.model";
-import drawCircleProgress from "./circleProgress.element";
+import { WatchStandUpActivity } from "../model/watchFace.gts2mini.model";
 import drawDigitImage from "./digitImage.element";
 import drawIconSet from "./iconSet.element";
 import drawImage from "./image.element";
 import drawImageSet from "./imageSet.element";
-import drawPointerProgress from "./pointerProgress.element";
 import drawShortcutElement from "./shortcut.element";
 
-export function drawActivity(ctx: CanvasRenderingContext2D,
+export function drawStandUp(ctx: CanvasRenderingContext2D,
     images: IImage[],
-    activity: WatchActivity,
+    activity: WatchStandUpActivity,
     value: number,
     total: number,
     drawBorder: boolean,
@@ -20,10 +18,10 @@ export function drawActivity(ctx: CanvasRenderingContext2D,
     if (activity.aElement.enabled) {
         drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
         null, drawBorder, false, null,
-        activity.aElement.prefix, 
-        activity.aElement.decimalPoint, 
+        null, 
+        null, 
         activity.aElement.suffix,
-        activity.aElement.suffixKM)
+        null)
     }
     if (activity.aElement.icon.enabled) {
         drawImage(ctx, images, activity.aElement.icon.json)
@@ -31,16 +29,10 @@ export function drawActivity(ctx: CanvasRenderingContext2D,
     if (activity.aProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, activity.aProgress.imageProgress.json, value, total);
     }
-    if (activity.aProgress.iconSetProgress.enabled) {
-        drawIconSet(ctx, images, activity.aProgress.iconSetProgress.json, value, total);
+    if (activity.aProgress.iconsetProgress.enabled) {
+        drawIconSet(ctx, images, activity.aProgress.iconsetProgress.json, value, total);
     }
-    if (activity.aProgress.circleScale.enabled) {
-        drawCircleProgress(ctx, images, activity.aProgress.circleScale.json, value, total);
-    }
-    if (activity.aProgress.scale.enabled) {
-        if (activity.aProgress.scale.bottomImage.enabled) drawImage(ctx, images, activity.aProgress.scale.bottomImage.json);
-        drawPointerProgress(ctx, images, activity.aProgress.scale.pointerScaleJson, value, total);
-    }
+    
     if (activity.aElement.shortcut.enabled) {
         drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)
     }

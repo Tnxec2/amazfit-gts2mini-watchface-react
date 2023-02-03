@@ -1,5 +1,5 @@
 import Color from "../shared/color";
-import { ActivityElement, Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, CircleScale, ClockHand, Coordinates, DateBlock, FiveDigits, FourDigits, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PointerScale, Progress, Scale, Shortcut, ShortcutElement, Shortcuts, Status, Switch, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
+import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressAlt1, ProgressAlt2, ProgressAlt3, ProgressAlt4, ProgressAlt5, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, TextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
   count: number;
@@ -216,7 +216,7 @@ export class WatchTextTemperature {
   enabled = false
   watchNumber: WatchNumber = new WatchNumber(null, digitTypes.weather)
   minus: number
-  suffix: number
+  suffixC: number
   nodata: number
   shortcut: WatchShortcutElement = new WatchShortcutElement()
 
@@ -225,7 +225,7 @@ export class WatchTextTemperature {
       this.enabled = true
       this.watchNumber = new WatchNumber(j.ImageNumber, digitTypes.weather)
       this.minus = j.MinusImageIndex
-      this.suffix = j.SuffixImageIndexC
+      this.suffixC = j.SuffixImageIndexC
       this.nodata = j.NoDataImageIndex
       this.shortcut = new WatchShortcutElement(j.Shortcut)
     }
@@ -287,14 +287,26 @@ export class WatchCircleScale {
   }
 }
 
+export class WatchPointerScale {
+  enabled: boolean = false
+  json: PointerScale = new PointerScale()
+
+  constructor(j?: PointerScale) {
+    if (j) {
+      this.enabled = true
+      this.json = j
+    }
+  }
+}
+
 export class WatchScale {
   enabled: boolean = false
-  pointerScaleJson: PointerScale = new PointerScale()
+  pointerscale: WatchPointerScale = new WatchPointerScale()
   bottomImage: WatchImage = new WatchImage()
   constructor(j?: Scale) {
     if (j) {
       this.enabled = true
-      this.pointerScaleJson = j.PointerScale
+      this.pointerscale = new WatchPointerScale(j.PointerScale)
       this.bottomImage = new WatchImage(j.BottomImage)
     }
   }
@@ -318,6 +330,74 @@ export class WatchProgress {
   }
 }
 
+export class WatchProgressAlt1 {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  pointerScale: WatchPointerScale = new WatchPointerScale()
+  altPointerScale: WatchPointerScale = new WatchPointerScale()
+  noDataImage: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressAlt1) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+      this.pointerScale = new WatchPointerScale(j.PointerScale)
+      this.altPointerScale = new WatchPointerScale(j.Alt1PointerScale?.PointerScale)
+      this.noDataImage = new WatchImage(j.NoDataImage)
+    }
+  }
+}
+
+export class WatchProgressAlt2 {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  noDataImage: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressAlt2) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+
+      this.noDataImage = new WatchImage(j.NoDataImage)
+    }
+  }
+}
+export class WatchProgressAlt3 {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  noDataImage: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressAlt3) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+
+      this.noDataImage = new WatchImage(j.NoDataImage)
+    }
+  }
+}
+
+export class WatchProgressAlt4 {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  noDataImage: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressAlt4) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+
+      this.noDataImage = new WatchImage(j.NoDataImage)
+    }
+  }
+}
+
+export class WatchProgressAlt5 {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  iconsetProgress: WatchIconSet = new WatchIconSet()
+  scale: WatchScale = new WatchScale()
+
+  constructor(count: number, j?: ProgressAlt5) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+      this.iconsetProgress = new WatchIconSet(j.IconSetProgress)
+      this.scale = new WatchScale(j.PointerProgress)
+    }
+  }
+}
+
 export class WatchWeatherExt {
   collapsed: boolean = true
   collapsedAirQuality: boolean = true
@@ -330,13 +410,14 @@ export class WatchWeatherExt {
   humidityNumber: WatchNumber= new WatchNumber(null, digitTypes.humidity)
   humiditySuffix: number
   humidityIcon: WatchImage = new WatchImage()
-  humidityProgress: WatchProgress = new WatchProgress(digitTypes.humidity.imageProgressTotal)
+  humidityProgress: WatchProgressAlt3 = new WatchProgressAlt3(digitTypes.humidity.imageProgressTotal)
   
   uvNumber: WatchNumber= new WatchNumber(null, digitTypes.uvIndex)
   uvSuffixImageIndex: number
+  uvNoDataImageIndex: number
   uvShortcut: WatchShortcutElement = new WatchShortcutElement()
   uvIcon: WatchImage = new WatchImage()
-  uvProgress: WatchProgress = new WatchProgress(digitTypes.uvIndex.imageProgressTotal)
+  uvProgress: WatchProgressAlt2 = new WatchProgressAlt2(digitTypes.uvIndex.imageProgressTotal)
 
   constructor(j?: WatchJson) {
     if (j) {
@@ -350,16 +431,17 @@ export class WatchWeatherExt {
         this.humidityIcon = new WatchImage(j.Weather.Humidity.HumidityIcon)
       }
       if (j.HumidityProgress) {
-        this.humidityProgress = new WatchProgress(digitTypes.humidity.imageProgressTotal, j.HumidityProgress)
+        this.humidityProgress = new WatchProgressAlt3(digitTypes.humidity.imageProgressTotal, j.HumidityProgress)
       }
       if (j.Weather?.UVindex) {
         this.uvNumber = new WatchNumber(j.Weather.UVindex.UVindexNumber, digitTypes.uvIndex)
         this.uvSuffixImageIndex = j.Weather.UVindex.SuffixImageIndex
+        this.uvNoDataImageIndex = j.Weather.UVindex.NoDataImageIndex
         this.uvShortcut = new WatchShortcutElement(j.Weather.UVindex.Shortcut)
         this.uvIcon = new WatchImage(j.Weather.UVindex.UVindexIcon)
       }
       if (j.UviProgress) {
-        this.uvProgress = new WatchProgress(digitTypes.uvIndex.imageProgressTotal, j.UviProgress)
+        this.uvProgress = new WatchProgressAlt2(digitTypes.uvIndex.imageProgressTotal, j.UviProgress)
       }
     }
   }
@@ -585,29 +667,56 @@ export class WatchAodDate {
   }
 }
 
-export class WatchActivityElement {
+// export class WatchActivityElement {
+//   enabled: boolean
+
+//   imageNumber: WatchNumber = new WatchNumber(null, null)
+//   prefix: number
+//   noData: number
+//   icon: WatchImage = new WatchImage()
+//   shortcut: WatchShortcutElement = new WatchShortcutElement()
+//   suffix: number
+//   decimalPoint: number
+//   suffixKM: number
+//   suffixMI: number
+//   suffixImageCoordinates: Coordinates
+
+//   constructor(con?: IDigitConstructor, j?: Steps | Calories | HeartRate | PAI | Distance) {
+//     if (j) {
+//       this.enabled = true
+//       this.imageNumber = new WatchNumber(j.ImageNumber, con)
+//       this.prefix = j.PrefixImageIndex ? j.PrefixImageIndex : null
+//       this.noData = j.NoDataImageIndex
+//       this.icon = new WatchImage(j.Icon)
+//       this.shortcut = new WatchShortcutElement(j.Shortcut)
+//       this.suffix = j.SuffixImageIndex
+//       this.decimalPoint = j.DecimalPointImageIndex
+//       this.suffixKM = j.SuffixKMImageIndex
+//       this.suffixMI = j.SuffixMIImageIndex
+//       this.suffixImageCoordinates = j.SuffixImageCoordinates
+//     } else if (con) {
+//       this.imageNumber = new WatchNumber(null, con)
+//     }
+//   }
+// }
+
+export class WatchDistanceElement {
   enabled: boolean
 
   imageNumber: WatchNumber = new WatchNumber(null, null)
-  prefix: number
-  noData: number
   icon: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
-  suffix: number
   decimalPoint: number
   suffixKM: number
   suffixMI: number
   suffixImageCoordinates: Coordinates
 
-  constructor(con?: IDigitConstructor, j?: ActivityElement) {
+  constructor(con?: IDigitConstructor, j?: Distance) {
     if (j) {
       this.enabled = true
       this.imageNumber = new WatchNumber(j.ImageNumber, con)
-      this.prefix = j.PrefixImageIndex
-      this.noData = j.NoDataImageIndex
       this.icon = new WatchImage(j.Icon)
       this.shortcut = new WatchShortcutElement(j.Shortcut)
-      this.suffix = j.SuffixImageIndex
       this.decimalPoint = j.DecimalPointImageIndex
       this.suffixKM = j.SuffixKMImageIndex
       this.suffixMI = j.SuffixMIImageIndex
@@ -618,22 +727,299 @@ export class WatchActivityElement {
   }
 }
 
-export class WatchActivity {
+
+export class WatchStepsElement {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, null)
+  prefix: number
+  noData: number
+  icon: WatchImage = new WatchImage()
+  shortcut: WatchShortcutElement = new WatchShortcutElement()
+  suffix: number
+
+
+  constructor(con?: IDigitConstructor, j?: Steps) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.ImageNumber, con)
+      this.prefix = j.PrefixImageIndex ? j.PrefixImageIndex : null
+      this.noData = j.NoDataImageIndex
+      this.icon = new WatchImage(j.Icon)
+      this.shortcut = new WatchShortcutElement(j.Shortcut)
+      this.suffix = j.SuffixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
+export class WatchAodStepsElement {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, null)
+  prefix: number
+  suffix: number
+
+
+  constructor(con?: IDigitConstructor, j?: AODSteps) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.ImageNumber, con)
+      this.prefix = j.PrefixImageIndex ? j.PrefixImageIndex : null
+      this.suffix = j.SuffixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
+export class WatchHertRateElement {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, null)
+  prefix: number
+  noData: number
+  icon: WatchImage = new WatchImage()
+  shortcut: WatchShortcutElement = new WatchShortcutElement()
+  suffix: number
+
+
+  constructor(con?: IDigitConstructor, j?: HeartRate) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.ImageNumber, con)
+      this.prefix = j.PrefixImageIndex ? j.PrefixImageIndex : null
+      this.noData = j.NoDataImageIndex
+      this.icon = new WatchImage(j.Icon)
+      this.shortcut = new WatchShortcutElement(j.Shortcut)
+      this.suffix = j.SuffixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
+export class WatchPaiElement {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, null)
+  icon: WatchImage = new WatchImage()
+  shortcut: WatchShortcutElement = new WatchShortcutElement()
+  suffix: number
+
+
+  constructor(con?: IDigitConstructor, j?: PAI) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.ImageNumber, con)
+      this.icon = new WatchImage(j.Icon)
+      this.shortcut = new WatchShortcutElement(j.Shortcut)
+      this.suffix = j.SuffixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
+export class WatchStandUpElement {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, null)
+  icon: WatchImage = new WatchImage()
+  shortcut: WatchShortcutElement = new WatchShortcutElement()
+  suffix: number
+
+
+  constructor(con?: IDigitConstructor, j?: StandUp) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.ImageNumber, con)
+      this.icon = new WatchImage(j.Icon)
+      this.shortcut = new WatchShortcutElement(j.Shortcut)
+      this.suffix = j.SuffixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
+export class WatchCaloriesElement {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, null)
+  icon: WatchImage = new WatchImage()
+  shortcut: WatchShortcutElement = new WatchShortcutElement()
+  suffix: number
+
+
+  constructor(con?: IDigitConstructor, j?: Calories) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.ImageNumber, con)
+      this.icon = new WatchImage(j.Icon)
+      this.shortcut = new WatchShortcutElement(j.Shortcut)
+      this.suffix = j.SuffixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
+export class WatchStandUpActivity {
   collapsed = true
 
-  aElement: WatchActivityElement = new WatchActivityElement()
+  aElement: WatchStandUpElement = new WatchStandUpElement()
+  aProgress: WatchProgressAlt5 = new WatchProgressAlt5(null)
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, element?: StandUp, progress?: ProgressAlt5) {
+    if (element) {
+      this.aElement = new WatchStandUpElement(con, element)
+    }
+    if (progress) {
+      this.aProgress = new WatchProgressAlt5(con.imageProgressTotal, progress)
+    }
+    if (!this.aElement) {
+      this.aElement = new WatchStandUpElement(con)
+    } else {
+      this.aElement.imageNumber.con = con
+      this.aElement.imageNumber.json.ImagesCount = con.count
+    }
+    this.con = con
+  }
+}
+
+export class WatchPAIActivity {
+  collapsed = true
+
+  aElement: WatchPaiElement = new WatchPaiElement()
+  aProgress: WatchProgressAlt1 = new WatchProgressAlt1(null)
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, element?: PAI, progress?: ProgressAlt1) {
+    if (element) {
+      this.aElement = new WatchPaiElement(con, element)
+    }
+    if (progress) {
+      this.aProgress = new WatchProgressAlt1(con.imageProgressTotal, progress)
+    }
+    if (!this.aElement) {
+      this.aElement = new WatchPaiElement(con)
+    } else {
+      this.aElement.imageNumber.con = con
+      this.aElement.imageNumber.json.ImagesCount = con.count
+    }
+    this.con = con
+  }
+}
+
+export class WatchDistanceActivity {
+  collapsed = true
+
+  aElement: WatchDistanceElement = new WatchDistanceElement()
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, element?: Distance) {
+    if (element) {
+      this.aElement = new WatchDistanceElement(con, element)
+    }
+
+    if (!this.aElement) {
+      this.aElement = new WatchDistanceElement(con)
+    } else {
+      this.aElement.imageNumber.con = con
+      this.aElement.imageNumber.json.ImagesCount = con.count
+    }
+    this.con = con
+  }
+}
+
+export class WatchHeartRateActivity {
+  collapsed = true
+
+  aElement: WatchHertRateElement = new WatchHertRateElement()
   aProgress: WatchProgress = new WatchProgress(null)
   con: IDigitConstructor
   
-  constructor(con: IDigitConstructor, element?: ActivityElement, progress?: Progress) {
+  constructor(con: IDigitConstructor, element?: HeartRate, progress?: Progress) {
     if (element) {
-      this.aElement = new WatchActivityElement(con, element)
+      this.aElement = new WatchHertRateElement(con, element)
     }
     if (progress) {
       this.aProgress = new WatchProgress(con.imageProgressTotal, progress)
     }
     if (!this.aElement) {
-      this.aElement = new WatchActivityElement(con)
+      this.aElement = new WatchHertRateElement(con)
+    } else {
+      this.aElement.imageNumber.con = con
+      this.aElement.imageNumber.json.ImagesCount = con.count
+    }
+    this.con = con
+  }
+}
+
+export class WatchCaloriesActivity {
+  collapsed = true
+
+  aElement: WatchCaloriesElement = new WatchCaloriesElement()
+  aProgress: WatchProgress = new WatchProgress(null)
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, element?: Calories, progress?: Progress) {
+    if (element) {
+      this.aElement = new WatchCaloriesElement(con, element)
+    }
+    if (progress) {
+      this.aProgress = new WatchProgress(con.imageProgressTotal, progress)
+    }
+    if (!this.aElement) {
+      this.aElement = new WatchCaloriesElement(con)
+    } else {
+      this.aElement.imageNumber.con = con
+      this.aElement.imageNumber.json.ImagesCount = con.count
+    }
+    this.con = con
+  }
+}
+
+export class WatchStepsActivity {
+  collapsed = true
+
+  aElement: WatchStepsElement = new WatchStepsElement()
+  aProgress: WatchProgress = new WatchProgress(null)
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, element?: Steps, progress?: Progress) {
+    if (element) {
+      this.aElement = new WatchStepsElement(con, element)
+    }
+    if (progress) {
+      this.aProgress = new WatchProgress(con.imageProgressTotal, progress)
+    }
+    if (!this.aElement) {
+      this.aElement = new WatchStepsElement(con)
+    } else {
+      this.aElement.imageNumber.con = con
+      this.aElement.imageNumber.json.ImagesCount = con.count
+    }
+    this.con = con
+  }
+}
+
+export class WatchAodStepsActivity {
+  collapsed = true
+
+  aElement: WatchAodStepsElement = new WatchAodStepsElement()
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, element?: AODSteps) {
+    if (element) {
+      this.aElement = new WatchAodStepsElement(con, element)
+    }
+
+    if (!this.aElement) {
+      this.aElement = new WatchStepsElement(con)
     } else {
       this.aElement.imageNumber.con = con
       this.aElement.imageNumber.json.ImagesCount = con.count
@@ -649,14 +1035,14 @@ export class WatchAOD {
   date: WatchAodDate = new WatchAodDate()
   dateOneLine: WatchAodDateOneLine = new WatchAodDateOneLine()
   weekday: WatchImageSet = new WatchImageSet(digitTypes.weekday.imageProgressTotal)
-  steps: WatchActivity = new WatchActivity(digitTypes.steps)
+  steps: WatchAodStepsActivity = new WatchAodStepsActivity(digitTypes.steps)
 
   constructor(j?: AlwaysOnDisplay) {
     if (j) {
       this.time = new WatchAodTime(j.TimeExtended)
       this.dateOneLine = new WatchAodDateOneLine(j.DateOneLine)
       this.weekday = new WatchImageSet(digitTypes.weekday.imageProgressTotal, j.Week?.Weekday)
-      this.steps = new WatchActivity(digitTypes.steps, j.Steps)
+      this.steps = new WatchAodStepsActivity(digitTypes.steps, j.Steps)
       this.date = new WatchAodDate(j.Date)
     }
   }
@@ -675,12 +1061,36 @@ export class WatchAnimation {
   }
 }
 
+export class WatchTextElement {
+  enabled: boolean
 
+  imageNumber: WatchNumber = new WatchNumber(null, null)
+  prefix: number
+  noData: number
+  icon: WatchImage = new WatchImage()
+  shortcut: WatchShortcutElement = new WatchShortcutElement()
+  suffix: number
+
+
+  constructor(con?: IDigitConstructor, j?: TextElement) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.ImageNumber, con)
+      this.prefix = j.PrefixImageIndex ? j.PrefixImageIndex : null
+      this.noData = j.NoDataImageIndex
+      this.icon = new WatchImage(j.Icon)
+      this.shortcut = new WatchShortcutElement(j.Shortcut)
+      this.suffix = j.SuffixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
 
 export class WatchBattery {
   collapsed: boolean = true
 
-  text: WatchActivityElement = new WatchActivityElement(digitTypes.battery)
+  text: WatchTextElement = new WatchTextElement(digitTypes.battery)
   imageProgress: WatchImageSet = new WatchImageSet(digitTypes.battery.imageProgressTotal)
   iconSetProgress: WatchIconSet = new WatchIconSet()
   scale: WatchScale = new WatchScale()
@@ -688,7 +1098,7 @@ export class WatchBattery {
 
   constructor(j?: Battery) {
     if (j) {
-      if(j.BatteryText) { this.text = new WatchActivityElement(digitTypes.battery, j.BatteryText) }
+      if(j.BatteryText) { this.text = new WatchTextElement(digitTypes.battery, j.BatteryText) }
       if(j.ImageProgress) { this.imageProgress = new WatchImageSet(digitTypes.battery.imageProgressTotal, j.ImageProgress) ;}
       if(j.IconSetProgress) { this.iconSetProgress = new WatchIconSet(j.IconSetProgress) ;}
       if(j.Scale) { this.scale = new WatchScale(j.Scale) ;}
@@ -731,12 +1141,12 @@ export class WatchActivityList {
   collapsed = true
   collapsedSeparated = true
 
-  steps: WatchActivity = new WatchActivity(digitTypes.steps)
-  calories: WatchActivity = new WatchActivity(digitTypes.calories)
-  heartRate: WatchActivity = new WatchActivity(digitTypes.heartRate)
-  distance: WatchActivity = new WatchActivity(digitTypes.distance)
-  pai: WatchActivity = new WatchActivity(digitTypes.pai)
-  standUp: WatchActivity = new WatchActivity(digitTypes.standUp)
+  steps: WatchStepsActivity = new WatchStepsActivity(digitTypes.steps)
+  calories: WatchCaloriesActivity = new WatchCaloriesActivity(digitTypes.calories)
+  heartRate: WatchHeartRateActivity = new WatchHeartRateActivity(digitTypes.heartRate)
+  distance: WatchDistanceActivity = new WatchDistanceActivity(digitTypes.distance)
+  pai: WatchPAIActivity = new WatchPAIActivity(digitTypes.pai)
+  standUp: WatchStandUpActivity = new WatchStandUpActivity(digitTypes.standUp)
 
   caloriesSeparatedDigits: WatchFourDigitsSeparated = new WatchFourDigitsSeparated(104)
   batterySeparatedDigits: WatchThreeDigitsSeparated = new WatchThreeDigitsSeparated(101)
@@ -745,12 +1155,12 @@ export class WatchActivityList {
 
     constructor(j?: WatchJson) {
     if (j) {
-      if (j.Activity?.Steps || j.StepProgress) this.steps = new WatchActivity(digitTypes.steps, j.Activity?.Steps, j.StepProgress)
-      if (j.Activity?.Calories || j.CaloriesProgress)   this.calories = new WatchActivity(digitTypes.calories, j.Activity?.Calories, j.CaloriesProgress)
-      if (j.Activity?.HeartRate || j.HeartProgress) this.heartRate = new WatchActivity(digitTypes.heartRate, j.Activity?.HeartRate, j.HeartProgress)
-      if (j.Activity?.Distance) this.distance = new WatchActivity(digitTypes.distance, j.Activity?.Distance, null)
-      if (j.Activity?.PAI || j.PaiProgress) this.pai = new WatchActivity(digitTypes.pai, j.Activity?.PAI, j.PaiProgress)
-      if (j.Activity?.StandUp || j.StandUpProgress) this.standUp = new WatchActivity(digitTypes.standUp, j.Activity?.StandUp, j.StandUpProgress)
+      if (j.Activity?.Steps || j.StepProgress) this.steps = new WatchStepsActivity(digitTypes.steps, j.Activity?.Steps, j.StepProgress)
+      if (j.Activity?.Calories || j.CaloriesProgress)   this.calories = new WatchCaloriesActivity(digitTypes.calories, j.Activity?.Calories, j.CaloriesProgress)
+      if (j.Activity?.HeartRate || j.HeartProgress) this.heartRate = new WatchHeartRateActivity(digitTypes.heartRate, j.Activity?.HeartRate, j.HeartProgress)
+      if (j.Activity?.Distance) this.distance = new WatchDistanceActivity(digitTypes.distance, j.Activity?.Distance)
+      if (j.Activity?.PAI || j.PaiProgress) this.pai = new WatchPAIActivity(digitTypes.pai, j.Activity?.PAI, j.PaiProgress)
+      if (j.Activity?.StandUp || j.StandUpProgress) this.standUp = new WatchStandUpActivity(digitTypes.standUp, j.Activity?.StandUp, j.StandUpProgress)
       
       if (j.ActivitySeparateDigits) {
         this.stepsSeparatedDigits = new WatchFiveDigitsSeparated(103, j.ActivitySeparateDigits.Steps)
@@ -787,7 +1197,7 @@ export class WatchDate {
       if ( j.Date) {
         if (j.Date.MonthAndDayAlt) {
           this.month = new WatchNumber(j.Date.MonthAndDayAlt.Month, digitTypes.month)
-          this.monthAsWord = new WatchImageSet(digitTypes.monthasword.imageProgressTotal, j.Date.MonthAndDayAlt.MonthName)
+          this.monthAsWord = new WatchImageSet(digitTypes.monthasword.imageProgressTotal, j.Date.MonthAndDayAlt.MonthAsWord)
           this.day =  new WatchNumber(j.Date.MonthAndDayAlt.Day, digitTypes.day)
           if (this.month) this.month.paddingZero = j.Date.PaddingZeroMonth
           if (this.day) this.day.paddingZero = j.Date.PaddingZeroDay
@@ -802,20 +1212,20 @@ export class WatchDate {
             this.month.delimiter = j.Date.YearMonthAndDay.DelimiterMonthImageIndex
             this.month.follow = j.Date.YearMonthAndDay.MonthFollowsYear ? true : false
             this.month.dataType = j.Date.YearMonthAndDay.MonthDataTypeImageIndex
-            this.month.delimiterCoords = j.Date.YearMonthAndDay.DelimiterMonthCoordinates
+            this.month.delimiterCoords = j.Date.YearMonthAndDay.MonthDataTypeCoordinates
             this.month.paddingZero = j.Date.PaddingZeroMonth
           }
           if (this.day) {
             this.day.follow = j.Date.YearMonthAndDay.DayFollowsMonth ? true: false
             this.day.delimiter = j.Date.YearMonthAndDay.DelimiterDayImageIndex
             this.day.dataType = j.Date.YearMonthAndDay.DayDataTypeImageIndex
-            this.day.delimiterCoords = j.Date.YearMonthAndDay.DelimiterDayCoordinates
+            this.day.delimiterCoords = j.Date.YearMonthAndDay.DayDataTypeCoordinates
             this.day.paddingZero = j.Date.PaddingZeroDay
           }
           if ( this.year) {
             this.year.delimiter = j.Date.YearMonthAndDay.DelimiterYearImageIndex
             this.year.dataType = j.Date.YearMonthAndDay.YearDataTypeImageIndex
-            this.year.delimiterCoords = j.Date.YearMonthAndDay.DelimiterYearCoordinates
+            this.year.delimiterCoords = j.Date.YearMonthAndDay.YearDataTypeCoordinates
             this.year.paddingZero = true
           }
         }
@@ -866,13 +1276,14 @@ export class WatchTimeDigitalSeparated {
   separatorMinutes: WatchImage = new WatchImage()
   paddingZeroHours: boolean = false
   paddingZeroMinutes: boolean = false
+  drawOrder: number;
 
   constructor(j?: TimeSeparateDigits) {
     if (j) {
       this.hours = new WatchTwoDigitsSeparated(j.Hours)
       this.minutes = new WatchTwoDigitsSeparated(j.Minutes)
       this.seconds = new WatchTwoDigitsSeparated(j.Seconds)
-
+      this.drawOrder = j.DrawOrder 
       this.separatorHours = new WatchImage(j.SeparatorHours)
       this.separatorMinutes = new WatchImage(j.SeparatorMinutes)
       this.paddingZeroHours = j.PaddingZeroHours ? true : false
@@ -969,10 +1380,10 @@ export class WatchAlarmTime {
       this.hours = new WatchNumber(j.Hours, digitTypes.hour)
       this.minutes = new WatchNumber(j.Minutes, digitTypes.min)
       if (this.hours) {
-        this.hours.dataType = j.DataTypeHoursImageIndex
+        this.hours.dataType = j.HoursDataTypeImageIndex
         this.hours.delimiter = j.DelimiterHoursImageIndex
         this.hours.paddingZero = j.PaddingZeroHours ? true : false
-        this.hours.delimiterCoords = j.DataTypeHoursCoordinates
+        this.hours.delimiterCoords = j.HoursDataTypeCoordinates
       }
       if (this.minutes) {
         this.minutes.delimiter = j.DelimiterMinutesImageIndex

@@ -1,8 +1,9 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, Progress, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather } from "../../model/json.gts2minit.model";
-import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt } from "../../model/watchFace.gts2mini.model";
+import Color from "../../shared/color";
+import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, Progress, ProgressAlt1, ProgressAlt2, ProgressAlt3, ProgressAlt4, ProgressAlt5, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather } from "../../model/json.gts2minit.model";
+import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchProgressAlt1, WatchProgressAlt2, WatchProgressAlt3, WatchProgressAlt4, WatchProgressAlt5, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt } from "../../model/watchFace.gts2mini.model";
 import cl from './JsonComponent.module.css';
 
 const JsonComponent: FC = () => {
@@ -18,7 +19,8 @@ const JsonComponent: FC = () => {
     }, [watchface]) // eslint-disable-line react-hooks/exhaustive-deps
 
     function generateJson(w: WatchFace): string {
-        let timeClockHandEnabled = w.time.timeAnalog.hours.enabled || w.time.timeAnalog.minutes.enabled || w.time.timeAnalog.seconds.enabled
+        let timeClockHandEnabled = w.time.timeAnalog.hours.enabled || w.time.timeAnalog.minutes.enabled 
+        || w.time.timeAnalog.seconds.enabled
 
 
         let j: WatchJson = {
@@ -37,8 +39,9 @@ const JsonComponent: FC = () => {
                 ImageSetAnimation: w.animation.imageSetAnimation
              } : null,
             HeartProgress: getProgress(w.activity.heartRate.aProgress),
+            WeekDayImages: null, // TODO
             CaloriesProgress: getProgress(w.activity.calories.aProgress),
-            HumidityProgress: getProgress(w.weatherext.humidityProgress),
+            HumidityProgress: getProgressAlt3(w.weatherext.humidityProgress),
             Alarm: getAlarm(w.time.alarm),
             Shortcuts: getShortCuts(w.shortcuts),
             TimeAnalog: timeClockHandEnabled ? { 
@@ -49,9 +52,11 @@ const JsonComponent: FC = () => {
             }: null,
             HourlyImages: null,
             TimeDigital: getTimeDigital(w.time.timeDigitalCommon),
-            PaiProgress: getProgress(w.activity.pai.aProgress),
-            StandUpProgress: getProgress(w.activity.standUp.aProgress),
-            UviProgress: getProgress(w.weatherext.uvProgress),
+            PaiProgress: getProgressAlt1(w.activity.pai.aProgress),
+            StandUpProgress: getProgressAlt5(w.activity.standUp.aProgress),
+            UviProgress: getProgressAlt2(w.weatherext.uvProgress),
+            StressProgress: null, // TODO
+            SPO2Progress: null, // TODO
             AlwaysOnDisplay: getAod(w.aod),
             ActivitySeparateDigits: getActivitySeparatedDigits(w.activity),
         }
@@ -91,7 +96,8 @@ function getTimeExtended(time: WatchTime): TimeExtended {
     let timeSeparatedEnabled = time.timeDigitalSeparated.hours.enabled ||
                 time.timeDigitalSeparated.minutes.enabled || 
                 time.timeDigitalSeparated.seconds.enabled 
-    let sunsetEnabled = time.sunset.sunriseOneLine.enabled || time.sunset.sunriseOneLine.enabled || time.sunset.sunsetIcon.enabled || time.sunset.sunriseIcon.enabled || time.sunset.sunsetShortcut.enabled || time.sunset.sunriseShortcut.enabled
+    let sunsetEnabled = time.sunset.sunriseOneLine.enabled || time.sunset.sunriseOneLine.enabled || time.sunset.sunsetIcon.enabled 
+    || time.sunset.sunriseIcon.enabled || time.sunset.sunsetShortcut.enabled || time.sunset.sunriseShortcut.enabled
     let timeExtendedEnabled = timeSeparatedEnabled || sunsetEnabled
 
     if (!timeExtendedEnabled) return null;
@@ -100,6 +106,7 @@ function getTimeExtended(time: WatchTime): TimeExtended {
                 Hours: time?.timeDigitalSeparated?.hours.enabled ? time?.timeDigitalSeparated?.hours?.json : null,
                 Minutes: time?.timeDigitalSeparated?.minutes.enabled ? time?.timeDigitalSeparated?.minutes?.json : null,
                 Seconds: time?.timeDigitalSeparated?.seconds.enabled ? time?.timeDigitalSeparated?.seconds?.json : null,
+                DrawOrder: time?.timeDigitalSeparated?.drawOrder,
                 SeparatorHours: time?.timeDigitalSeparated?.separatorHours.enabled ? time?.timeDigitalSeparated?.separatorHours.json : null,
                 SeparatorMinutes: time?.timeDigitalSeparated?.separatorMinutes.enabled ?time?.timeDigitalSeparated?.separatorMinutes.json : null,
                 PaddingZeroHours: time?.timeDigitalSeparated?.paddingZeroHours,
@@ -125,11 +132,11 @@ function getDate(date: WatchDate): DateBlock {
     else return {
         Date: dateEnabled ? getDateElement(date) : null,
         AmPm: date.ampm.enabled ? date.ampm.json : null,
-        Unknown3: null,
         Weekday: date.weekday.enabled ? date.weekday.json : null,
         WeekdayChinese: date.weekday.enabled ? date.weekday.json : null,
         WeekdayTradChinese: date.weekday.enabled ? date.weekday.json : null,
-        WeekdayProgress: getProgress(date.weekdayProgress)
+        WeekdayProgress: getProgress(date.weekdayProgress),
+        WeekdayPointerScale: null, // TODO
     }
 }
 
@@ -161,10 +168,10 @@ function getDateElement(date: WatchDate): DateElement {
             DelimiterYearImageIndex: date.year?.enabled ? date.year?.delimiter : null,
             DelimiterMonthImageIndex: date.month?.enabled ? date.month?.delimiter : null,
             DelimiterDayImageIndex: date.day?.enabled ? date.day?.delimiter : null,
-            DelimiterYearCoordinates: date.year?.enabled && date.year?.delimiter ? date.year.delimiterCoords : null,
-            DelimiterMonthCoordinates: date.month?.enabled && date.month?.delimiter ? date.month.delimiterCoords : null,
-            DelimiterDayCoordinates: date.day?.enabled && date.day?.delimiter ? date.day.delimiterCoords : null
-        } : null
+            YearDataTypeCoordinates: date.year?.enabled && date.year?.delimiter ? date.year.delimiterCoords : null,
+            MonthDataTypeCoordinates: date.month?.enabled && date.month?.delimiter ? date.month.delimiterCoords : null,
+            DayDataTypeCoordinates: date.day?.enabled && date.day?.delimiter ? date.day.delimiterCoords : null
+        } : null,
     }
 }
 
@@ -178,13 +185,74 @@ function getProgress(progress: WatchProgress): Progress {
         IconSetProgress: progress.iconSetProgress.enabled ? progress.iconSetProgress.json : null,
         CircleScale: progress.circleScale.enabled ? progress.circleScale.json : null,
         Scale: progress.scale.enabled ? {
-            PointerScale: progress.scale.pointerScaleJson,
+            PointerScale: progress.scale.pointerscale.enabled ? progress.scale.pointerscale.json : null,
             BottomImage: progress.scale.bottomImage.enabled ? progress.scale.bottomImage.json : null,
-            BottomImageChinese: progress.scale.bottomImage.enabled ? progress.scale.bottomImage.json : null,
-            BottomImageTradChinese: progress.scale.bottomImage.enabled ? progress.scale.bottomImage.json : null,
-         } : null,
+            BottomImageChinese: null,
+            BottomImageTradChinese: null
+             } : null,
         NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
         UnknownImage: null
+    }
+}
+
+function getProgressAlt1(progress: WatchProgressAlt1): ProgressAlt1 {
+    let enabled = progress.imageProgress.enabled || progress.pointerScale.enabled || progress.altPointerScale.enabled ||
+                 progress.noDataImage.enabled
+
+    if (!enabled) return null
+    else return {
+        PointerScale: progress.pointerScale.enabled ? progress.pointerScale.json : null,
+        Alt1PointerScale: progress.altPointerScale.enabled ?  {
+            PointerScale: progress.altPointerScale.json
+         } : null,
+        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
+        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+    }
+}
+
+function getProgressAlt2(progress: WatchProgressAlt2): ProgressAlt2 {
+    let enabled = progress.imageProgress.enabled || progress.noDataImage.enabled
+
+    if (!enabled) return null
+    else return {
+        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
+        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+    }
+}
+
+function getProgressAlt3(progress: WatchProgressAlt3): ProgressAlt3 {
+    let enabled = progress.imageProgress.enabled || progress.noDataImage.enabled
+
+    if (!enabled) return null
+    else return {
+        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
+        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+    }
+}
+
+function getProgressAlt4(progress: WatchProgressAlt4): ProgressAlt4 {
+    let enabled = progress.imageProgress.enabled || progress.noDataImage.enabled
+
+    if (!enabled) return null
+    else return {
+        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
+        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+    }
+}
+
+function getProgressAlt5(progress: WatchProgressAlt5): ProgressAlt5 {
+    let enabled = progress.imageProgress.enabled || progress.iconsetProgress.enabled || progress.scale.enabled
+
+    if (!enabled) return null
+    else return {
+        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
+        IconSetProgress: progress.iconsetProgress.enabled ? progress.iconsetProgress.json : null,
+        PointerProgress: progress.scale.enabled ? {
+            PointerScale: progress.scale.pointerscale.enabled ? progress.scale.pointerscale.json : null,
+            BottomImage: progress.scale.bottomImage.enabled ? progress.scale.bottomImage.json : null,
+            BottomImageChinese: null,
+            BottomImageTradChinese: null
+             } : null,
     }
 }
 
@@ -241,8 +309,8 @@ function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather 
             Current: weather.current.enabled ? {
                 ImageNumber: weather.current.watchNumber.enabled ? weather.current.watchNumber.json : null,
                 MinusImageIndex: weather.current.minus,
-                SuffixImageIndexC: weather.current.suffix,
-                SuffixImageIndexF: weather.current.suffix,
+                SuffixImageIndexC: weather.current.suffixC,
+                SuffixImageIndexF: null,
                 NoDataImageIndex: weather.current.nodata,
                 Shortcut: weather.current.shortcut.enabled ? weather.current.shortcut.json : null,
             } : null,
@@ -258,16 +326,16 @@ function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather 
             Lowest: weather.lowest.enabled ? {
                 ImageNumber: weather.lowest.watchNumber.enabled ? weather.lowest.watchNumber.json : null,
                 MinusImageIndex: weather.lowest.minus,
-                SuffixImageIndexC: weather.lowest.suffix,
-                SuffixImageIndexF: weather.lowest.suffix,
+                SuffixImageIndexC: weather.lowest.suffixC,
+                SuffixImageIndexF: weather.lowest.suffixF,
                 NoDataImageIndex: weather.lowest.nodata,
                 Shortcut: weather.lowest.shortcut.enabled ? weather.lowest.shortcut.json : null,
             } : null,
             Highest: weather.highest.enabled ? {
                 ImageNumber: weather.highest.watchNumber.enabled ? weather.highest.watchNumber.json : null, 
                 MinusImageIndex: weather.highest.minus,
-                SuffixImageIndexC: weather.highest.suffix,
-                SuffixImageIndexF: weather.highest.suffix,
+                SuffixImageIndexC: weather.highest.suffixC,
+                SuffixImageIndexF: weather.highest.suffixF,
                 NoDataImageIndex: weather.highest.nodata,
                 Shortcut: weather.highest.shortcut.enabled ? weather.highest.shortcut.json : null,
             } : null,
@@ -285,7 +353,8 @@ function getWeater(weather: WatchWeather, weatherext: WatchWeatherExt): Weather 
             UVindexNumber: weatherext.uvNumber.enabled ? weatherext.uvNumber.json : null,
             SuffixImageIndex: weatherext.uvSuffixImageIndex,
             Shortcut: weatherext.uvShortcut.enabled ? weatherext.uvShortcut.json: null,
-            UVindexIcon: weatherext.uvIcon.enabled ? weatherext.uvIcon.json : null
+            UVindexIcon: weatherext.uvIcon.enabled ? weatherext.uvIcon.json : null,
+            NoDataImageIndex: weatherext.uvNoDataImageIndex
         } : null
     }
 }
@@ -311,19 +380,15 @@ function getBattery(battery: WatchBattery): Battery {
             Icon: battery.text.icon.enabled ? battery.text.icon.json : null,
             Shortcut: battery.text.shortcut.enabled ? battery.text.shortcut.json : null,
             SuffixImageIndex: battery.text.suffix,
-            SuffixImageCoordinates: battery.text.suffixImageCoordinates,
-            DecimalPointImageIndex: null,
-            SuffixKMImageIndex: null,
-            SuffixMIImageIndex: null
         } : null,
         ImageProgress: battery.imageProgress.enabled ? battery.imageProgress.json : null,
         IconSetProgress: battery.iconSetProgress.enabled ? battery.iconSetProgress.json : null,
         Scale: battery.scale.enabled ? {
-            PointerScale: battery.scale.pointerScaleJson,
+            PointerScale: battery.scale.pointerscale.enabled ? battery.scale.pointerscale.json : null,
             BottomImage: battery.scale.bottomImage.enabled ? battery.scale.bottomImage.json : null,
-            BottomImageChinese: battery.scale.bottomImage.enabled ? battery.scale.bottomImage.json : null,
-            BottomImageTradChinese: battery.scale.bottomImage.enabled ? battery.scale.bottomImage.json : null,
-        } : null,
+            BottomImageChinese: null,
+            BottomImageTradChinese: null
+             } : null,
         Icon: battery.icon.enabled ? battery.icon.json : null,
     }
 }
@@ -341,72 +406,44 @@ function getActivity(activity: WatchActivityList): Activity {
         NoDataImageIndex: activity.steps.aElement.noData,
         Icon: activity.steps.aElement.icon.enabled ? activity.steps.aElement.icon.json : null,
         Shortcut: activity.steps.aElement.shortcut.enabled ? activity.steps.aElement.shortcut.json : null,
-        SuffixImageIndex: activity.steps.aElement.suffix,
-        SuffixImageCoordinates: activity.steps.aElement.suffixImageCoordinates,
-        DecimalPointImageIndex: null,
-        SuffixKMImageIndex: null,
-        SuffixMIImageIndex: null
+        SuffixImageIndex: activity.steps.aElement.suffix
     } : null,
+    Icon: null, // TODO
     Calories: activity.calories.aElement.enabled ? {
         ImageNumber: activity.calories.aElement.imageNumber.enabled ? activity.calories.aElement.imageNumber.json : null,
-        PrefixImageIndex: activity.calories.aElement.prefix,
-        NoDataImageIndex: activity.calories.aElement.noData,
+        SuffixImageIndex: activity.calories.aElement.suffix,
         Icon: activity.calories.aElement.icon.enabled ? activity.calories.aElement.icon.json : null,
         Shortcut: activity.calories.aElement.shortcut.enabled ? activity.calories.aElement.shortcut.json : null,
-        SuffixImageIndex: activity.calories.aElement.suffix,
-        SuffixImageCoordinates: activity.calories.aElement.suffixImageCoordinates,
-        DecimalPointImageIndex: null,
-        SuffixKMImageIndex: null,
-        SuffixMIImageIndex: null
     } : null,
     HeartRate: activity.heartRate.aElement.enabled ? {
         ImageNumber: activity.heartRate.aElement.imageNumber.enabled ? activity.heartRate.aElement.imageNumber.json : null,
         PrefixImageIndex: activity.heartRate.aElement.prefix,
         NoDataImageIndex: activity.heartRate.aElement.noData,
+        SuffixImageIndex: activity.heartRate.aElement.suffix,
         Icon: activity.heartRate.aElement.icon.enabled ? activity.heartRate.aElement.icon.json : null,
         Shortcut: activity.heartRate.aElement.shortcut.enabled ? activity.heartRate.aElement.shortcut.json : null,
-        SuffixImageIndex: activity.heartRate.aElement.suffix,
-        SuffixImageCoordinates: activity.heartRate.aElement.suffixImageCoordinates,
-        DecimalPointImageIndex: null,
-        SuffixKMImageIndex: null,
-        SuffixMIImageIndex: null
     } : null,
     Distance: activity.distance.aElement.enabled ? {
         ImageNumber: activity.distance.aElement.imageNumber.enabled ? activity.distance.aElement.imageNumber.json : null,
-        PrefixImageIndex: activity.distance.aElement.prefix,
-        NoDataImageIndex: activity.distance.aElement.noData,
+        SuffixKMImageIndex: activity.distance.aElement.suffixKM,
+        DecimalPointImageIndex: activity.distance.aElement.decimalPoint,
+        SuffixMIImageIndex: activity.distance.aElement.suffixMI,
         Icon: activity.distance.aElement.icon.enabled ? activity.distance.aElement.icon.json : null,
         Shortcut: activity.distance.aElement.shortcut.enabled ? activity.distance.aElement.shortcut.json : null,
-        SuffixImageIndex: activity.distance.aElement.suffix,
         SuffixImageCoordinates: null,
-        DecimalPointImageIndex: activity.distance.aElement.decimalPoint,
-        SuffixKMImageIndex: activity.distance.aElement.suffixKM,
-        SuffixMIImageIndex: activity.distance.aElement.suffixMI
     } : null,
     PAI: activity.pai.aElement.enabled ? {
         ImageNumber: activity.pai.aElement.imageNumber.enabled ? activity.pai.aElement.imageNumber.json : null,
-        PrefixImageIndex: activity.pai.aElement.prefix,
-        NoDataImageIndex: activity.pai.aElement.noData,
+        SuffixImageIndex: activity.pai.aElement.suffix,
         Icon: activity.pai.aElement.icon.enabled ? activity.pai.aElement.icon.json : null,
         Shortcut: activity.pai.aElement.shortcut.enabled ? activity.pai.aElement.shortcut.json : null,
-        SuffixImageIndex: activity.pai.aElement.suffix,
-        SuffixImageCoordinates: activity.pai.aElement.suffixImageCoordinates,
-        DecimalPointImageIndex: null,
-        SuffixKMImageIndex: null,
-        SuffixMIImageIndex: null
     } : null,
     UnknownLongValue7: 0,
     StandUp: activity.standUp.aElement.enabled ? {
         ImageNumber: activity.standUp.aElement.imageNumber.enabled ? activity.standUp.aElement.imageNumber.json : null,
-        PrefixImageIndex: activity.standUp.aElement.prefix,
-        NoDataImageIndex: activity.standUp.aElement.noData,
+        SuffixImageIndex: activity.standUp.aElement.suffix,
         Icon: activity.standUp.aElement.icon.enabled ? activity.standUp.aElement.icon.json : null,
         Shortcut: activity.standUp.aElement.shortcut.enabled ? activity.standUp.aElement.shortcut.json : null,
-        SuffixImageIndex: activity.standUp.aElement.suffix,
-        SuffixImageCoordinates: activity.standUp.aElement.suffixImageCoordinates,
-        DecimalPointImageIndex: null,
-        SuffixKMImageIndex: null,
-        SuffixMIImageIndex: null
     } : null,
    }
 }
@@ -423,13 +460,13 @@ function getAlarm(alarm: WatchAlarm): Alarm {
         AlarmTime: alarm.alarmTime.hours.enabled || alarm.alarmTime.minutes.enabled ? {
             Hours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.json : null,
             Minutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.json : null,
-            DataTypeHoursImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.dataType : null,
+            HoursDataTypeImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.dataType : null,
             DelimiterHoursImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.delimiter : null,
             DelimiterMinutesImageIndex: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.delimiter : null,
             PaddingZeroHours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.paddingZero : null,
             PaddingZeroMinutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.paddingZero : null,
-            DataTypeHoursCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.delimiterCoords : null, // needed only when MinutesFollowHours == False
-            MinutesFollowHours: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.follow : null,
+            HoursDataTypeCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.delimiterCoords : null, // needed only when MinutesFollowHours == False
+            MinutesFollowHours: alarm.alarmTime?.minutes?.follow ? true : false,
         } : null,
     }
 }
@@ -488,8 +525,8 @@ function getAodTimeExtended(time: WatchAodTime): AoDTimeExtended {
             PaddingZeroHours: time.timeDigital.hours.enabled ? time.timeDigital.hours.paddingZero ? true : false : null,
             PaddingZeroMinutes: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.paddingZero ? true : false : null,
             MinutesFollowHours: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.follow ? true : false : null,
-            DataTypeHoursCoordinates: time.timeDigital.hours.enabled ? time.timeDigital.hours.delimiterCoords : null,
-            DataTypeMinutesCoordinates: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.delimiterCoords : null,
+            HoursDataTypeCoordinates: time.timeDigital.hours.enabled && time.timeDigital.hours.dataType ? time.timeDigital.hours.delimiterCoords : null,
+            MinutesDataTypeCoordinates: time.timeDigital.minutes.enabled && time.timeDigital.minutes.dataType ? time.timeDigital.minutes.delimiterCoords : null,
         } : null
     } : null
 }
@@ -518,14 +555,7 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
         Steps: aod.steps.aElement.enabled ? {
             ImageNumber: aod.steps.aElement.imageNumber.enabled ? aod.steps.aElement.imageNumber.json : null,
             PrefixImageIndex: aod.steps.aElement.prefix,
-            NoDataImageIndex: aod.steps.aElement.noData,
-            Icon: aod.steps.aElement.icon.enabled ? aod.steps.aElement.icon.json : null,
-            Shortcut: aod.steps.aElement.shortcut.enabled ? aod.steps.aElement.shortcut.json : null,
             SuffixImageIndex: aod.steps.aElement.suffix,
-            SuffixImageCoordinates: aod.steps.aElement.suffixImageCoordinates,
-            DecimalPointImageIndex: null,
-            SuffixKMImageIndex: null,
-            SuffixMIImageIndex: null
         } : null,
         Date: enabledDate ? {
             Month: aod.date.month.enabled ? aod.date.month.json : null,
@@ -536,8 +566,8 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
             DelimiterDayImageIndex: aod.date.day.enabled ? aod.date.day.delimiter : null,
             PaddingZeroMonth: aod.date.month.enabled ? (aod.date.month.paddingZero ? true : false) : false,
             PaddingZeroDay: aod.date.day.enabled ? (aod.date.day.paddingZero ? true : false) : false,
-            DelimiterMonthCoordinates: aod.date.month.enabled ? aod.date.month.delimiterCoords : null,
-            DelimiterDayCoordinates: aod.date.day.enabled ? aod.date.day.delimiterCoords : null,
+            DelimiterMonthCoordinates: aod.date.month.enabled && aod.date.month.delimiter ? aod.date.month.delimiterCoords : null,
+            DelimiterDayCoordinates: aod.date.day.enabled && aod.date.day.delimiter ? aod.date.day.delimiterCoords : null,
             DayFollowsMonth: aod.date.day.follow
         } : null
     }
@@ -549,7 +579,7 @@ function getBackground(b: WatchBackground): Background {
     if (!enabled) return null
     else return {
         Image: b.image.enabled ? b.image.json : null,
-        BackgroundColor: !b.image.enabled && b.color ? b.color : null,
+        BackgroundColor: !b.image.enabled &&  b.color ? Color.colorBackgroundWrite(b.color) : null,
         Preview: b.preview.enabled ? b.preview.json : null,
         PreviewChinese: b.previewc.enabled ? b.previewc.json : null,
         PreviewTradChinese: b.previewtradchin.enabled ? b.previewtradchin.json : null,

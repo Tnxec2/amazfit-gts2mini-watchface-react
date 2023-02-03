@@ -73,17 +73,11 @@ export default class Color {
     let g = h.g;
     let b = h.b;
 
-    let temp_b = (b >> 3) & 0x1f;
-    let temp_g = ((g >> 2) & 0x7) << 5;
-    let secondByte = temp_b | temp_g;
-
-    let temp_g2 = (g >> 5) & 0x07;
-    let temp_r = ((r >> 3) & 0x1f) << 3;
-    let firstByte = temp_g2 | temp_r;
-    let firstByteS = firstByte.toString(16).padStart(2, '0').toUpperCase();
-    let secondByteS = secondByte.toString(16).padStart(2, '0').toUpperCase();
-
-    let new_color = "0xFFFF" + firstByteS + secondByteS;
+    let new_color =
+      "0x00000000FF" +
+      r.toString(16).padStart(2, "0") +
+      g.toString(16).padStart(2, "0") +
+      b.toString(16).padStart(2, "0");
     return new_color;
   }
 

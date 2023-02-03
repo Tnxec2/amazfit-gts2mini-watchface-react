@@ -8,7 +8,7 @@ import IconSetComponent from "./iconSet.component";
 import ImageComponent from "./image.component";
 import ImageSetComponent from "./imageSet.component";
 import WatchNumberComponent from "./number.component";
-import PointerProgressComponent from "./pointerProgress.component";
+import ScaleComponent from "./scale.component";
 import WatchShortCutComponent from "./watchshortcut.component";
 
 
@@ -123,7 +123,7 @@ const BatteryComponent: FC = () => {
             iconSet={{...watchface.battery.iconSetProgress}}
             onUpdate={updateIconSet}
             />
-          <PointerProgressComponent
+          <ScaleComponent
             title='Pointer scale'
             scale={{...watchface.battery.scale}}
             onUpdate={updateScale}

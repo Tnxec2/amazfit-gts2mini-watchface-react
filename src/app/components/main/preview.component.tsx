@@ -3,18 +3,23 @@ import { IWatchContext, WatchfaceContext } from "../../context";
 import { IImage } from "../../model/image.model";
 import { WatchFace } from "../../model/watchFace.gts2mini.model";
 import { WatchState } from "../../model/watchState";
-import { drawActivity } from "../../preview/activity.element";
+import { drawStandUp } from "../../preview/standup.element";
 import drawAlarm from "../../preview/alarm.element";
 import drawBackground from "../../preview/background.element";
 import drawAodBackground from "../../preview/backgroundaod.element";
 import { drawBattery } from "../../preview/battery.element";
+import { drawCalories } from "../../preview/calories.element";
 import drawDate from "../../preview/date.element";
 import drawDateAod from "../../preview/dateAod.element";
+import { drawDistance } from "../../preview/distance.element";
+import { drawHeartRate } from "../../preview/heartrate.element";
 import drawImage from "../../preview/image.element";
 import drawImageSet from "../../preview/imageSet.element";
+import { drawPAI } from "../../preview/pai.element";
 import { drawFiveDigits, drawFourDigits, drawThreeDigits } from "../../preview/separateDigits.element";
 import drawShortcutElement from "../../preview/shortcut.element";
 import drawStatus from "../../preview/status.element";
+import { drawSteps } from "../../preview/steps.element";
 import drawSunset from "../../preview/sunset.element";
 import drawTimeAnalog from "../../preview/timeAnalog.element";
 import drawTimeAnalogAod from "../../preview/timeAnalogAod.element";
@@ -23,6 +28,7 @@ import drawTimeDigitalAod from "../../preview/timeDigitalAod.element";
 import { drawWeather } from "../../preview/weather.element";
 import Canvas from "./canvas.function";
 import cl from "./previewComponent.module.css";
+import { drawStepsAod } from "../../preview/stepsAod.element";
 
 const storage_items = {
   preview_white_grid: "preview_white_grid",
@@ -171,14 +177,12 @@ const PreviewComponent: FC = () => {
       );
     }
     if (watchface.aod.steps) {
-      drawActivity(
+      drawStepsAod(
         ctx,
         images,
         watchface.aod.steps,
         watchState.steps,
-        watchState.stepsGoal,
-        digitBorder,
-        shortCutBorder
+        digitBorder
       );
     }
     if (watchface.aod.time) {
@@ -359,7 +363,7 @@ function drawActivitys(
   digitBorder: boolean,
   shortCutBorder: boolean
 ) {
-  drawActivity(
+  drawSteps(
     ctx,
     images,
     watchface.activity.steps,
@@ -368,7 +372,7 @@ function drawActivitys(
     digitBorder,
     shortCutBorder
   );
-  drawActivity(
+  drawCalories(
     ctx,
     images,
     watchface.activity.calories,
@@ -377,7 +381,7 @@ function drawActivitys(
     digitBorder,
     shortCutBorder
   );
-  drawActivity(
+  drawDistance(
     ctx,
     images,
     watchface.activity.distance,
@@ -386,7 +390,7 @@ function drawActivitys(
     digitBorder,
     shortCutBorder
   );
-  drawActivity(
+  drawHeartRate(
     ctx,
     images,
     watchface.activity.heartRate,
@@ -395,7 +399,7 @@ function drawActivitys(
     digitBorder,
     shortCutBorder
   );
-  drawActivity(
+  drawPAI(
     ctx,
     images,
     watchface.activity.pai,
@@ -404,7 +408,7 @@ function drawActivitys(
     digitBorder,
     shortCutBorder
   );
-  drawActivity(
+  drawStandUp(
     ctx,
     images,
     watchface.activity.standUp,

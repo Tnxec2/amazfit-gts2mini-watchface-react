@@ -3,10 +3,10 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType } from "../../model/blocks.model";
-import { WatchImage, WatchImageSet, WatchNumber } from "../../model/watchFace.gts2mini.model";
+import { WatchImage, WatchNumber, WatchProgressAlt3 } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
-import ImageSetComponent from "./imageSet.component";
 import WatchNumberComponent from "./number.component";
+import ProgressAlt3Component from "./progressAlt3.component";
 
 
 const HumidityComponent: FC = () => {
@@ -32,9 +32,9 @@ const HumidityComponent: FC = () => {
     setWatchface(w)
   }
 
-  function onChangeImageProgress(val: WatchImageSet) {
+  function onChangeProgress(val: WatchProgressAlt3) {
     const w = {...watchface};
-    w.weatherext.humidityProgress.imageProgress = val
+    w.weatherext.humidityProgress = val
     setWatchface(w)
   }
 
@@ -72,11 +72,11 @@ const HumidityComponent: FC = () => {
             image={{...watchface.weatherext.humidityIcon}}
             onUpdate={onChangeIcon}
             />
-          <ImageSetComponent
-            title='Image progress'
-            imageSet={{...watchface.weatherext.humidityProgress.imageProgress}}
-            onUpdate={onChangeImageProgress}
-            />
+          <ProgressAlt3Component
+            title="Progress"
+            progress={{...watchface.weatherext.humidityProgress}}
+            onUpdate={onChangeProgress}
+          />
         </Card.Body>
       ) : (
         ""

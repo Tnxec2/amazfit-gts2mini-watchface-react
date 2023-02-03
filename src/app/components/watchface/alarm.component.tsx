@@ -81,7 +81,7 @@ const AlarmComponent: FC = () => {
           onUpdate={updateNoAlarmImage}
         />
         <WatchShortCutComponent 
-          title='Sunrise shortcut'
+          title='Alarm shortcut'
           shortcut={{...watchface.time.alarm.shortcut}}
           onUpdate={updateShortcut}
         />
