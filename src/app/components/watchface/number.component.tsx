@@ -1,9 +1,10 @@
-import { FC, useMemo } from "react";
+import { FC, useContext, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { BlockType, IRow, OptionsAlignmentGTs2Mini } from "../../model/blocks.model";
 import { Coordinates } from "../../model/json.gts2minit.model";
 import { WatchNumber } from "../../model/watchFace.gts2mini.model";
+import { IWatchContext, WatchfaceContext } from "../../context";
 
 interface IProps {
   title: string;
@@ -29,10 +30,13 @@ const WatchNumberComponent: FC<IProps> = ({
   paddingDisabled,
 }) => {
 
+  const context = useContext<IWatchContext>(WatchfaceContext)
+
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
         { title: 'Image', type: BlockType.SelectFile, nvalue: digit.json?.ImageIndex, onChange: onChangeImageIndex },
+        context.device.countEditable ? { title: 'Count', type: BlockType.Number, nvalue: digit.json?.ImagesCount ? digit.json?.ImagesCount : 0, onChange: onChangeImageCount } :
         { title: `Count: ${digit.json?.ImagesCount}`, type: BlockType.Empty },
       ]
     },
@@ -106,6 +110,12 @@ const WatchNumberComponent: FC<IProps> = ({
   function onChangeImageIndex(index: number) {
     const d = {...digit};
     d.json.ImageIndex = index;
+    onUpdate(d);
+  }
+
+  function onChangeImageCount(count: number) {
+    const d = {...digit};
+    d.json.ImagesCount = count;
     onUpdate(d);
   }
 

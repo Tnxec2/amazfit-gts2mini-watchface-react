@@ -3,10 +3,11 @@ export interface IDevice {
   height: number,
   deviceId: number,
   title: string,
+  countEditable?: boolean,
 }
 
 export class Constant {
-  static readonly version = "1.7.0"
+  static readonly version = "1.7.1"
   static readonly DEVICE_KEY = "com.kontranik.gts2editor.device";
   static readonly NONE = "None";
   static readonly startImageIndex = 0;

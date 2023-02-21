@@ -7,9 +7,15 @@ const SettingsComponent = () => {
 
     const {device, setDevice} = useContext(WatchfaceContext)
     
-    function saveDevice(device: IDevice): void {
-        localStorage.setItem(Constant.DEVICE_KEY, JSON.stringify(device));
-        setDevice(device);
+    function saveDevice(d: IDevice): void {
+        localStorage.setItem(Constant.DEVICE_KEY, JSON.stringify(
+            {...d, countEditable: device.countEditable}));
+        setDevice({...d, countEditable: device.countEditable});
+    }
+
+    const onChangeCountEditable = () => {
+        localStorage.setItem(Constant.DEVICE_KEY, JSON.stringify({...device, countEditable: !device.countEditable}));
+        setDevice({...device, countEditable: !device.countEditable})
     }
 
     return (
@@ -32,7 +38,22 @@ const SettingsComponent = () => {
                     {Constant.devices.bipu.title}
                 </label>
             </div>
-                </Card.Body>
+            
+            <div className="input-group" style={{ width: "max-content" }}>
+                <span className="input-group-text" id="addon-wrapping">
+                Images Count editable
+                </span>
+                <div className="input-group-text">
+                <input
+                    className="form-check-input mt-0"
+                    type="checkbox"
+                    checked={device.countEditable}
+                    onChange={onChangeCountEditable}
+                />
+                </div>
+                
+            </div>
+            </Card.Body>
         </Card>
     );
 };
