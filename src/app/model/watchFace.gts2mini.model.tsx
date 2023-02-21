@@ -175,10 +175,10 @@ export class WatchNumber {
   json: NumberJson = new NumberJson()
 
   prefix: number
-  dataType: number
-
   delimiter: number
-  delimiterCoords: Coordinates = new Coordinates()
+  
+  dataType: number  
+  dataTypeCoords: Coordinates = new Coordinates()
 
   paddingZero: boolean
   follow: boolean
@@ -516,10 +516,16 @@ export class WatchAoDTimeDigital {
       this.minutes = new WatchNumber(j.Minutes, digitTypes.min)
       if (this.hours) {
         this.hours.paddingZero = j.PaddingZeroHours
+        this.hours.delimiter = j.DelimiterHoursImageIndex
+        this.hours.dataType = j.HoursDataTypeImageIndex
+        this.hours.dataTypeCoords = j.HoursDataTypeCoordinates
       }
       if (this.minutes) {
         this.minutes.paddingZero = j.PaddingZeroMinutes
         this.minutes.follow = j.MinutesFollowHours
+        this.minutes.delimiter = j.DelimiterMinutesImageIndex
+        this.minutes.dataType = j.MinutesDataTypeImageIndex
+        this.minutes.dataTypeCoords = j.MinutesDataTypeCoordinates
       }
     }
   }
@@ -654,14 +660,14 @@ export class WatchAodDate {
         this.month.paddingZero = j.PaddingZeroMonth
         this.month.dataType = j.MonthDataTypeImageIndex
         this.month.delimiter = j.DelimiterMonthImageIndex
-        this.month.delimiterCoords = j.DelimiterMonthCoordinates
+        this.month.dataTypeCoords = j.MonthDataTypeCoordinates
       }
       if ( this.day) {
         this.day.paddingZero = j.PaddingZeroDay
         this.day.dataType = j.DayDataTypeImageIndex
         this.day.delimiter = j.DelimiterDayImageIndex
         this.day.follow = j.DayFollowsMonth ? j.DayFollowsMonth : false
-        this.day.delimiterCoords = j.DelimiterDayCoordinates
+        this.day.dataTypeCoords = j.DayDataTypeCoordinates
       }      
     }
   }
@@ -1212,20 +1218,20 @@ export class WatchDate {
             this.month.delimiter = j.Date.YearMonthAndDay.DelimiterMonthImageIndex
             this.month.follow = j.Date.YearMonthAndDay.MonthFollowsYear ? true : false
             this.month.dataType = j.Date.YearMonthAndDay.MonthDataTypeImageIndex
-            this.month.delimiterCoords = j.Date.YearMonthAndDay.MonthDataTypeCoordinates
+            this.month.dataTypeCoords = j.Date.YearMonthAndDay.MonthDataTypeCoordinates
             this.month.paddingZero = j.Date.PaddingZeroMonth
           }
           if (this.day) {
             this.day.follow = j.Date.YearMonthAndDay.DayFollowsMonth ? true: false
             this.day.delimiter = j.Date.YearMonthAndDay.DelimiterDayImageIndex
             this.day.dataType = j.Date.YearMonthAndDay.DayDataTypeImageIndex
-            this.day.delimiterCoords = j.Date.YearMonthAndDay.DayDataTypeCoordinates
+            this.day.dataTypeCoords = j.Date.YearMonthAndDay.DayDataTypeCoordinates
             this.day.paddingZero = j.Date.PaddingZeroDay
           }
           if ( this.year) {
             this.year.delimiter = j.Date.YearMonthAndDay.DelimiterYearImageIndex
             this.year.dataType = j.Date.YearMonthAndDay.YearDataTypeImageIndex
-            this.year.delimiterCoords = j.Date.YearMonthAndDay.YearDataTypeCoordinates
+            this.year.dataTypeCoords = j.Date.YearMonthAndDay.YearDataTypeCoordinates
             this.year.paddingZero = true
           }
         }
@@ -1299,7 +1305,7 @@ export class WatchTimeDigitalCommon {
   minutes: WatchNumber = new WatchNumber(null, digitTypes.min)
   seconds: WatchNumber = new WatchNumber(null, digitTypes.sec)
 
-  time_unknown1: number = 0
+  time_unknown1: number = 1
 
   constructor(j?: TimeDigital) {
     if (j) {
@@ -1312,14 +1318,14 @@ export class WatchTimeDigitalCommon {
       }
       if (j.Time) {
         this.time_unknown1 = j.Time.Unknown1
-        if (this.hours) this.hours.delimiterCoords = j.Time?.HoursDataTypeCoordinates 
+        if (this.hours) this.hours.dataTypeCoords = j.Time?.HoursDataTypeCoordinates 
         this.minutes = new WatchNumber(j.Time?.Minutes, digitTypes.min)
         if (this.minutes) {
           this.minutes.delimiter = j.DelimiterMinutesImageIndex ? j.DelimiterMinutesImageIndex : null  
           this.minutes.paddingZero = j.Time?.PaddingZeroMinutes ? true : false
           this.minutes.dataType = j.Time?.MinutesDataTypeImageIndex ? j.Time.MinutesDataTypeImageIndex : null
           this.minutes.follow = j.Time?.MinutesFollowHours ? true : false
-          this.minutes.delimiterCoords = j.Time?.MinutesDataTypeCoordinates 
+          this.minutes.dataTypeCoords = j.Time?.MinutesDataTypeCoordinates 
         }
         this.seconds = new WatchNumber(j.Time?.Seconds, digitTypes.sec)
         if (this.seconds) {
@@ -1327,7 +1333,7 @@ export class WatchTimeDigitalCommon {
           this.seconds.dataType = j.Time?.SecondsDataTypeImageIndex ? j.Time.SecondsDataTypeImageIndex : null
           this.seconds.paddingZero = j.Time?.PaddingZeroSeconds ? true : false
           this.seconds.follow = j.Time?.SecondsFollowMinutes ? true : false
-          this.seconds.delimiterCoords = j.Time?.SecondsDataTypeCoordinates 
+          this.seconds.dataTypeCoords = j.Time?.SecondsDataTypeCoordinates 
         }
       }
     }
@@ -1383,7 +1389,7 @@ export class WatchAlarmTime {
         this.hours.dataType = j.HoursDataTypeImageIndex
         this.hours.delimiter = j.DelimiterHoursImageIndex
         this.hours.paddingZero = j.PaddingZeroHours ? true : false
-        this.hours.delimiterCoords = j.HoursDataTypeCoordinates
+        this.hours.dataTypeCoords = j.HoursDataTypeCoordinates
       }
       if (this.minutes) {
         this.minutes.delimiter = j.DelimiterMinutesImageIndex

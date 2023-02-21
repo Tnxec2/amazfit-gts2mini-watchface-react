@@ -194,12 +194,12 @@ export class YearMonthAndDay{
   DayFollowsMonth: boolean = false
   MonthAsWord: ImageSet
   MonthAsWordChinese: ImageSet
-  YearDataTypeImageIndex: number
-  MonthDataTypeImageIndex: number
-  DayDataTypeImageIndex: number
   DelimiterYearImageIndex: number
   DelimiterMonthImageIndex: number
   DelimiterDayImageIndex: number
+  YearDataTypeImageIndex: number
+  MonthDataTypeImageIndex: number
+  DayDataTypeImageIndex: number
   YearDataTypeCoordinates: Coordinates
   MonthDataTypeCoordinates: Coordinates
   DayDataTypeCoordinates: Coordinates
@@ -440,7 +440,7 @@ export class AnalogDialFace{
 }
 
 export class Time{
-  Unknown1:  number = 0
+  Unknown1:  number = 1
   Minutes: NumberJson
   Seconds: NumberJson
   PaddingZeroMinutes:  boolean = false
@@ -522,8 +522,8 @@ export class AoDDate{
  DelimiterDayImageIndex: number
  PaddingZeroMonth: boolean = false
  PaddingZeroDay: boolean = false
- DelimiterMonthCoordinates: Coordinates
- DelimiterDayCoordinates: Coordinates
+ MonthDataTypeCoordinates: Coordinates
+ DayDataTypeCoordinates: Coordinates
  DayFollowsMonth: boolean = false
 }
 

@@ -133,8 +133,8 @@ function getDate(date: WatchDate): DateBlock {
         Date: dateEnabled ? getDateElement(date) : null,
         AmPm: date.ampm.enabled ? date.ampm.json : null,
         Weekday: date.weekday.enabled ? date.weekday.json : null,
-        WeekdayChinese: date.weekday.enabled ? date.weekday.json : null,
-        WeekdayTradChinese: date.weekday.enabled ? date.weekday.json : null,
+        WeekdayChinese: null,
+        WeekdayTradChinese: null,
         WeekdayProgress: getProgress(date.weekdayProgress),
         WeekdayPointerScale: null, // TODO
     }
@@ -151,9 +151,6 @@ function getDateElement(date: WatchDate): DateElement {
             Number: date.year.enabled ? date.year.json : null,
             DelimiterImageIndex: date.oneLineDelimiter
         } : null,
-        PaddingZeroMonth: date.oneLineYear ? date.year?.paddingZero : date.month?.paddingZero ? true : false,
-        PaddingZeroDay: date.oneLineYear ? date.year?.paddingZero : (date.oneLineMonth ? date.month?.paddingZero :  date.day?.paddingZero ? true : false),
-        UnknownBoolean6: false,
         YearMonthAndDay: ! date.oneLineYear && ! date.oneLineMonth ? {
             Year: date.year?.enabled ? date.year.json : null,
             Month: date.month?.enabled ? date.month.json : null,
@@ -161,17 +158,20 @@ function getDateElement(date: WatchDate): DateElement {
             MonthFollowsYear: date.month?.follow ? true : false,
             DayFollowsMonth: date.day?.follow ? true : false,
             MonthAsWord: date.monthAsWord?.enabled ? date.monthAsWord.json : null,
-            MonthAsWordChinese: date.monthAsWord?.enabled ? date.monthAsWord.json : null,
-            YearDataTypeImageIndex: date.year?.enabled ? date.year?.dataType : null,
-            MonthDataTypeImageIndex: date.month?.enabled ? date.month?.dataType : null,
-            DayDataTypeImageIndex: date.day?.enabled ? date.day?.dataType : null,
             DelimiterYearImageIndex: date.year?.enabled ? date.year?.delimiter : null,
             DelimiterMonthImageIndex: date.month?.enabled ? date.month?.delimiter : null,
             DelimiterDayImageIndex: date.day?.enabled ? date.day?.delimiter : null,
-            YearDataTypeCoordinates: date.year?.enabled && date.year?.delimiter ? date.year.delimiterCoords : null,
-            MonthDataTypeCoordinates: date.month?.enabled && date.month?.delimiter ? date.month.delimiterCoords : null,
-            DayDataTypeCoordinates: date.day?.enabled && date.day?.delimiter ? date.day.delimiterCoords : null
+            MonthAsWordChinese: null,
+            YearDataTypeImageIndex: date.year?.enabled ? date.year?.dataType : null,
+            MonthDataTypeImageIndex: date.month?.enabled ? date.month?.dataType : null,
+            DayDataTypeImageIndex: date.day?.enabled ? date.day?.dataType : null,
+            YearDataTypeCoordinates: date.year?.enabled && date.year?.dataType ? date.year.dataTypeCoords : null,
+            MonthDataTypeCoordinates: date.month?.enabled && date.month?.dataType ? date.month.dataTypeCoords : null,
+            DayDataTypeCoordinates: date.day?.enabled && date.day?.dataType ? date.day.dataTypeCoords : null
         } : null,
+        PaddingZeroMonth: date.oneLineYear ? date.year?.paddingZero : date.month?.paddingZero ? true : false,
+        PaddingZeroDay: date.oneLineYear ? date.year?.paddingZero : (date.oneLineMonth ? date.month?.paddingZero :  date.day?.paddingZero ? true : false),
+        UnknownBoolean6: false,
     }
 }
 
@@ -280,9 +280,9 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
             SecondsDataTypeImageIndex:  time.seconds.enabled ? time.seconds.dataType : null,
             MinutesFollowHours:  time.minutes.follow,
             SecondsFollowMinutes:  time.seconds.follow,
-            HoursDataTypeCoordinates: time.hours.enabled && time.hours.dataType ? time.hours.delimiterCoords : null, // needed only when MinutesFollowHours == False
-            MinutesDataTypeCoordinates: time.minutes.enabled && !time.minutes.follow  && time.minutes.dataType ? time.minutes.delimiterCoords : null, // needed only when SecondsFollowMinutes == False
-            SecondsDataTypeCoordinates: time.seconds.enabled && !time.seconds.follow && time.seconds.dataType ? time.seconds.delimiterCoords : null
+            HoursDataTypeCoordinates: time.hours.enabled && time.hours.dataType ? time.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
+            MinutesDataTypeCoordinates: time.minutes.enabled && !time.minutes.follow  && time.minutes.dataType ? time.minutes.dataTypeCoords : null, // needed only when SecondsFollowMinutes == False
+            SecondsDataTypeCoordinates: time.seconds.enabled && !time.seconds.follow && time.seconds.dataType ? time.seconds.dataTypeCoords : null
         } : null
     }
 
@@ -465,7 +465,7 @@ function getAlarm(alarm: WatchAlarm): Alarm {
             DelimiterMinutesImageIndex: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.delimiter : null,
             PaddingZeroHours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.paddingZero : null,
             PaddingZeroMinutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.paddingZero : null,
-            HoursDataTypeCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.delimiterCoords : null, // needed only when MinutesFollowHours == False
+            HoursDataTypeCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
             MinutesFollowHours: alarm.alarmTime?.minutes?.follow ? true : false,
         } : null,
     }
@@ -525,8 +525,8 @@ function getAodTimeExtended(time: WatchAodTime): AoDTimeExtended {
             PaddingZeroHours: time.timeDigital.hours.enabled ? time.timeDigital.hours.paddingZero ? true : false : null,
             PaddingZeroMinutes: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.paddingZero ? true : false : null,
             MinutesFollowHours: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.follow ? true : false : null,
-            HoursDataTypeCoordinates: time.timeDigital.hours.enabled && time.timeDigital.hours.dataType ? time.timeDigital.hours.delimiterCoords : null,
-            MinutesDataTypeCoordinates: time.timeDigital.minutes.enabled && time.timeDigital.minutes.dataType ? time.timeDigital.minutes.delimiterCoords : null,
+            HoursDataTypeCoordinates: time.timeDigital.hours.enabled && time.timeDigital.hours.dataType ? time.timeDigital.hours.dataTypeCoords : null,
+            MinutesDataTypeCoordinates: time.timeDigital.minutes.enabled && time.timeDigital.minutes.dataType ? time.timeDigital.minutes.dataTypeCoords : null,
         } : null
     } : null
 }
@@ -566,8 +566,8 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
             DelimiterDayImageIndex: aod.date.day.enabled ? aod.date.day.delimiter : null,
             PaddingZeroMonth: aod.date.month.enabled ? (aod.date.month.paddingZero ? true : false) : false,
             PaddingZeroDay: aod.date.day.enabled ? (aod.date.day.paddingZero ? true : false) : false,
-            DelimiterMonthCoordinates: aod.date.month.enabled && aod.date.month.delimiter ? aod.date.month.delimiterCoords : null,
-            DelimiterDayCoordinates: aod.date.day.enabled && aod.date.day.delimiter ? aod.date.day.delimiterCoords : null,
+            MonthDataTypeCoordinates: aod.date.month.enabled && aod.date.month.delimiter ? aod.date.month.dataTypeCoords : null,
+            DayDataTypeCoordinates: aod.date.day.enabled && aod.date.day.delimiter ? aod.date.day.dataTypeCoords : null,
             DayFollowsMonth: aod.date.day.follow
         } : null
     }
@@ -581,8 +581,8 @@ function getBackground(b: WatchBackground): Background {
         Image: b.image.enabled ? b.image.json : null,
         BackgroundColor: !b.image.enabled &&  b.color ? Color.colorBackgroundWrite(b.color) : null,
         Preview: b.preview.enabled ? b.preview.json : null,
-        PreviewChinese: b.previewc.enabled ? b.previewc.json : null,
-        PreviewTradChinese: b.previewtradchin.enabled ? b.previewtradchin.json : null,
+        PreviewChinese:  null,
+        PreviewTradChinese:  null,
         FloatingLayer: b.floatingLayer.enabled ? b.floatingLayer.json : null,
     }
 }

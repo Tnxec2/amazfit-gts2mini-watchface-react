@@ -6,4 +6,5 @@
 .canvasPreview {
     display: inline;
     border: 1px gray dotted;
+    border-radius: 72px;
 }

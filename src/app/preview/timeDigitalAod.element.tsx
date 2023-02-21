@@ -28,16 +28,24 @@ export default function drawTimeDigitalAod(
             drawDigitsFollowedArray(ctx, images, time.timeDigital.hours, ar, digitBorder)
         } else {
             drawDigitImage(ctx, images, time.timeDigital.hours, watchState.hours, null, digitBorder,
-                            false, null, null, null, null)
+                            false, null, null, null, time.timeDigital.hours.delimiter)
+            if (time.timeDigital.hours.dataType && time.timeDigital.hours.dataTypeCoords) {
+                let img = findImageById(time.timeDigital.hours.dataType, images)
+                if (img) ctx.drawImage(img, time.timeDigital.hours.dataTypeCoords.X, time.timeDigital.hours.dataTypeCoords.Y)
+            }
         }
     }
     if (time.timeDigital.minutes.enabled && !time.timeDigital.minutes.follow) {
-        drawDigitImage(ctx, images, time.timeDigital.minutes, watchState.minutes, null, digitBorder, false, null, null, null, null)
+        drawDigitImage(ctx, images, time.timeDigital.minutes, watchState.minutes, null, digitBorder, false, null, null, null, time.timeDigital.minutes.delimiter)
+        if (time.timeDigital.minutes.dataType && time.timeDigital.minutes.dataTypeCoords) {
+            let img = findImageById(time.timeDigital.minutes.dataType, images)
+            if (img) ctx.drawImage(img, time.timeDigital.minutes.dataTypeCoords.X, time.timeDigital.minutes.dataTypeCoords.Y)
+        }
     }
 
     if (time.timeSeparateDigits.hours.enabled) {
         drawTwoDigits(ctx, images, time.timeSeparateDigits.hours.json, watchState.hours, 
-          time.timeSeparateDigits.paddingZero)
+          time.timeSeparateDigits.paddingZero) 
         if ( time.timeSeparateDigits.separator?.enabled) {
             drawImage(ctx, images, time.timeSeparateDigits.separator.json)
         }

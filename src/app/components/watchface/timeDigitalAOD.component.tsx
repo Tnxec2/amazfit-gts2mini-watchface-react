@@ -35,12 +35,16 @@ const TimeDigitalAODComponent: FC = () => {
           title="Hours"
           digit={{...watchface.aod.time.timeDigital.hours}}
           onUpdate={updateHoursDigit}
+          showDelimiter={true}
+          showDataType={true}
           followDisabled={true}
         />
         <WatchNumberComponent
           title="Minutes"
           digit={{...watchface.aod.time.timeDigital.minutes}}
           onUpdate={updateMinutesDigit}
+          showDelimiter={true}
+          showDataType={true}
         />
       </Card.Body>
     </Card>

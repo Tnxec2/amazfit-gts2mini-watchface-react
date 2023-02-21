@@ -36,9 +36,9 @@ export default function drawTimeDigital(
         } else {
             drawDigitImage(ctx, images, time.timeDigitalCommon.hours, watchState.hours, null, digitBorder,
                             false, null, null, null, time.timeDigitalCommon.hours.delimiter)
-            if (time.timeDigitalCommon.hours.dataType && time.timeDigitalCommon.hours.delimiterCoords) {
+            if (time.timeDigitalCommon.hours.dataType && time.timeDigitalCommon.hours.dataTypeCoords) {
                 let img = findImageById(time.timeDigitalCommon.hours.dataType, images)
-                if (img) ctx.drawImage(img, time.timeDigitalCommon.hours.delimiterCoords.X, time.timeDigitalCommon.hours.delimiterCoords.Y)
+                if (img) ctx.drawImage(img, time.timeDigitalCommon.hours.dataTypeCoords.X, time.timeDigitalCommon.hours.dataTypeCoords.Y)
             }
         }
     }
@@ -56,17 +56,17 @@ export default function drawTimeDigital(
             drawDigitsFollowedArray(ctx, images, time.timeDigitalCommon.minutes, ar, digitBorder)
         } else {
             drawDigitImage(ctx, images, time.timeDigitalCommon.minutes, watchState.minutes, null, digitBorder, false, null, null, null, time.timeDigitalCommon.minutes.delimiter)
-            if (time.timeDigitalCommon.minutes.dataType && time.timeDigitalCommon.minutes.delimiterCoords) {
+            if (time.timeDigitalCommon.minutes.dataType && time.timeDigitalCommon.minutes.dataTypeCoords) {
                 let img = findImageById(time.timeDigitalCommon.minutes.dataType, images)
-                if (img) ctx.drawImage(img, time.timeDigitalCommon.minutes.delimiterCoords.X, time.timeDigitalCommon.minutes.delimiterCoords.Y)
+                if (img) ctx.drawImage(img, time.timeDigitalCommon.minutes.dataTypeCoords.X, time.timeDigitalCommon.minutes.dataTypeCoords.Y)
             }
         }
     }
     if (time.timeDigitalCommon.seconds.enabled && !time.timeDigitalCommon.seconds.follow) {
         drawDigitImage(ctx, images, time.timeDigitalCommon.seconds, watchState.seconds, null, digitBorder, false, null, null, null, time.timeDigitalCommon.seconds.delimiter)
-        if (time.timeDigitalCommon.seconds.dataType && time.timeDigitalCommon.seconds.delimiterCoords) {
+        if (time.timeDigitalCommon.seconds.dataType && time.timeDigitalCommon.seconds.dataTypeCoords) {
             let img = findImageById(time.timeDigitalCommon.seconds.dataType, images)
-            if (img) ctx.drawImage(img, time.timeDigitalCommon.seconds.delimiterCoords.X, time.timeDigitalCommon.seconds.delimiterCoords.Y)
+            if (img) ctx.drawImage(img, time.timeDigitalCommon.seconds.dataTypeCoords.X, time.timeDigitalCommon.seconds.dataTypeCoords.Y)
         }
     }
    

@@ -68,17 +68,17 @@ const WatchNumberComponent: FC<IProps> = ({
       ]
     },
     {
-      disabled: ! showDataType,
-      blocks: [
-        { title: 'Data Type', type: BlockType.SelectFile, nvalue: digit.dataType, onChange: onChangeDatatype },
-      ]
-    },
-    {
       disabled: ! showDelimiter,
       blocks: [
         { title: 'Delimiter', type: BlockType.SelectFile, nvalue: digit.delimiter, onChange: onChangeDelimiter },
-        { title: 'X', type: BlockType.Number, nvalue: digit.delimiterCoords?.X ? digit.delimiterCoords.X : 0, onChange: onChangeDelimiterCoordsX },
-        { title: 'Y', type: BlockType.Number, nvalue: digit.delimiterCoords?.Y ? digit.delimiterCoords.Y : 0, onChange: onChangeDelimiterCoordsY },
+      ]
+    },
+    {
+      disabled: ! showDataType,
+      blocks: [
+        { title: 'Data Type', type: BlockType.SelectFile, nvalue: digit.dataType, onChange: onChangeDatatype },
+        { title: 'X', type: BlockType.Number, nvalue: digit.dataTypeCoords?.X ? digit.dataTypeCoords.X : 0, onChange: onChangeDatatypeCoordsX },
+        { title: 'Y', type: BlockType.Number, nvalue: digit.dataTypeCoords?.Y ? digit.dataTypeCoords.Y : 0, onChange: onChangeDatatypeCoordsY },
       ]
     },
   ], [digit]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -89,17 +89,17 @@ const WatchNumberComponent: FC<IProps> = ({
     onUpdate(d);
   }
 
-  function onChangeDelimiterCoordsX(val: number) {
+  function onChangeDatatypeCoordsX(val: number) {
     const d = {...digit};
-    if (!d.delimiterCoords) d.delimiterCoords = new Coordinates()
-    d.delimiterCoords.X = val;
+    if (!d.dataTypeCoords) d.dataTypeCoords = new Coordinates()
+    d.dataTypeCoords.X = val;
     onUpdate(d);
   }
 
-  function onChangeDelimiterCoordsY(val: number) {
+  function onChangeDatatypeCoordsY(val: number) {
     const d = {...digit};
-    if (!d.delimiterCoords) d.delimiterCoords = new Coordinates()
-    d.delimiterCoords.Y = val;
+    if (!d.dataTypeCoords) d.dataTypeCoords = new Coordinates()
+    d.dataTypeCoords.Y = val;
     onUpdate(d);
   }
 
