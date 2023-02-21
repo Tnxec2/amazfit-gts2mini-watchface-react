@@ -566,8 +566,8 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
             DelimiterDayImageIndex: aod.date.day.enabled ? aod.date.day.delimiter : null,
             PaddingZeroMonth: aod.date.month.enabled ? (aod.date.month.paddingZero ? true : false) : false,
             PaddingZeroDay: aod.date.day.enabled ? (aod.date.day.paddingZero ? true : false) : false,
-            MonthDataTypeCoordinates: aod.date.month.enabled && aod.date.month.delimiter ? aod.date.month.dataTypeCoords : null,
-            DayDataTypeCoordinates: aod.date.day.enabled && aod.date.day.delimiter ? aod.date.day.dataTypeCoords : null,
+            MonthDataTypeCoordinates: aod.date.month.enabled && aod.date.month.dataType ? aod.date.month.dataTypeCoords : null,
+            DayDataTypeCoordinates: aod.date.day.enabled && aod.date.day.dataType ? aod.date.day.dataTypeCoords : null,
             DayFollowsMonth: aod.date.day.follow
         } : null
     }
