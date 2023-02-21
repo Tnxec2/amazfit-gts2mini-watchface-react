@@ -278,8 +278,8 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
             PaddingZeroSeconds:  time.seconds.paddingZero,
             MinutesDataTypeImageIndex:  time.minutes.enabled ? time.minutes.dataType : null,
             SecondsDataTypeImageIndex:  time.seconds.enabled ? time.seconds.dataType : null,
-            MinutesFollowHours:  time.minutes.follow,
-            SecondsFollowMinutes:  time.seconds.follow,
+            MinutesFollowHours:  time.minutes.follow ? true : false,
+            SecondsFollowMinutes:  time.seconds.follow ? true : false,
             HoursDataTypeCoordinates: time.hours.enabled && time.hours.dataType ? time.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
             MinutesDataTypeCoordinates: time.minutes.enabled && !time.minutes.follow  && time.minutes.dataType ? time.minutes.dataTypeCoords : null, // needed only when SecondsFollowMinutes == False
             SecondsDataTypeCoordinates: time.seconds.enabled && !time.seconds.follow && time.seconds.dataType ? time.seconds.dataTypeCoords : null
@@ -568,7 +568,7 @@ function getAod(aod: WatchAOD): AlwaysOnDisplay {
             PaddingZeroDay: aod.date.day.enabled ? (aod.date.day.paddingZero ? true : false) : false,
             MonthDataTypeCoordinates: aod.date.month.enabled && aod.date.month.dataType ? aod.date.month.dataTypeCoords : null,
             DayDataTypeCoordinates: aod.date.day.enabled && aod.date.day.dataType ? aod.date.day.dataTypeCoords : null,
-            DayFollowsMonth: aod.date.day.follow
+            DayFollowsMonth: aod.date.day.follow ?  true : false,
         } : null
     }
 }
