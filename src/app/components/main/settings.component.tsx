@@ -26,16 +26,23 @@ const SettingsComponent = () => {
             <Card.Body>
             <div className="form-check">
                 <input className="form-check-input" type="radio" name="device" id="device_gts2mini" value="gts2mini" 
-                checked={device.deviceId === Constant.devices.gts2minie.deviceId} onChange={() => saveDevice(Constant.devices.gts2minie)} />
+                checked={device.title === Constant.devices.gts2mini.title} onChange={() => saveDevice(Constant.devices.gts2mini)} />
                 <label className="form-check-label">
-                    {Constant.devices.gts2minie.title}
+                    {Constant.devices.gts2mini.title}
                 </label>
             </div>
             <div className="form-check">
                 <input className="form-check-input" type="radio" name="device" id="device_bipu" value="bipu" 
-                checked={device.deviceId === Constant.devices.bipu.deviceId} onChange={() => saveDevice(Constant.devices.bipu)} />
+                checked={device.title === Constant.devices.bipu.title} onChange={() => saveDevice(Constant.devices.bipu)} />
                 <label className="form-check-label">
                     {Constant.devices.bipu.title}
+                </label>
+            </div>
+            <div className="form-check">
+                <input className="form-check-input" type="radio" name="device" id="device_bip3" value="bip3" 
+                checked={device.title === Constant.devices.bip3.title} onChange={() => saveDevice(Constant.devices.bip3)} />
+                <label className="form-check-label">
+                    {Constant.devices.bip3.title}
                 </label>
             </div>
             
@@ -62,6 +69,6 @@ export default SettingsComponent;
 
 export function getDeviceFromStorage(): IDevice {
     let device: IDevice = JSON.parse(localStorage.getItem(Constant.DEVICE_KEY))
-    if (!device) device = Constant.devices.gts2minie
+    if (!device) device = Constant.devices.gts2mini
     return device
 }

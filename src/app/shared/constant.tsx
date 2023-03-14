@@ -7,7 +7,7 @@ export interface IDevice {
 }
 
 export class Constant {
-  static readonly version = "1.7.2"
+  static readonly version = "1.7.4"
   static readonly DEVICE_KEY = "com.kontranik.gts2editor.device";
   static readonly NONE = "None";
   static readonly startImageIndex = 0;
@@ -15,7 +15,8 @@ export class Constant {
 
 
   static readonly devices = {
-    gts2minie: { width: 306, height: 354, deviceId: 73, title: 'Gts2 mini' },
+    gts2mini: { width: 306, height: 354, deviceId: 73, title: 'Gts2 mini' },
     bipu: { width: 302, height: 320, deviceId: 71, title: 'Bip U' },
+    bip3: { width: 240, height: 280, deviceId: 71, title: 'Bip 3' },
   }
 }

@@ -21,7 +21,7 @@ const App: FC = () => {
   const [jsonName, setJsonName] = useState<string>(null);
   const [previewScreenNormal, setPreviewScreenNormal] = useState<boolean>(true);
 
-  const [device, setDevice] = useState<IDevice>(Constant.devices.gts2minie);
+  const [device, setDevice] = useState<IDevice>(Constant.devices.gts2mini);
 
   useEffect( () => {
     setDevice(getDeviceFromStorage())

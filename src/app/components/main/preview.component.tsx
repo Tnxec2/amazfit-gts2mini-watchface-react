@@ -29,6 +29,7 @@ import { drawWeather } from "../../preview/weather.element";
 import Canvas from "./canvas.function";
 import cl from "./previewComponent.module.css";
 import { drawStepsAod } from "../../preview/stepsAod.element";
+import { Constant } from "../../shared/constant";
 
 const storage_items = {
   preview_white_grid: "preview_white_grid",
@@ -294,6 +295,7 @@ const PreviewComponent: FC = () => {
           width={device.width}
           height={device.height}
           onClick={getCursorPosition}
+          style={device.title === Constant.devices.gts2mini.title ? {borderRadius: 72} :  {borderRadius: 38}}
         />
       </div>
 
