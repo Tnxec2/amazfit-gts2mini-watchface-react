@@ -44,7 +44,7 @@ const App: FC = () => {
         setDevice
       }}
     >
-      <Container className="App d-flex flex-column min-vh-100 vh-100">
+      <div className="App d-flex flex-column min-vh-100 vh-100">
         <Row className="header">
           <FileLoaderComponent />
         </Row>
@@ -56,7 +56,7 @@ const App: FC = () => {
             <RightSideComponent />
           </Col>
         </Row>
-      </Container>
+      </div>
     </WatchfaceContext.Provider>
   );
 };
