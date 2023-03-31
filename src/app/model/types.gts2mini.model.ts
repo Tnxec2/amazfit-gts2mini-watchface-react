@@ -43,6 +43,7 @@ export class JsonType {
     static Countdown  = new JsonType(17, "Countdown");
     static StopWatch  = new JsonType(18, "StopWatch");
     static Pomodoro  = new JsonType(19, "Pomodoro");
+    static Compass  = new JsonType(22, "Compass");
     static Voice  = new JsonType(25, "Voice");
 
     static findByIndex(index: number) {
