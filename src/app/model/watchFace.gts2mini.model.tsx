@@ -1462,13 +1462,27 @@ export class WatchBackground {
   }
 }
 
+export class WatchShortcut {
+  icon: WatchImage = new WatchImage()
+  type: string
+  element: WatchShortcutElement = new WatchShortcutElement()
+
+  constructor(j?: Shortcut) {
+    if (j) {
+      this.icon = new WatchImage(j.Icon)
+      this.type = j.ShortcutType
+      this.element = new WatchShortcutElement(j.Element)
+    }
+  }
+}
 export class WatchShortcuts {
   collapsed = true
   
-  json: Shortcut[] = []
+  shortcuts: WatchShortcut[] = []
+
   constructor(j?: Shortcuts) {
     if (j) {
-      this.json = j.Shortcut
+      this.shortcuts = j.Shortcut.map(item => new WatchShortcut(item))
     }
   }
 }

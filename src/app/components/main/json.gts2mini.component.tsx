@@ -472,13 +472,13 @@ function getAlarm(alarm: WatchAlarm): Alarm {
 }
 
 function getShortCuts(s: WatchShortcuts): Shortcuts {
-    if (s.json && s.json.length > 0 ) {
+    if (s.shortcuts && s.shortcuts.length > 0 ) {
         return {
-            Shortcut: s.json.map((item) => 
+            Shortcut: s.shortcuts.map((item) => 
                 ({ 
-                 Icon: item.Icon?.ImageIndex >= 0 ? item.Icon : null,
-                 ShortcutType: item.ShortcutType,
-                 Element: item.Element
+                 Icon: item.icon?.json?.ImageIndex >= 0 ? item.icon.json : null,
+                 ShortcutType: item.type,
+                 Element: item.element?.json
                 })
             )
         }

@@ -1,8 +1,8 @@
 import { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { Image, Shortcut, ShortcutElement } from "../../model/json.gts2minit.model";
 import { JsonType, ShortcutType } from "../../model/types.gts2mini.model";
+import { WatchShortcut } from "../../model/watchFace.gts2mini.model";
 import ShortCutComponent from "./shortcut.component";
 
 
@@ -11,28 +11,26 @@ const ShortCutListComponent: FC = () => {
   useContext<IWatchContext>(WatchfaceContext);
   const [selectedType, setSelectedType] = useState<string>(ShortcutType.Workout.json)
 
-  function onUpdateShortcut(index: number, s: Shortcut) {
+  function onUpdateShortcut(index: number, s: WatchShortcut) {
     const w = {...watchface};
-    w.shortcuts.json[index] = s
+    w.shortcuts.shortcuts[index] = {...s}
     setWatchface(w)
   }
 
   function onDelete(index: number) {
-    if ( window.confirm('Would you delete shortcut ' + watchface.shortcuts.json[index].ShortcutType)) {
+    if ( window.confirm('Would you delete shortcut ' + watchface.shortcuts.shortcuts[index].type)) {
       const w = {...watchface}
-      w.shortcuts.json.splice(index, 1)
+      w.shortcuts.shortcuts.splice(index, 1)
       setWatchface(w)
     }
   }
 
   function addShortcut() {
     const w = {...watchface}
-    let shortcut = new Shortcut()
-    shortcut.Icon = new Image()
-    shortcut.Element = new ShortcutElement()
-    shortcut.ShortcutType = selectedType
-    if (!w.shortcuts.json) w.shortcuts.json = []
-    w.shortcuts.json.push(shortcut)
+    let shortcut = new WatchShortcut()
+    shortcut.type = selectedType
+    if (!w.shortcuts.shortcuts) w.shortcuts.shortcuts = []
+    w.shortcuts.shortcuts.push(shortcut)
     w.shortcuts.collapsed = true
     setWatchface(w)
   }
@@ -66,9 +64,10 @@ const ShortCutListComponent: FC = () => {
       </Card.Header>
       {!watchface.shortcuts.collapsed ? (
         <Card.Body>
-        { watchface.shortcuts.json.length > 0 ? watchface.shortcuts.json.map( (item, index ) => 
+        { watchface.shortcuts.shortcuts.length > 0 ? watchface.shortcuts.shortcuts.map( (item, index ) => 
             <ShortCutComponent
-              title={item.ShortcutType}
+              key={item.type}
+              title={item.type}
               shortcut={item}
               onUpdate={(s) => onUpdateShortcut(index, s)}
               onDelete={() => onDelete(index)}
