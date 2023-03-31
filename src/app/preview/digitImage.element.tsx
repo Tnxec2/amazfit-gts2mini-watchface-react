@@ -3,6 +3,7 @@ import { IImage } from "../model/image.model"
 
 import { WatchNumber } from "../model/watchFace.gts2mini.model"
 import { AlignmentType } from "../model/types.gts2mini.model"
+import LeftSideComponent from "../components/main/leftside.component"
 
 export interface DigitValueItem {
     snumber: string,
@@ -163,8 +164,21 @@ function getImages(
     decimalPointer: number,
     minus?: number): HTMLImageElement[] {
     const ar: HTMLImageElement[] = []
+    let decimalPlaces = strNumber.length - 2
+    if ( decimalPointer) {
+        if ( strNumber.length > 3 ) {
+            strNumber = strNumber.substring(0, 3)
+            decimalPlaces = 2
+        } else if ( strNumber.length === 1 ) {
+            strNumber = '00' + strNumber
+            decimalPlaces = 1
+        } else if ( strNumber.length === 2 ) {
+            strNumber = '0' + strNumber
+            decimalPlaces = 1
+        }
+    }
     for (let i = 0; i < strNumber.length; i++) {
-        if (decimalPointer && i === strNumber.length - 2) {
+        if (decimalPointer && i === decimalPlaces) {
             const img = findImageById(decimalPointer, images)
             if (img) { ar.push(img) }
         }
