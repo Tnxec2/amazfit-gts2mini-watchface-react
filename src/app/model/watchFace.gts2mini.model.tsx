@@ -192,8 +192,10 @@ export class WatchNumber {
     }
     
     if ( con ) {
-      if (!this.json) this.json = new NumberJson()
-      this.json.ImagesCount = con.count
+      if (!this.json) {
+        this.json = new NumberJson()
+        this.json.ImagesCount = con.count
+      }
       this.con = con
     }
   }
@@ -888,9 +890,9 @@ export class WatchStandUpActivity {
     }
     if (!this.aElement) {
       this.aElement = new WatchStandUpElement(con)
+      this.aElement.imageNumber.json.ImagesCount = con.count
     } else {
       this.aElement.imageNumber.con = con
-      this.aElement.imageNumber.json.ImagesCount = con.count
     }
     this.con = con
   }
@@ -912,9 +914,9 @@ export class WatchPAIActivity {
     }
     if (!this.aElement) {
       this.aElement = new WatchPaiElement(con)
+      this.aElement.imageNumber.json.ImagesCount = con.count
     } else {
       this.aElement.imageNumber.con = con
-      this.aElement.imageNumber.json.ImagesCount = con.count
     }
     this.con = con
   }
@@ -933,9 +935,9 @@ export class WatchDistanceActivity {
 
     if (!this.aElement) {
       this.aElement = new WatchDistanceElement(con)
+      this.aElement.imageNumber.json.ImagesCount = con.count
     } else {
       this.aElement.imageNumber.con = con
-      this.aElement.imageNumber.json.ImagesCount = con.count
     }
     this.con = con
   }
@@ -957,9 +959,9 @@ export class WatchHeartRateActivity {
     }
     if (!this.aElement) {
       this.aElement = new WatchHertRateElement(con)
+      this.aElement.imageNumber.json.ImagesCount = con.count
     } else {
       this.aElement.imageNumber.con = con
-      this.aElement.imageNumber.json.ImagesCount = con.count
     }
     this.con = con
   }
@@ -981,9 +983,9 @@ export class WatchCaloriesActivity {
     }
     if (!this.aElement) {
       this.aElement = new WatchCaloriesElement(con)
+      this.aElement.imageNumber.json.ImagesCount = con.count
     } else {
       this.aElement.imageNumber.con = con
-      this.aElement.imageNumber.json.ImagesCount = con.count
     }
     this.con = con
   }
@@ -1005,9 +1007,9 @@ export class WatchStepsActivity {
     }
     if (!this.aElement) {
       this.aElement = new WatchStepsElement(con)
+      this.aElement.imageNumber.json.ImagesCount = con.count
     } else {
       this.aElement.imageNumber.con = con
-      this.aElement.imageNumber.json.ImagesCount = con.count
     }
     this.con = con
   }
@@ -1026,9 +1028,9 @@ export class WatchAodStepsActivity {
 
     if (!this.aElement) {
       this.aElement = new WatchStepsElement(con)
+      this.aElement.imageNumber.json.ImagesCount = con.count
     } else {
       this.aElement.imageNumber.con = con
-      this.aElement.imageNumber.json.ImagesCount = con.count
     }
     this.con = con
   }
