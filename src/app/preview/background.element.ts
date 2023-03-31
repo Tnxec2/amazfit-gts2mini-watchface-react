@@ -19,7 +19,7 @@ export default function draw(
             ctx.drawImage(img, background.image.json.X, background.image.json.Y);
         }
     }
-    if (background?.floatingLayer?.json?.ImageIndex) {
+    if (background?.floatingLayer?.json?.ImageIndex >= 0) {
         const img = findImageById(background.floatingLayer?.json.ImageIndex, images)
         if (img) {
             ctx.drawImage(img, background.floatingLayer?.json.X, background.floatingLayer?.json.Y);
