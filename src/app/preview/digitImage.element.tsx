@@ -3,7 +3,6 @@ import { IImage } from "../model/image.model"
 
 import { WatchNumber } from "../model/watchFace.gts2mini.model"
 import { AlignmentType } from "../model/types.gts2mini.model"
-import LeftSideComponent from "../components/main/leftside.component"
 
 export interface DigitValueItem {
     snumber: string,
