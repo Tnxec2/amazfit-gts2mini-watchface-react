@@ -192,11 +192,11 @@ export class WatchNumber {
     }
     
     if ( con ) {
-      if (!this.json) {
+      if (!j) {
         this.json = new NumberJson()
         this.json.ImagesCount = con.count
       }
-      this.con = con
+      this.con = con    
     }
   }
 }
@@ -711,7 +711,7 @@ export class WatchAodDate {
 export class WatchDistanceElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber(null, null)
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.distance)
   icon: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
   decimalPoint: number
@@ -739,7 +739,7 @@ export class WatchDistanceElement {
 export class WatchStepsElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber(null, null)
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.steps)
   prefix: number
   noData: number
   icon: WatchImage = new WatchImage()
@@ -765,7 +765,7 @@ export class WatchStepsElement {
 export class WatchAodStepsElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber(null, null)
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.steps)
   prefix: number
   suffix: number
 
@@ -785,7 +785,7 @@ export class WatchAodStepsElement {
 export class WatchHertRateElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber(null, null)
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.heartRate)
   prefix: number
   noData: number
   icon: WatchImage = new WatchImage()
@@ -811,7 +811,7 @@ export class WatchHertRateElement {
 export class WatchPaiElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber(null, null)
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.pai)
   icon: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
   suffix: number
@@ -833,7 +833,7 @@ export class WatchPaiElement {
 export class WatchStandUpElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber(null, null)
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.standUp)
   icon: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
   suffix: number
@@ -855,7 +855,7 @@ export class WatchStandUpElement {
 export class WatchCaloriesElement {
   enabled: boolean
 
-  imageNumber: WatchNumber = new WatchNumber(null, null)
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.calories)
   icon: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
   suffix: number
