@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useContext, useState } from "react";
+import React, { FC, Fragment, ReactElement, useContext, useMemo, useState } from "react";
 import { Constant } from "./constant";
 import { IWatchContext, WatchfaceContext } from "../context";
 import "./selectFileList.css";
@@ -10,12 +10,25 @@ interface IProps {
 
 const SelectFileListComponent: FC<IProps> = ({
   title,
-  value,
+  value: imageIndex,
   onChange,
 }) => {
   const { images } = useContext<IWatchContext>(WatchfaceContext);
 
   const [collapsed, setCollapsed] = useState<boolean>(true);
+
+  const imageIndexReal = useMemo<string>(() => {
+
+    if (imageIndex !== null && imageIndex !== undefined) {
+      var ix = images.find(it => {
+        return it.id === imageIndex
+      })
+      return ix ? ix.name : "None"
+    } else {
+      return "None"
+    }
+  
+  },[images, imageIndex])
 
   function onFileSelected(id: number) {
     onChange(id);
@@ -54,14 +67,10 @@ const SelectFileListComponent: FC<IProps> = ({
   
   return (
     <>
-      <span className="input-group-text">{title}</span>
+      <span className="input-group-text">{title.split('\n').map((str, index) => <Fragment key={index}>{str}<br/></Fragment>)}</span>
       <div className="input-group-text dropdown">
         <div>
-          {value !== null &&
-          value !== undefined &&
-          images[value - Constant.startImageIndex]
-            ? images[value - Constant.startImageIndex].name
-            : "None"}
+          {imageIndexReal}
         </div>
         {collapsed ? (
           ""
@@ -83,7 +92,7 @@ const SelectFileListComponent: FC<IProps> = ({
         className="btn btn-outline-secondary"
         type="button"
         onClick={onRemove}
-        disabled={!(value >= 0)}
+        disabled={!(imageIndex >= 0)}
       >
         x
       </button>
