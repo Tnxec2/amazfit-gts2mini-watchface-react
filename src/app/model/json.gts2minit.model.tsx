@@ -444,7 +444,7 @@ export class Time{
   Minutes: NumberJson
   Seconds: NumberJson
   PaddingZeroMinutes:  boolean = false
-  PaddingZeroSeconds:  boolean = false
+  PaddingZeroSeconds:  boolean = true
   MinutesDataTypeImageIndex:  number
   SecondsDataTypeImageIndex:  number
   MinutesFollowHours:  boolean = false

@@ -109,8 +109,8 @@ function getTimeExtended(time: WatchTime): TimeExtended {
                 DrawOrder: time?.timeDigitalSeparated?.drawOrder,
                 SeparatorHours: time?.timeDigitalSeparated?.separatorHours.enabled ? time?.timeDigitalSeparated?.separatorHours.json : null,
                 SeparatorMinutes: time?.timeDigitalSeparated?.separatorMinutes.enabled ?time?.timeDigitalSeparated?.separatorMinutes.json : null,
-                PaddingZeroHours: time?.timeDigitalSeparated?.paddingZeroHours,
-                PaddingZeroMinutes: time?.timeDigitalSeparated?.paddingZeroMinutes,
+                PaddingZeroHours: time?.timeDigitalSeparated ? (time?.timeDigitalSeparated?.paddingZeroHours ? true : false) : null,
+                PaddingZeroMinutes: time?.timeDigitalSeparated ? (time?.timeDigitalSeparated?.paddingZeroMinutes ? true : false) : null,
         } : null,
         SunsetTimeOneLine: time.sunset.sunsetOneLine.enabled ? time.sunset.sunsetOneLine.json : null,
         DelimiterSunsetImageIndex: time.sunset.sunsetOneLine.enabled ? time.sunset.sunsetOneLine.delimiter : null,
@@ -169,8 +169,8 @@ function getDateElement(date: WatchDate): DateElement {
             MonthDataTypeCoordinates: date.month?.enabled && date.month?.dataType ? date.month.dataTypeCoords : null,
             DayDataTypeCoordinates: date.day?.enabled && date.day?.dataType ? date.day.dataTypeCoords : null
         } : null,
-        PaddingZeroMonth: date.oneLineYear ? date.year?.paddingZero : date.month?.paddingZero ? true : false,
-        PaddingZeroDay: date.oneLineYear ? date.year?.paddingZero : (date.oneLineMonth ? date.month?.paddingZero :  date.day?.paddingZero ? true : false),
+        PaddingZeroMonth: date.oneLineYear ? ( date.year?.paddingZero ? true : false) : ( date.month?.paddingZero ? true : false ),
+        PaddingZeroDay: date.oneLineYear ? ( date.year?.paddingZero ? true : false) : (date.oneLineMonth ? ( date.month?.paddingZero ? true : false) :  date.day?.paddingZero ? true : false),
         UnknownBoolean6: false,
     }
 }
@@ -265,7 +265,7 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
     else return {
         Hours: time.hours.enabled ? time.hours.json : null,
         HoursDataTypeImageIndex: time.hours.dataType,
-        PaddingZeroHours: time.hours.paddingZero,
+        PaddingZeroHours: time.hours.paddingZero ? true : false,
         DelimiterHoursImageIndex: time.hours.delimiter,
         DelimiterMinutesImageIndex: time.minutes.delimiter,
         HoursFollowPosition: false,
@@ -274,8 +274,8 @@ function getTimeDigital(time: WatchTimeDigitalCommon): TimeDigital {
             Unknown1:  time.time_unknown1,
             Minutes: time.minutes.enabled ? time.minutes.json : null,
             Seconds: time.seconds.enabled ? time.seconds.json : null,
-            PaddingZeroMinutes:  time.minutes.paddingZero,
-            PaddingZeroSeconds:  time.seconds.paddingZero,
+            PaddingZeroMinutes:  time.minutes.paddingZero ? true : false,
+            PaddingZeroSeconds:  time.seconds.paddingZero ? true : false,
             MinutesDataTypeImageIndex:  time.minutes.enabled ? time.minutes.dataType : null,
             SecondsDataTypeImageIndex:  time.seconds.enabled ? time.seconds.dataType : null,
             MinutesFollowHours:  time.minutes.follow ? true : false,
@@ -463,8 +463,8 @@ function getAlarm(alarm: WatchAlarm): Alarm {
             HoursDataTypeImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.dataType : null,
             DelimiterHoursImageIndex: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.delimiter : null,
             DelimiterMinutesImageIndex: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.delimiter : null,
-            PaddingZeroHours: alarm.alarmTime.hours.enabled ? alarm.alarmTime.hours.paddingZero : null,
-            PaddingZeroMinutes: alarm.alarmTime.minutes.enabled ? alarm.alarmTime.minutes.paddingZero : null,
+            PaddingZeroHours: alarm.alarmTime.hours.enabled ? (alarm.alarmTime.hours.paddingZero ? true : false) : null,
+            PaddingZeroMinutes: alarm.alarmTime.minutes.enabled ? (alarm.alarmTime.minutes.paddingZero ? true : false) : null,
             HoursDataTypeCoordinates: alarm.alarmTime.hours.enabled && alarm.alarmTime.hours.dataType ? alarm.alarmTime.hours.dataTypeCoords : null, // needed only when MinutesFollowHours == False
             MinutesFollowHours: alarm.alarmTime?.minutes?.follow ? true : false,
         } : null,
@@ -496,7 +496,7 @@ function getAodTimeExtended(time: WatchAodTime): AoDTimeExtended {
             Hours: time.timeSeparateDigits.hours.enabled ? time.timeSeparateDigits.hours.json : null,
             Minutes: time.timeSeparateDigits.minutes.enabled ? time.timeSeparateDigits.minutes.json : null,
             Separator: time.timeSeparateDigits.separator.enabled ? time.timeSeparateDigits.separator.json : null,
-            PaddingZeroHours: time.timeSeparateDigits.hours.enabled ? time.timeSeparateDigits.paddingZero ? true : false : null
+            PaddingZeroHours: time.timeSeparateDigits.hours.enabled ? (time.timeSeparateDigits.paddingZero ? true : false) : null
         } : null,
         TimeAnalog: enabledTimeAnalog ? {
             CommonCenterCoordinates: time.timeAnalog.commonCenterCoordinates ? 
@@ -522,9 +522,9 @@ function getAodTimeExtended(time: WatchAodTime): AoDTimeExtended {
             MinutesDataTypeImageIndex: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.dataType : null,
             DelimiterHoursImageIndex: time.timeDigital.hours.enabled ? time.timeDigital.hours.delimiter : null,
             DelimiterMinutesImageIndex: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.delimiter : null,
-            PaddingZeroHours: time.timeDigital.hours.enabled ? time.timeDigital.hours.paddingZero ? true : false : null,
-            PaddingZeroMinutes: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.paddingZero ? true : false : null,
-            MinutesFollowHours: time.timeDigital.minutes.enabled ? time.timeDigital.minutes.follow ? true : false : null,
+            PaddingZeroHours: time.timeDigital.hours.enabled ? ( time.timeDigital.hours.paddingZero ? true : false) : null,
+            PaddingZeroMinutes: time.timeDigital.minutes.enabled ? (time.timeDigital.minutes.paddingZero ? true : false) : null,
+            MinutesFollowHours: time.timeDigital.minutes.enabled ? (time.timeDigital.minutes.follow ? true : false) : null,
             HoursDataTypeCoordinates: time.timeDigital.hours.enabled && time.timeDigital.hours.dataType ? time.timeDigital.hours.dataTypeCoords : null,
             MinutesDataTypeCoordinates: time.timeDigital.minutes.enabled && time.timeDigital.minutes.dataType ? time.timeDigital.minutes.dataTypeCoords : null,
         } : null
