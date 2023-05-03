@@ -2,7 +2,7 @@
 
 this is my just for fun project.
 
-this is a Web-Based watchfaces json crate tool for Amazfit Gts2 watch.
+this is a Web-Based watchfaces json crate tool for Amazfit Gts2Mini / BipU / Bip3 watches.
 
 Open from github pages:
 
