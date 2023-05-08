@@ -71,8 +71,8 @@ export class TimeSeparateDigits {
 export class NumberJson {
   TopLeftX: number = 0
   TopLeftY: number = 0
-  BottomRightX: number = 0
-  BottomRightY: number = 0
+  BottomRightX: number = 1
+  BottomRightY: number = 1
   Alignment: string = AlignmentType.TopLeft.json
   Spacing: number = 0
   VerticalOffset: number = 0
@@ -83,8 +83,8 @@ export class NumberJson {
 export class ShortcutElement {
   TopLeftX: number = 0
   TopLeftY: number = 0
-  BottomRightX: number = 0
-  BottomRightY: number = 0
+  BottomRightX: number = 1
+  BottomRightY: number = 1
   UnknownBoolean5: boolean = true
 }
 
