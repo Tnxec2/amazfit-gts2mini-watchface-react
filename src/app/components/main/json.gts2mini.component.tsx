@@ -449,12 +449,12 @@ function getActivity(activity: WatchActivityList): Activity {
 }
 
 function getAlarm(alarm: WatchAlarm): Alarm {
-    let enabled = alarm.noAlarm.enabled || alarm.alarmImage.enabled ||
+    let enabled = alarm.noAlarmImage.enabled || alarm.alarmImage.enabled ||
     alarm.shortcut.enabled || alarm.alarmTime.hours.enabled || alarm.alarmTime.minutes.enabled
 
     if (!enabled) return null
     else return {
-        NoAlarmImage: alarm.noAlarm.enabled ? alarm.noAlarm.json : null,
+        NoAlarmImage: alarm.noAlarmImage.enabled ? alarm.noAlarmImage.json : null,
         AlarmImage: alarm.alarmImage.enabled ? alarm.alarmImage.json : null,
         ShortcutArea: alarm.shortcut.enabled ? alarm.shortcut.json : null,
         AlarmTime: alarm.alarmTime.hours.enabled || alarm.alarmTime.minutes.enabled ? {

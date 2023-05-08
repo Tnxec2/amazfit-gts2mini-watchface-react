@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { WatchImage, WatchImageSet, WatchProgressAlt3 } from '../../model/watchFace.gts2mini.model';
 import ImageComponent from './image.component';
 import ImageSetComponent from './imageSet.component';
+import { Card } from 'react-bootstrap';
 
 interface IProps {
     title: string;
@@ -30,19 +31,19 @@ const ProgressAlt3Component: FC<IProps> = ({
 
 
     return (
-        <div>
-          <ImageSetComponent
-              title='Image progress'
-              onUpdate={updateImageProgress}
-              imageSet={{...progress.imageProgress}}
-            /> 
+      <> 
+      <ImageSetComponent
+          title='Image progress'
+          onUpdate={updateImageProgress}
+          imageSet={{...progress.imageProgress}}
+        /> 
 
-            <ImageComponent
-            title='No data Image'
-            onUpdate={updateNoData}
-            image={{...progress.noDataImage}}
-            />
-        </div>
+        <ImageComponent
+        title='No data Image'
+        onUpdate={updateNoData}
+        image={{...progress.noDataImage}}
+        />
+      </>
     );
 };
 

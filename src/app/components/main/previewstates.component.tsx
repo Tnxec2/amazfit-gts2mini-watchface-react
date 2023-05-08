@@ -176,10 +176,30 @@ const PreviewStatesComponent: FC = () => {
               setWatchState(ws);
             }}
           />
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={!watchState.sunsetNoData}
+              onChange={() => {
+                setWatchState({...watchState, sunsetNoData: !watchState.sunsetNoData});
+              }}
+            />
+          </div>
         </div>
 
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Battery</span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={!watchState.batteryNoData}
+              onChange={() => {
+                setWatchState({...watchState, batteryNoData: !watchState.batteryNoData});
+              }}
+            />
+          </div>
           <input
             type="number"
             className="form-control form-control-sm"
@@ -211,6 +231,16 @@ const PreviewStatesComponent: FC = () => {
 
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Steps</span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={!watchState.stepsNoData}
+              onChange={() => {
+                setWatchState({...watchState, stepsNoData: !watchState.stepsNoData});
+              }}
+            />
+          </div>
           <input
             type="number"
             className="form-control form-control-sm"
@@ -242,6 +272,16 @@ const PreviewStatesComponent: FC = () => {
 
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Hearthrate</span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={!watchState.hearthRateNoData}
+              onChange={() => {
+                setWatchState({...watchState, hearthRateNoData: !watchState.hearthRateNoData});
+              }}
+            />
+          </div>
           <input
             type="number"
             className="form-control form-control-sm"
@@ -350,6 +390,17 @@ const PreviewStatesComponent: FC = () => {
           <span className="input-group-text">{WeatherStates.ar[watchState.weatherIcon]}</span>
         </div>
         <div className="input-group input-group-sm mb-1">
+          <span className="input-group-text">No Data</span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={watchState.tempNoData}
+              onChange={() => {
+                setWatchState({...watchState, tempNoData: !watchState.tempNoData});
+              }}
+            />
+          </div>
           <span className="input-group-text">Current</span>
           <input
             type="number"
@@ -396,6 +447,16 @@ const PreviewStatesComponent: FC = () => {
 
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">UV Index</span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={!watchState.uvNoData}
+              onChange={() => {
+                setWatchState({...watchState, uvNoData: !watchState.uvNoData});
+              }}
+            />
+          </div>
           <input
             type="number"
             className="form-control form-control-sm"
@@ -426,6 +487,16 @@ const PreviewStatesComponent: FC = () => {
         </div>
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Humidity</span>
+          <div className="input-group-text">
+            <input
+              className="form-check-input mt-0"
+              type="checkbox"
+              checked={!watchState.humidityNoData}
+              onChange={() => {
+                setWatchState({...watchState, humidityNoData: !watchState.humidityNoData});
+              }}
+            />
+          </div>
           <input
             type="number"
             className="form-control form-control-sm"

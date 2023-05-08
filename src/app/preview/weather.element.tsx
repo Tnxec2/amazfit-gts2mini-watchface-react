@@ -17,17 +17,17 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     if (weather.current.watchNumber.enabled) {
         drawDigitImage(ctx, images, weather.current.watchNumber, 
             watchState.temperature, null, drawBorder, false,
-            weather.current.minus, null, null, weather.current.suffixC)
+            weather.current.minus, null, null, weather.current.suffixC, null, watchState.tempNoData ? weather.current.nodata : null)
     }
     if (weather.lowest.watchNumber.enabled) {
         drawDigitImage(ctx, images, weather.lowest.watchNumber, 
             watchState.temperatureMin, null, drawBorder, false,
-            weather.lowest.minus, null, null, weather.lowest.suffixC)
+            weather.lowest.minus, null, null, weather.lowest.suffixC, null, watchState.tempNoData ? weather.lowest.nodata : null)
     }
     if (weather.highest.watchNumber.enabled) {
         drawDigitImage(ctx, images, weather.highest.watchNumber, 
             watchState.temperatureMax, null, drawBorder, false,
-            weather.highest.minus, null, null, weather.highest.suffixC)
+            weather.highest.minus, null, null, weather.highest.suffixC, null, watchState.tempNoData ? weather.highest.nodata : null)
     }
     if (weather.icon.enabled) {
         drawImageSet(ctx, images, weather.icon.json, watchState.weatherIcon, 26);
@@ -45,11 +45,15 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     if (weatherext.humidityIcon.enabled) {
         drawImage(ctx, images, weatherext.humidityIcon.json)
     }
-    if (weatherext.humidityNumber.enabled) {
+    if (weatherext.humidityNumber.enabled && !watchState.humidityNoData) {
         drawDigitImage(ctx, images, weatherext.humidityNumber, watchState.humidity, null, drawBorder, 
             false, null, null, null, weatherext.humiditySuffix)
     }
-    if (weatherext.humidityProgress.imageProgress.enabled) {
+
+    if (watchState.humidityNoData) {
+        if(weatherext.humidityProgress.noDataImage.enabled) 
+            drawImage(ctx, images, weatherext.humidityProgress.noDataImage.json)
+    } else if (weatherext.humidityProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, weatherext.humidityProgress.imageProgress.json, watchState.humidity, watchState.humidityGoal)
     }
 
@@ -60,14 +64,19 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
         drawDigitImage(ctx, images, weatherext.airQualityNumber, watchState.airQuality, null, drawBorder, 
             false, null, null, null, null)
     }
+
     if (weatherext.uvIcon.enabled) {
         drawImage(ctx, images, weatherext.uvIcon.json)
     }
     if (weatherext.uvNumber.enabled) {
         drawDigitImage(ctx, images, weatherext.uvNumber, watchState.uvIndex, null, drawBorder, 
-            false, null, null, null, weatherext.uvSuffixImageIndex)
+            false, null, null, null, weatherext.uvSuffixImageIndex, null, watchState.uvNoData ? weatherext.uvNoDataImageIndex : null)
     }
-    if (weatherext.uvProgress.imageProgress.enabled) {
+    if (watchState.uvNoData) {
+        if (weatherext.uvProgress.noDataImage.enabled) {
+            drawImage(ctx, images, weatherext.uvProgress.noDataImage.json);
+        }
+    } else if (weatherext.uvProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal)
     }
     if (weatherext.uvShortcut.enabled) {

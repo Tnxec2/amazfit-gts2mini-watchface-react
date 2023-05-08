@@ -85,6 +85,7 @@ const SelectFileListComponent: FC<IProps> = ({
           setCollapsed(!collapsed);
         }}
         disabled={!images || images.length === 0}
+        title={!images || images.length === 0 ? 'load images first' : 'select start image'}
       >
         + 
       </button>
@@ -93,6 +94,7 @@ const SelectFileListComponent: FC<IProps> = ({
         type="button"
         onClick={onRemove}
         disabled={!(imageIndex >= 0)}
+        title='clear selection'
       >
         x
       </button>

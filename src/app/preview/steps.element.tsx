@@ -15,6 +15,7 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
     total: number,
     drawBorder: boolean,
     drawShortcutBorder: boolean,
+    noData: boolean
     ) {
     if (!activity) return;
     if (activity.aElement.enabled) {
@@ -23,7 +24,8 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
         activity.aElement.prefix, 
         null, 
         activity.aElement.suffix,
-        null)
+        null,
+        noData ? activity.aElement.noData : null)
     }
     if (activity.aElement.icon.enabled) {
         drawImage(ctx, images, activity.aElement.icon.json)

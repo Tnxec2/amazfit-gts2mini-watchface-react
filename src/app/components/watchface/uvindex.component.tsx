@@ -15,6 +15,9 @@ const UvIndexComponent: FC = () => {
   useContext<IWatchContext>(WatchfaceContext);
 
 
+  function onChangeNoData(val: number) {
+    setWatchface({...watchface, weatherext: { ...watchface.weatherext, uvNoDataImageIndex: val}})
+  }
 
   function onChangeNumber(val: WatchNumber) {
     const w = {...watchface};
@@ -70,6 +73,7 @@ const UvIndexComponent: FC = () => {
             {
               blocks: [
                 { title: 'Suffix', type: BlockType.SelectFile, nvalue: watchface.weatherext.uvSuffixImageIndex, onChange: onChangeSuffix },
+                { title: 'No Data', type: BlockType.SelectFile, nvalue: watchface.weatherext.uvNoDataImageIndex, onChange: onChangeNoData },
               ]
             }
           ]}  /> : ''

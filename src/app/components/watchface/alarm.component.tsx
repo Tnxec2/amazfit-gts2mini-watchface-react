@@ -31,7 +31,7 @@ const AlarmComponent: FC = () => {
 
   function updateNoAlarmImage(im: WatchImage) {
     const w = {...watchface};
-    w.time.alarm.noAlarm = im;
+    w.time.alarm.noAlarmImage = im;
     setWatchface(w);
   }
 
@@ -77,7 +77,7 @@ const AlarmComponent: FC = () => {
         />
         <ImageComponent 
           title='Alarm OFF'
-          image={{...watchface.time.alarm.noAlarm}}
+          image={{...watchface.time.alarm.noAlarmImage}}
           onUpdate={updateNoAlarmImage}
         />
         <WatchShortCutComponent 

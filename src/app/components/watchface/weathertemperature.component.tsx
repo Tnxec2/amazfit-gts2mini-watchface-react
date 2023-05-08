@@ -28,19 +28,14 @@ const WeatherTemperatureComponent: FC<IProps> = ({
   ], [temp]) // eslint-disable-line react-hooks/exhaustive-deps
 
   function onChangeMinus(val: number) {
-    const w = {...temp};
-    w.minus = val
-    onUpdate(w)
+    onUpdate({...temp, minus: val})
   }
   function onChangeNoData(val: number) {
-    const w = {...temp};
-    temp.nodata = val
-    onUpdate(w)
+    onUpdate({...temp, nodata: val})
   }
   function onChangeSuffixC(val: number) {
     onUpdate({...temp, suffixC: val})
   }
-  
   function updateWatchNumber(n: WatchNumber) {
     onUpdate({...temp, watchNumber: {...n}})
   }

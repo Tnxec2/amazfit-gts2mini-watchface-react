@@ -47,7 +47,7 @@ export default function drawAlarm(
     if (watchState.alarmEnabled) {
         if ( alarm.alarmImage.enabled) drawImage(ctx, images, alarm.alarmImage.json)
     } else {
-        if (alarm.noAlarm.enabled) drawImage(ctx, images, alarm.noAlarm.json)
+        if (alarm.noAlarmImage.enabled) drawImage(ctx, images, alarm.noAlarmImage.json)
     }
     if (alarm.shortcut.enabled)
         drawShortcutElement(ctx, alarm.shortcut.json, shortcutBorder)

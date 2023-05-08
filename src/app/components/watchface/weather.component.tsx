@@ -25,46 +25,30 @@ const WeatherComponent: FC = () => {
 
 
   function udpateCurrent(d: WatchTextTemperature) {
-    const w = {...watchface};
-    w.weather.current = d
-    setWatchface(w)
+    setWatchface({...watchface, weather: {...watchface.weather, current: d}})
   }
   function udpateLowest(d: WatchTextTemperature) {
-    const w = {...watchface};
-    w.weather.lowest = d
-    setWatchface(w)
+    setWatchface({...watchface, weather: {...watchface.weather, lowest: d}})
   }
   function udpateHighes(d: WatchTextTemperature) {
-    const w = {...watchface};
-    w.weather.highest = d
-    setWatchface(w)
+    setWatchface({...watchface, weather: {...watchface.weather, highest: d}})
   }
 
   function updateIcon(d: WatchImageSet) {
-    const w = {...watchface};
-    w.weather.icon = d
-    setWatchface(w)
+    setWatchface({...watchface, weather: {...watchface.weather, icon: d}})
   }
 
   function updateOneLineMinMax(d: WatchNumber) {
-    const w = {...watchface};
-    w.weather.oneLineMinMax = d
-    setWatchface(w)
+    setWatchface({...watchface, weather: {...watchface.weather, oneLineMinMax: d}})
   }
-  function onChangeOneLineMinus(val: number) {
-    const w = {...watchface};
-    w.weather.oneLineMinus = val
-    setWatchface(w)
+  function onChangeOneLineMinus(d: number) {
+    setWatchface({...watchface, weather: {...watchface.weather, oneLineMinus: d}})
   }
-  function onChangeOneLineDelimiter(val: number) {
-    const w = {...watchface};
-    w.weather.oneLineDelimiter = val
-    setWatchface(w)
+  function onChangeOneLineDelimiter(d: number) {
+    setWatchface({...watchface, weather: {...watchface.weather, oneLineDelimiter: d}})
   }
-  function onChangeOneLineDegrees(val: number) {
-    const w = {...watchface};
-    w.weather.oneLineDegrees = val
-    setWatchface(w)
+  function onChangeOneLineDegrees(d: number) {
+    setWatchface({...watchface, weather: {...watchface.weather, oneLineDegrees: d}})
   }
 
   return (

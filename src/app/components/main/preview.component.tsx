@@ -372,7 +372,8 @@ function drawActivitys(
     watchState.steps,
     watchState.stepsGoal,
     digitBorder,
-    shortCutBorder
+    shortCutBorder,
+    watchState.stepsNoData
   );
   drawCalories(
     ctx,
@@ -399,7 +400,8 @@ function drawActivitys(
     watchState.hearthrate,
     watchState.hearthrateGoal,
     digitBorder,
-    shortCutBorder
+    shortCutBorder,
+    watchState.hearthRateNoData
   );
   drawPAI(
     ctx,

@@ -1405,7 +1405,7 @@ export class WatchAlarmTime {
 export class WatchAlarm {
   collapsed: boolean = true
   
-  noAlarm: WatchImage = new WatchImage()
+  noAlarmImage: WatchImage = new WatchImage()
   alarmImage: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
   alarmTime: WatchAlarmTime = new WatchAlarmTime()
@@ -1413,7 +1413,7 @@ export class WatchAlarm {
   constructor(j?: Alarm) {
     if (j) {
       
-      this.noAlarm = new WatchImage(j.NoAlarmImage)
+      this.noAlarmImage = new WatchImage(j.NoAlarmImage)
       this.alarmImage = new WatchImage(j.AlarmImage)
       this.shortcut = new WatchShortcutElement(j.ShortcutArea)
       this.alarmTime = new WatchAlarmTime(j.AlarmTime)

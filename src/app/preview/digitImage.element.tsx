@@ -111,6 +111,7 @@ export default function drawDigitImage(
     decimalPointer?: number,
     suffix?: number,
     suffixKM?: number,
+    noData?: number,
     ): [number, number] | null  {
         
     const x = followXY ? followXY[0] : ( digit.json?.TopLeftX ? digit.json?.TopLeftX : 0 )
@@ -126,25 +127,30 @@ export default function drawDigitImage(
         }
         let ar: HTMLImageElement[] = []
 
-        if (prefix) {
-            const img = findImageById(prefix, images)
+        if (noData) {
+            const img = findImageById(noData, images)
             if (img) { ar.push(img) }
-        }
-        if (number < 0 && minus) {
-            const img = findImageById(minus, images)
-            if (img) { ar.push(img) }
-        }
-        ar = ar.concat(getImages(images, strNumber, 
-                digit.json.ImageIndex, 
-                digit.json.ImagesCount,
-                decimalPointer
-                ))
-        if (decimalPointer && suffixKM) {
-            const img = findImageById(suffixKM, images)
-            if (img) { ar.push(img) }
-        } else if (suffix) {
-            const img = findImageById(suffix, images)
-            if (img) { ar.push(img) }
+        } else {
+            if (prefix) {
+                const img = findImageById(prefix, images)
+                if (img) { ar.push(img) }
+            }
+            if (number < 0 && minus) {
+                const img = findImageById(minus, images)
+                if (img) { ar.push(img) }
+            }
+            ar = ar.concat(getImages(images, strNumber, 
+                    digit.json.ImageIndex, 
+                    digit.json.ImagesCount,
+                    decimalPointer
+                    ))
+            if (decimalPointer && suffixKM) {
+                const img = findImageById(suffixKM, images)
+                if (img) { ar.push(img) }
+            } else if (suffix) {
+                const img = findImageById(suffix, images)
+                if (img) { ar.push(img) }
+            }
         }
    
         const followXY = drawImages(ctx, ar, x, y, bottomx, bottomy, digit.json.Spacing, digit.json.VerticalOffset,
