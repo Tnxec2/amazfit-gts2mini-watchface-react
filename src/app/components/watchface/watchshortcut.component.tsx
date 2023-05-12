@@ -15,33 +15,39 @@ const WatchShortCutComponent: FC<IProps> = ({title, shortcut, onUpdate}) => {
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'X', type: BlockType.Number, nvalue: shortcut.json?.TopLeftX ? shortcut.json.TopLeftX : 0, onChange: onChangeTopLeftX },
-        { title: 'Y', type: BlockType.Number, nvalue: shortcut.json?.TopLeftY ? shortcut.json.TopLeftY : 0, onChange: onChangeTopLeftY },
-        { title: 'Width', type: BlockType.Number, nvalue: shortcut.json?.BottomRightX ? shortcut.json?.BottomRightX - shortcut.json.TopLeftX : 0, onChange: onChangeWidth },
-        { title: 'Height', type: BlockType.Number, nvalue: shortcut.json?.BottomRightY ? shortcut.json?.BottomRightY - shortcut.json.TopLeftY : 0, onChange: onChangeHeight },
+        { title: 'X', type: BlockType.Number, nvalue: shortcut.json?.TopLeftX ? shortcut.json.TopLeftX : 0, onChange: onChangeX },
+        { title: 'Y', type: BlockType.Number, nvalue: shortcut.json?.TopLeftY ? shortcut.json.TopLeftY : 0, onChange: onChangeY },
+        { title: 'BottomRightX', type: BlockType.Number, nvalue: shortcut.json?.BottomRightX ? shortcut.json?.BottomRightX : 0, onChange: onChangeBottomRightX },
+        { title: 'BottomRightY', type: BlockType.Number, nvalue: shortcut.json?.BottomRightY ? shortcut.json?.BottomRightY : 0, onChange: onChangeBottomRightY },
       ]
     }
   ], [shortcut]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  function onChangeTopLeftX(val: number) {
+  function onChangeX(val: number) {
+    const d = {...shortcut};
+    
+    let width = d.json.BottomRightX && d.json.TopLeftX ? d.json.BottomRightX - d.json.TopLeftX : 1
+    d.json.TopLeftX = val;
+    d.json.BottomRightX = val + width
+    onUpdate(d);
+  }
+
+  function onChangeY(val: number) {
+    const d = {...shortcut};
+    let height = d.json.BottomRightY && d.json.TopLeftY ? d.json.BottomRightY - d.json.TopLeftY : 1
+    d.json.TopLeftY = val;
+    d.json.BottomRightY = val + height
+    onUpdate(d);
+  }
+  function onChangeBottomRightX(val: number) {
     const s = {...shortcut};
-    s.json.TopLeftX = val
+    s.json.BottomRightX = val
     onUpdate(s)
   }
-  function onChangeTopLeftY(val: number) {
+  function onChangeBottomRightY(val: number) {
     const s = {...shortcut};
-    s.json.TopLeftY = val
-    onUpdate(s)
-  }
-  function onChangeWidth(val: number) {
-    const s = {...shortcut};
-    s.json.BottomRightX = s.json.TopLeftX ? s.json.TopLeftX + val : val
-    onUpdate(s)
-  }
-  function onChangeHeight(val: number) {
-    const s = {...shortcut};
-    s.json.BottomRightY = s.json.TopLeftY ? s.json.TopLeftY + val : val
+    s.json.BottomRightY = val
     onUpdate(s)
   }
 
