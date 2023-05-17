@@ -718,6 +718,7 @@ export class WatchDistanceElement {
   suffixKM: number
   suffixMI: number
   suffixImageCoordinates: Coordinates
+  separattedSuffix = false
 
   constructor(con?: IDigitConstructor, j?: Distance) {
     if (j) {
@@ -729,6 +730,7 @@ export class WatchDistanceElement {
       this.suffixKM = j.SuffixKMImageIndex
       this.suffixMI = j.SuffixMIImageIndex
       this.suffixImageCoordinates = j.SuffixImageCoordinates
+      if (this.suffixImageCoordinates) this.separattedSuffix = true
     } else if (con) {
       this.imageNumber = new WatchNumber(null, con)
     }

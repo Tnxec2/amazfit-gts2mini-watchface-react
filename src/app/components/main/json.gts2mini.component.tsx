@@ -429,7 +429,7 @@ function getActivity(activity: WatchActivityList): Activity {
         SuffixMIImageIndex: activity.distance.aElement.suffixMI,
         Icon: activity.distance.aElement.icon.enabled ? activity.distance.aElement.icon.json : null,
         Shortcut: activity.distance.aElement.shortcut.enabled ? activity.distance.aElement.shortcut.json : null,
-        SuffixImageCoordinates: null,
+        SuffixImageCoordinates: activity.distance.aElement.separattedSuffix ? activity.distance.aElement.suffixImageCoordinates : null,
     } : null,
     PAI: activity.pai.aElement.enabled ? {
         ImageNumber: activity.pai.aElement.imageNumber.enabled ? activity.pai.aElement.imageNumber.json : null,

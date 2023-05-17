@@ -23,19 +23,30 @@ const DistanceComponent: FC<IProps> = ({
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Suffix KM', type: BlockType.SelectFile, nvalue: activity.aElement.suffixKM, onChange: onChangeKM },
-        { title: 'Suffix MI', type: BlockType.SelectFile, nvalue: activity.aElement.suffixMI, onChange: onChangeMi },
         { title: 'Decimal Pointer', type: BlockType.SelectFile, nvalue: activity.aElement.decimalPoint, onChange: onChangeDecimalPointer },
       ]
     },
     {
       blocks: [
-        { title: 'Suffix', type: BlockType.Empty },
+        { title: 'Suffix KM', type: BlockType.SelectFile, nvalue: activity.aElement.suffixKM, onChange: onChangeKM },
+        { title: 'Suffix MI', type: BlockType.SelectFile, nvalue: activity.aElement.suffixMI, onChange: onChangeMi },
+      ]
+    },
+
+    {
+      blocks: [
+        { title: 'Suffix separated', type: BlockType.Checkbox, checked: activity.aElement.separattedSuffix ? true : false, onChange: onChangeSeparatedSuffix },
         { title: 'X', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.X ? activity.aElement.suffixImageCoordinates.X : 0, onChange: onChangeX },
         { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.Y ? activity.aElement.suffixImageCoordinates.Y : 0, onChange: onChangeY },
       ]
     }
   ], [activity]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function onChangeSeparatedSuffix(val: boolean) {
+    const d = {...activity};
+    d.aElement.separattedSuffix = val;
+    onUpdateActivity(d);
+  }
 
   function onChangeKM(val: number) {
     const a = {...activity};
@@ -62,6 +73,7 @@ const DistanceComponent: FC<IProps> = ({
     a.aElement.suffixMI = val
     onUpdateActivity(a)
   }
+
   function onChangeDecimalPointer(val: number) {
     const a = {...activity};
     a.aElement.decimalPoint = val
