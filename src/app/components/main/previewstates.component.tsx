@@ -190,16 +190,6 @@ const PreviewStatesComponent: FC = () => {
 
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Battery</span>
-          <div className="input-group-text">
-            <input
-              className="form-check-input mt-0"
-              type="checkbox"
-              checked={!watchState.batteryNoData}
-              onChange={() => {
-                setWatchState({...watchState, batteryNoData: !watchState.batteryNoData});
-              }}
-            />
-          </div>
           <input
             type="number"
             className="form-control form-control-sm"
@@ -231,16 +221,6 @@ const PreviewStatesComponent: FC = () => {
 
         <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Steps</span>
-          <div className="input-group-text">
-            <input
-              className="form-check-input mt-0"
-              type="checkbox"
-              checked={!watchState.stepsNoData}
-              onChange={() => {
-                setWatchState({...watchState, stepsNoData: !watchState.stepsNoData});
-              }}
-            />
-          </div>
           <input
             type="number"
             className="form-control form-control-sm"

@@ -1,5 +1,5 @@
 import Color from "../shared/color";
-import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressAlt1, ProgressAlt2, ProgressAlt3, ProgressAlt4, ProgressAlt5, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, TextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
+import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressAlt1, ProgressAlt2, ProgressAlt3, ProgressAlt4, ProgressAlt5, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
   count: number;
@@ -741,10 +741,10 @@ export class WatchStepsElement {
 
   imageNumber: WatchNumber = new WatchNumber(null, digitTypes.steps)
   prefix: number
-  noData: number
   icon: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
   suffix: number
+  delimiterTotal: number
 
 
   constructor(con?: IDigitConstructor, j?: Steps) {
@@ -752,10 +752,10 @@ export class WatchStepsElement {
       this.enabled = true
       this.imageNumber = new WatchNumber(j.ImageNumber, con)
       this.prefix = j.PrefixImageIndex ? j.PrefixImageIndex : null
-      this.noData = j.NoDataImageIndex
       this.icon = new WatchImage(j.Icon)
       this.shortcut = new WatchShortcutElement(j.Shortcut)
       this.suffix = j.SuffixImageIndex
+      this.delimiterTotal = j.DelimiterTotalImageIndex
     } else if (con) {
       this.imageNumber = new WatchNumber(null, con)
     }
@@ -1074,18 +1074,16 @@ export class WatchTextElement {
 
   imageNumber: WatchNumber = new WatchNumber(null, null)
   prefix: number
-  noData: number
   icon: WatchImage = new WatchImage()
   shortcut: WatchShortcutElement = new WatchShortcutElement()
   suffix: number
 
 
-  constructor(con?: IDigitConstructor, j?: TextElement) {
+  constructor(con?: IDigitConstructor, j?: BatteryTextElement) {
     if (j) {
       this.enabled = true
       this.imageNumber = new WatchNumber(j.ImageNumber, con)
       this.prefix = j.PrefixImageIndex ? j.PrefixImageIndex : null
-      this.noData = j.NoDataImageIndex
       this.icon = new WatchImage(j.Icon)
       this.shortcut = new WatchShortcutElement(j.Shortcut)
       this.suffix = j.SuffixImageIndex

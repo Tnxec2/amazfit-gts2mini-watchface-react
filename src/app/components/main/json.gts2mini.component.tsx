@@ -376,7 +376,6 @@ function getBattery(battery: WatchBattery): Battery {
         BatteryText: battery.text.enabled ? {
             ImageNumber: battery.text.imageNumber.enabled ? battery.text.imageNumber.json : null,
             PrefixImageIndex: battery.text.prefix,
-            NoDataImageIndex: battery.text.noData,
             Icon: battery.text.icon.enabled ? battery.text.icon.json : null,
             Shortcut: battery.text.shortcut.enabled ? battery.text.shortcut.json : null,
             SuffixImageIndex: battery.text.suffix,
@@ -403,10 +402,10 @@ function getActivity(activity: WatchActivityList): Activity {
     Steps: activity.steps.aElement.enabled ? {
         ImageNumber: activity.steps.aElement.imageNumber.enabled ? activity.steps.aElement.imageNumber.json : null,
         PrefixImageIndex: activity.steps.aElement.prefix,
-        NoDataImageIndex: activity.steps.aElement.noData,
+        SuffixImageIndex: activity.steps.aElement.suffix,
         Icon: activity.steps.aElement.icon.enabled ? activity.steps.aElement.icon.json : null,
         Shortcut: activity.steps.aElement.shortcut.enabled ? activity.steps.aElement.shortcut.json : null,
-        SuffixImageIndex: activity.steps.aElement.suffix
+        DelimiterTotalImageIndex: activity.steps.aElement.delimiterTotal
     } : null,
     Icon: null, // TODO
     Calories: activity.calories.aElement.enabled ? {

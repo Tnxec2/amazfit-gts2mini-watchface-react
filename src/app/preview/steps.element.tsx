@@ -1,7 +1,7 @@
 import { IImage } from "../model/image.model";
 import { WatchStepsActivity } from "../model/watchFace.gts2mini.model";
 import drawCircleProgress from "./circleProgress.element";
-import drawDigitImage from "./digitImage.element";
+import drawDigitImage, { drawDigitsOneLine } from "./digitImage.element";
 import drawIconSet from "./iconSet.element";
 import drawImage from "./image.element";
 import drawImageSet from "./imageSet.element";
@@ -15,17 +15,26 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
     total: number,
     drawBorder: boolean,
     drawShortcutBorder: boolean,
-    noData: boolean
     ) {
     if (!activity) return;
     if (activity.aElement.enabled) {
-        drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
-        null, drawBorder, false, null,
-        activity.aElement.prefix, 
-        null, 
-        activity.aElement.suffix,
-        null,
-        noData ? activity.aElement.noData : null)
+        if (activity.aElement.delimiterTotal) {
+            drawDigitsOneLine(ctx, images, activity.aElement.imageNumber, 
+                [ value.toString(), total.toString()], 
+                activity.aElement.delimiterTotal,
+                drawBorder,
+                activity.aElement.suffix,
+                activity.aElement.prefix,
+                null)
+        } else {
+            drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
+            null, drawBorder, false, null,
+            activity.aElement.prefix, 
+            null, 
+            activity.aElement.suffix,
+            null,
+            )
+        }
     }
     if (activity.aElement.icon.enabled) {
         drawImage(ctx, images, activity.aElement.icon.json)

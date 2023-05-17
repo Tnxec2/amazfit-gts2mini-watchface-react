@@ -155,10 +155,10 @@ export class PAI {
 export class Steps {
   ImageNumber: NumberJson
   PrefixImageIndex: number
-  NoDataImageIndex: number
+  SuffixImageIndex: number
   Icon: Image
   Shortcut: ShortcutElement
-  SuffixImageIndex: number
+  DelimiterTotalImageIndex: number
 }
 
 export class Activity {
@@ -380,17 +380,16 @@ export class Status{
   Alarm: Switch
 }
 
-export class TextElement {
+export class BatteryTextElement {
   ImageNumber: NumberJson
   PrefixImageIndex: number
-  NoDataImageIndex: number
   SuffixImageIndex: number
   Icon: Image
   Shortcut: ShortcutElement
 }
 
 export class Battery{
-  BatteryText: TextElement
+  BatteryText: BatteryTextElement
   ImageProgress: ImageSet
   IconSetProgress: IconSet
   Scale: Scale

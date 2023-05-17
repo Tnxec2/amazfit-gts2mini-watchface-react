@@ -17,7 +17,7 @@ export function drawBattery(ctx: CanvasRenderingContext2D,
     if (!battery) return;
     if (battery.text.enabled) {
         drawDigitImage(ctx, images, battery.text.imageNumber, watchState.battery, null, drawBorder, false, null,
-            battery.text.prefix, null, battery.text.suffix, null, watchState.batteryNoData ? battery.text.noData : null) 
+            battery.text.prefix, null, battery.text.suffix, null, null) 
     }
     if (battery.icon.enabled) {
         if (battery.icon.json.ImageIndex) {

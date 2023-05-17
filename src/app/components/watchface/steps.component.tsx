@@ -25,7 +25,7 @@ const StepsComponent: FC<IProps> = ({
       blocks: [
         { title: 'Prefix', type: BlockType.SelectFile, nvalue: activity.aElement.prefix, onChange: onChangePrefix },
         { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffix },
-        { title: 'No Data', type: BlockType.SelectFile, nvalue: activity.aElement.noData, onChange: onChangeNoData },
+        { title: 'Delimiter Total', type: BlockType.SelectFile, nvalue: activity.aElement.delimiterTotal, onChange: onChangeDelimiter},
       ]
     }
   ], [activity]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -35,9 +35,9 @@ const StepsComponent: FC<IProps> = ({
     a.aElement.prefix = val
     onUpdateActivity(a)
   }
-  function onChangeNoData(val: number) {
+  function onChangeDelimiter(val: number) {
     const a = {...activity};
-    a.aElement.noData = val
+    a.aElement.delimiterTotal = val
     onUpdateActivity(a)
   }
   function onChangeSuffix(val: number) {

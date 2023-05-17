@@ -20,7 +20,6 @@ const BatteryComponent: FC = () => {
     {
       blocks: [
         { title: 'Prefix', type: BlockType.SelectFile, nvalue: watchface.battery.text.prefix, onChange: onChangePrefix },
-        { title: 'NoData', type: BlockType.SelectFile, nvalue: watchface.battery.text.noData, onChange: onChangeNoData },
         { title: 'Suffix', type: BlockType.SelectFile, nvalue: watchface.battery.text.suffix, onChange: onChangeSuffix },
       ]
     },
@@ -31,11 +30,7 @@ const BatteryComponent: FC = () => {
     w.battery.text.prefix = val
     setWatchface(w)
   }
-  function onChangeNoData(val: number) {
-    const w = {...watchface};
-    w.battery.text.noData = val
-    setWatchface(w)
-  }
+
   function onChangeSuffix(val: number) {
     const w = {...watchface};
     w.battery.text.suffix = val
