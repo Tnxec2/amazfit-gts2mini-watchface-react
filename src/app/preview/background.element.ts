@@ -13,7 +13,7 @@ export default function draw(
         ctx.fillStyle = background.color
         ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
-    if (background?.image?.json?.ImageIndex >= 0) {
+    if (background?.image?.enabled && background?.image?.json?.ImageIndex >= 0) {
         const img = findImageById(background.image.json.ImageIndex, images)
         if (img) {
             ctx.drawImage(img, background.image.json.X, background.image.json.Y);
