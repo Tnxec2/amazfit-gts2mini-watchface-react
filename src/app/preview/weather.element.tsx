@@ -36,8 +36,9 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
         let min = watchState.temperatureMin
         let max = watchState.temperatureMax
         let ar = [
-            weather.oneLineMinMax.paddingZero ? ( min < 0 ? '-' + Math.abs(min).toString().padStart(2, '0') : min.toString().padStart(2, '0') ) : min.toString(),
-            weather.oneLineMinMax.paddingZero ? ( max < 0 ? '-' + Math.abs(max).toString().padStart(2, '0') : max.toString().padStart(2, '0') ) : max.toString()
+            // on watch are show at first the day temperature, then the night temperature
+            weather.oneLineMinMax.paddingZero ? ( max < 0 ? '-' + Math.abs(max).toString().padStart(2, '0') : max.toString().padStart(2, '0') ) : max.toString(),
+            weather.oneLineMinMax.paddingZero ? ( min < 0 ? '-' + Math.abs(min).toString().padStart(2, '0') : min.toString().padStart(2, '0') ) : min.toString()  
         ]
         drawDigitsOneLine(ctx, images, weather.oneLineMinMax, ar, weather.oneLineDelimiter, drawBorder, weather.oneLineDegrees, null, weather.oneLineMinus)
     }
