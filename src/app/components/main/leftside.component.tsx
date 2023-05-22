@@ -22,6 +22,19 @@ const tabs = [
   },
 ];
 
+const tabswithoutaod = [
+  {
+    id: 0, name: "Screen normal", el: <div className="mt-3 blocks">
+      <ScreenNormalcomponent />
+    </div>
+  },
+  {
+    id: 2, name: "Preview State", el: <div className="mt-3">
+      <PreviewStatesComponent />
+    </div>
+  },
+];
+
 const LeftSideComponent: FC = () => {
 
   const { setPreviewScreenNormal, device } = useContext(WatchfaceContext)
@@ -39,10 +52,10 @@ const LeftSideComponent: FC = () => {
   return (
     <div>
       <ul className="nav nav-tabs">
-      <span className="navbar-brand mb-0 h1">
+      <span className="navbar-brand m-3 mb-0 h1">
         {device.title}
       </span>
-        {tabs.map((tab) => {
+        { (device.deviceId === 71 ?  tabswithoutaod : tabs ).map((tab) => {
           return (
             <li key={tab.id} className="nav-item">
               <button
