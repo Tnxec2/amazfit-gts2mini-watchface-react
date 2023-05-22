@@ -35,6 +35,30 @@ export class JsonType {
     }
   }
 
+  export class ShortcutTypeBip3 {
+    static Workout  = new JsonType(5, "Workout");
+    static Music  = new JsonType(16, "Music");
+    static Countdown  = new JsonType(17, "Countdown");
+    static StopWatch  = new JsonType(18, "StopWatch");
+
+    static findByIndex(index: number) {
+      if (index === undefined) return this.Workout;
+      return Object.values(ShortcutTypeBip3).find((val) => val.index === index);
+    }
+    static toJson(index: number) {
+      if (index === undefined) return this.Workout.json;
+      return Object.values(ShortcutTypeBip3).find((val) => val.index === index).json;
+    }
+    static findByJson(json: string) {
+      if (json === undefined) return this.Workout;
+      return Object.values(ShortcutTypeBip3).find((val) => val.json === json);
+    }
+    static fromJson(json: string) {
+      if (json === undefined) return this.Workout.index;
+      return Object.values(ShortcutTypeBip3).find((val) => val.json === json).index;
+    }
+  }
+
   
   export class ShortcutType {
     static Workout  = new JsonType(5, "Workout");

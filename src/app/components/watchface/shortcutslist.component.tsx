@@ -1,13 +1,13 @@
 import { FC, useContext, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { JsonType, ShortcutType } from "../../model/types.gts2mini.model";
+import { JsonType, ShortcutType, ShortcutTypeBip3 } from "../../model/types.gts2mini.model";
 import { WatchShortcut } from "../../model/watchFace.gts2mini.model";
 import ShortCutComponent from "./shortcut.component";
 
 
 const ShortCutListComponent: FC = () => {
-  const { watchface, setWatchface } =
+  const { watchface, setWatchface, device } =
   useContext<IWatchContext>(WatchfaceContext);
   const [selectedType, setSelectedType] = useState<string>(ShortcutType.Workout.json)
 
@@ -52,6 +52,12 @@ const ShortCutListComponent: FC = () => {
             value={selectedType}
             >
               {
+                device.deviceId === 71 ?
+                Object.keys(ShortcutTypeBip3).map((key) => 
+                ShortcutTypeBip3[key] instanceof JsonType ?
+                    <option key={ShortcutType[key].index} value={ShortcutTypeBip3[key].json}>{ShortcutTypeBip3[key].json}</option>
+                    : ''
+                ) :
                 Object.keys(ShortcutType).map((key) => 
                 ShortcutType[key] instanceof JsonType ?
                     <option key={ShortcutType[key].index} value={ShortcutType[key].json}>{ShortcutType[key].json}</option>
