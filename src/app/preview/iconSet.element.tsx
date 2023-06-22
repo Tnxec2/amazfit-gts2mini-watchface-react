@@ -18,10 +18,15 @@ export default function drawIconSet(
                 let index = Math.floor(value / (total / count))
 
                 index = Math.max(index, 0)
-                index = Math.min(index, count-1)
+                index = Math.min(index, count)
 
-                const img = findImageById(iconSet.ImageIndex + index, images)
-                if (img) ctx.drawImage(img, iconSet.Coordinates[index].X, iconSet.Coordinates[index].Y);
+                if (index > 0) {
+                    for (let i = 0; i < index ; i++) {                        
+                        const img = findImageById(iconSet.ImageIndex + i, images)
+                        if (img) ctx.drawImage(img, iconSet.Coordinates[i].X, iconSet.Coordinates[i].Y);
+                    }
+                }
+                
             }
         }
 }
