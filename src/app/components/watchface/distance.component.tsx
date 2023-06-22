@@ -35,7 +35,7 @@ const DistanceComponent: FC<IProps> = ({
 
     {
       blocks: [
-        { title: 'Suffix separated', type: BlockType.Checkbox, checked: activity.aElement.separattedSuffix ? true : false, onChange: onChangeSeparatedSuffix },
+        { title: 'display suffix separate', type: BlockType.Checkbox, checked: activity.aElement.separattedSuffix ? true : false, onChange: onChangeSeparatedSuffix },
         { title: 'X', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.X ? activity.aElement.suffixImageCoordinates.X : 0, onChange: onChangeX },
         { title: 'Y', type: BlockType.Number, nvalue: activity.aElement.suffixImageCoordinates?.Y ? activity.aElement.suffixImageCoordinates.Y : 0, onChange: onChangeY },
       ]
