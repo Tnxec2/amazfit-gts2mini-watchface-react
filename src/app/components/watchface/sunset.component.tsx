@@ -66,7 +66,7 @@ const SunsetComponent: FC = () => {
         />
         <ImageComponent 
           title='Sunrise icon'
-          image={{...watchface.time.sunset.sunsetIcon}}
+          image={{...watchface.time.sunset.sunriseIcon}}
           onUpdate={updateSunRiseIcon}
         />
         <WatchShortCutComponent 
