@@ -71,7 +71,7 @@ const SunsetComponent: FC = () => {
         />
         <WatchShortCutComponent 
           title='Sunrise shortcut'
-          shortcut={{...watchface.time.sunset.sunsetShortcut}}
+          shortcut={{...watchface.time.sunset.sunriseShortcut}}
           onUpdate={updateSunRiseShortcut}
         />
 
