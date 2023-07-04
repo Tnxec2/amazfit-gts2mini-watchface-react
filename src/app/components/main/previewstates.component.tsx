@@ -327,12 +327,26 @@ const PreviewStatesComponent: FC = () => {
             type="number"
             className="form-control form-control-sm"
             min="0"
-            max="999"
+            max="100"
             value={watchState.stress}
             onChange={(e) => {
               const ws = { ...watchState };
               const v = parseInt(e.target.value);
-              ws.stress = !isNaN(v) ? Math.min(v, 999) : 0;
+              ws.stress = !isNaN(v) ? Math.min(v, 100) : 0;
+              setWatchState(ws);
+            }}
+          />
+          <span className="input-group-text">SpO2</span>
+          <input
+            type="number"
+            className="form-control form-control-sm"
+            min="0"
+            max="100"
+            value={watchState.spo2}
+            onChange={(e) => {
+              const ws = { ...watchState };
+              const v = parseInt(e.target.value);
+              ws.spo2 = !isNaN(v) ? Math.min(v, 100) : 0;
               setWatchState(ws);
             }}
           />

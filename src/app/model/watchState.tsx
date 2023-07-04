@@ -75,6 +75,8 @@ export class WatchState {
 
   stressGoal = 100
   stress = Math.round(Math.random() * this.stressGoal)
+  spo2Goal = 100
+  spo2 = Math.round(Math.random() * this.spo2Goal)
 
   fatBurningGoal = 30
   fatBurning = Math.round(Math.random() * this.fatBurningGoal)

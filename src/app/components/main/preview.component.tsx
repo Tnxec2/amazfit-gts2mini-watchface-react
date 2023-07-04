@@ -30,6 +30,8 @@ import Canvas from "./canvas.function";
 import cl from "./previewComponent.module.css";
 import { drawStepsAod } from "../../preview/stepsAod.element";
 import { Constant } from "../../shared/constant";
+import { drawStress } from "../../preview/stress.element";
+import { drawSpo2 } from "../../preview/spo2.element";
 
 const storage_items = {
   preview_white_grid: "preview_white_grid",
@@ -417,6 +419,24 @@ function drawActivitys(
     watchface.activity.standUp,
     watchState.standup,
     watchState.standupGoal,
+    digitBorder,
+    shortCutBorder
+  );
+  drawStress(
+    ctx,
+    images,
+    watchface.activity.stress,
+    watchState.stress,
+    watchState.stressGoal,
+    digitBorder,
+    shortCutBorder
+  );
+  drawSpo2(
+    ctx,
+    images,
+    watchface.activity.spo2,
+    watchState.spo2,
+    watchState.spo2Goal,
     digitBorder,
     shortCutBorder
   );

@@ -4,6 +4,7 @@ import { WatchState } from "../model/watchState";
 import drawDigitImage, { drawDigitsOneLine } from "./digitImage.element";
 import drawImage from "./image.element";
 import drawImageSet from "./imageSet.element";
+import drawScale from "./scale.element";
 import drawShortcutElement from "./shortcut.element";
 
 export function drawWeather(ctx: CanvasRenderingContext2D,
@@ -51,12 +52,13 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
             false, null, null, null, weatherext.humiditySuffix)
     }
 
-    if (watchState.humidityNoData) {
-        if(weatherext.humidityProgress.backgroundLayerImage.enabled) 
-            drawImage(ctx, images, weatherext.humidityProgress.backgroundLayerImage.json)
-    } else if (weatherext.humidityProgress.imageProgress.enabled) {
+
+    if(weatherext.humidityProgress.backgroundLayerImage.enabled) 
+        drawImage(ctx, images, weatherext.humidityProgress.backgroundLayerImage.json)
+    if (weatherext.humidityProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, weatherext.humidityProgress.imageProgress.json, watchState.humidity, watchState.humidityGoal)
     }
+
 
     if (weatherext.airQualityIcon.enabled) {
         drawImage(ctx, images, weatherext.airQualityIcon.json)
@@ -65,6 +67,16 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
         drawDigitImage(ctx, images, weatherext.airQualityNumber, watchState.airQuality, null, drawBorder, 
             false, null, null, null, null)
     }
+    if (weatherext.airQualityProgress.backgroundLayer.enabled) {
+        drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json);
+    }
+    if (weatherext.airQualityProgress.scale.enabled) {
+        drawScale(ctx, images, weatherext.uvProgress.scale, watchState.uvIndex, watchState.uvIndexGoal)
+    }
+    if (weatherext.airQualityProgress.imageProgress.enabled) {
+        drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal)
+    }
+
 
     if (weatherext.uvIcon.enabled) {
         drawImage(ctx, images, weatherext.uvIcon.json)
@@ -73,11 +85,13 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
         drawDigitImage(ctx, images, weatherext.uvNumber, watchState.uvIndex, null, drawBorder, 
             false, null, null, null, weatherext.uvSuffixImageIndex, null, watchState.uvNoData ? weatherext.uvNoDataImageIndex : null)
     }
-    if (watchState.uvNoData) {
-        if (weatherext.uvProgress.backgroundLayer.enabled) {
-            drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json);
-        }
-    } else if (weatherext.uvProgress.imageProgress.enabled) {
+    if (weatherext.uvProgress.backgroundLayer.enabled) {
+        drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json);
+    }
+    if (weatherext.uvProgress.scale.enabled) {
+        drawScale(ctx, images, weatherext.uvProgress.scale, watchState.uvIndex, watchState.uvIndexGoal)
+    }
+    if (weatherext.uvProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal)
     }
     if (weatherext.uvShortcut.enabled) {
