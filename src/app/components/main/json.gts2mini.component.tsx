@@ -2,8 +2,8 @@ import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import Color from "../../shared/color";
-import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, Progress, ProgressAlt1, ProgressAlt2, ProgressAlt3, ProgressAlt4, ProgressAlt5, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather } from "../../model/json.gts2minit.model";
-import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchProgressAlt1, WatchProgressAlt2, WatchProgressAlt3, WatchProgressAlt4, WatchProgressAlt5, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt } from "../../model/watchFace.gts2mini.model";
+import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather, ProgressStandup, ProgressStress, ProgressSpo, ProgressUvi } from "../../model/json.gts2minit.model";
+import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchProgressPai, WatchProgressHumidity, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt, WatchProgressStandup, WatchProgressStress, WatchProgressSpo, WatchProgressAirQ, WatchProgressUvi } from "../../model/watchFace.gts2mini.model";
 import cl from './JsonComponent.module.css';
 
 const JsonComponent: FC = () => {
@@ -52,11 +52,12 @@ const JsonComponent: FC = () => {
             }: null,
             HourlyImages: null,
             TimeDigital: getTimeDigital(w.time.timeDigitalCommon),
-            PaiProgress: getProgressAlt1(w.activity.pai.aProgress),
-            StandUpProgress: getProgressAlt5(w.activity.standUp.aProgress),
-            UviProgress: getProgressAlt2(w.weatherext.uvProgress),
-            StressProgress: null, // TODO
-            SPO2Progress: null, // TODO
+            PaiProgress: getProgressPai(w.activity.pai.aProgress),
+            StandUpProgress: getProgressStandUp(w.activity.standUp.aProgress),
+            AirQualityProgress: getProgressAirQ(w.weatherext.airQualityProgress),
+            UviProgress: getProgressUvi(w.weatherext.uvProgress),
+            StressProgress: getProgressStress(w.activity.stress.aProgress),
+            SPO2Progress: getProgressSpo2(w.activity.spo2.aProgress),
             AlwaysOnDisplay: getAod(w.aod),
             ActivitySeparateDigits: getActivitySeparatedDigits(w.activity),
         }
@@ -177,7 +178,7 @@ function getDateElement(date: WatchDate): DateElement {
 
 function getProgress(progress: WatchProgress): Progress {
     let enabled = progress.circleScale.enabled || progress.iconSetProgress.enabled || 
-    progress.imageProgress.enabled || progress.scale.enabled || progress.noDataImage.enabled
+    progress.imageProgress.enabled || progress.scale.enabled || progress.backgroundLayer.enabled
 
     if (!enabled) return null
     else return {
@@ -190,14 +191,14 @@ function getProgress(progress: WatchProgress): Progress {
             BottomImageChinese: null,
             BottomImageTradChinese: null
              } : null,
-        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+        BackgroundLayer: progress.backgroundLayer.enabled ? progress.backgroundLayer.json : null,
         UnknownImage: null
     }
 }
 
-function getProgressAlt1(progress: WatchProgressAlt1): ProgressAlt1 {
+function getProgressPai(progress: WatchProgressPai): ProgressPai {
     let enabled = progress.imageProgress.enabled || progress.pointerScale.enabled || progress.altPointerScale.enabled ||
-                 progress.noDataImage.enabled
+                 progress.backgroundLayer.enabled
 
     if (!enabled) return null
     else return {
@@ -206,41 +207,73 @@ function getProgressAlt1(progress: WatchProgressAlt1): ProgressAlt1 {
             PointerScale: progress.altPointerScale.json
          } : null,
         ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
-        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+        BackgroundLayer: progress.backgroundLayer.enabled ? progress.backgroundLayer.json : null,
     }
 }
 
-function getProgressAlt2(progress: WatchProgressAlt2): ProgressAlt2 {
-    let enabled = progress.imageProgress.enabled || progress.noDataImage.enabled
+function getProgressAirQ(progress: WatchProgressAirQ): ProgressAirQ {
+    let enabled = progress.imageProgress.enabled || progress.backgroundLayer.enabled
 
     if (!enabled) return null
     else return {
         ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
-        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+        Scale: progress.scale.enabled ? {
+            PointerScale: progress.scale.pointerscale.enabled ? progress.scale.pointerscale.json : null,
+            BottomImage: progress.scale.bottomImage.enabled ? progress.scale.bottomImage.json : null,
+            BottomImageChinese: null,
+            BottomImageTradChinese: null,
+        } : null,
+        BackgroundLayer: progress.backgroundLayer.enabled ? progress.backgroundLayer.json : null,
     }
 }
 
-function getProgressAlt3(progress: WatchProgressAlt3): ProgressAlt3 {
-    let enabled = progress.imageProgress.enabled || progress.noDataImage.enabled
+function getProgressUvi(progress: WatchProgressUvi): ProgressUvi {
+    let enabled = progress.imageProgress.enabled || progress.backgroundLayer.enabled
 
     if (!enabled) return null
     else return {
         ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
-        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+        Scale: progress.scale.enabled ? {
+            PointerScale: progress.scale.pointerscale.enabled ? progress.scale.pointerscale.json : null,
+            BottomImage: progress.scale.bottomImage.enabled ? progress.scale.bottomImage.json : null,
+            BottomImageChinese: null,
+            BottomImageTradChinese: null,
+        } : null,
+        BackgroundLayer: progress.backgroundLayer.enabled ? progress.backgroundLayer.json : null,
     }
 }
 
-function getProgressAlt4(progress: WatchProgressAlt4): ProgressAlt4 {
-    let enabled = progress.imageProgress.enabled || progress.noDataImage.enabled
+function getProgressAlt3(progress: WatchProgressHumidity): ProgressHumidity {
+    let enabled = progress.imageProgress.enabled || progress.backgroundLayerImage.enabled
 
     if (!enabled) return null
     else return {
         ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
-        NoDataImage: progress.noDataImage.enabled ? progress.noDataImage.json : null,
+        BackgroundLayer: progress.backgroundLayerImage.enabled ? progress.backgroundLayerImage.json : null,
     }
 }
 
-function getProgressAlt5(progress: WatchProgressAlt5): ProgressAlt5 {
+function getProgressStress(progress: WatchProgressStress): ProgressStress {
+    let enabled = progress.imageProgress.enabled || progress.backgroundLayerImage.enabled
+
+    if (!enabled) return null
+    else return {
+        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
+        BackgroundLayer: progress.backgroundLayerImage.enabled ? progress.backgroundLayerImage.json : null,
+    }
+}
+
+function getProgressSpo2(progress: WatchProgressSpo): ProgressSpo {
+    let enabled = progress.imageProgress.enabled || progress.backgroundLayerImage.enabled
+
+    if (!enabled) return null
+    else return {
+        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
+        BackgroundLayer: progress.backgroundLayerImage.enabled ? progress.backgroundLayerImage.json : null,
+    }
+}
+
+function getProgressStandUp(progress: WatchProgressStandup): ProgressStandup {
     let enabled = progress.imageProgress.enabled || progress.iconsetProgress.enabled || progress.scale.enabled
 
     if (!enabled) return null

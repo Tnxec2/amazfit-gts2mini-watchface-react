@@ -52,8 +52,8 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     }
 
     if (watchState.humidityNoData) {
-        if(weatherext.humidityProgress.noDataImage.enabled) 
-            drawImage(ctx, images, weatherext.humidityProgress.noDataImage.json)
+        if(weatherext.humidityProgress.backgroundLayerImage.enabled) 
+            drawImage(ctx, images, weatherext.humidityProgress.backgroundLayerImage.json)
     } else if (weatherext.humidityProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, weatherext.humidityProgress.imageProgress.json, watchState.humidity, watchState.humidityGoal)
     }
@@ -74,8 +74,8 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
             false, null, null, null, weatherext.uvSuffixImageIndex, null, watchState.uvNoData ? weatherext.uvNoDataImageIndex : null)
     }
     if (watchState.uvNoData) {
-        if (weatherext.uvProgress.noDataImage.enabled) {
-            drawImage(ctx, images, weatherext.uvProgress.noDataImage.json);
+        if (weatherext.uvProgress.backgroundLayer.enabled) {
+            drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json);
         }
     } else if (weatherext.uvProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal)

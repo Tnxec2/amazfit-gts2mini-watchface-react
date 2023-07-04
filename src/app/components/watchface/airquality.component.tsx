@@ -1,9 +1,10 @@
 import { FC, useContext } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
-import { WatchImage, WatchNumber } from "../../model/watchFace.gts2mini.model";
+import { WatchImage, WatchNumber, WatchProgressAirQ } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
 import WatchNumberComponent from "./number.component";
+import ProgressAirQComponent from "./progressAirQ.component";
 
 
 const AirQualityComponent: FC = () => {
@@ -19,6 +20,11 @@ const AirQualityComponent: FC = () => {
   function onChangeIcon(val: WatchImage) {
     const w = {...watchface};
     w.weatherext.airQualityIcon = val
+    setWatchface(w)
+  }
+  function onChangeProgress(val: WatchProgressAirQ) {
+    const w = {...watchface};
+    w.weatherext.airQualityProgress = val
     setWatchface(w)
   }
 
@@ -46,6 +52,11 @@ const AirQualityComponent: FC = () => {
             title='Icon'
             image={{...watchface.weatherext.airQualityIcon}}
             onUpdate={onChangeIcon}
+            />
+          <ProgressAirQComponent
+            title='Air Quality Progress'
+            progress={{...watchface.weatherext.airQualityProgress}}
+            onUpdate={onChangeProgress}
             />
         </Card.Body>
       ) : (

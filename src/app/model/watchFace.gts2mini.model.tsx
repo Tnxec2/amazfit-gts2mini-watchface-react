@@ -1,5 +1,5 @@
 import Color from "../shared/color";
-import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressAlt1, ProgressAlt2, ProgressAlt3, ProgressAlt4, ProgressAlt5, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson } from "./json.gts2minit.model";
+import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, ProgressStandup, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson, ProgressStress, ProgressSpo, ProgressUvi } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
   count: number;
@@ -120,6 +120,20 @@ export const digitTypes = {
     displayAnalog: false,
     imageProgressTotal: null,
     title: 'Standup',
+  },
+  stress: {
+    count: 10,
+    numberLenght: 3,
+    displayAnalog: false,
+    imageProgressTotal: null,
+    title: 'Stress',
+  },
+  spo2: {
+    count: 10,
+    numberLenght: 3,
+    displayAnalog: false,
+    imageProgressTotal: null,
+    title: 'SpO2',
   },
   uvIndex: {
     count: 10,
@@ -319,7 +333,7 @@ export class WatchProgress {
   iconSetProgress: WatchIconSet = new WatchIconSet()
   circleScale: WatchCircleScale = new WatchCircleScale()
   scale: WatchScale = new WatchScale()
-  noDataImage: WatchImage = new WatchImage()
+  backgroundLayer: WatchImage = new WatchImage()
 
   constructor(count: number, j?: Progress) {
     if(j) {
@@ -327,71 +341,100 @@ export class WatchProgress {
       this.iconSetProgress = new WatchIconSet(j.IconSetProgress)
       this.circleScale = new WatchCircleScale(j.CircleScale)
       this.scale = new WatchScale(j.Scale)
-      this.noDataImage = new WatchImage(j.NoDataImage)
+      this.backgroundLayer = new WatchImage(j.BackgroundLayer)
     }
   }
 }
 
-export class WatchProgressAlt1 {
+export class WatchProgressPai {
   imageProgress: WatchImageSet = new WatchImageSet(null)
   pointerScale: WatchPointerScale = new WatchPointerScale()
   altPointerScale: WatchPointerScale = new WatchPointerScale()
-  noDataImage: WatchImage = new WatchImage()
+  backgroundLayer: WatchImage = new WatchImage()
 
-  constructor(count: number, j?: ProgressAlt1) {
+  constructor(count: number, j?: ProgressPai) {
     if(j) {
       this.imageProgress = new WatchImageSet(count, j.ImageProgress)
       this.pointerScale = new WatchPointerScale(j.PointerScale)
       this.altPointerScale = new WatchPointerScale(j.Alt1PointerScale?.PointerScale)
-      this.noDataImage = new WatchImage(j.NoDataImage)
+      this.backgroundLayer = new WatchImage(j.BackgroundLayer)
     }
   }
 }
 
-export class WatchProgressAlt2 {
+export class WatchProgressUvi {
   imageProgress: WatchImageSet = new WatchImageSet(null)
-  noDataImage: WatchImage = new WatchImage()
+  scale: WatchScale = new WatchScale(null)
+  backgroundLayer: WatchImage = new WatchImage()
 
-  constructor(count: number, j?: ProgressAlt2) {
+  constructor(count: number, j?: ProgressUvi) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+      this.scale = new WatchScale(j.Scale)
+      this.backgroundLayer = new WatchImage(j.BackgroundLayer)
+    }
+  }
+}
+
+export class WatchProgressAirQ {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  scale: WatchScale = new WatchScale(null)
+  backgroundLayer: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressAirQ) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+      this.scale = new WatchScale(j.Scale)
+      this.backgroundLayer = new WatchImage(j.BackgroundLayer)
+    }
+  }
+}
+
+export class WatchProgressHumidity {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  backgroundLayerImage: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressHumidity) {
     if(j) {
       this.imageProgress = new WatchImageSet(count, j.ImageProgress)
 
-      this.noDataImage = new WatchImage(j.NoDataImage)
+      this.backgroundLayerImage = new WatchImage(j.BackgroundLayer)
     }
   }
 }
-export class WatchProgressAlt3 {
-  imageProgress: WatchImageSet = new WatchImageSet(null)
-  noDataImage: WatchImage = new WatchImage()
 
-  constructor(count: number, j?: ProgressAlt3) {
+export class WatchProgressStress {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  backgroundLayerImage: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressStress) {
     if(j) {
       this.imageProgress = new WatchImageSet(count, j.ImageProgress)
 
-      this.noDataImage = new WatchImage(j.NoDataImage)
+      this.backgroundLayerImage = new WatchImage(j.BackgroundLayer)
     }
   }
 }
 
-export class WatchProgressAlt4 {
+export class WatchProgressSpo {
   imageProgress: WatchImageSet = new WatchImageSet(null)
-  noDataImage: WatchImage = new WatchImage()
+  backgroundLayerImage: WatchImage = new WatchImage()
 
-  constructor(count: number, j?: ProgressAlt4) {
+  constructor(count: number, j?: ProgressSpo) {
     if(j) {
       this.imageProgress = new WatchImageSet(count, j.ImageProgress)
 
-      this.noDataImage = new WatchImage(j.NoDataImage)
+      this.backgroundLayerImage = new WatchImage(j.BackgroundLayer)
     }
   }
 }
 
-export class WatchProgressAlt5 {
+export class WatchProgressStandup {
   imageProgress: WatchImageSet = new WatchImageSet(null)
   iconsetProgress: WatchIconSet = new WatchIconSet()
   scale: WatchScale = new WatchScale()
 
-  constructor(count: number, j?: ProgressAlt5) {
+  constructor(count: number, j?: ProgressStandup) {
     if(j) {
       this.imageProgress = new WatchImageSet(count, j.ImageProgress)
       this.iconsetProgress = new WatchIconSet(j.IconSetProgress)
@@ -408,18 +451,21 @@ export class WatchWeatherExt {
 
   airQualityNumber: WatchNumber = new WatchNumber(null, digitTypes.airQuality)
   airQualityIcon: WatchImage = new WatchImage()
+  airQualityProgress: WatchProgressAirQ = new WatchProgressAirQ(digitTypes.airQuality.imageProgressTotal);
 
   humidityNumber: WatchNumber= new WatchNumber(null, digitTypes.humidity)
   humiditySuffix: number
   humidityIcon: WatchImage = new WatchImage()
-  humidityProgress: WatchProgressAlt3 = new WatchProgressAlt3(digitTypes.humidity.imageProgressTotal)
+  humidityProgress: WatchProgressHumidity = new WatchProgressHumidity(digitTypes.humidity.imageProgressTotal)
   
   uvNumber: WatchNumber= new WatchNumber(null, digitTypes.uvIndex)
   uvSuffixImageIndex: number
   uvNoDataImageIndex: number
   uvShortcut: WatchShortcutElement = new WatchShortcutElement()
   uvIcon: WatchImage = new WatchImage()
-  uvProgress: WatchProgressAlt2 = new WatchProgressAlt2(digitTypes.uvIndex.imageProgressTotal)
+  uvProgress: WatchProgressUvi = new WatchProgressUvi(digitTypes.uvIndex.imageProgressTotal)
+
+  
 
   constructor(j?: WatchJson) {
     if (j) {
@@ -433,7 +479,7 @@ export class WatchWeatherExt {
         this.humidityIcon = new WatchImage(j.Weather.Humidity.HumidityIcon)
       }
       if (j.HumidityProgress) {
-        this.humidityProgress = new WatchProgressAlt3(digitTypes.humidity.imageProgressTotal, j.HumidityProgress)
+        this.humidityProgress = new WatchProgressHumidity(digitTypes.humidity.imageProgressTotal, j.HumidityProgress)
       }
       if (j.Weather?.UVindex) {
         this.uvNumber = new WatchNumber(j.Weather.UVindex.UVindexNumber, digitTypes.uvIndex)
@@ -443,7 +489,10 @@ export class WatchWeatherExt {
         this.uvIcon = new WatchImage(j.Weather.UVindex.UVindexIcon)
       }
       if (j.UviProgress) {
-        this.uvProgress = new WatchProgressAlt2(digitTypes.uvIndex.imageProgressTotal, j.UviProgress)
+        this.uvProgress = new WatchProgressUvi(digitTypes.uvIndex.imageProgressTotal, j.UviProgress)
+      }
+      if (j.AirQualityProgress) {
+        this.airQualityProgress = new WatchProgressAirQ(digitTypes.airQuality.imageProgressTotal, j.AirQualityProgress)
       }
     }
   }
@@ -880,15 +929,15 @@ export class WatchStandUpActivity {
   collapsed = true
 
   aElement: WatchStandUpElement = new WatchStandUpElement()
-  aProgress: WatchProgressAlt5 = new WatchProgressAlt5(null)
+  aProgress: WatchProgressStandup = new WatchProgressStandup(null)
   con: IDigitConstructor
   
-  constructor(con: IDigitConstructor, element?: StandUp, progress?: ProgressAlt5) {
+  constructor(con: IDigitConstructor, element?: StandUp, progress?: ProgressStandup) {
     if (element) {
       this.aElement = new WatchStandUpElement(con, element)
     }
     if (progress) {
-      this.aProgress = new WatchProgressAlt5(con.imageProgressTotal, progress)
+      this.aProgress = new WatchProgressStandup(con.imageProgressTotal, progress)
     }
     if (!this.aElement) {
       this.aElement = new WatchStandUpElement(con)
@@ -900,19 +949,49 @@ export class WatchStandUpActivity {
   }
 }
 
+export class WatchStressActivity {
+  collapsed = true
+
+  aProgress: WatchProgressStress = new WatchProgressStress(null)
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, progress?: ProgressStress) {
+    if (progress) {
+      this.aProgress = new WatchProgressStress(con.imageProgressTotal, progress)
+    }
+
+    this.con = con
+  }
+}
+
+export class WatchSpO2Activity {
+  collapsed = true
+
+  aProgress: WatchProgressSpo = new WatchProgressSpo(null)
+  con: IDigitConstructor
+  
+  constructor(con: IDigitConstructor, progress?: ProgressSpo) {
+    if (progress) {
+      this.aProgress = new WatchProgressSpo(con.imageProgressTotal, progress)
+    }
+
+    this.con = con
+  }
+}
+
 export class WatchPAIActivity {
   collapsed = true
 
   aElement: WatchPaiElement = new WatchPaiElement()
-  aProgress: WatchProgressAlt1 = new WatchProgressAlt1(null)
+  aProgress: WatchProgressPai = new WatchProgressPai(null)
   con: IDigitConstructor
   
-  constructor(con: IDigitConstructor, element?: PAI, progress?: ProgressAlt1) {
+  constructor(con: IDigitConstructor, element?: PAI, progress?: ProgressPai) {
     if (element) {
       this.aElement = new WatchPaiElement(con, element)
     }
     if (progress) {
-      this.aProgress = new WatchProgressAlt1(con.imageProgressTotal, progress)
+      this.aProgress = new WatchProgressPai(con.imageProgressTotal, progress)
     }
     if (!this.aElement) {
       this.aElement = new WatchPaiElement(con)
@@ -1156,6 +1235,9 @@ export class WatchActivityList {
   pai: WatchPAIActivity = new WatchPAIActivity(digitTypes.pai)
   standUp: WatchStandUpActivity = new WatchStandUpActivity(digitTypes.standUp)
 
+  stress: WatchStressActivity = new WatchStressActivity(digitTypes.stress)
+  spo2: WatchSpO2Activity = new WatchSpO2Activity(digitTypes.spo2)
+
   caloriesSeparatedDigits: WatchFourDigitsSeparated = new WatchFourDigitsSeparated(104)
   batterySeparatedDigits: WatchThreeDigitsSeparated = new WatchThreeDigitsSeparated(101)
   stepsSeparatedDigits: WatchFiveDigitsSeparated = new WatchFiveDigitsSeparated(103)
@@ -1169,6 +1251,8 @@ export class WatchActivityList {
       if (j.Activity?.Distance) this.distance = new WatchDistanceActivity(digitTypes.distance, j.Activity?.Distance)
       if (j.Activity?.PAI || j.PaiProgress) this.pai = new WatchPAIActivity(digitTypes.pai, j.Activity?.PAI, j.PaiProgress)
       if (j.Activity?.StandUp || j.StandUpProgress) this.standUp = new WatchStandUpActivity(digitTypes.standUp, j.Activity?.StandUp, j.StandUpProgress)
+      if (j.StressProgress) this.stress = new WatchStressActivity(digitTypes.stress, j.StressProgress)
+      if (j.SPO2Progress) this.spo2 = new WatchSpO2Activity(digitTypes.spo2, j.SPO2Progress)
       
       if (j.ActivitySeparateDigits) {
         this.stepsSeparatedDigits = new WatchFiveDigitsSeparated(103, j.ActivitySeparateDigits.Steps)

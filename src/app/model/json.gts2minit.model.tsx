@@ -262,40 +262,51 @@ export class Progress{
   IconSetProgress: IconSet
   CircleScale: CircleScale
   Scale: Scale
-  NoDataImage: Image
+  BackgroundLayer: Image
   UnknownImage: Image
 }
 
 export class Alt1PointerScale {
   PointerScale: PointerScale
 }
-export class ProgressAlt1 {
-        PointerScale: PointerScale 
-        ImageProgress: ImageSet 
-        Alt1PointerScale: Alt1PointerScale 
-        NoDataImage: Image 
-    }
-
-export class ProgressAlt2 {
-        ImageProgress: ImageSet
-        NoDataImage: Image
+export class ProgressPai {
+  PointerScale: PointerScale 
+  ImageProgress: ImageSet 
+  Alt1PointerScale: Alt1PointerScale 
+  BackgroundLayer: Image 
 }
 
-export class ProgressAlt3 {
-        ImageProgress: ImageSet
-        NoDataImage: Image
-    }
+export class ProgressUvi {
+  ImageProgress: ImageSet
+  Scale: Scale
+  BackgroundLayer: Image
+}
+export class ProgressAirQ {
+  ImageProgress: ImageSet
+  Scale: Scale
+  BackgroundLayer: Image
+}
 
-export class ProgressAlt4 {
-        ImageProgress: ImageSet
-        NoDataImage: Image
-    }
+export class ProgressHumidity {
+  ImageProgress: ImageSet
+  BackgroundLayer: Image
+}
 
-export class ProgressAlt5 {
-        ImageProgress: ImageSet
-        IconSetProgress: IconSet
-        PointerProgress: Scale
-    }
+export class ProgressSpo {
+    ImageProgress: ImageSet
+    BackgroundLayer: Image
+}
+
+export class ProgressStress {
+  ImageProgress: ImageSet
+  BackgroundLayer: Image
+}
+
+export class ProgressStandup {
+  ImageProgress: ImageSet
+  IconSetProgress: IconSet
+  PointerProgress: Scale
+}
 
 export class DateBlock{
   Date: DateElement
@@ -596,17 +607,18 @@ export class WatchJson{
   HeartProgress: Progress;
   WeekDayImages: WeekDayImages;
   CaloriesProgress: Progress;
-  HumidityProgress: ProgressAlt3;
+  HumidityProgress: ProgressHumidity;
   Alarm: Alarm;
   Shortcuts: Shortcuts;
   TimeAnalog: AnalogDialFace;
   TimeDigital: TimeDigital;
   HourlyImages: HourlyImages;
-  PaiProgress: ProgressAlt1;
-  StandUpProgress: ProgressAlt5;
-  UviProgress: ProgressAlt2;
-  StressProgress: ProgressAlt4;
-  SPO2Progress: ProgressAlt4;
+  PaiProgress: ProgressPai;
+  StandUpProgress: ProgressStandup;
+  AirQualityProgress: ProgressAirQ;
+  UviProgress: ProgressUvi;
+  StressProgress: ProgressStress;
+  SPO2Progress: ProgressSpo;
   AlwaysOnDisplay: AlwaysOnDisplay;
   ActivitySeparateDigits: ActivitySeparateDigits;
 }

@@ -1,16 +1,17 @@
 import { FC } from 'react';
-import { WatchIconSet, WatchImageSet, WatchProgressAlt5, WatchScale } from '../../model/watchFace.gts2mini.model';
+import { WatchIconSet, WatchImageSet, WatchProgressStandup, WatchScale } from '../../model/watchFace.gts2mini.model';
 import IconSetComponent from './iconSet.component';
 import ImageSetComponent from './imageSet.component';
 import ScaleComponent from './scale.component';
+import { Card } from 'react-bootstrap';
 
 interface IProps {
     title: string;
-    progress: WatchProgressAlt5;
-    onUpdate(digit: WatchProgressAlt5): void;
+    progress: WatchProgressStandup;
+    onUpdate(digit: WatchProgressStandup): void;
   }
 
-const ProgressAlt5Component: FC<IProps> = ({
+const ProgressStandupComponent: FC<IProps> = ({
     progress,
     title,
     onUpdate,
@@ -34,7 +35,11 @@ const ProgressAlt5Component: FC<IProps> = ({
     }
 
     return (
-        <div>
+      <Card>
+      <Card.Header>
+        {title}
+      </Card.Header>
+      <Card.Body>
             <ImageSetComponent
               title='Image progress'
               onUpdate={updateImageProgress}
@@ -48,11 +53,12 @@ const ProgressAlt5Component: FC<IProps> = ({
             <ScaleComponent
               scale={{...progress.scale}}
               onUpdate={updateScale}
-              title='Pointerscale'
+              title='Scale'
               />
             
-        </div>
+        </Card.Body>
+        </Card>
     );
 };
 
-export default ProgressAlt5Component
+export default ProgressStandupComponent

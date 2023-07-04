@@ -3,10 +3,10 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType } from "../../model/blocks.model";
-import { WatchImage, WatchNumber, WatchProgressAlt3 } from "../../model/watchFace.gts2mini.model";
+import { WatchImage, WatchNumber, WatchProgressHumidity } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
 import WatchNumberComponent from "./number.component";
-import ProgressAlt3Component from "./progressAlt3.component";
+import ProgressHumidityComponent from "./progressHumidity.component";
 
 
 const HumidityComponent: FC = () => {
@@ -32,7 +32,7 @@ const HumidityComponent: FC = () => {
     setWatchface(w)
   }
 
-  function onChangeProgress(val: WatchProgressAlt3) {
+  function onChangeProgress(val: WatchProgressHumidity) {
     const w = {...watchface};
     w.weatherext.humidityProgress = val
     setWatchface(w)
@@ -72,7 +72,7 @@ const HumidityComponent: FC = () => {
             image={{...watchface.weatherext.humidityIcon}}
             onUpdate={onChangeIcon}
             />
-          <ProgressAlt3Component
+          <ProgressHumidityComponent
             title="Progress"
             progress={{...watchface.weatherext.humidityProgress}}
             onUpdate={onChangeProgress}

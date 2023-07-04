@@ -3,10 +3,10 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType } from "../../model/blocks.model";
-import { WatchImage, WatchNumber, WatchProgressAlt2, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
+import { WatchImage, WatchNumber, WatchProgressUvi, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
 import WatchNumberComponent from "./number.component";
-import ProgressAlt2Component from "./progressAlt2.component";
+import ProgressUviComponent from "./progressUvi.component";
 import WatchShortCutComponent from "./watchshortcut.component";
 
 
@@ -42,7 +42,7 @@ const UvIndexComponent: FC = () => {
     w.weatherext.uvShortcut = val
     setWatchface(w)
   }
-  function updateProgress(val: WatchProgressAlt2) {
+  function updateProgress(val: WatchProgressUvi) {
     const w = {...watchface};
     w.weatherext.uvProgress = val
     setWatchface(w)
@@ -83,8 +83,8 @@ const UvIndexComponent: FC = () => {
             image={{...watchface.weatherext.uvIcon}}
             onUpdate={onChangeIcon}
             />
-          <ProgressAlt2Component
-            title="Progress"
+          <ProgressUviComponent
+            title="UVi Progress"
             progress={{...watchface.weatherext.uvProgress}}
             onUpdate={updateProgress}
           />

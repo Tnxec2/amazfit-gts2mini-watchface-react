@@ -1,15 +1,16 @@
 import { FC } from 'react';
-import { WatchImage, WatchImageSet, WatchProgressAlt2 } from '../../model/watchFace.gts2mini.model';
+import { WatchImage, WatchImageSet, WatchProgressSpo } from '../../model/watchFace.gts2mini.model';
 import ImageComponent from './image.component';
 import ImageSetComponent from './imageSet.component';
+import { Card } from 'react-bootstrap';
 
 interface IProps {
     title: string;
-    progress: WatchProgressAlt2;
-    onUpdate(progress: WatchProgressAlt2): void;
+    progress: WatchProgressSpo;
+    onUpdate(progress: WatchProgressSpo): void;
   }
 
-const ProgressAlt2Component: FC<IProps> = ({
+const ProgressSpo2Component: FC<IProps> = ({
     progress,
     title,
     onUpdate,
@@ -22,15 +23,19 @@ const ProgressAlt2Component: FC<IProps> = ({
       onUpdate(p);
     }
 
-    function updateNoData(image: WatchImage) {
+    function updateBG(image: WatchImage) {
       const p = {...progress};
-      p.noDataImage = image;
+      p.backgroundLayerImage = image;
       onUpdate(p);
     }
 
 
     return (
-        <div>
+      <Card>
+      <Card.Header>
+        {title}
+      </Card.Header>
+      <Card.Body>
           <ImageSetComponent
               title='Image progress'
               onUpdate={updateImageProgress}
@@ -38,12 +43,13 @@ const ProgressAlt2Component: FC<IProps> = ({
             /> 
 
             <ImageComponent
-            title='No data Image'
-            onUpdate={updateNoData}
-            image={{...progress.noDataImage}}
+            title='Background Image'
+            onUpdate={updateBG}
+            image={{...progress.backgroundLayerImage}}
             />
-        </div>
+        </Card.Body>
+      </Card>
     );
 };
 
-export default ProgressAlt2Component
+export default ProgressSpo2Component

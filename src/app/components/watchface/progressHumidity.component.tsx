@@ -1,16 +1,16 @@
 import { FC } from 'react';
-import { WatchImage, WatchImageSet, WatchProgressAlt3 } from '../../model/watchFace.gts2mini.model';
+import { WatchImage, WatchImageSet, WatchProgressHumidity } from '../../model/watchFace.gts2mini.model';
 import ImageComponent from './image.component';
 import ImageSetComponent from './imageSet.component';
 import { Card } from 'react-bootstrap';
 
 interface IProps {
     title: string;
-    progress: WatchProgressAlt3;
-    onUpdate(progress: WatchProgressAlt3): void;
+    progress: WatchProgressHumidity;
+    onUpdate(progress: WatchProgressHumidity): void;
   }
 
-const ProgressAlt3Component: FC<IProps> = ({
+const ProgressHumidityComponent: FC<IProps> = ({
     progress,
     title,
     onUpdate,
@@ -23,15 +23,19 @@ const ProgressAlt3Component: FC<IProps> = ({
       onUpdate(p);
     }
 
-    function updateNoData(image: WatchImage) {
+    function updateBG(image: WatchImage) {
       const p = {...progress};
-      p.noDataImage = image;
+      p.backgroundLayerImage = image;
       onUpdate(p);
     }
 
 
     return (
-      <> 
+      <Card>
+      <Card.Header>
+        {title}
+      </Card.Header>
+      <Card.Body>
       <ImageSetComponent
           title='Image progress'
           onUpdate={updateImageProgress}
@@ -39,12 +43,13 @@ const ProgressAlt3Component: FC<IProps> = ({
         /> 
 
         <ImageComponent
-        title='No data Image'
-        onUpdate={updateNoData}
-        image={{...progress.noDataImage}}
+        title='Background Layer'
+        onUpdate={updateBG}
+        image={{...progress.backgroundLayerImage}}
         />
-      </>
+      </Card.Body>
+      </Card>
     );
 };
 
-export default ProgressAlt3Component
+export default ProgressHumidityComponent

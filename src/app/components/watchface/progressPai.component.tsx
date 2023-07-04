@@ -1,16 +1,17 @@
 import { FC } from 'react';
-import { WatchImage, WatchImageSet, WatchPointerScale, WatchProgressAlt1 } from '../../model/watchFace.gts2mini.model';
+import { WatchImage, WatchImageSet, WatchPointerScale, WatchProgressPai } from '../../model/watchFace.gts2mini.model';
 import ImageComponent from './image.component';
 import ImageSetComponent from './imageSet.component';
 import PointerProgressComponent from './pointerProgress.component';
+import { Card } from 'react-bootstrap';
 
 interface IProps {
     title: string;
-    progress: WatchProgressAlt1;
-    onUpdate(progress: WatchProgressAlt1): void;
+    progress: WatchProgressPai;
+    onUpdate(progress: WatchProgressPai): void;
   }
 
-const ProgressAlt1Component: FC<IProps> = ({
+const ProgressPaiComponent: FC<IProps> = ({
     progress,
     title,
     onUpdate,
@@ -27,9 +28,9 @@ const ProgressAlt1Component: FC<IProps> = ({
       p.pointerScale = pscale;
       onUpdate(p);
     }
-    function updateNoData(image: WatchImage) {
+    function updateBg(image: WatchImage) {
       const p = {...progress};
-      p.noDataImage = image;
+      p.backgroundLayer = image;
       onUpdate(p);
     }
     function updateAltPointerScale(pscale: WatchPointerScale) {
@@ -39,7 +40,11 @@ const ProgressAlt1Component: FC<IProps> = ({
     }
 
     return (
-        <div>
+        <Card>
+          <Card.Header>
+            {title}
+          </Card.Header>
+          <Card.Body> 
           <ImageSetComponent
               title='Image progress'
               onUpdate={updateImageProgress}
@@ -56,12 +61,13 @@ const ProgressAlt1Component: FC<IProps> = ({
               scale={{...progress.altPointerScale}}
             /> 
             <ImageComponent
-            title='No data Image'
-            onUpdate={updateNoData}
-            image={{...progress.noDataImage}}
+            title='Background Layer'
+            onUpdate={updateBg}
+            image={{...progress.backgroundLayer}}
             />
-        </div>
+            </Card.Body>
+        </Card>
     );
 };
 
-export default ProgressAlt1Component
+export default ProgressPaiComponent

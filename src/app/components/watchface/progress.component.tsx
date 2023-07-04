@@ -41,7 +41,7 @@ const ProgressComponent: FC<IProps> = ({
     }
     function updateNoData(image: WatchImage) {
       const p = {...progress};
-      p.noDataImage = image;
+      p.backgroundLayer = image;
       onUpdate(p);
     }
 
@@ -71,7 +71,7 @@ const ProgressComponent: FC<IProps> = ({
             <ImageComponent
             title='No data Image'
             onUpdate={updateNoData}
-            image={{...progress.noDataImage}}
+            image={{...progress.backgroundLayer}}
             />
         </div>
     );
