@@ -584,13 +584,13 @@ export class TimeSpans{
 }
 
 export class WeekDayImages {
-        Monday: Image
-        Tuesday: Image
-        Wednesday: Image
-        Thursday: Image
-        Friday: Image
-        Saturday: Image
-        Sunday: Image
+  Monday: Image
+  Tuesday: Image
+  Wednesday: Image
+  Thursday: Image
+  Friday: Image
+  Saturday: Image
+  Sunday: Image
 }
 
 export class WatchJson{

@@ -1,5 +1,5 @@
 import Color from "../shared/color";
-import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, ProgressStandup, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson, ProgressStress, ProgressSpo, ProgressUvi } from "./json.gts2minit.model";
+import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, ProgressStandup, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson, ProgressStress, ProgressSpo, ProgressUvi, WeekDayImages } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
   count: number;
@@ -665,6 +665,32 @@ export class WatchAmPmIcon {
   }
 }
 
+export class WatchWeekdayImages {
+  collapsed = true
+
+  enabled: boolean = false
+  monday: WatchImage = new WatchImage()
+  tuesday: WatchImage = new WatchImage()
+  wednesday: WatchImage = new WatchImage()
+  thursday: WatchImage = new WatchImage()
+  friday: WatchImage = new WatchImage()
+  saturday: WatchImage = new WatchImage()
+  sunday: WatchImage = new WatchImage()
+
+  constructor(j?: WeekDayImages) {
+    if (j) {
+      this.enabled = true
+      this.monday = new WatchImage(j.Monday)
+      this.tuesday = new WatchImage(j.Tuesday)
+      this.wednesday = new WatchImage(j.Wednesday)
+      this.thursday = new WatchImage(j.Thursday)
+      this.friday = new WatchImage(j.Friday)
+      this.saturday = new WatchImage(j.Saturday)
+      this.sunday = new WatchImage(j.Sunday)
+    }
+  }
+}
+
 export class WatchAodTime {
   collapsed = true
 
@@ -1269,6 +1295,7 @@ export class WatchDate {
   
   ampm: WatchAmPmIcon = new WatchAmPmIcon()
   weekday: WatchImageSet = new WatchImageSet(digitTypes.weekday.imageProgressTotal)
+  
   weekdayProgress: WatchProgress = new WatchProgress(digitTypes.weekday.imageProgressTotal)
 
   year: WatchNumber = new WatchNumber(null, digitTypes.year)
@@ -1578,7 +1605,7 @@ export class WatchFace {
   time: WatchTime = new WatchTime()
   activity: WatchActivityList = new WatchActivityList();
   date: WatchDate = new WatchDate();
-  
+  weekdayImages: WatchWeekdayImages = new WatchWeekdayImages()
   status = new WatchStatus();
   battery = new WatchBattery()
    
@@ -1594,6 +1621,7 @@ export class WatchFace {
     this.background = new WatchBackground(j.Background);
     this.time = new WatchTime(j)
     this.date = new WatchDate(j.DateBlock)
+    this.weekdayImages = new WatchWeekdayImages(j.WeekDayImages)
     this.activity = new WatchActivityList(j)
     this.status = new WatchStatus(j.Status)
     this.battery = new WatchBattery(j.Battery)

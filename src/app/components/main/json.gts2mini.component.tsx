@@ -2,8 +2,8 @@ import { FC, useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import Color from "../../shared/color";
-import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather, ProgressStandup, ProgressStress, ProgressSpo, ProgressUvi } from "../../model/json.gts2minit.model";
-import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchProgressPai, WatchProgressHumidity, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt, WatchProgressStandup, WatchProgressStress, WatchProgressSpo, WatchProgressAirQ, WatchProgressUvi } from "../../model/watchFace.gts2mini.model";
+import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather, ProgressStandup, ProgressStress, ProgressSpo, ProgressUvi, WeekDayImages } from "../../model/json.gts2minit.model";
+import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchProgressPai, WatchProgressHumidity, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt, WatchProgressStandup, WatchProgressStress, WatchProgressSpo, WatchProgressAirQ, WatchProgressUvi, WatchWeekdayImages } from "../../model/watchFace.gts2mini.model";
 import cl from './JsonComponent.module.css';
 
 const JsonComponent: FC = () => {
@@ -39,7 +39,7 @@ const JsonComponent: FC = () => {
                 ImageSetAnimation: w.animation.imageSetAnimation
              } : null,
             HeartProgress: getProgress(w.activity.heartRate.aProgress),
-            WeekDayImages: null, // TODO
+            WeekDayImages: getWeekdaysImages(w.weekdayImages),
             CaloriesProgress: getProgress(w.activity.calories.aProgress),
             HumidityProgress: getProgressAlt3(w.weatherext.humidityProgress),
             Alarm: getAlarm(w.time.alarm),
@@ -630,3 +630,22 @@ function getActivitySeparatedDigits(list: WatchActivityList): ActivitySeparateDi
         HeartRate: list.heartRateSeparatedDigits.enabled ? list.heartRateSeparatedDigits.json : null
     }
 }
+function getWeekdaysImages(weekdayImages: WatchWeekdayImages): WeekDayImages {
+    let enabled = weekdayImages.monday.enabled || weekdayImages.tuesday.enabled || weekdayImages.wednesday.enabled ||
+    weekdayImages.thursday.enabled || weekdayImages.friday.enabled || weekdayImages.saturday.enabled ||
+    weekdayImages.sunday.enabled
+    if (enabled) {
+        return {
+            Monday: weekdayImages.monday.enabled ? weekdayImages.monday.json : null,
+            Tuesday: weekdayImages.tuesday.enabled ? weekdayImages.tuesday.json : null,
+            Wednesday: weekdayImages.wednesday.enabled ? weekdayImages.wednesday.json : null,
+            Thursday: weekdayImages.thursday.enabled ? weekdayImages.thursday.json : null,
+            Friday: weekdayImages.friday.enabled ? weekdayImages.friday.json : null,
+            Saturday: weekdayImages.saturday.enabled ? weekdayImages.saturday.json : null,
+            Sunday: weekdayImages.sunday.enabled ? weekdayImages.sunday.json : null,
+        }
+    } else {
+        return null
+    }
+}
+
