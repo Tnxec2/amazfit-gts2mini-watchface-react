@@ -1432,7 +1432,7 @@ export class WatchTimeDigitalSeparated {
 
   separatorHours: WatchImage = new WatchImage()
   separatorMinutes: WatchImage = new WatchImage()
-  paddingZeroHours: boolean = false
+  unknownBoolean7: boolean = false
   paddingZeroMinutes: boolean = false
   drawOrder: number;
 
@@ -1444,7 +1444,7 @@ export class WatchTimeDigitalSeparated {
       this.drawOrder = j.DrawOrder 
       this.separatorHours = new WatchImage(j.SeparatorHours)
       this.separatorMinutes = new WatchImage(j.SeparatorMinutes)
-      this.paddingZeroHours = j.PaddingZeroHours ? true : false
+      this.unknownBoolean7 = j.UnknowBoolean7 ? true : false
       this.paddingZeroMinutes = j.PaddingZeroMinutes ? true : false
     }
   }

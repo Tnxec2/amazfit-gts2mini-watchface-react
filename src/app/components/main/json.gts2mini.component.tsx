@@ -110,7 +110,7 @@ function getTimeExtended(time: WatchTime): TimeExtended {
                 DrawOrder: time?.timeDigitalSeparated?.drawOrder,
                 SeparatorHours: time?.timeDigitalSeparated?.separatorHours.enabled ? time?.timeDigitalSeparated?.separatorHours.json : null,
                 SeparatorMinutes: time?.timeDigitalSeparated?.separatorMinutes.enabled ?time?.timeDigitalSeparated?.separatorMinutes.json : null,
-                PaddingZeroHours: time?.timeDigitalSeparated ? (time?.timeDigitalSeparated?.paddingZeroHours ? true : false) : null,
+                UnknowBoolean7: time?.timeDigitalSeparated ? (time?.timeDigitalSeparated?.unknownBoolean7 ? true : false) : null,
                 PaddingZeroMinutes: time?.timeDigitalSeparated ? (time?.timeDigitalSeparated?.paddingZeroMinutes ? true : false) : null,
         } : null,
         SunsetTimeOneLine: time.sunset.sunsetOneLine.enabled ? time.sunset.sunsetOneLine.json : null,

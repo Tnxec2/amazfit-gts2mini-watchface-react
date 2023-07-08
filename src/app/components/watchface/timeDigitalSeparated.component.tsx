@@ -31,13 +31,7 @@ const TimeDigitalSeparatedComponent: FC = () => {
     setWatchface(w);
   }
 
-  function onChangePaddingZeroHours(val: boolean) {
-    const w = {...watchface};
-    w.time.timeDigitalSeparated.paddingZeroHours = val;
-    setWatchface(w);
-  }
-
-  function onChangePaddingZeroMinutes(val: boolean) {
+  function onChangePaddingZero(val: boolean) {
     const w = {...watchface};
     w.time.timeDigitalSeparated.paddingZeroMinutes = val;
     setWatchface(w);
@@ -73,8 +67,7 @@ const TimeDigitalSeparatedComponent: FC = () => {
         ar={[
           {
             blocks: [
-              { title: 'Padding Zero Hours', type: BlockType.Checkbox, checked: watchface.time.timeDigitalSeparated.paddingZeroHours, onChange: onChangePaddingZeroHours},
-              { title: 'Padding Zero Minutes', type: BlockType.Checkbox, checked: watchface.time.timeDigitalSeparated.paddingZeroMinutes, onChange: onChangePaddingZeroMinutes},
+              { title: 'Padding Zero Hours and Minutes', type: BlockType.Checkbox, checked: watchface.time.timeDigitalSeparated.paddingZeroMinutes, onChange: onChangePaddingZero},
             ]
       
           }

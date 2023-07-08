@@ -71,8 +71,7 @@ export default function drawTimeDigital(
     }
    
     if (time.timeDigitalSeparated.hours.enabled) {
-        drawTwoDigits(ctx, images, time.timeDigitalSeparated.hours.json, watchState.hours, 
-          time.timeDigitalSeparated.paddingZeroHours)
+        drawTwoDigits(ctx, images, time.timeDigitalSeparated.hours.json, watchState.hours, time.timeDigitalSeparated.paddingZeroMinutes)
         if ( time.timeDigitalSeparated.separatorHours?.enabled) {
             drawImage(ctx, images, time.timeDigitalSeparated.separatorHours.json)
         }

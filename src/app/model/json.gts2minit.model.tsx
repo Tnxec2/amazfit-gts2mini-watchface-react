@@ -64,7 +64,7 @@ export class TimeSeparateDigits {
   DrawOrder: number
   SeparatorHours: Image
   SeparatorMinutes: Image
-  PaddingZeroHours: boolean = false
+  UnknowBoolean7: boolean = false
   PaddingZeroMinutes: boolean = false
 }
 
