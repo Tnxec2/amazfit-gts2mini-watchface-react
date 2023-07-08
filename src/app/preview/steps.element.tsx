@@ -17,6 +17,23 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
     drawShortcutBorder: boolean,
     ) {
     if (!activity) return;
+
+    if (activity.aElement.icon.enabled) {
+        drawImage(ctx, images, activity.aElement.icon.json)
+    }
+    if (activity.aProgress.imageProgress.enabled) {
+        drawImageSet(ctx, images, activity.aProgress.imageProgress.json, value, total);
+    }
+    if (activity.aProgress.iconSetProgress.enabled) {
+        drawIconSet(ctx, images, activity.aProgress.iconSetProgress.json, value, total);
+    }
+    if (activity.aProgress.circleScale.enabled) {
+        drawCircleProgress(ctx, images, activity.aProgress.circleScale.json, value, total);
+    }
+    if (activity.aProgress.scale.enabled) {
+        drawScale(ctx, images, activity.aProgress.scale, value, total);
+    }
+
     if (activity.aElement.enabled) {
         if (activity.aElement.delimiterTotal) {
             drawDigitsOneLine(ctx, images, activity.aElement.imageNumber, 
@@ -36,21 +53,7 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
             )
         }
     }
-    if (activity.aElement.icon.enabled) {
-        drawImage(ctx, images, activity.aElement.icon.json)
-    }
-    if (activity.aProgress.imageProgress.enabled) {
-        drawImageSet(ctx, images, activity.aProgress.imageProgress.json, value, total);
-    }
-    if (activity.aProgress.iconSetProgress.enabled) {
-        drawIconSet(ctx, images, activity.aProgress.iconSetProgress.json, value, total);
-    }
-    if (activity.aProgress.circleScale.enabled) {
-        drawCircleProgress(ctx, images, activity.aProgress.circleScale.json, value, total);
-    }
-    if (activity.aProgress.scale.enabled) {
-        drawScale(ctx, images, activity.aProgress.scale, value, total);
-    }
+
     if (activity.aElement.shortcut.enabled) {
         drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)
     }

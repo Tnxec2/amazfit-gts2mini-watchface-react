@@ -14,6 +14,15 @@ export function drawDistance(ctx: CanvasRenderingContext2D,
     drawShortcutBorder: boolean,
     ) {
     if (!activity) return;
+
+    if (activity.aElement.icon.enabled) {
+        drawImage(ctx, images, activity.aElement.icon.json)
+    }
+
+    if (activity.aElement.shortcut.enabled) {
+        drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)
+    }
+
     if (activity.aElement.enabled) {
         drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
         null, drawBorder, false, null,
@@ -27,12 +36,5 @@ export function drawDistance(ctx: CanvasRenderingContext2D,
             const img = findImageById(activity.aElement.suffixKM || activity.aElement.suffixMI, images)
             if (img) ctx.drawImage(img, x, y);
         }
-    }
-    if (activity.aElement.icon.enabled) {
-        drawImage(ctx, images, activity.aElement.icon.json)
-    }
-
-    if (activity.aElement.shortcut.enabled) {
-        drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)
     }
 }

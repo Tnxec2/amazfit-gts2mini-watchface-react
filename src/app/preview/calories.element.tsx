@@ -17,14 +17,7 @@ export function drawCalories(ctx: CanvasRenderingContext2D,
     drawShortcutBorder: boolean,
     ) {
     if (!activity) return;
-    if (activity.aElement.enabled) {
-        drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
-        null, drawBorder, false, null,
-        null, 
-        null, 
-        activity.aElement.suffix,
-        null)
-    }
+
     if (activity.aElement.icon.enabled) {
         drawImage(ctx, images, activity.aElement.icon.json)
     }
@@ -42,5 +35,13 @@ export function drawCalories(ctx: CanvasRenderingContext2D,
     }
     if (activity.aElement.shortcut.enabled) {
         drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)
+    }
+    if (activity.aElement.enabled) {
+        drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
+        null, drawBorder, false, null,
+        null, 
+        null, 
+        activity.aElement.suffix,
+        null)
     }
 }

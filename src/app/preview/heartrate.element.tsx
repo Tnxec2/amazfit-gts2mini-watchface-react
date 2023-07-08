@@ -18,15 +18,7 @@ export function drawHeartRate(ctx: CanvasRenderingContext2D,
     noData: boolean
     ) {
     if (!activity) return;
-    if (activity.aElement.enabled) {
-        drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
-        null, drawBorder, false, null,
-        activity.aElement.prefix, 
-        null, 
-        activity.aElement.suffix,
-        null,
-        noData ? activity.aElement.noData : null)
-    }
+
     if (activity.aElement.icon.enabled) {
         drawImage(ctx, images, activity.aElement.icon.json)
     }
@@ -44,5 +36,15 @@ export function drawHeartRate(ctx: CanvasRenderingContext2D,
     }
     if (activity.aElement.shortcut.enabled) {
         drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)
+    }
+
+    if (activity.aElement.enabled) {
+        drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
+        null, drawBorder, false, null,
+        activity.aElement.prefix, 
+        null, 
+        activity.aElement.suffix,
+        null,
+        noData ? activity.aElement.noData : null)
     }
 }

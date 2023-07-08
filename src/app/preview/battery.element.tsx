@@ -15,6 +15,16 @@ export function drawBattery(ctx: CanvasRenderingContext2D,
     drawShortcutBorder: boolean,
     ) {
     if (!battery) return;
+
+    if (battery.imageProgress.enabled) {
+        drawImageSet(ctx, images, battery.imageProgress.json, watchState.battery, watchState.batteryGoal);
+    }
+    if (battery.iconSetProgress.enabled) {
+        drawIconSet(ctx, images, battery.iconSetProgress.json, watchState.battery, watchState.batteryGoal);
+    }
+    if (battery.scale.enabled) {
+        drawScale(ctx, images, battery.scale, watchState.battery, watchState.batteryGoal);
+    }
     if (battery.text.enabled) {
         drawDigitImage(ctx, images, battery.text.imageNumber, watchState.battery, null, drawBorder, false, null,
             battery.text.prefix, null, battery.text.suffix, null, null) 
@@ -25,14 +35,4 @@ export function drawBattery(ctx: CanvasRenderingContext2D,
             if (img) ctx.drawImage(img, battery.icon.json.X, battery.icon.json.Y)
         }
     }
-    if (battery.imageProgress.enabled) {
-        drawImageSet(ctx, images, battery.imageProgress.json, watchState.battery, watchState.batteryGoal);
-    }
-    if (battery.iconSetProgress.enabled) {
-        drawIconSet(ctx, images, battery.iconSetProgress.json, watchState.battery, watchState.batteryGoal);
-    }
-    if (battery.scale.enabled) {
-        drawScale(ctx, images, battery.scale, watchState.battery, watchState.batteryGoal);
-    }
-
 }
