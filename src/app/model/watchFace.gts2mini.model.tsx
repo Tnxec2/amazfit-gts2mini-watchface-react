@@ -907,6 +907,42 @@ export class WatchPaiElement {
   }
 }
 
+export class WatchSpO2Element {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.stress)
+  prefix: number
+
+
+  constructor(con?: IDigitConstructor, j?: ProgressSpo) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.Text, con)
+      this.prefix = j.PrefixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
+export class WatchStressElement {
+  enabled: boolean
+
+  imageNumber: WatchNumber = new WatchNumber(null, digitTypes.stress)
+  prefix: number
+
+
+  constructor(con?: IDigitConstructor, j?: ProgressStress) {
+    if (j) {
+      this.enabled = true
+      this.imageNumber = new WatchNumber(j.Text, con)
+      this.prefix = j.PrefixImageIndex
+    } else if (con) {
+      this.imageNumber = new WatchNumber(null, con)
+    }
+  }
+}
+
 export class WatchStandUpElement {
   enabled: boolean
 
@@ -977,13 +1013,14 @@ export class WatchStandUpActivity {
 
 export class WatchStressActivity {
   collapsed = true
-
+  aNumber: WatchStressElement = new WatchStressElement(null)
   aProgress: WatchProgressStress = new WatchProgressStress(null)
   con: IDigitConstructor
   
   constructor(con: IDigitConstructor, progress?: ProgressStress) {
     if (progress) {
       this.aProgress = new WatchProgressStress(con.imageProgressTotal, progress)
+      this.aNumber = new WatchStressElement(con, progress)
     }
 
     this.con = con
@@ -993,12 +1030,14 @@ export class WatchStressActivity {
 export class WatchSpO2Activity {
   collapsed = true
 
+  aNumber: WatchSpO2Element = new WatchSpO2Element(null)
   aProgress: WatchProgressSpo = new WatchProgressSpo(null)
   con: IDigitConstructor
   
   constructor(con: IDigitConstructor, progress?: ProgressSpo) {
     if (progress) {
       this.aProgress = new WatchProgressSpo(con.imageProgressTotal, progress)
+      this.aNumber = new WatchStressElement(con, progress)
     }
 
     this.con = con

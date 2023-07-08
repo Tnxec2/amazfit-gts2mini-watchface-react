@@ -293,11 +293,15 @@ export class ProgressHumidity {
 }
 
 export class ProgressSpo {
-    ImageProgress: ImageSet
-    BackgroundLayer: Image
+  Text: NumberJson
+  PrefixImageIndex: number
+  ImageProgress: ImageSet
+  BackgroundLayer: Image
 }
 
 export class ProgressStress {
+  Text: NumberJson
+  PrefixImageIndex: number
   ImageProgress: ImageSet
   BackgroundLayer: Image
 }

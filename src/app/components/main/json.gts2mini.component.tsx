@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import Color from "../../shared/color";
 import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather, ProgressStandup, ProgressStress, ProgressSpo, ProgressUvi, WeekDayImages } from "../../model/json.gts2minit.model";
-import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchProgressPai, WatchProgressHumidity, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt, WatchProgressStandup, WatchProgressStress, WatchProgressSpo, WatchProgressAirQ, WatchProgressUvi, WatchWeekdayImages } from "../../model/watchFace.gts2mini.model";
+import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgress, WatchProgressPai, WatchProgressHumidity, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt, WatchProgressStandup, WatchProgressStress, WatchProgressSpo, WatchProgressAirQ, WatchProgressUvi, WatchWeekdayImages, WatchStressActivity, WatchSpO2Activity } from "../../model/watchFace.gts2mini.model";
 import cl from './JsonComponent.module.css';
 
 const JsonComponent: FC = () => {
@@ -56,8 +56,8 @@ const JsonComponent: FC = () => {
             StandUpProgress: getProgressStandUp(w.activity.standUp.aProgress),
             AirQualityProgress: getProgressAirQ(w.weatherext.airQualityProgress),
             UviProgress: getProgressUvi(w.weatherext.uvProgress),
-            StressProgress: getProgressStress(w.activity.stress.aProgress),
-            SPO2Progress: getProgressSpo2(w.activity.spo2.aProgress),
+            StressProgress: getProgressStress(w.activity.stress),
+            SPO2Progress: getProgressSpo2(w.activity.spo2),
             AlwaysOnDisplay: getAod(w.aod),
             ActivitySeparateDigits: getActivitySeparatedDigits(w.activity),
         }
@@ -253,23 +253,27 @@ function getProgressAlt3(progress: WatchProgressHumidity): ProgressHumidity {
     }
 }
 
-function getProgressStress(progress: WatchProgressStress): ProgressStress {
-    let enabled = progress.imageProgress.enabled || progress.backgroundLayerImage.enabled
+function getProgressStress( activity: WatchStressActivity): ProgressStress {
+    let enabled = activity.aNumber.enabled || activity.aProgress.imageProgress.enabled || activity.aProgress.backgroundLayerImage.enabled
 
     if (!enabled) return null
     else return {
-        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
-        BackgroundLayer: progress.backgroundLayerImage.enabled ? progress.backgroundLayerImage.json : null,
+        Text: activity.aNumber.enabled ? activity.aNumber.imageNumber.json : null,
+        PrefixImageIndex: activity.aNumber.enabled ? activity.aNumber.prefix : null,
+        ImageProgress: activity.aProgress.imageProgress.enabled ? activity.aProgress.imageProgress.json : null,
+        BackgroundLayer: activity.aProgress.backgroundLayerImage.enabled ? activity.aProgress.backgroundLayerImage.json : null,
     }
 }
 
-function getProgressSpo2(progress: WatchProgressSpo): ProgressSpo {
-    let enabled = progress.imageProgress.enabled || progress.backgroundLayerImage.enabled
+function getProgressSpo2(activity: WatchSpO2Activity): ProgressSpo {
+    let enabled = activity.aNumber.enabled || activity.aProgress.imageProgress.enabled || activity.aProgress.backgroundLayerImage.enabled
 
     if (!enabled) return null
     else return {
-        ImageProgress: progress.imageProgress.enabled ? progress.imageProgress.json : null,
-        BackgroundLayer: progress.backgroundLayerImage.enabled ? progress.backgroundLayerImage.json : null,
+        Text: activity.aNumber.enabled ? activity.aNumber.imageNumber.json : null,
+        PrefixImageIndex: activity.aNumber.enabled ? activity.aNumber.prefix : null,
+        ImageProgress: activity.aProgress.imageProgress.enabled ? activity.aProgress.imageProgress.json : null,
+        BackgroundLayer: activity.aProgress.backgroundLayerImage.enabled ? activity.aProgress.backgroundLayerImage.json : null,
     }
 }
 
