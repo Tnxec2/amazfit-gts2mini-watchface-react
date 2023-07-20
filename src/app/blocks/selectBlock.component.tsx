@@ -7,12 +7,15 @@ interface IProps {
     onChange(value: string): void,
     options: IOption[],
     disabled?: boolean
+    hint?: string
+    warning?: boolean
 }
 
-const SelectBlockComponent: FC<IProps> = ({ title, value, onChange, disabled, options }) => {
+const SelectBlockComponent: FC<IProps> = ({ title, value, onChange, disabled, options, hint, warning }) => {
     return (
         <>
-            <span className="input-group-text" >
+            <span className="input-group-text" title={hint}>
+                { warning && '⚠' }
                 {title}
             </span>
             <select

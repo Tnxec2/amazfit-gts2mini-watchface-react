@@ -7,11 +7,14 @@ interface IProps {
     disabled?: boolean,
     min?: number,
     max?: number,
+    hint?: string
+    warning?: boolean
 }
-const NumberBlockComponent: FC<IProps> = ({ title, value, onChange, disabled, min, max }) => {
+const NumberBlockComponent: FC<IProps> = ({ title, value, onChange, disabled, min, max, hint, warning }) => {
     return (
         <>
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" id="addon-wrapping" title={hint}>
+                { warning && '⚠' }
                 {title}
             </span>
             <input

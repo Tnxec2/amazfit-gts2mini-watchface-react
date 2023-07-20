@@ -70,7 +70,7 @@ const ShortCutComponent: FC<IProps> = ({title, shortcut, onUpdate, onDelete, dis
         <Card.Body>
           { ! disableIcon ?
           <ImageComponent
-            title='Icon'
+            title={ shortcut.icon.enabled ? 'Icon' : 'Icon ⚠ shortcut works only with activated icon'}
             image={{...shortcut.icon}}
             onUpdate={onChangeImage}
           /> : '' }

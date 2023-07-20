@@ -35,8 +35,15 @@ const WatchNumberComponent: FC<IProps> = ({
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Image', type: BlockType.SelectFile, nvalue: digit.json?.ImageIndex, onChange: onChangeImageIndex },
-        context.device.countEditable ? { title: 'Count', type: BlockType.Number, nvalue: digit.json?.ImagesCount ? digit.json?.ImagesCount : 0, onChange: onChangeImageCount } :
+        { title: 'Image', type: BlockType.SelectFile, nvalue: digit.json?.ImageIndex, onChange: onChangeImageIndex,
+          hint: !digit.json.ImageIndex ? 'You should select a image' : '',
+          warning: !digit.json.ImageIndex
+      },
+        context.device.countEditable ? { 
+          title: 'Count', type: BlockType.Number, nvalue: digit.json?.ImagesCount ? digit.json?.ImagesCount : 0, onChange: onChangeImageCount,
+          min: 1, 
+          warning: digit.json.ImagesCount < 1 
+        } :
         { title: `Count: ${digit.json?.ImagesCount}`, type: BlockType.Empty },
       ]
     },

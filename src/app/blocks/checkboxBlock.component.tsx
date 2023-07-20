@@ -5,12 +5,15 @@ interface IProps {
     checked: boolean,
     onChange(checked: boolean): void,
     disabled?: boolean
+    hint?: string
+    warning?: boolean
 }
 
-const CheckBoxBlockComponent: FC<IProps> = ({ title, checked, onChange, disabled }) => {
+const CheckBoxBlockComponent: FC<IProps> = ({ title, checked, onChange, disabled, hint, warning }) => {
     return (
         <>
-            <span className="input-group-text" id="addon-wrapping">
+            <span className="input-group-text" id="addon-wrapping" title={hint}>
+                { warning && '⚠' }
                 {title}
             </span>
             <div className="input-group-text">

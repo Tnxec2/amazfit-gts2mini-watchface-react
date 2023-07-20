@@ -25,6 +25,8 @@ const RowComponent: FC<IProps> = ({ row }) => {
                         title={block.title}
                         onChange={block.onChange}
                         value={block.nvalue}
+                        hint={block.hint}
+                        warning={block.warning}
                     />
                 break;
             case BlockType.Number:
@@ -35,6 +37,8 @@ const RowComponent: FC<IProps> = ({ row }) => {
                         onChange={block.onChange}
                         value={block.nvalue}
                         disabled={block.disabled}
+                        hint={block.hint}
+                        warning={block.warning}
                     />
                 break;
             case BlockType.Checkbox:
@@ -45,6 +49,8 @@ const RowComponent: FC<IProps> = ({ row }) => {
                         onChange={block.onChange}
                         checked={block.checked}
                         disabled={block.disabled}
+                        hint={block.hint}
+                        warning={block.warning}
                     />
                 break;
             case BlockType.Select:
@@ -56,6 +62,8 @@ const RowComponent: FC<IProps> = ({ row }) => {
                         value={block.svalue}
                         disabled={block.disabled}
                         options={block.selectOptions}
+                        hint={block.hint}
+                        warning={block.warning}
                     />
                 break;
             case BlockType.Color:
@@ -65,6 +73,8 @@ const RowComponent: FC<IProps> = ({ row }) => {
                         title={block.title}
                         onChange={block.onChange}
                         value={block.svalue}
+                        hint={block.hint}
+                        warning={block.warning}
                     />
                 break;
             case BlockType.Button:
@@ -75,6 +85,8 @@ const RowComponent: FC<IProps> = ({ row }) => {
                         onClick={block.onClick}
                         className={block.className}
                         disabled={block.disabled}
+                        hint={block.hint}
+                        warning={block.warning}
                     />
                 break;
             default:

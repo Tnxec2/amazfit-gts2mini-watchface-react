@@ -17,8 +17,12 @@ const ImageSetComponent: FC<IProps> = ({ title, imageSet, onUpdate, disableCount
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Image', type: BlockType.SelectFile, nvalue: imageSet.json.ImageIndex, onChange: onChangeImageIndex },
-        { title: 'Count', type: BlockType.Number, nvalue: imageSet.json.ImagesCount, onChange: onChangeCount, disabled: disableCount },
+        { title: 'Image', type: BlockType.SelectFile, nvalue: imageSet.json.ImageIndex, onChange: onChangeImageIndex,
+          hint: imageSet.json.ImageIndex ? '' : 'You should select a start image',
+          warning: !imageSet.json.ImageIndex
+      },
+        { title: 'Count', type: BlockType.Number, nvalue: imageSet.json.ImagesCount, onChange: onChangeCount,
+        disabled: disableCount, min: 1, warning: imageSet.json.ImagesCount < 1 },
       ]
     },
     {

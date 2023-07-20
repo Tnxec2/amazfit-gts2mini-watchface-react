@@ -23,9 +23,15 @@ const StepsComponent: FC<IProps> = ({
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Prefix', type: BlockType.SelectFile, nvalue: activity.aElement.prefix, onChange: onChangePrefix },
-        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffix },
-        { title: 'Delimiter Total', type: BlockType.SelectFile, nvalue: activity.aElement.delimiterTotal, onChange: onChangeDelimiter},
+        { title: 'Prefix', type: BlockType.SelectFile, nvalue: activity.aElement.prefix, onChange: onChangePrefix, 
+        hint: activity.aElement.delimiterTotal && activity.aElement.prefix && !activity.aElement.suffix ? 
+        'This works incorrect with delimiter total' : 'Prefix', 
+        warning: activity.aElement.delimiterTotal && activity.aElement.prefix && !activity.aElement.suffix ? true : false },
+        { title: 'Suffix', type: BlockType.SelectFile, nvalue: activity.aElement.suffix, onChange: onChangeSuffix, 
+        hint: activity.aElement.delimiterTotal && activity.aElement.suffix && !activity.aElement.prefix ? 
+        'This works incorrect with delimiter total' : 'Suffix', 
+        warning: activity.aElement.delimiterTotal && activity.aElement.suffix && !activity.aElement.prefix ? true : false },
+        { title: 'Delimiter Total', type: BlockType.SelectFile, nvalue: activity.aElement.delimiterTotal, onChange: onChangeDelimiter, hint: 'Works only without prefix and suffix', warning: activity.aElement.delimiterTotal && ( activity.aElement.prefix || activity.aElement.suffix) ? true : false},
       ]
     }
   ], [activity]) // eslint-disable-line react-hooks/exhaustive-deps

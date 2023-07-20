@@ -51,4 +51,6 @@ export interface IBlock {
     max?: number
     onClick?(e): any
     className?: string
+    hint?: string
+    warning?: boolean
 }

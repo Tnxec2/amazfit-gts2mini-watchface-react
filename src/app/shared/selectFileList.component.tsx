@@ -6,12 +6,16 @@ interface IProps {
   title: string,
   value: number;
   onChange(id: number): void;
+  hint?: string;
+  warning?: boolean;
 }
 
 const SelectFileListComponent: FC<IProps> = ({
   title,
   value: imageIndex,
   onChange,
+  hint,
+  warning
 }) => {
   const { images } = useContext<IWatchContext>(WatchfaceContext);
 
@@ -67,7 +71,11 @@ const SelectFileListComponent: FC<IProps> = ({
   
   return (
     <>
-      <span className="input-group-text">{title.split('\n').map((str, index) => <Fragment key={index}>{str}<br/></Fragment>)}</span>
+      <span className="input-group-text" title={hint}>
+        { warning && '⚠' }
+        {title.split('\n').map((str, index) => <Fragment key={index}>{str}<br/></Fragment>)}
+      </span>
+      
       <div className="input-group-text dropdown">
         <div>
           {imageIndexReal}
@@ -98,6 +106,7 @@ const SelectFileListComponent: FC<IProps> = ({
       >
         x
       </button>
+      
     </>
   );
 };

@@ -15,7 +15,10 @@ const ImageComponent: FC<IProps> = ({ title, image, onUpdate }) => {
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
-        { title: 'Image', type: BlockType.SelectFile, nvalue: image.json.ImageIndex, onChange: onChangeImageIndex },
+        { title: 'Image', type: BlockType.SelectFile, nvalue: image.json.ImageIndex, onChange: onChangeImageIndex,
+        hint: image.json.ImageIndex ? '' : 'You should select a image',
+        warning: !image.json.ImageIndex
+      },
         { title: 'X', type: BlockType.Number, nvalue: image.json.X, onChange: onChangeX },
         { title: 'Y', type: BlockType.Number, nvalue: image.json.Y, onChange: onChangeY },
       ]
