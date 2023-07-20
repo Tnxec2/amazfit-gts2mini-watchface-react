@@ -35,13 +35,37 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
     }
 
     if (activity.aElement.enabled) {
-        if (activity.aElement.delimiterTotal) {
+        if (activity.aElement.delimiterTotal && activity.aElement.prefix && activity.aElement.suffix) {
+            drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
+                null, drawBorder, false, null,
+                activity.aElement.prefix, 
+                null, 
+                activity.aElement.suffix,
+                null,
+                )
+        } else if (activity.aElement.delimiterTotal && activity.aElement.prefix) { // delimitertotal + prefix -> show prefix as suffix no total
+            drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
+                null, drawBorder, false, null,
+                null, 
+                null, 
+                activity.aElement.prefix,
+                null,
+                )
+        } else if (activity.aElement.delimiterTotal && activity.aElement.suffix) { // delimitertotal + prefix -> show prefix as suffix no total
+            drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
+                null, drawBorder, false, null,
+                activity.aElement.suffix, 
+                null, 
+                null,
+                null,
+                )
+        } else if (activity.aElement.delimiterTotal) { // delimitertotal work only without suffix and prefix
             drawDigitsOneLine(ctx, images, activity.aElement.imageNumber, 
                 [ value.toString(), total.toString()], 
                 activity.aElement.delimiterTotal,
                 drawBorder,
-                activity.aElement.suffix,
-                activity.aElement.prefix,
+                null,
+                null,
                 null)
         } else {
             drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
