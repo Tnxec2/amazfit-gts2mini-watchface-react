@@ -84,9 +84,6 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     if (weatherext.uvProgress.backgroundLayer.enabled) {
         drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json);
     }
-    if (weatherext.uvProgress.scale.enabled) {
-        drawScale(ctx, images, weatherext.uvProgress.scale, watchState.uvIndex, watchState.uvIndexGoal)
-    }
     if (weatherext.uvProgress.imageProgress.enabled) {
         drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal)
     }

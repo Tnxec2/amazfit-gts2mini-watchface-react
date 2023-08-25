@@ -1,9 +1,8 @@
 import { FC } from 'react';
-import { WatchImage, WatchImageSet, WatchProgressUvi, WatchScale,  } from '../../model/watchFace.gts2mini.model';
+import { WatchImage, WatchImageSet, WatchProgressUvi  } from '../../model/watchFace.gts2mini.model';
 import ImageComponent from './image.component';
 import ImageSetComponent from './imageSet.component';
 import { Card } from 'react-bootstrap';
-import ScaleComponent from './scale.component';
 
 interface IProps {
     title: string;
@@ -30,11 +29,7 @@ const ProgressUviComponent: FC<IProps> = ({
       onUpdate(p);
     }
 
-    function updateScale(scale: WatchScale) {
-      const p = {...progress};
-      p.scale = scale;
-      onUpdate(p);
-    }
+
 
 
     return (
@@ -48,11 +43,7 @@ const ProgressUviComponent: FC<IProps> = ({
               onUpdate={updateImageProgress}
               imageSet={{...progress.imageProgress}}
             /> 
-            <ScaleComponent
-              title='Scale'
-              onUpdate={updateScale}
-              scale={{...progress.scale}}
-            />
+
             <ImageComponent
               title='Background Layer'
               onUpdate={updatebackgroundLayer}
