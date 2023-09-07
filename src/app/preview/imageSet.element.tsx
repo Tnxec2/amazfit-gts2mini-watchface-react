@@ -19,9 +19,11 @@ export default function drawImageSet(
             let index = Math.floor(value / (total / count))
 
             index = Math.max(index, 0)
-            index = Math.min(index, imageSet.ImagesCount-1)
+            index = Math.min(index, count)
 
-            const img = findImageById(imageSet.ImageIndex + index, images)
-            if (img) ctx.drawImage(img, x, y);
+            if (index > 0) {
+                const img = findImageById(imageSet.ImageIndex + index - 1, images)
+                if (img) ctx.drawImage(img, x, y);
+            }
         }
 }
