@@ -2,10 +2,10 @@ import { FC, useMemo } from "react";
 import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { BlockType, IRow } from "../../model/blocks.model";
-import { WatchHeartRateActivity, WatchImage, WatchNumber, WatchProgress, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
+import { WatchHeartRateActivity, WatchImage, WatchNumber, WatchProgressHeart, WatchShortcutElement } from "../../model/watchFace.gts2mini.model";
 import ImageComponent from "./image.component";
 import WatchNumberComponent from "./number.component";
-import ProgressComponent from "./progress.component";
+import ProgressHeartComponent from "./progressHeart.component";
 import WatchShortCutComponent from "./watchshortcut.component";
 
 interface IProps {
@@ -69,7 +69,7 @@ const HeartRateComponent: FC<IProps> = ({
     onUpdateActivity(a)
   }
 
-  function updateProgress(d: WatchProgress) {
+  function updateProgress(d: WatchProgressHeart) {
     const a = {...activity};
     a.aProgress = d
     onUpdateActivity(a)
@@ -107,7 +107,7 @@ const HeartRateComponent: FC<IProps> = ({
             shortcut={{...activity.aElement.shortcut}}
             onUpdate={updateShortcut}
           />
-          <ProgressComponent
+          <ProgressHeartComponent
             progress={{...activity.aProgress}}
             title='Progress'
             onUpdate={updateProgress}

@@ -8,9 +8,10 @@ interface IProps {
   title: string;
   iconSet: WatchIconSet;
   onUpdate(iconSet: WatchIconSet): void;
+  onDeleteCoordinate?(index: number): void
 }
 
-const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate }) => {
+const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate, onDeleteCoordinate }) => {
 
   const ar = useMemo<IRow[]>(() => [
     {
@@ -43,6 +44,7 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate }) => {
       const ip = { ...iconSet };
       ip.json.Coordinates.splice(index, 1);
       onUpdate(ip);
+      if (onDeleteCoordinate) onDeleteCoordinate(index)
     }
   }
 

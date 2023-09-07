@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { WatchCircleScale, WatchIconSet, WatchImage, WatchImageSet, WatchProgress, WatchScale } from '../../model/watchFace.gts2mini.model';
+import { WatchCircleScale, WatchIconSet, WatchImage, WatchImageSet, WatchProgressSteps, WatchScale } from '../../model/watchFace.gts2mini.model';
 import CircleProgressComponent from './circleProgress.component';
 import IconSetComponent from './iconSet.component';
 import ImageComponent from './image.component';
@@ -8,11 +8,11 @@ import ScaleComponent from './scale.component';
 
 interface IProps {
     title: string;
-    progress: WatchProgress;
-    onUpdate(digit: WatchProgress): void;
+    progress: WatchProgressSteps;
+    onUpdate(digit: WatchProgressSteps): void;
   }
 
-const ProgressComponent: FC<IProps> = ({
+const ProgressStepsComponent: FC<IProps> = ({
     progress,
     title,
     onUpdate,
@@ -39,7 +39,7 @@ const ProgressComponent: FC<IProps> = ({
       p.circleScale = scale;
       onUpdate(p);
     }
-    function updateNoData(image: WatchImage) {
+    function updateBackground(image: WatchImage) {
       const p = {...progress};
       p.backgroundLayer = image;
       onUpdate(p);
@@ -69,12 +69,12 @@ const ProgressComponent: FC<IProps> = ({
               />
             
             <ImageComponent
-            title='No data Image'
-            onUpdate={updateNoData}
+            title='Background Layer'
+            onUpdate={updateBackground}
             image={{...progress.backgroundLayer}}
             />
         </div>
     );
 };
 
-export default ProgressComponent
+export default ProgressStepsComponent

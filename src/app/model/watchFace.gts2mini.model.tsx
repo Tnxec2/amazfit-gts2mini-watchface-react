@@ -1,5 +1,5 @@
 import Color from "../shared/color";
-import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, Progress, ProgressPai, ProgressAirQ, ProgressHumidity, ProgressStandup, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson, ProgressStress, ProgressSpo, ProgressUvi, WeekDayImages } from "./json.gts2minit.model";
+import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, ProgressWeekdays, ProgressCalories, ProgressHeart, ProgressSteps, ProgressPai, ProgressAirQ, ProgressHumidity, ProgressStandup, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson, ProgressStress, ProgressSpo, ProgressUvi, WeekDayImages, HourlyImages, TimeSpans } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
   count: number;
@@ -328,18 +328,66 @@ export class WatchScale {
   }
 }
 
-export class WatchProgress {
+export class WatchProgressWeekdays {
+  collapsed = true
+  iconSetProgress: WatchIconSet = new WatchIconSet()
+
+
+  constructor(count: number, j?: ProgressWeekdays) {
+    if(j) {
+
+      this.iconSetProgress = new WatchIconSet(j.IconSetProgress)
+
+    }
+  }
+}
+
+export class WatchProgressSteps {
   imageProgress: WatchImageSet = new WatchImageSet(null)
   iconSetProgress: WatchIconSet = new WatchIconSet()
   circleScale: WatchCircleScale = new WatchCircleScale()
   scale: WatchScale = new WatchScale()
   backgroundLayer: WatchImage = new WatchImage()
 
-  constructor(count: number, j?: Progress) {
+  constructor(count: number, j?: ProgressSteps) {
     if(j) {
       this.imageProgress = new WatchImageSet(count, j.ImageProgress)
       this.iconSetProgress = new WatchIconSet(j.IconSetProgress)
       this.circleScale = new WatchCircleScale(j.CircleScale)
+      this.scale = new WatchScale(j.Scale)
+      this.backgroundLayer = new WatchImage(j.BackgroundLayer)
+    }
+  }
+}
+
+export class WatchProgressCalories {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  iconSetProgress: WatchIconSet = new WatchIconSet()
+  circleScale: WatchCircleScale = new WatchCircleScale()
+
+  backgroundLayer: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressCalories) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+      this.iconSetProgress = new WatchIconSet(j.IconSetProgress)
+      this.circleScale = new WatchCircleScale(j.CircleScale)
+
+      this.backgroundLayer = new WatchImage(j.BackgroundLayer)
+    }
+  }
+}
+
+export class WatchProgressHeart {
+  imageProgress: WatchImageSet = new WatchImageSet(null)
+  iconSetProgress: WatchIconSet = new WatchIconSet()
+  scale: WatchScale = new WatchScale()
+  backgroundLayer: WatchImage = new WatchImage()
+
+  constructor(count: number, j?: ProgressHeart) {
+    if(j) {
+      this.imageProgress = new WatchImageSet(count, j.ImageProgress)
+      this.iconSetProgress = new WatchIconSet(j.IconSetProgress)
       this.scale = new WatchScale(j.Scale)
       this.backgroundLayer = new WatchImage(j.BackgroundLayer)
     }
@@ -1093,15 +1141,15 @@ export class WatchHeartRateActivity {
   collapsed = true
 
   aElement: WatchHertRateElement = new WatchHertRateElement()
-  aProgress: WatchProgress = new WatchProgress(null)
+  aProgress: WatchProgressHeart = new WatchProgressHeart(null)
   con: IDigitConstructor
   
-  constructor(con: IDigitConstructor, element?: HeartRate, progress?: Progress) {
+  constructor(con: IDigitConstructor, element?: HeartRate, progress?: ProgressHeart) {
     if (element) {
       this.aElement = new WatchHertRateElement(con, element)
     }
     if (progress) {
-      this.aProgress = new WatchProgress(con.imageProgressTotal, progress)
+      this.aProgress = new WatchProgressHeart(con.imageProgressTotal, progress)
     }
     if (!this.aElement) {
       this.aElement = new WatchHertRateElement(con)
@@ -1117,15 +1165,15 @@ export class WatchCaloriesActivity {
   collapsed = true
 
   aElement: WatchCaloriesElement = new WatchCaloriesElement()
-  aProgress: WatchProgress = new WatchProgress(null)
+  aProgress: WatchProgressCalories = new WatchProgressCalories(null)
   con: IDigitConstructor
   
-  constructor(con: IDigitConstructor, element?: Calories, progress?: Progress) {
+  constructor(con: IDigitConstructor, element?: Calories, progress?: ProgressCalories) {
     if (element) {
       this.aElement = new WatchCaloriesElement(con, element)
     }
     if (progress) {
-      this.aProgress = new WatchProgress(con.imageProgressTotal, progress)
+      this.aProgress = new WatchProgressCalories(con.imageProgressTotal, progress)
     }
     if (!this.aElement) {
       this.aElement = new WatchCaloriesElement(con)
@@ -1141,15 +1189,15 @@ export class WatchStepsActivity {
   collapsed = true
 
   aElement: WatchStepsElement = new WatchStepsElement()
-  aProgress: WatchProgress = new WatchProgress(null)
+  aProgress: WatchProgressSteps = new WatchProgressSteps(null)
   con: IDigitConstructor
   
-  constructor(con: IDigitConstructor, element?: Steps, progress?: Progress) {
+  constructor(con: IDigitConstructor, element?: Steps, progress?: ProgressSteps) {
     if (element) {
       this.aElement = new WatchStepsElement(con, element)
     }
     if (progress) {
-      this.aProgress = new WatchProgress(con.imageProgressTotal, progress)
+      this.aProgress = new WatchProgressSteps(con.imageProgressTotal, progress)
     }
     if (!this.aElement) {
       this.aElement = new WatchStepsElement(con)
@@ -1335,7 +1383,7 @@ export class WatchDate {
   ampm: WatchAmPmIcon = new WatchAmPmIcon()
   weekday: WatchImageSet = new WatchImageSet(digitTypes.weekday.imageProgressTotal)
   
-  weekdayProgress: WatchProgress = new WatchProgress(digitTypes.weekday.imageProgressTotal)
+  weekdayProgress: WatchProgressWeekdays = new WatchProgressWeekdays(digitTypes.weekday.imageProgressTotal)
 
   year: WatchNumber = new WatchNumber(null, digitTypes.year)
   month: WatchNumber = new WatchNumber(null, digitTypes.month)
@@ -1350,7 +1398,7 @@ export class WatchDate {
     if (j) {
       this.ampm = new WatchAmPmIcon(j.AmPm)
       this.weekday = new WatchImageSet(digitTypes.weekday.imageProgressTotal, j.Weekday)
-      this.weekdayProgress = new WatchProgress(digitTypes.weekday.imageProgressTotal, j.WeekdayProgress)
+      this.weekdayProgress = new WatchProgressWeekdays(digitTypes.weekday.imageProgressTotal, j.WeekdayProgress)
 
       if ( j.Date) {
         if (j.Date.MonthAndDayAlt) {
@@ -1571,6 +1619,21 @@ export class WatchAlarm {
   }
 }
 
+
+export class WatchHourlyImages {
+  iconSet: WatchIconSet = new WatchIconSet()
+  timeSpans: TimeSpans[] = []
+  collapsed = true;
+
+  constructor(j?: HourlyImages) {
+    if (j) {
+      this.iconSet = new WatchIconSet(j.HourlyImage.IconSet)
+      this.timeSpans = j.HourlyImage.TimeSpans
+    }
+  }
+}
+
+
 export class WatchTime {
   collapsed = true
 
@@ -1581,6 +1644,8 @@ export class WatchTime {
 
   alarm: WatchAlarm = new WatchAlarm()
 
+  hourlyImages: WatchHourlyImages = new WatchHourlyImages()
+
   constructor(j?: WatchJson) {
     if (j) {
       this.alarm = new WatchAlarm(j.Alarm)
@@ -1588,6 +1653,7 @@ export class WatchTime {
       this.timeAnalog = new WatchTimeAnalog(j.TimeAnalog)
       this.timeDigitalCommon = new WatchTimeDigitalCommon(j.TimeDigital)
       this.timeDigitalSeparated = new WatchTimeDigitalSeparated(j.TimeExtended?.TimeSeparateDigits)
+      this.hourlyImages = new WatchHourlyImages(j.HourlyImages)
     }
   }
 }

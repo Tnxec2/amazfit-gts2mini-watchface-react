@@ -5,7 +5,6 @@ import drawDigitImage from "./digitImage.element";
 import drawIconSet from "./iconSet.element";
 import drawImage from "./image.element";
 import drawImageSet from "./imageSet.element";
-import drawScale from "./scale.element";
 import drawShortcutElement from "./shortcut.element";
 
 export function drawCalories(ctx: CanvasRenderingContext2D,
@@ -30,9 +29,7 @@ export function drawCalories(ctx: CanvasRenderingContext2D,
     if (activity.aProgress.circleScale.enabled) {
         drawCircleProgress(ctx, images, activity.aProgress.circleScale.json, value, total);
     }
-    if (activity.aProgress.scale.enabled) {
-        drawScale(ctx, images, activity.aProgress.scale, value, total);
-    }
+
     if (activity.aElement.shortcut.enabled) {
         drawShortcutElement(ctx, activity.aElement.shortcut.json, drawShortcutBorder)
     }

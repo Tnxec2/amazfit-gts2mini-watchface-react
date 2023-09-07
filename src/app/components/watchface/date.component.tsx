@@ -3,10 +3,11 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import { BlockType } from "../../model/blocks.model";
-import { WatchAmPmIcon, WatchImageSet, WatchNumber } from "../../model/watchFace.gts2mini.model";
+import { WatchAmPmIcon, WatchImageSet, WatchNumber, WatchProgressWeekdays } from "../../model/watchFace.gts2mini.model";
 import WatchNumberComponent from "./number.component";
 import ImageSetComponent from "./imageSet.component";
 import AmPmComponent from "./ampm.component";
+import ProgressWeekdaysComponent from "./progressWeekdays.component";
 
 
 const DateComponent: FC = () => {
@@ -45,7 +46,11 @@ const DateComponent: FC = () => {
     w.date.weekday = d;
     setWatchface(w);
   }
-  
+  function updateWeekdayProgress(progress: WatchProgressWeekdays) {
+    const w = {...watchface}
+    w.date.weekdayProgress = progress;
+    setWatchface(w);
+  }
   function onChangeOneLineYear(val: boolean) {
     const w = {...watchface}
     w.date.oneLineYear = val;
@@ -127,6 +132,12 @@ const DateComponent: FC = () => {
             title="Weekday"
             imageSet={{...watchface.date.weekday}}
             onUpdate={updateWeekday}
+          />
+
+          <ProgressWeekdaysComponent
+            title="Weekday Progress"
+            progress={{...watchface.date.weekdayProgress}}
+            onUpdate={updateWeekdayProgress}
           />
 
           <AmPmComponent 

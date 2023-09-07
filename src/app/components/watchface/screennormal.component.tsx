@@ -16,6 +16,7 @@ import WeatherComponent from "./weather.component";
 import WeatherExtendedComponent from "./weatherext.component";
 import { WatchWeekdayImages } from "../../model/watchFace.gts2mini.model";
 import WeekdaysImagesComponent from "./weekdaysImages.component";
+import HourlyImagesComponent from "./hourlyimages.component";
 
 const ScreenNormalcomponent: FC = () => {
 
@@ -26,6 +27,7 @@ const ScreenNormalcomponent: FC = () => {
       <TimeDigitalSeparatedComponent />
       <TimeAnalogComponent />
       <AlarmComponent />
+      <HourlyImagesComponent />
       <SunsetComponent />
       <DateComponent />
       <WeekdaysImagesComponent />

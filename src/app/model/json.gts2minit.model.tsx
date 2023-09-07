@@ -257,18 +257,43 @@ export class Scale{
   BottomImageTradChinese: Image
 }
 
-export class Progress{
-  ImageProgress: ImageSet
+export class ProgressWeekdays{
+  //ImageProgress: ImageSet
   IconSetProgress: IconSet
-  CircleScale: CircleScale
-  Scale: Scale
-  BackgroundLayer: Image
-  UnknownImage: Image
+  //CircleScale: CircleScale
+  //Scale: Scale
+  //BackgroundLayer: Image
 }
 
 export class Alt1PointerScale {
   PointerScale: PointerScale
 }
+
+export class ProgressSteps{
+  ImageProgress: ImageSet
+  IconSetProgress: IconSet
+  CircleScale: CircleScale
+  Scale: Scale
+  BackgroundLayer: Image
+}
+
+
+export class ProgressCalories{
+  ImageProgress: ImageSet
+  IconSetProgress: IconSet
+  CircleScale: CircleScale
+  //Scale: Scale
+  BackgroundLayer: Image
+}
+
+
+export class ProgressHeart{
+  ImageProgress: ImageSet
+  IconSetProgress: IconSet
+  Scale: Scale
+  BackgroundLayer: Image
+}
+
 export class ProgressPai {
   PointerScale: PointerScale 
   ImageProgress: ImageSet 
@@ -319,7 +344,7 @@ export class DateBlock{
   Weekday: ImageSet
   WeekdayChinese: ImageSet
   WeekdayTradChinese: ImageSet
-  WeekdayProgress: Progress
+  WeekdayProgress: ProgressWeekdays
   WeekdayPointerScale: WeekdayPointerScale
 }
 
@@ -604,13 +629,13 @@ export class WatchJson{
   Activity: Activity;
   DateBlock: DateBlock;
   Weather: Weather;
-  StepProgress: Progress;
+  StepProgress: ProgressSteps;
   Status: Status;
   Battery: Battery;
   Animation: Animation;
-  HeartProgress: Progress;
+  HeartProgress: ProgressHeart;
   WeekDayImages: WeekDayImages;
-  CaloriesProgress: Progress;
+  CaloriesProgress: ProgressCalories;
   HumidityProgress: ProgressHumidity;
   Alarm: Alarm;
   Shortcuts: Shortcuts;
