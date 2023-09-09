@@ -99,10 +99,10 @@ export default function drawDate(ctx: CanvasRenderingContext2D,
     }
     
     if (date.monthAsWord.enabled) 
-        drawImageSet(ctx, images, date.monthAsWord.json, watchState.month-1, 12)
+        drawImageSet(ctx, images, date.monthAsWord.json, watchState.month, 12)
 
     if (date.weekday.enabled) 
-        drawImageSet(ctx, images, date.weekday.json, watchState.weekday, 7)
+        drawImageSet(ctx, images, date.weekday.json, watchState.weekday+1, 7)
 
     if (date.weekdayProgress.iconSetProgress.enabled) 
         drawIconSet(ctx, images, date.weekdayProgress.iconSetProgress.json, watchState.weekday+1, 7)
