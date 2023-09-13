@@ -35,7 +35,7 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
     }
 
     if (activity.aElement.enabled) {
-        if (activity.aElement.delimiterTotal && activity.aElement.prefix && activity.aElement.suffix) {
+        if (activity.aElement.prefix && activity.aElement.suffix) { // both prefix and suffix -> show both normaly, no total
             drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
                 null, drawBorder, false, null,
                 activity.aElement.prefix, 
@@ -43,7 +43,7 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
                 activity.aElement.suffix,
                 null,
                 )
-        } else if (activity.aElement.delimiterTotal && activity.aElement.prefix) { // delimitertotal + prefix -> show prefix as suffix no total
+        } else if (activity.aElement.prefix && !activity.aElement.suffix) { // only prefix -> show prefix as suffix, no total
             drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
                 null, drawBorder, false, null,
                 null, 
@@ -51,7 +51,7 @@ export function drawSteps(ctx: CanvasRenderingContext2D,
                 activity.aElement.prefix,
                 null,
                 )
-        } else if (activity.aElement.delimiterTotal && activity.aElement.suffix) { // delimitertotal + prefix -> show prefix as suffix no total
+        } else if (activity.aElement.suffix  && !activity.aElement.prefix) { // only suffix -> show suffix as prefix, no total
             drawDigitImage(ctx, images, activity.aElement.imageNumber, value, 
                 null, drawBorder, false, null,
                 activity.aElement.suffix, 
