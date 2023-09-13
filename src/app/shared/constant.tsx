@@ -7,7 +7,7 @@ export interface IDevice {
 }
 
 export class Constant {
-  static readonly version = "1.7.23"
+  static readonly version = "1.7.24"
   static readonly DEVICE_KEY = "com.kontranik.gts2editor.device";
   static readonly NONE = "None";
   static readonly startImageIndex = 0;
