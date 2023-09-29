@@ -7,10 +7,13 @@ export default function drawImageSet(
     images: IImage[], 
     imageSet: ImageSet,
     value: number,
-    total: number) {
+    total: number,
+    fromZero?: boolean) {
         if (imageSet?.ImageIndex) {
             let x = imageSet.X ? imageSet.X : 0
             let y = imageSet.Y ? imageSet.Y : 0
+
+            if (fromZero) value++;
 
             if (value > total) value = total
             

@@ -51,6 +51,6 @@ export default function drawDateAod(ctx: CanvasRenderingContext2D,
         }
     }
 
-    if (weekday.enabled) drawImageSet(ctx, images, weekday.json, watchState.weekday, 7)
+    if (weekday.enabled) drawImageSet(ctx, images, weekday.json, watchState.weekday, 7, true)
 
 }
