@@ -31,13 +31,13 @@ const WatchNumberComponent: FC<IProps> = ({
 }) => {
 
   const context = useContext<IWatchContext>(WatchfaceContext)
-
+  
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
         { title: 'Image', type: BlockType.SelectFile, nvalue: digit.json?.ImageIndex, onChange: onChangeImageIndex,
-          hint: !digit.json.ImageIndex ? 'You should select a image' : '',
-          warning: !digit.json.ImageIndex
+          hint: digit.json.ImageIndex === null || digit.json.ImageIndex === undefined ? 'You should select a image' : '',
+          warning: digit.json.ImageIndex === null || digit.json.ImageIndex === undefined
       },
         context.device.countEditable ? { 
           title: 'Count', type: BlockType.Number, nvalue: digit.json?.ImagesCount ? digit.json?.ImagesCount : 0, onChange: onChangeImageCount,

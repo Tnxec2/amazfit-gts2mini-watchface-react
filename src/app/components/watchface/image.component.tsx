@@ -12,12 +12,14 @@ interface IProps {
 
 const ImageComponent: FC<IProps> = ({ title, image, onUpdate }) => {
 
+  console.log(image.json.ImageIndex);
+  
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [
         { title: 'Image', type: BlockType.SelectFile, nvalue: image.json.ImageIndex, onChange: onChangeImageIndex,
-        hint: image.json.ImageIndex ? '' : 'You should select a image',
-        warning: !image.json.ImageIndex
+        hint: image.json.ImageIndex === null || image.json.ImageIndex === undefined ? '' : 'You should select a image',
+        warning: image.json.ImageIndex === null || image.json.ImageIndex === undefined
       },
         { title: 'X', type: BlockType.Number, nvalue: image.json.X, onChange: onChangeX },
         { title: 'Y', type: BlockType.Number, nvalue: image.json.Y, onChange: onChangeY },
