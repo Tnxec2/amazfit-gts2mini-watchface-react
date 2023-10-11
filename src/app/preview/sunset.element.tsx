@@ -2,7 +2,7 @@ import { IImage } from "../model/image.model";
 import { WatchSunset } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
 import { drawDigitsOneLine } from "./digitImage.element";
-import drawImage from "./image.element";
+import {drawImage} from "./image.element";
 import drawShortcutElement from "./shortcut.element";
 
 export default function drawSunset(
@@ -29,8 +29,8 @@ export default function drawSunset(
         drawDigitsOneLine(ctx, images, sunset.sunriseOneLine, ar, sunset.sunriseOneLine.delimiter, digitBorder, null, sunset.sunriseOneLine.prefix, null)
     }
     
-    if ( sunset.sunsetIcon.enabled) drawImage(ctx, images, sunset.sunsetIcon.json)
-    if ( sunset.sunriseIcon.enabled) drawImage(ctx, images, sunset.sunriseIcon.json)
+    if ( sunset.sunsetIcon.enabled) drawImage(ctx, images, sunset.sunsetIcon.json, digitBorder)
+    if ( sunset.sunriseIcon.enabled) drawImage(ctx, images, sunset.sunriseIcon.json, digitBorder)
     if ( sunset.sunsetShortcut.enabled)
         drawShortcutElement(ctx, sunset.sunsetShortcut.json, shortcutBorder)
     if ( sunset.sunriseShortcut.enabled)

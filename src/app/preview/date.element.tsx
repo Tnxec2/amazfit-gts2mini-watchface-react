@@ -1,9 +1,9 @@
 import { IImage } from "../model/image.model";
 import { WatchDate } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
-import { findImageById } from "../shared/helper";
 import drawDigitImage, { DigitValueItem, drawDigitsFollowedArray, drawDigitsOneLine } from "./digitImage.element";
 import drawIconSet from "./iconSet.element";
+import { drawImageByIndex } from "./image.element";
 import drawImageSet from "./imageSet.element";
 
 
@@ -54,8 +54,7 @@ export default function drawDate(ctx: CanvasRenderingContext2D,
             } else {
                 drawDigitImage(ctx, images, date.year, watchState.year, null, drawborder, true, null, null, null, date.year.delimiter)
                 if (date.year.dataType && date.year.dataTypeCoords) {
-                    let img = findImageById(date.year.dataType, images)
-                    if (img) ctx.drawImage(img, date.year.dataTypeCoords.X, date.year.dataTypeCoords.Y)
+                    drawImageByIndex(ctx, images, date.year.dataType, date.year.dataTypeCoords.X, date.year.dataTypeCoords.Y, drawborder)
                 }
             }
         }
@@ -75,53 +74,46 @@ export default function drawDate(ctx: CanvasRenderingContext2D,
                 } else {
                     drawDigitImage(ctx, images, date.month, watchState.month, null, drawborder, false, null, null, null, date.month.delimiter)
                     if (date.month.dataType && date.month.dataTypeCoords) {
-                        let img = findImageById(date.month.dataType, images)
-                        if (img) ctx.drawImage(img, date.month.dataTypeCoords.X, date.month.dataTypeCoords.Y)
+                        drawImageByIndex(ctx, images, date.month.dataType, date.month.dataTypeCoords.X, date.month.dataTypeCoords.Y, drawborder)
                     }
                 }
             } else {
                 drawDigitImage(ctx, images, date.month, watchState.month, null, drawborder, false, null, null, null, date.month.delimiter)
                 if (date.month.dataType && date.month.dataTypeCoords) {
-                    let img = findImageById(date.month.dataType, images)
-                    if (img) ctx.drawImage(img, date.month.dataTypeCoords.X, date.month.dataTypeCoords.Y)
+                    drawImageByIndex(ctx, images, date.month.dataType, date.month.dataTypeCoords.X, date.month.dataTypeCoords.Y, drawborder)
                 }
             }
         } 
         if (date.day.enabled) {
             if ( (!date.year.enabled && !date.month.enabled) || ((date.year.enabled || date.month.enabled) && !date.day.follow) ) {
                 drawDigitImage(ctx, images, date.day, watchState.day, null, drawborder, true, null, null, null, date.day.delimiter)
-                if (date.day.dataType && date.day.dataTypeCoords) {
-                    let img = findImageById(date.day.dataType, images)
-                    if (img) ctx.drawImage(img, date.day.dataTypeCoords.X, date.day.dataTypeCoords.Y)
+                if (date.day.dataType && date.day.dataTypeCoords) {                  
+                    drawImageByIndex(ctx, images, date.day.dataType, date.day.dataTypeCoords.X, date.day.dataTypeCoords.Y, drawborder)
                 }
             }
         }
     }
     
     if (date.monthAsWord.enabled) 
-        drawImageSet(ctx, images, date.monthAsWord.json, watchState.month, 12)
+        drawImageSet(ctx, images, date.monthAsWord.json, watchState.month, 12, drawborder, false)
 
     if (date.weekday.enabled) 
-        drawImageSet(ctx, images, date.weekday.json, watchState.weekday, 7, true)
+        drawImageSet(ctx, images, date.weekday.json, watchState.weekday, 7, drawborder, true)
 
     if (date.weekdayProgress.iconSetProgress.enabled) 
-        drawIconSet(ctx, images, date.weekdayProgress.iconSetProgress.json, watchState.weekday+1, 7)
+        drawIconSet(ctx, images, date.weekdayProgress.iconSetProgress.json, watchState.weekday+1, 7, drawborder)
     
     if (date.ampm.enabled) {
         if (watchState.hours < 12) {
-            let img = findImageById(date.ampm.json.AmImageIndexEN, images)
-            if (img) {
-                let x = date.ampm.json.CommonX ? date.ampm.json.CommonX : ( date.ampm.json.CoordinatesAM  ? date.ampm.json.CoordinatesAM.X : 0 )
-                let y = date.ampm.json.CommonY ? date.ampm.json.CommonY : ( date.ampm.json.CoordinatesAM  ? date.ampm.json.CoordinatesAM.Y : 0 )
-                ctx.drawImage(img, x, y)
-            }
+            drawImageByIndex(ctx, images,date.ampm.json.AmImageIndexEN,
+                date.ampm.json.CommonX ? date.ampm.json.CommonX : ( date.ampm.json.CoordinatesAM  ? date.ampm.json.CoordinatesAM.X : 0 ),
+                date.ampm.json.CommonY ? date.ampm.json.CommonY : ( date.ampm.json.CoordinatesAM  ? date.ampm.json.CoordinatesAM.Y : 0 ),
+                drawborder)
         } else {
-            let img = findImageById(date.ampm.json.PmImageIndexEN, images)
-            if (img) {
-                let x = date.ampm.json.CommonX ? date.ampm.json.CommonX : ( date.ampm.json.CoordinatesPM  ? date.ampm.json.CoordinatesPM.X : 0 )
-                let y = date.ampm.json.CommonY ? date.ampm.json.CommonY : ( date.ampm.json.CoordinatesPM  ? date.ampm.json.CoordinatesPM.Y : 0 )
-                ctx.drawImage(img, x, y)
-            }
+            drawImageByIndex(ctx, images, date.ampm.json.PmImageIndexEN, 
+                date.ampm.json.CommonX ? date.ampm.json.CommonX : ( date.ampm.json.CoordinatesPM  ? date.ampm.json.CoordinatesPM.X : 0 ),
+                date.ampm.json.CommonY ? date.ampm.json.CommonY : ( date.ampm.json.CoordinatesPM  ? date.ampm.json.CoordinatesPM.Y : 0 ),
+                drawborder)
         }
     }
     

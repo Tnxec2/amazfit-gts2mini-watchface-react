@@ -41,7 +41,8 @@ const AnimationComponent: FC = () => {
       setWatchface(w)
     }
   }
-  function addAnimation() {
+  function addAnimation(e) {
+    e.stopPropagation()
     const w = {...watchface}
     let newAnimation = new ImageSetAnimation()
     newAnimation.FrameInterval = 0
@@ -49,6 +50,7 @@ const AnimationComponent: FC = () => {
     newAnimation.Repeat = true
     newAnimation.PlayTimes = 1
     w.animation.imageSetAnimation.push(newAnimation)
+    w.animation.collapsed = false
     setWatchface(w)
   }
 
@@ -67,7 +69,7 @@ const AnimationComponent: FC = () => {
       {!watchface.animation.collapsed ? (
         <Card.Body>
           { watchface.animation.imageSetAnimation.length >= 0 ? watchface.animation.imageSetAnimation.map( (item, index ) => 
-            <Card>
+            <Card key={item.uid}>
                 <Card.Header className="d-flex justify-content-between align-items-center"> 
                 Animation {index + 1}
                 <button className="btn btn-outline-danger btn-sm" type="button" onClick={() => onDelete(index)} >Delete</button>

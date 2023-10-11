@@ -3,6 +3,7 @@ import { IImage } from "../model/image.model"
 
 import { WatchNumber } from "../model/watchFace.gts2mini.model"
 import { AlignmentType } from "../model/types.gts2mini.model"
+import { drawBorderOnCtx } from "./drawBorder"
 
 export interface DigitValueItem {
     snumber: string,
@@ -265,12 +266,7 @@ function drawImages(
         if ( spacing ) x += spacing
         if ( vspacing ) y += vspacing
     })
-    if ( drawborder) {
-        ctx.beginPath();
-        ctx.strokeStyle = 'gray'
-        ctx.rect(startx, starty, endx - startx, endy-starty);
-        ctx.stroke();
-    }
+    if ( drawborder) drawBorderOnCtx(ctx, startx, starty, endx-startx, endy-starty)
 
     return [x, y]
 }

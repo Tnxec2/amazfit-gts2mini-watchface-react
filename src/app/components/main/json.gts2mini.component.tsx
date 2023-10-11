@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { IWatchContext, WatchfaceContext } from "../../context";
 import Color from "../../shared/color";
 import { Activity, ActivitySeparateDigits, Alarm, AlwaysOnDisplay, AoDTimeExtended, Background, Battery, DateBlock, DateElement, ProgressWeekdays, ProgressCalories, ProgressHeart, ProgressSteps, ProgressPai, ProgressAirQ, ProgressHumidity, Shortcuts, Status, TimeDigital, TimeExtended, WatchJson, Weather, ProgressStandup, ProgressStress, ProgressSpo, ProgressUvi, WeekDayImages, HourlyImages } from "../../model/json.gts2minit.model";
-import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgressWeekdays, WatchProgressSteps, WatchProgressHeart, WatchProgressCalories, WatchProgressPai, WatchProgressHumidity, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt, WatchProgressStandup, WatchProgressStress, WatchProgressSpo, WatchProgressAirQ, WatchProgressUvi, WatchWeekdayImages, WatchStressActivity, WatchSpO2Activity, WatchHourlyImages } from "../../model/watchFace.gts2mini.model";
+import { WatchActivityList, WatchAlarm, WatchAOD, WatchAodTime, WatchBackground, WatchBattery, WatchDate, WatchFace, WatchProgressWeekdays, WatchProgressSteps, WatchProgressHeart, WatchProgressCalories, WatchProgressPai, WatchProgressHumidity, WatchShortcuts, WatchStatus, WatchTime, WatchTimeDigitalCommon, WatchWeather, WatchWeatherExt, WatchProgressStandup, WatchProgressAirQ, WatchProgressUvi, WatchWeekdayImages, WatchStressActivity, WatchSpO2Activity, WatchHourlyImages } from "../../model/watchFace.gts2mini.model";
 import cl from './JsonComponent.module.css';
 
 const JsonComponent: FC = () => {

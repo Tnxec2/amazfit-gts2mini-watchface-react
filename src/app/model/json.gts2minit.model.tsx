@@ -1,4 +1,5 @@
 import Color from "../shared/color";
+import newid from "../shared/newid";
 import { AlignmentType } from "./types.gts2mini.model";
 
 export class DeviceId {
@@ -105,6 +106,7 @@ export class TimeExtended {
 
 
 export class Coordinates {
+  uid = newid()
   X: number = 0;
   Y: number = 0;
 }
@@ -587,6 +589,7 @@ export class ActivitySeparateDigits{
 }
 
 export class ImageSetAnimation{
+  uid = newid()
   ImageProgress: ImageSet = new ImageSet()
   FrameInterval: number //msec
   PlayTimes: number // 255 if unlimited loops
@@ -606,6 +609,7 @@ export class HourlyImage {
 }
 
 export class TimeSpans{
+  uid = newid()
   StartHour: number
   StartMin: number
   StopHour: number

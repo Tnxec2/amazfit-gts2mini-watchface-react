@@ -1,4 +1,5 @@
 import Color from "../shared/color";
+import newid from "../shared/newid";
 import {  Alarm, AlarmTime, AlwaysOnDisplay, AmPmIcon, AnalogDialFace, Animation, AoDAnalogDialFace, AoDDate, AoDDateOneLine, AODSteps, AoDTimeDigital, AoDTimeExtended, AoDTimeSeparateDigits, Background, Battery, Calories, CircleScale, ClockHand, Coordinates, DateBlock, Distance, FiveDigits, FourDigits, HeartRate, IconSet, Image, ImageSet, ImageSetAnimation, NumberJson, PAI, PointerScale, ProgressWeekdays, ProgressCalories, ProgressHeart, ProgressSteps, ProgressPai, ProgressAirQ, ProgressHumidity, ProgressStandup, Scale, Shortcut, ShortcutElement, Shortcuts, StandUp, Status, Steps, Switch, BatteryTextElement, TextTemperature, ThreeDigits, TimeDigital, TimeExtended, TimeSeparateDigits, TwoDigits, WatchJson, ProgressStress, ProgressSpo, ProgressUvi, WeekDayImages, HourlyImages, TimeSpans } from "./json.gts2minit.model";
 
 interface IDigitConstructor {
@@ -1681,6 +1682,7 @@ export class WatchBackground {
 }
 
 export class WatchShortcut {
+  uid: string = newid()
   icon: WatchImage = new WatchImage()
   type: string
   element: WatchShortcutElement = new WatchShortcutElement()

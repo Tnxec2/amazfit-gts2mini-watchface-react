@@ -2,6 +2,7 @@ import { findImageById } from "../shared/helper";
 import { IImage } from "../model/image.model";
 import { WatchClockHand } from "../model/watchFace.gts2mini.model";
 import { Coordinates } from "../model/json.gts2minit.model";
+import { drawImage } from "./image.element";
 
 export default function drawclockhand(
     ctx: CanvasRenderingContext2D, 
@@ -11,7 +12,8 @@ export default function drawclockhand(
     total: number,
     commonCenterCoordinates: Coordinates,
     width: number,
-    height: number ) {
+    height: number,
+    drawBorder?: boolean ) {
         if (total === null) return
         if (clockHand.json.ImageIndex >= 0) {
             let x = 0
@@ -49,9 +51,6 @@ export default function drawclockhand(
             }
         }
         if (clockHand.json.CoverImage?.ImageIndex >= 0) {
-            let x = clockHand.json.CoverImage?.X ? clockHand.json.CoverImage.X : 0
-            let y = clockHand.json.CoverImage?.Y ? clockHand.json.CoverImage.Y : 0
-            let img = findImageById(clockHand.json.CoverImage.ImageIndex, images)
-            if ( img ) ctx.drawImage(img, x, y);
+            drawImage(ctx, images, clockHand.json.CoverImage, drawBorder)
         }
 }

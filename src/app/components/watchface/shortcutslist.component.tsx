@@ -25,13 +25,14 @@ const ShortCutListComponent: FC = () => {
     }
   }
 
-  function addShortcut() {
+  function addShortcut(e) {
+    e.stopPropagation()
     const w = {...watchface}
     let shortcut = new WatchShortcut()
     shortcut.type = selectedType
     if (!w.shortcuts.shortcuts) w.shortcuts.shortcuts = []
     w.shortcuts.shortcuts.push(shortcut)
-    w.shortcuts.collapsed = true
+    w.shortcuts.collapsed = false
     setWatchface(w)
   }
 
@@ -40,9 +41,7 @@ const ShortCutListComponent: FC = () => {
       <Card.Header
         className="d-flex justify-content-between align-items-center"
         onClick={() => {
-          let w = { ...watchface };
-          w.shortcuts.collapsed = !w.shortcuts.collapsed;
-          setWatchface(w);
+          setWatchface({...watchface, shortcuts: {...watchface.shortcuts, collapsed: !watchface.shortcuts.collapsed}});
         }}>
         Shortcuts
         <span className="d-flex flex-nowrap">
@@ -72,7 +71,7 @@ const ShortCutListComponent: FC = () => {
         <Card.Body>
         { watchface.shortcuts.shortcuts.length > 0 ? watchface.shortcuts.shortcuts.map( (item, index ) => 
             <ShortCutComponent
-              key={item.type}
+              key={item.uid}
               title={item.type}
               shortcut={item}
               onUpdate={(s) => onUpdateShortcut(index, s)}

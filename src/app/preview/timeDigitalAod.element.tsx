@@ -1,9 +1,8 @@
 import { IImage } from "../model/image.model";
 import { WatchAodTime } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
-import { findImageById } from "../shared/helper";
 import drawDigitImage, { DigitValueItem, drawDigitsFollowedArray } from "./digitImage.element";
-import drawImage from "./image.element";
+import {drawImage, drawImageByIndex} from "./image.element";
 import { drawTwoDigits } from "./separateDigits.element";
 
 export default function drawTimeDigitalAod(
@@ -30,46 +29,42 @@ export default function drawTimeDigitalAod(
             drawDigitImage(ctx, images, time.timeDigital.hours, watchState.hours, null, digitBorder,
                             false, null, null, null, time.timeDigital.hours.delimiter)
             if (time.timeDigital.hours.dataType && time.timeDigital.hours.dataTypeCoords) {
-                let img = findImageById(time.timeDigital.hours.dataType, images)
-                if (img) ctx.drawImage(img, time.timeDigital.hours.dataTypeCoords.X, time.timeDigital.hours.dataTypeCoords.Y)
+                drawImageByIndex(ctx, images, time.timeDigital.hours.dataType, 
+                    time.timeDigital.hours.dataTypeCoords.X, time.timeDigital.hours.dataTypeCoords.Y, digitBorder)
             }
         }
     }
     if (time.timeDigital.minutes.enabled && !time.timeDigital.minutes.follow) {
         drawDigitImage(ctx, images, time.timeDigital.minutes, watchState.minutes, null, digitBorder, false, null, null, null, time.timeDigital.minutes.delimiter)
         if (time.timeDigital.minutes.dataType && time.timeDigital.minutes.dataTypeCoords) {
-            let img = findImageById(time.timeDigital.minutes.dataType, images)
-            if (img) ctx.drawImage(img, time.timeDigital.minutes.dataTypeCoords.X, time.timeDigital.minutes.dataTypeCoords.Y)
+            drawImageByIndex(ctx, images, time.timeDigital.minutes.dataType,
+                time.timeDigital.minutes.dataTypeCoords.X, time.timeDigital.minutes.dataTypeCoords.Y, digitBorder)
         }
     }
 
     if (time.timeSeparateDigits.hours.enabled) {
         drawTwoDigits(ctx, images, time.timeSeparateDigits.hours.json, watchState.hours, 
-          time.timeSeparateDigits.paddingZero) 
+          time.timeSeparateDigits.paddingZero, digitBorder) 
         if ( time.timeSeparateDigits.separator?.enabled) {
-            drawImage(ctx, images, time.timeSeparateDigits.separator.json)
+            drawImage(ctx, images, time.timeSeparateDigits.separator.json, digitBorder)
         }
     }
     if (time.timeSeparateDigits.minutes.enabled) {
         drawTwoDigits(ctx, images, time.timeSeparateDigits.minutes.json, watchState.minutes, 
-          time.timeSeparateDigits.paddingZero)
+          time.timeSeparateDigits.paddingZero, digitBorder)
     }
 
     if (time.amPm.enabled) {
         if (watchState.hours < 12) {
-            let img = findImageById(time.amPm.json.AmImageIndexEN, images)
-            if (img) {
-                let x = time.amPm.json.CommonX ? time.amPm.json.CommonX : ( time.amPm.json.CoordinatesAM  ? time.amPm.json.CoordinatesAM.X : 0 )
-                let y = time.amPm.json.CommonY ? time.amPm.json.CommonY : ( time.amPm.json.CoordinatesAM  ? time.amPm.json.CoordinatesAM.Y : 0 )
-                ctx.drawImage(img, x, y)
-            }
+            drawImageByIndex(ctx, images, time.amPm.json.AmImageIndexEN,
+                time.amPm.json.CommonX ? time.amPm.json.CommonX : ( time.amPm.json.CoordinatesAM  ? time.amPm.json.CoordinatesAM.X : 0 ),
+                time.amPm.json.CommonY ? time.amPm.json.CommonY : ( time.amPm.json.CoordinatesAM  ? time.amPm.json.CoordinatesAM.Y : 0 ),
+                digitBorder)
         } else {
-            let img = findImageById(time.amPm.json.PmImageIndexEN, images)
-            if (img) {
-                let x = time.amPm.json.CommonX ? time.amPm.json.CommonX : ( time.amPm.json.CoordinatesPM  ? time.amPm.json.CoordinatesPM.X : 0 )
-                let y = time.amPm.json.CommonY ? time.amPm.json.CommonY : ( time.amPm.json.CoordinatesPM  ? time.amPm.json.CoordinatesPM.Y : 0 )
-                ctx.drawImage(img, x, y)
-            }
+            drawImageByIndex(ctx, images, time.amPm.json.PmImageIndexEN,
+                time.amPm.json.CommonX ? time.amPm.json.CommonX : ( time.amPm.json.CoordinatesPM  ? time.amPm.json.CoordinatesPM.X : 0 ),
+                time.amPm.json.CommonY ? time.amPm.json.CommonY : ( time.amPm.json.CoordinatesPM  ? time.amPm.json.CoordinatesPM.Y : 0 ),
+                digitBorder)
         }
     }
 }

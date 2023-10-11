@@ -3,6 +3,7 @@ import { Card } from "react-bootstrap";
 import BlocksArrayComponent from "../../blocks/blocksArray.component";
 import { BlockType, IRow } from "../../model/blocks.model";
 import { WatchIconSet } from "../../model/watchFace.gts2mini.model";
+import newid from "../../shared/newid";
 
 interface IProps {
   title: string;
@@ -33,6 +34,7 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate, onDeleteCoordi
     if (!ip.json.Coordinates) ip.json.Coordinates = []
     let lastCoords = ip.json.Coordinates[ip.json.Coordinates.length-1]
     ip.json.Coordinates.push( {
+      uid: newid(),
       X: lastCoords ? lastCoords.X : 0,
       Y: lastCoords ? lastCoords.Y : 0,
     })
@@ -75,7 +77,7 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate, onDeleteCoordi
               checked={iconSet.enabled}
               onChange={() => {
                 const ic = { ...iconSet };
-                if (!ic.json.Coordinates) ic.json.Coordinates = [ { X: 0, Y: 0}]
+                if (!ic.json.Coordinates) ic.json.Coordinates = [ {uid: newid(), X: 0, Y: 0}]
                 ic.enabled = !ic.enabled;
                 onUpdate(ic);
               }}
@@ -87,7 +89,7 @@ const IconSetComponent: FC<IProps> = ({ title, iconSet, onUpdate, onDeleteCoordi
         <Card.Body>
           <BlocksArrayComponent ar={ar} />
           { iconSet.json.Coordinates.map((item, index) => 
-            <BlocksArrayComponent ar={[
+            <BlocksArrayComponent key={item.uid} ar={[
               {
                 blocks: [
                   { title: (index + 1).toString(), type: BlockType.Empty },

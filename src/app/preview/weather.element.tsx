@@ -2,7 +2,7 @@ import { IImage } from "../model/image.model";
 import { WatchWeather, WatchWeatherExt } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
 import drawDigitImage, { drawDigitsOneLine } from "./digitImage.element";
-import drawImage from "./image.element";
+import {drawImage} from "./image.element";
 import drawImageSet from "./imageSet.element";
 import drawScale from "./scale.element";
 import drawShortcutElement from "./shortcut.element";
@@ -16,7 +16,7 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     drawShortcutBorder) {
     if (!weather) return;
     if (weather.icon.enabled) {
-        drawImageSet(ctx, images, weather.icon.json, watchState.weatherIcon, 26);
+        drawImageSet(ctx, images, weather.icon.json, watchState.weatherIcon, 26, drawBorder, true);
     }
 
     if (weather.current.watchNumber.enabled) {
@@ -47,12 +47,12 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
 
     // 
     if (weatherext.humidityIcon.enabled) {
-        drawImage(ctx, images, weatherext.humidityIcon.json)
+        drawImage(ctx, images, weatherext.humidityIcon.json, drawBorder)
     }
     if(weatherext.humidityProgress.backgroundLayerImage.enabled) 
-        drawImage(ctx, images, weatherext.humidityProgress.backgroundLayerImage.json)
+        drawImage(ctx, images, weatherext.humidityProgress.backgroundLayerImage.json, drawBorder)
     if (weatherext.humidityProgress.imageProgress.enabled) {
-        drawImageSet(ctx, images, weatherext.humidityProgress.imageProgress.json, watchState.humidity, watchState.humidityGoal)
+        drawImageSet(ctx, images, weatherext.humidityProgress.imageProgress.json, watchState.humidity, watchState.humidityGoal, drawBorder, false)
     }
     if (weatherext.humidityNumber.enabled && !watchState.humidityNoData) {
         drawDigitImage(ctx, images, weatherext.humidityNumber, watchState.humidity, null, drawBorder, 
@@ -61,16 +61,16 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
 
 
     if (weatherext.airQualityIcon.enabled) {
-        drawImage(ctx, images, weatherext.airQualityIcon.json)
+        drawImage(ctx, images, weatherext.airQualityIcon.json, drawBorder)
     }
     if (weatherext.airQualityProgress.backgroundLayer.enabled) {
-        drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json);
+        drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json, drawBorder);
     }
     if (weatherext.airQualityProgress.scale.enabled) {
-        drawScale(ctx, images, weatherext.uvProgress.scale, watchState.uvIndex, watchState.uvIndexGoal)
+        drawScale(ctx, images, weatherext.uvProgress.scale, watchState.uvIndex, watchState.uvIndexGoal, drawBorder)
     }
     if (weatherext.airQualityProgress.imageProgress.enabled) {
-        drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal)
+        drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal, drawBorder, false)
     }
     if (weatherext.airQualityNumber.enabled) {
         drawDigitImage(ctx, images, weatherext.airQualityNumber, watchState.airQuality, null, drawBorder, 
@@ -79,13 +79,13 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
 
 
     if (weatherext.uvIcon.enabled) {
-        drawImage(ctx, images, weatherext.uvIcon.json)
+        drawImage(ctx, images, weatherext.uvIcon.json, drawBorder)
     }
     if (weatherext.uvProgress.backgroundLayer.enabled) {
-        drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json);
+        drawImage(ctx, images, weatherext.uvProgress.backgroundLayer.json, drawBorder);
     }
     if (weatherext.uvProgress.imageProgress.enabled) {
-        drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal)
+        drawImageSet(ctx, images, weatherext.uvProgress.imageProgress.json, watchState.uvIndex, watchState.uvIndexGoal, drawBorder, false)
     }
     if (weatherext.uvShortcut.enabled) {
         drawShortcutElement(ctx, weatherext.uvShortcut.json, drawShortcutBorder)

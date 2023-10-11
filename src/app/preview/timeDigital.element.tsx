@@ -3,7 +3,7 @@ import { WatchTime } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
 import { findImageById } from "../shared/helper";
 import drawDigitImage, { DigitValueItem, drawDigitsFollowedArray } from "./digitImage.element";
-import drawImage from "./image.element";
+import {drawImage} from "./image.element";
 import { drawTwoDigits } from "./separateDigits.element";
 
 export default function drawTimeDigital(
@@ -71,21 +71,21 @@ export default function drawTimeDigital(
     }
    
     if (time.timeDigitalSeparated.hours.enabled) {
-        drawTwoDigits(ctx, images, time.timeDigitalSeparated.hours.json, watchState.hours, time.timeDigitalSeparated.paddingZeroMinutes)
+        drawTwoDigits(ctx, images, time.timeDigitalSeparated.hours.json, watchState.hours, time.timeDigitalSeparated.paddingZeroMinutes, digitBorder)
         if ( time.timeDigitalSeparated.separatorHours?.enabled) {
-            drawImage(ctx, images, time.timeDigitalSeparated.separatorHours.json)
+            drawImage(ctx, images, time.timeDigitalSeparated.separatorHours.json, digitBorder)
         }
     }
     if (time.timeDigitalSeparated.minutes.enabled) {
         drawTwoDigits(ctx, images, time.timeDigitalSeparated.minutes.json, watchState.minutes, 
-          time.timeDigitalSeparated.paddingZeroMinutes)
+          time.timeDigitalSeparated.paddingZeroMinutes, digitBorder)
         if ( time.timeDigitalSeparated.separatorMinutes?.enabled) {
-            drawImage(ctx, images, time.timeDigitalSeparated.separatorMinutes.json)
+            drawImage(ctx, images, time.timeDigitalSeparated.separatorMinutes.json, digitBorder)
         }
 
     }
     if (time.timeDigitalSeparated.seconds.enabled) {
-        drawTwoDigits(ctx, images, time.timeDigitalSeparated.seconds.json, watchState.seconds, true)
+        drawTwoDigits(ctx, images, time.timeDigitalSeparated.seconds.json, watchState.seconds, true, digitBorder)
     }
 }
 

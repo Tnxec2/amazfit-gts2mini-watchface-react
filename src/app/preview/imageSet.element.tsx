@@ -1,6 +1,7 @@
 import { findImageById } from "../shared/helper";
 import { IImage } from "../model/image.model";
 import { ImageSet } from "../model/json.gts2minit.model";
+import { drawBorderOnCtx } from "./drawBorder";
 
 export default function drawImageSet(
     ctx: CanvasRenderingContext2D,
@@ -8,7 +9,8 @@ export default function drawImageSet(
     imageSet: ImageSet,
     value: number,
     total: number,
-    fromZero?: boolean) {
+    drawBorder: boolean,
+    fromZero: boolean,) {
         if (imageSet?.ImageIndex) {
             let x = imageSet.X ? imageSet.X : 0
             let y = imageSet.Y ? imageSet.Y : 0
@@ -27,6 +29,19 @@ export default function drawImageSet(
             if (index > 0) {
                 const img = findImageById(imageSet.ImageIndex + index - 1, images)
                 if (img) ctx.drawImage(img, x, y);
+            }
+
+            if ( drawBorder) {
+                let width = 0
+                let height = 0
+                for (let index = 0; index < imageSet.ImagesCount; index++) {
+                    const img = findImageById(imageSet.ImageIndex + index, images)
+                     if (img) {
+                        if (img.width > width) width = img.width
+                        if (img.height > height) height = img.height
+                     }
+                }
+                drawBorderOnCtx(ctx, x, y, width, height)
             }
         }
 }

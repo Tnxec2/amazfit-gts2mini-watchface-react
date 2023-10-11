@@ -1,8 +1,8 @@
 import { IImage } from "../model/image.model";
 import { WatchAodDate, WatchAodDateOneLine, WatchImageSet } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
-import { findImageById } from "../shared/helper";
 import drawDigitImage, { DigitValueItem, drawDigitsFollowedArray, drawDigitsOneLine } from "./digitImage.element";
+import { drawImageByIndex } from "./image.element";
 import drawImageSet from "./imageSet.element";
 
 
@@ -42,15 +42,13 @@ export default function drawDateAod(ctx: CanvasRenderingContext2D,
             drawDigitImage(ctx, images, date.day, watchState.day, null, drawborder, true, null, null, null, date.day.delimiter)
         }
         if (date.day.enabled && date.day.dataType && date.day.dataTypeCoords) {
-            let img = findImageById(date.day.dataType, images)
-            if (img) ctx.drawImage(img, date.day.dataTypeCoords.X, date.day.dataTypeCoords.Y)
+            drawImageByIndex(ctx, images, date.day.dataType, date.day.dataTypeCoords.X, date.day.dataTypeCoords.Y, drawborder)
         }
         if (date.month.enabled && date.month.dataType && date.month.dataTypeCoords) {
-            let img = findImageById(date.month.dataType, images)
-            if (img) ctx.drawImage(img, date.month.dataTypeCoords.X, date.month.dataTypeCoords.Y)
+            drawImageByIndex(ctx, images, date.month.dataType, date.month.dataTypeCoords.X, date.month.dataTypeCoords.Y, drawborder)
         }
     }
 
-    if (weekday.enabled) drawImageSet(ctx, images, weekday.json, watchState.weekday, 7, true)
+    if (weekday.enabled) drawImageSet(ctx, images, weekday.json, watchState.weekday, 7, drawborder, true)
 
 }

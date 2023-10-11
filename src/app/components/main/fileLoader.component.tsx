@@ -72,9 +72,7 @@ const FileLoaderComponent: FC = () => {
     
     let sortedAr = ar.sort((a, b) => a.id - b.id)
 
-    if ( sortedAr[sortedAr.length-1].id !== sortedAr.length - 1 + Constant.startImageIndex) {
-      console.log(sortedAr.length -1 + Constant.startImageIndex, sortedAr[sortedAr.length-1].id);
-      
+    if ( sortedAr[sortedAr.length-1].id !== sortedAr.length - 1 + Constant.startImageIndex) {      
       window.alert('Images files go out of order or some of the files are missing. Name the PNG files in ascending order.')
     }
     if ( sortedAr[0].id !== Constant.startImageIndex) {

@@ -5,7 +5,7 @@ import { WatchFace } from "../../model/watchFace.gts2mini.model";
 import { WatchState } from "../../model/watchState";
 import { drawStandUp } from "../../preview/standup.element";
 import drawAlarm from "../../preview/alarm.element";
-import drawBackground from "../../preview/background.element";
+import {drawBackground} from "../../preview/background.element";
 import drawAodBackground from "../../preview/backgroundaod.element";
 import { drawBattery } from "../../preview/battery.element";
 import { drawCalories } from "../../preview/calories.element";
@@ -13,7 +13,7 @@ import drawDate from "../../preview/date.element";
 import drawDateAod from "../../preview/dateAod.element";
 import { drawDistance } from "../../preview/distance.element";
 import { drawHeartRate } from "../../preview/heartrate.element";
-import drawImage from "../../preview/image.element";
+import {drawImage} from "../../preview/image.element";
 import drawImageSet from "../../preview/imageSet.element";
 import { drawPAI } from "../../preview/pai.element";
 import { drawFiveDigits, drawFourDigits, drawThreeDigits } from "../../preview/separateDigits.element";
@@ -32,6 +32,8 @@ import { drawStepsAod } from "../../preview/stepsAod.element";
 import { Constant } from "../../shared/constant";
 import { drawStress } from "../../preview/stress.element";
 import { drawSpo2 } from "../../preview/spo2.element";
+import drawHourlyImages from "../../preview/hourlyimages.element";
+import drawWeekdayImages from "../../preview/weekdayimages.element";
 
 const storage_items = {
   preview_white_grid: "preview_white_grid",
@@ -82,12 +84,12 @@ const PreviewComponent: FC = () => {
 
   function drawNormal(canvas, ctx: CanvasRenderingContext2D, images: IImage[]) {
     if (watchface.background)
-      drawBackground(canvas, ctx, images, watchface.background);
+      drawBackground(canvas, ctx, images, watchface.background, digitBorder);
     if (watchface.date) {
       drawDate(ctx, images, watchface.date, watchState, digitBorder);
     }
     if (watchface.status) {
-      drawStatus(ctx, images, watchface.status, watchState);
+      drawStatus(ctx, images, watchface.status, watchState, digitBorder);
     }
     if (watchface.battery) {
       drawBattery(
@@ -120,10 +122,10 @@ const PreviewComponent: FC = () => {
         shortCutBorder
       );
     }
-    if (watchface.activity.caloriesSeparatedDigits.enabled) drawFourDigits(ctx, images, watchface.activity.caloriesSeparatedDigits.json, watchState.calories, false)
-    if (watchface.activity.stepsSeparatedDigits.enabled) drawFiveDigits(ctx, images, watchface.activity.stepsSeparatedDigits.json, watchState.steps, false)
-    if (watchface.activity.batterySeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.batterySeparatedDigits.json, watchState.battery, false)
-    if (watchface.activity.heartRateSeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.heartRateSeparatedDigits.json, watchState.hearthrate, false)
+    if (watchface.activity.caloriesSeparatedDigits.enabled) drawFourDigits(ctx, images, watchface.activity.caloriesSeparatedDigits.json, watchState.calories, false, digitBorder)
+    if (watchface.activity.stepsSeparatedDigits.enabled) drawFiveDigits(ctx, images, watchface.activity.stepsSeparatedDigits.json, watchState.steps, false, digitBorder)
+    if (watchface.activity.batterySeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.batterySeparatedDigits.json, watchState.battery, false, digitBorder)
+    if (watchface.activity.heartRateSeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.heartRateSeparatedDigits.json, watchState.hearthrate, false, digitBorder)
     if (watchface.time) {
       drawAlarm(
         ctx,
@@ -143,6 +145,8 @@ const PreviewComponent: FC = () => {
       );
       drawTimeDigital(ctx, images, watchface.time, watchState, digitBorder);
       drawTimeAnalog(ctx, images, watchface.time, watchState, device.width, device.height);
+      drawHourlyImages(ctx, images, watchface.time.hourlyImages, watchState, digitBorder)
+      drawWeekdayImages(ctx, images, watchface.weekdayImages, watchState, digitBorder)
     }
 
     if (watchface.animation.imageSetAnimation) {
@@ -152,13 +156,14 @@ const PreviewComponent: FC = () => {
           images,
           item.ImageProgress,
           watchState.animation[index],
-          item.ImageProgress.ImagesCount
+          item.ImageProgress.ImagesCount,
+          digitBorder, true
         );
       });
     }
     if (watchface.shortcuts.shortcuts) {
       watchface.shortcuts.shortcuts.forEach((item) => {
-        drawImage(ctx, images, item.icon.json);
+        drawImage(ctx, images, item.icon.json, digitBorder);
         drawShortcutElement(ctx, item.element.json, shortCutBorder);
       });
     }

@@ -5,6 +5,7 @@ import { WatchIconSet } from "../../model/watchFace.gts2mini.model";
 import { TimeSpans } from "../../model/json.gts2minit.model";
 import IconSetComponent from "./iconSet.component";
 import TimeSpanComponent from "./timespan.component";
+import newid from "../../shared/newid";
 
 const HourlyImagesComponent: FC = () => {
   const { watchface, setWatchface } =
@@ -34,6 +35,7 @@ const HourlyImagesComponent: FC = () => {
     if (!w.time.hourlyImages.timeSpans) w.time.hourlyImages.timeSpans = []
     let last = w.time.hourlyImages.timeSpans.length > 0 ? w.time.hourlyImages.timeSpans[w.time.hourlyImages.timeSpans.length-1] : null
     w.time.hourlyImages.timeSpans.push({
+      uid: newid(),
       StartHour: last ? last.StopHour+1 : 0,
       StartMin: 0,
       StopHour: last ? last.StopHour+1 : 0,
@@ -43,9 +45,8 @@ const HourlyImagesComponent: FC = () => {
   }
 
   function deleteTimespan(index: number) {
-    
-    const w = {...watchface};
-    setWatchface(w);
+    setWatchface({...watchface, time: { ...watchface.time, hourlyImages: {...watchface.time.hourlyImages, 
+      timeSpans: watchface.time.hourlyImages.timeSpans.filter((ts, ix) => ix !== index) }}});
   }
 
   return (
@@ -72,7 +73,8 @@ const HourlyImagesComponent: FC = () => {
             Time Spans
           </Card.Header>
           { watchface.time.hourlyImages.timeSpans.map((timespan, index) => 
-            <TimeSpanComponent 
+            <TimeSpanComponent
+              key={timespan.uid}
               index={index}
               timeSpan={{...timespan}}
               onUpdate={(e) => updateTimeSpan(e, index)}

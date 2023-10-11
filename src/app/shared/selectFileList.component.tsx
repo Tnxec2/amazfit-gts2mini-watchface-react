@@ -1,5 +1,4 @@
 import React, { FC, Fragment, ReactElement, useContext, useMemo, useState } from "react";
-import { Constant } from "./constant";
 import { IWatchContext, WatchfaceContext } from "../context";
 import "./selectFileList.css";
 interface IProps {

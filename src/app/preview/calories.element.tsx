@@ -3,7 +3,7 @@ import { WatchCaloriesActivity } from "../model/watchFace.gts2mini.model";
 import drawCircleProgress from "./circleProgress.element";
 import drawDigitImage from "./digitImage.element";
 import drawIconSet from "./iconSet.element";
-import drawImage from "./image.element";
+import {drawImage} from "./image.element";
 import drawImageSet from "./imageSet.element";
 import drawShortcutElement from "./shortcut.element";
 
@@ -18,13 +18,13 @@ export function drawCalories(ctx: CanvasRenderingContext2D,
     if (!activity) return;
 
     if (activity.aElement.icon.enabled) {
-        drawImage(ctx, images, activity.aElement.icon.json)
+        drawImage(ctx, images, activity.aElement.icon.json, drawBorder)
     }
     if (activity.aProgress.imageProgress.enabled) {
-        drawImageSet(ctx, images, activity.aProgress.imageProgress.json, value, total);
+        drawImageSet(ctx, images, activity.aProgress.imageProgress.json, value, total, drawBorder, false);
     }
     if (activity.aProgress.iconSetProgress.enabled) {
-        drawIconSet(ctx, images, activity.aProgress.iconSetProgress.json, value, total);
+        drawIconSet(ctx, images, activity.aProgress.iconSetProgress.json, value, total, drawBorder);
     }
     if (activity.aProgress.circleScale.enabled) {
         drawCircleProgress(ctx, images, activity.aProgress.circleScale.json, value, total);

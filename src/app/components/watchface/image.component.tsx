@@ -11,9 +11,7 @@ interface IProps {
 }
 
 const ImageComponent: FC<IProps> = ({ title, image, onUpdate }) => {
-
-  console.log(image.json.ImageIndex);
-  
+ 
   const ar = useMemo<IRow[]>(() => [
     {
       blocks: [

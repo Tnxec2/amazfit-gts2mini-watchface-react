@@ -1,9 +1,8 @@
 import { IImage } from "../model/image.model";
 import { WatchAlarm } from "../model/watchFace.gts2mini.model";
 import { WatchState } from "../model/watchState";
-import { findImageById } from "../shared/helper";
 import drawDigitImage, { DigitValueItem, drawDigitsFollowedArray } from "./digitImage.element";
-import drawImage from "./image.element";
+import {drawImage, drawImageByIndex} from "./image.element";
 import drawShortcutElement from "./shortcut.element";
 
 export default function drawAlarm(
@@ -31,23 +30,21 @@ export default function drawAlarm(
             drawDigitImage(ctx, images, alarm.alarmTime.hours, watchState.alarmHours, null, digitBorder,
                             false, null, null, null, alarm.alarmTime.hours.delimiter)
             if (alarm.alarmTime.hours.dataType && alarm.alarmTime.hours.dataTypeCoords) {
-                let img = findImageById(alarm.alarmTime.hours.dataType, images)
-                if (img) ctx.drawImage(img, alarm.alarmTime.hours.dataTypeCoords.X, alarm.alarmTime.hours.dataTypeCoords.Y)
+                drawImageByIndex(ctx, images, alarm.alarmTime.hours.dataType, alarm.alarmTime.hours.dataTypeCoords.X, alarm.alarmTime.hours.dataTypeCoords.Y, digitBorder)
             }
         }
     }
     if (alarm.alarmTime.minutes.enabled && !alarm.alarmTime.minutes.follow) {
         drawDigitImage(ctx, images, alarm.alarmTime.minutes, watchState.alarmMinutes, null, digitBorder, false, null, null, null, alarm.alarmTime.minutes.delimiter)
         if (alarm.alarmTime.minutes.dataType && alarm.alarmTime.minutes.dataTypeCoords) {
-            let img = findImageById(alarm.alarmTime.minutes.dataType, images)
-            if (img) ctx.drawImage(img, alarm.alarmTime.minutes.dataTypeCoords.X, alarm.alarmTime.minutes.dataTypeCoords.Y)
+            drawImageByIndex(ctx, images, alarm.alarmTime.minutes.dataType, alarm.alarmTime.minutes.dataTypeCoords.X, alarm.alarmTime.minutes.dataTypeCoords.Y, digitBorder)
         }
     }
 
     if (watchState.alarmEnabled) {
-        if ( alarm.alarmImage.enabled) drawImage(ctx, images, alarm.alarmImage.json)
+        if ( alarm.alarmImage.enabled) drawImage(ctx, images, alarm.alarmImage.json, digitBorder)
     } else {
-        if (alarm.noAlarmImage.enabled) drawImage(ctx, images, alarm.noAlarmImage.json)
+        if (alarm.noAlarmImage.enabled) drawImage(ctx, images, alarm.noAlarmImage.json, digitBorder)
     }
     if (alarm.shortcut.enabled)
         drawShortcutElement(ctx, alarm.shortcut.json, shortcutBorder)
