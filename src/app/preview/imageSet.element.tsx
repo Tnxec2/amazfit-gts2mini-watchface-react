@@ -11,7 +11,7 @@ export default function drawImageSet(
     total: number,
     drawBorder: boolean,
     fromZero: boolean,) {
-        if (imageSet?.ImageIndex) {
+        if (imageSet?.ImageIndex >= 0) {
             let x = imageSet.X ? imageSet.X : 0
             let y = imageSet.Y ? imageSet.Y : 0
 

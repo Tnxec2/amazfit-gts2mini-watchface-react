@@ -8,7 +8,7 @@ export function drawImage(
     images: IImage[], 
     image: Image,
     drawBorder: boolean) {
-        if (image?.ImageIndex) {
+        if (image?.ImageIndex >= 0 ) {
             let x = image.X ? image.X : 0
             let y = image.Y ? image.Y : 0
             const img = findImageById(image.ImageIndex, images)
@@ -24,7 +24,7 @@ export function drawImageByIndex(
     x: number,
     y: number,
     drawBorder: boolean) {
-        if (imageIndex) {
+        if (imageIndex >= 0) {
             const img = findImageById(imageIndex, images)
             if (img) ctx.drawImage(img, x, y);
             if(img && drawBorder) drawBorderOnCtx(ctx, x, y, img.width, img.height)

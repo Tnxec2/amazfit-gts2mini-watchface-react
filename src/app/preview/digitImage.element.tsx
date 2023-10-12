@@ -24,7 +24,7 @@ export function drawDigitsFollowedArray(
     const bottomx = digit.json?.BottomRightX ? digit.json?.BottomRightX : x
     const bottomy = digit.json?.BottomRightY ? digit.json?.BottomRightY : y 
 
-    if (digit.json.ImageIndex) {
+    if (digit.json.ImageIndex >= 0) {
 
         let ar: HTMLImageElement[] = []
 
@@ -70,7 +70,7 @@ export function drawDigitsOneLine(
     const bottomx = digit.json?.BottomRightX ? digit.json?.BottomRightX : x
     const bottomy = digit.json?.BottomRightY ? digit.json?.BottomRightY : y 
 
-    if (digit.json.ImageIndex) {
+    if (digit.json.ImageIndex >= 0) {
 
         let ar: HTMLImageElement[] = []
 
@@ -120,7 +120,7 @@ export default function drawDigitImage(
     const bottomx = followXY ? followXY[0] + ( digit.json?.BottomRightX - digit.json?.TopLeftX) : ( digit.json?.BottomRightX ? digit.json?.BottomRightX : 0 )
     const bottomy = followXY ? followXY[1] + ( digit.json?.BottomRightY - digit.json?.TopLeftY) : ( digit.json?.BottomRightY ? digit.json?.BottomRightY : 0 )
 
-    if (digit.json.ImageIndex) {
+    if (digit.json.ImageIndex >= 0) {
         let strNumber = number.toString()
         if (number < 0) strNumber = (-number).toString()
         if ( digit.paddingZero || paddingZeroFix) {

@@ -21,7 +21,7 @@ export default function drawCircleProgress(
     let sector_angle = startAngle + (value * (endAngle - startAngle ) / total)
     let radius = progressBar.RadiusX
     
-    if (progressBar.ImageIndex) {
+    if (progressBar.ImageIndex >= 0) {
         const img = findImageById(progressBar.ImageIndex, images)
         if (img) {
             /// use save when using clip Path
