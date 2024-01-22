@@ -13,7 +13,7 @@ export function drawWeather(ctx: CanvasRenderingContext2D,
     weatherext: WatchWeatherExt,
     watchState: WatchState,
     drawBorder: boolean,
-    drawShortcutBorder) {
+    drawShortcutBorder: boolean) {
     if (!weather) return;
     if (weather.icon.enabled) {
         drawImageSet(ctx, images, weather.icon.json, watchState.weatherIcon, 26, drawBorder, true);

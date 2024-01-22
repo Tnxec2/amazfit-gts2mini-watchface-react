@@ -85,12 +85,7 @@ const PreviewComponent: FC = () => {
   function drawNormal(canvas, ctx: CanvasRenderingContext2D, images: IImage[]) {
     if (watchface.background)
       drawBackground(canvas, ctx, images, watchface.background, digitBorder);
-    if (watchface.date) {
-      drawDate(ctx, images, watchface.date, watchState, digitBorder);
-    }
-    if (watchface.status) {
-      drawStatus(ctx, images, watchface.status, watchState, digitBorder);
-    }
+
     if (watchface.battery) {
       drawBattery(
         ctx,
@@ -126,6 +121,14 @@ const PreviewComponent: FC = () => {
     if (watchface.activity.stepsSeparatedDigits.enabled) drawFiveDigits(ctx, images, watchface.activity.stepsSeparatedDigits.json, watchState.steps, false, digitBorder)
     if (watchface.activity.batterySeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.batterySeparatedDigits.json, watchState.battery, false, digitBorder)
     if (watchface.activity.heartRateSeparatedDigits.enabled) drawThreeDigits(ctx, images, watchface.activity.heartRateSeparatedDigits.json, watchState.hearthrate, false, digitBorder)
+    if (watchface.status) {
+      drawStatus(ctx, images, watchface.status, watchState, digitBorder);
+    }
+    
+    if (watchface.date) {
+      drawDate(ctx, images, watchface.date, watchState, digitBorder);
+    }
+
     if (watchface.time) {
       drawAlarm(
         ctx,
@@ -148,6 +151,7 @@ const PreviewComponent: FC = () => {
       drawHourlyImages(ctx, images, watchface.time.hourlyImages, watchState, digitBorder)
       drawWeekdayImages(ctx, images, watchface.weekdayImages, watchState, digitBorder)
     }
+
 
     if (watchface.animation.imageSetAnimation) {
       watchface.animation.imageSetAnimation.forEach((item, index) => {
