@@ -29,7 +29,7 @@ const FileLoaderComponent: FC = () => {
     }
   }
 
-  function imagesUploadHandler(event: any) {
+  function imagesUploadHandler(event: any) {    
     getImages(event.target.files, []);
   }
 
@@ -86,6 +86,10 @@ const FileLoaderComponent: FC = () => {
     setWatchface(new WatchFace());
   }
 
+  function onClick(event: React.MouseEvent<HTMLInputElement, MouseEvent>){
+    (event.target as HTMLInputElement).value = '' // reset value to triger reopen same files
+  }
+
   return (
     <div>
       <span className="input-group input-group-sm mb-3">
@@ -96,6 +100,7 @@ const FileLoaderComponent: FC = () => {
           id="fileUpload"
           accept="image/*"
           onChange={imagesUploadHandler}
+          onClick={onClick} // triger reopen same files
         />
         {images.length > 0 ? (
           <>
@@ -105,6 +110,7 @@ const FileLoaderComponent: FC = () => {
               accept="application/json"
               id="jsonLoad"
               onChange={uploadJsonFile}
+              onClick={onClick} // triger reopen same file
             />
             <Button onClick={clearInput}>clear</Button>
           </>
