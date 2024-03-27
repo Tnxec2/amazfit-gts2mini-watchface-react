@@ -12,11 +12,11 @@ interface IProps {
 const CheckBoxBlockComponent: FC<IProps> = ({ title, checked, onChange, disabled, hint, warning }) => {
     return (
         <>
-            <span className="input-group-text" id="addon-wrapping" title={hint}>
-                { warning && '⚠' }
-                {title}
-            </span>
             <div className="input-group-text">
+                <span  title={hint} className='me-3'>
+                    { warning && '⚠' }
+                    {title}
+                </span>
                 <input
                     className="form-check-input form-check-input-sm"
                     type="checkbox"
