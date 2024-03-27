@@ -17,6 +17,10 @@ const SwitchComponent: FC<IProps> = ({ title, sw, onUpdate }) => {
       blocks: [
         { title: 'Image ON', type: BlockType.SelectFile, nvalue: sw.json.ImageIndexOn, onChange: onChangeImageOn },
         { title: 'Image OFF', type: BlockType.SelectFile, nvalue: sw.json.ImageIndexOff, onChange: onChangeImageOff },
+      ]
+    },
+    {
+      blocks: [
         { title: 'X', type: BlockType.Number, nvalue: sw.json.Coordinates.X, onChange: onChangeX },
         { title: 'Y', type: BlockType.Number, nvalue: sw.json.Coordinates.Y, onChange: onChangeY },
       ]

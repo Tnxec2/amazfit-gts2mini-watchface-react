@@ -110,6 +110,7 @@ const PreviewStatesComponent: FC = () => {
                 ws.alarmEnabled = !ws.alarmEnabled;
                 setWatchState(ws);
               }}
+              title="turn off to show nodata element"
             />
           </div>
           <input
@@ -184,6 +185,7 @@ const PreviewStatesComponent: FC = () => {
               onChange={() => {
                 setWatchState({...watchState, sunsetNoData: !watchState.sunsetNoData});
               }}
+              title="turn off to show nodata element"
             />
           </div>
         </div>
@@ -260,6 +262,7 @@ const PreviewStatesComponent: FC = () => {
               onChange={() => {
                 setWatchState({...watchState, hearthRateNoData: !watchState.hearthRateNoData});
               }}
+              title="turn off to show nodata element"
             />
           </div>
           <input
@@ -350,6 +353,9 @@ const PreviewStatesComponent: FC = () => {
               setWatchState(ws);
             }}
           />
+        </div>
+
+        <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Fat Burning</span>
           <input
             type="number"
@@ -384,7 +390,7 @@ const PreviewStatesComponent: FC = () => {
           <span className="input-group-text">{WeatherStates.ar[watchState.weatherIcon]}</span>
         </div>
         <div className="input-group input-group-sm mb-1">
-          <span className="input-group-text">No Data</span>
+          <span className="input-group-text">Temperature No Data</span>
           <div className="input-group-text">
             <input
               className="form-check-input mt-0"
@@ -395,6 +401,9 @@ const PreviewStatesComponent: FC = () => {
               }}
             />
           </div>
+        </div>
+
+        <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Current</span>
           <input
             type="number"
@@ -449,6 +458,7 @@ const PreviewStatesComponent: FC = () => {
               onChange={() => {
                 setWatchState({...watchState, uvNoData: !watchState.uvNoData});
               }}
+              title="turn off to show nodata element"
             />
           </div>
           <input
@@ -489,6 +499,7 @@ const PreviewStatesComponent: FC = () => {
               onChange={() => {
                 setWatchState({...watchState, humidityNoData: !watchState.humidityNoData});
               }}
+              title="turn off to show nodata element"
             />
           </div>
           <input
@@ -518,6 +529,8 @@ const PreviewStatesComponent: FC = () => {
               setWatchState(ws);
             }}
           />
+        </div>
+        <div className="input-group input-group-sm mb-1">
           <span className="input-group-text">Air Pressure</span>
           <input
             type="number"

@@ -85,8 +85,9 @@ const DateComponent: FC = () => {
           <BlocksArrayComponent ar={[
             {
               blocks: [
-                { title: 'One Line Year', type: BlockType.Checkbox, checked: watchface.date.oneLineYear, onChange: onChangeOneLineYear},
-                { title: 'One Line Month', type: BlockType.Checkbox, checked: watchface.date.oneLineMonth, onChange: onChangeOneLineMonth},
+                { title: 'One Line', type: BlockType.Empty},
+                { title: 'Year', type: BlockType.Checkbox, checked: watchface.date.oneLineYear, onChange: onChangeOneLineYear},
+                { title: 'Month', type: BlockType.Checkbox, checked: watchface.date.oneLineMonth, onChange: onChangeOneLineMonth},
                 { title: 'Delimiter', type: BlockType.SelectFile, nvalue: watchface.date.oneLineDelimiter, onChange: onChangeDelimiter },
               ]
             }

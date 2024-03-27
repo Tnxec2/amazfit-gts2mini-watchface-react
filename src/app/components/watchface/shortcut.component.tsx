@@ -20,6 +20,10 @@ const ShortCutComponent: FC<IProps> = ({title, shortcut, onUpdate, onDelete, dis
       blocks: [
         { title: 'X', type: BlockType.Number, nvalue: shortcut.element?.json?.TopLeftX ? shortcut.element?.json.TopLeftX : 0, onChange: onChangeX },
         { title: 'Y', type: BlockType.Number, nvalue: shortcut.element?.json?.TopLeftY ? shortcut.element?.json.TopLeftY : 0, onChange: onChangeY },
+      ]
+    },
+    {
+      blocks: [
         { title: 'BottomRightX', type: BlockType.Number, nvalue: shortcut.element?.json?.BottomRightX ? shortcut.element?.json?.BottomRightX : 0, onChange: onChangeBottomRightX },
         { title: 'BottomRightY', type: BlockType.Number, nvalue: shortcut.element?.json?.BottomRightY ? shortcut.element?.json?.BottomRightY : 0, onChange: onChangeBottomRightY },
       ]

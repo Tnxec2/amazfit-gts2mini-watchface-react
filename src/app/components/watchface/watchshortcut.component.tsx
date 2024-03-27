@@ -17,6 +17,10 @@ const WatchShortCutComponent: FC<IProps> = ({title, shortcut, onUpdate}) => {
       blocks: [
         { title: 'X', type: BlockType.Number, nvalue: shortcut.json?.TopLeftX ? shortcut.json.TopLeftX : 0, onChange: onChangeX },
         { title: 'Y', type: BlockType.Number, nvalue: shortcut.json?.TopLeftY ? shortcut.json.TopLeftY : 0, onChange: onChangeY },
+      ]
+    },
+    {
+      blocks: [
         { title: 'BottomRightX', type: BlockType.Number, nvalue: shortcut.json?.BottomRightX ? shortcut.json?.BottomRightX : 0, onChange: onChangeBottomRightX },
         { title: 'BottomRightY', type: BlockType.Number, nvalue: shortcut.json?.BottomRightY ? shortcut.json?.BottomRightY : 0, onChange: onChangeBottomRightY },
       ]

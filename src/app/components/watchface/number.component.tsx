@@ -45,6 +45,9 @@ const WatchNumberComponent: FC<IProps> = ({
           warning: digit.json.ImagesCount < 1 
         } :
         { title: `Count: ${digit.json?.ImagesCount}`, type: BlockType.Empty },
+
+        
+        { title: 'follow', type: BlockType.Checkbox, checked: digit.follow, onChange: onChangeFollow, disabled: followDisabled },
       ]
     },
     {
@@ -61,14 +64,13 @@ const WatchNumberComponent: FC<IProps> = ({
     },
     {
       blocks: [
-        { title: 'padding zero', type: BlockType.Checkbox, checked: digit.paddingZero, onChange: onChagePaddingZero, disabled: paddingDisabled},
         { title: 'spacing', type: BlockType.Number, nvalue: digit.json?.Spacing ? digit.json.Spacing : 0, onChange: onChangeSpacing },
         { title: 'vertical offset', type: BlockType.Number, nvalue: digit.json?.VerticalOffset ? digit.json.VerticalOffset : 0, onChange: onChangeVerticalOffset },
       ]
     },
     {
       blocks: [
-        { title: 'follow', type: BlockType.Checkbox, checked: digit.follow, onChange: onChangeFollow, disabled: followDisabled },
+        { title: 'padding zero', type: BlockType.Checkbox, checked: digit.paddingZero, onChange: onChagePaddingZero, disabled: paddingDisabled},
         { title: 'alignment', type: BlockType.Select, svalue: digit.json?.Alignment, selectOptions: OptionsAlignmentGTs2Mini,  onChange: onChangeAlignment },
       ]
     },
