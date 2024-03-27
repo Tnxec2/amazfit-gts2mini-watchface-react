@@ -1,8 +1,15 @@
 import { useRef, useEffect } from "react";
 
 const Canvas = (props) => {
-  const { draw, className, ...rest } = props;
+  const { draw, className, scaleFactor, ...rest } = props;
   const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+    context.scale(1, 1)
+    context.scale(scaleFactor, scaleFactor)
+  }, [scaleFactor])
 
   useEffect(() => {
     const canvas = canvasRef.current;

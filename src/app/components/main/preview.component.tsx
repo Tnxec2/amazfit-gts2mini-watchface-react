@@ -40,11 +40,18 @@ const storage_items = {
   preview_black_grid: "preview_black_grid",
   preview_digit_border: "preview_digit_border",
   preview_shortcut_border: "preview_shortcut_border",
+  preview_scale_factor: "preview_scale_factor",
 };
 
 const PreviewComponent: FC = () => {
   const { images, watchface, watchState, previewScreenNormal, device } =
     useContext<IWatchContext>(WatchfaceContext);
+
+  const [scaleFactor, setScaleFactor] = useState<number>(
+    localStorage.getItem(storage_items.preview_scale_factor)
+      ? JSON.parse(localStorage.getItem(storage_items.preview_scale_factor))
+      : 1
+  );
 
   const [x, setX] = useState<number>(0);
   const [y, setY] = useState<number>(0);
@@ -214,13 +221,14 @@ const PreviewComponent: FC = () => {
       "canvasPreview"
     ) as HTMLCanvasElement;
     const rect = canvas.getBoundingClientRect();
-    let x = event.clientX - rect.left;
-    let y = event.clientY - rect.top;
+    let x = (event.clientX - rect.left) / scaleFactor;
+    let y = (event.clientY - rect.top) / scaleFactor;
     x = Math.min(device.width, Math.max(0, Math.round(x)));
     y = Math.min(device.height, Math.max(0, Math.round(y)));
     setX(x);
     setY(y);
   }
+
 
   function onToggleWhiteGrid() {
     const wg = !whiteGrid;
@@ -250,6 +258,8 @@ const PreviewComponent: FC = () => {
       JSON.stringify(db)
     );
   }
+
+
 
   function drawGrid(ctx: CanvasRenderingContext2D) {
     if (!whiteGrid && !blackGrid) return;
@@ -303,10 +313,14 @@ const PreviewComponent: FC = () => {
           id="canvasPreview"
           draw={draw}
           className={cl.canvasPreview}
-          width={device.width}
-          height={device.height}
+ 
           onClick={getCursorPosition}
           style={device.title === Constant.devices.gts2mini.title ? {borderRadius: 72} :  {borderRadius: 38}}
+
+          width={device.width*scaleFactor}
+          height={device.height*scaleFactor}
+
+          scaleFactor={scaleFactor}
         />
       </div>
 
@@ -359,6 +373,29 @@ const PreviewComponent: FC = () => {
                 checked={shortCutBorder}
                 onChange={onToggleShortCutBorder}
               />
+            </div>
+          </div>
+        </div>
+        
+        <div className="container d-flex justify-content-center">
+        <div
+            className="input-group input-group-sm"
+            style={{ width: "max-content" }}
+          >              
+            <label className="form-check-label">
+              Scale&nbsp;
+            </label>
+            <div className="form-check form-check-inline">
+              <input className="form-check-input" type="radio" name="scaleOptions" id="scale1" value="1" checked={scaleFactor===1} onChange={() => {setScaleFactor(1)}} />
+              <label className="form-check-label" htmlFor="inlineRadio1">x1</label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input className="form-check-input" type="radio" name="scaleOptions" id="scale2" value="2" checked={scaleFactor===2} onChange={() => {setScaleFactor(2)}} />
+              <label className="form-check-label" htmlFor="inlineRadio2">x2</label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input className="form-check-input" type="radio" name="scaleOptions" id="scale3" value="3" checked={scaleFactor===3} onChange={() => {setScaleFactor(3)}} />
+              <label className="form-check-label" htmlFor="inlineRadio3">x3</label>
             </div>
           </div>
         </div>
