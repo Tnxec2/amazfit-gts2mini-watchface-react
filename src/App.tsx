@@ -49,10 +49,10 @@ const App: FC = () => {
           <FileLoaderComponent />
         </Row>
         <Row className="main">
-          <Col xs={6} className="leftcol">
+          <Col xs={7} className="leftcol">
             <LeftSideComponent />
           </Col>
-          <Col xs={6} className="rightcol">
+          <Col xs={5} className="rightcol">
             <RightSideComponent />
           </Col>
         </Row>
