@@ -315,7 +315,7 @@ const PreviewComponent: FC = () => {
           className={cl.canvasPreview}
  
           onClick={getCursorPosition}
-          style={device.title === Constant.devices.gts2mini.title ? {borderRadius: 72} :  {borderRadius: 38}}
+          style={device.title === Constant.devices.gts2mini.title ? {borderRadius: 72 * scaleFactor} :  {borderRadius: 38 * scaleFactor}}
 
           width={device.width*scaleFactor}
           height={device.height*scaleFactor}
