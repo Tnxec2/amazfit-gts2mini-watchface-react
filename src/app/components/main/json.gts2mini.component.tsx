@@ -666,7 +666,7 @@ function getBackground(b: WatchBackground): Background {
     if (!enabled) return null
     else return {
         Image: b.image.enabled ? b.image.json : null,
-        BackgroundColor: !b.image.enabled &&  b.color ? Color.colorBackgroundWrite(b.color) : null,
+        BackgroundColor: b.color ? Color.colorBackgroundWrite(b.color) : null,
         Preview: b.preview.enabled ? b.preview.json : null,
         PreviewChinese:  null,
         PreviewTradChinese:  null,
