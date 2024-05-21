@@ -200,7 +200,7 @@ export class WatchNumber {
 
   con: IDigitConstructor
 
-  constructor(j: NumberJson, con: IDigitConstructor) {
+  constructor(j: NumberJson, con: IDigitConstructor, paddingZero?: boolean) {
     if (j) {
       this.json = j
       this.enabled = true
@@ -210,6 +210,7 @@ export class WatchNumber {
       if (!j) {
         this.json = new NumberJson()
         this.json.ImagesCount = con.count
+        this.paddingZero = paddingZero
       }
       this.con = con    
     }
@@ -607,8 +608,8 @@ export class WatchAoDAnalogDialFace {
 export class WatchAoDTimeDigital {
   collapsed = true
 
-  hours: WatchNumber = new WatchNumber(null, digitTypes.hour)
-  minutes: WatchNumber = new WatchNumber(null, digitTypes.min)
+  hours: WatchNumber = new WatchNumber(null, digitTypes.hour, true)
+  minutes: WatchNumber = new WatchNumber(null, digitTypes.min, true)
 
   constructor(j?: AoDTimeDigital) {
     if (j) {
@@ -689,7 +690,7 @@ export class WatchAoDTimeSeparateDigits {
   hours: WatchTwoDigitsSeparated = new WatchTwoDigitsSeparated()
   minutes: WatchTwoDigitsSeparated = new WatchTwoDigitsSeparated()
   separator: WatchImage = new WatchImage()
-  paddingZero: boolean
+  paddingZero: boolean = true
 
   constructor(j?: AoDTimeSeparateDigits) {
     if (j) {
@@ -761,7 +762,7 @@ export class WatchAodTime {
 export class WatchAodDateOneLine {
   collapsed = true
 
-  monthAndDay: WatchNumber = new WatchNumber(null, digitTypes.month)
+  monthAndDay: WatchNumber = new WatchNumber(null, digitTypes.month, true)
   separatorImageIndex: number
 
   constructor(j?: AoDDateOneLine) {
@@ -775,8 +776,8 @@ export class WatchAodDateOneLine {
 export class WatchAodDate {
   collapsed = true
 
-  month: WatchNumber = new WatchNumber(null, digitTypes.month)
-  day: WatchNumber = new WatchNumber(null, digitTypes.day)
+  month: WatchNumber = new WatchNumber(null, digitTypes.month, true)
+  day: WatchNumber = new WatchNumber(null, digitTypes.day, true)
 
   constructor(j?: AoDDate) {
     if(j) {
@@ -1386,10 +1387,10 @@ export class WatchDate {
   
   weekdayProgress: WatchProgressWeekdays = new WatchProgressWeekdays(digitTypes.weekday.imageProgressTotal)
 
-  year: WatchNumber = new WatchNumber(null, digitTypes.year)
-  month: WatchNumber = new WatchNumber(null, digitTypes.month)
+  year: WatchNumber = new WatchNumber(null, digitTypes.year, true)
+  month: WatchNumber = new WatchNumber(null, digitTypes.month, true)
   monthAsWord: WatchImageSet = new WatchImageSet(digitTypes.monthasword.imageProgressTotal)
-  day: WatchNumber = new WatchNumber(null, digitTypes.day)
+  day: WatchNumber = new WatchNumber(null, digitTypes.day, true)
 
   oneLineYear: boolean
   oneLineMonth: boolean
@@ -1482,7 +1483,7 @@ export class WatchTimeDigitalSeparated {
   separatorHours: WatchImage = new WatchImage()
   separatorMinutes: WatchImage = new WatchImage()
   unknownBoolean7: boolean = false
-  paddingZeroMinutes: boolean = false
+  paddingZeroMinutes: boolean = true
   drawOrder: number;
 
   constructor(j?: TimeSeparateDigits) {
@@ -1502,9 +1503,9 @@ export class WatchTimeDigitalSeparated {
 export class WatchTimeDigitalCommon {
   collapsed = true
 
-  hours: WatchNumber = new WatchNumber(null, digitTypes.hour)
-  minutes: WatchNumber = new WatchNumber(null, digitTypes.min)
-  seconds: WatchNumber = new WatchNumber(null, digitTypes.sec)
+  hours: WatchNumber = new WatchNumber(null, digitTypes.hour, true)
+  minutes: WatchNumber = new WatchNumber(null, digitTypes.min, true)
+  seconds: WatchNumber = new WatchNumber(null, digitTypes.sec, true)
 
   time_unknown1: number = 1
 
@@ -1545,8 +1546,8 @@ export class WatchTimeDigitalCommon {
 export class WatchSunset {
   collapsed = true
 
-  sunsetOneLine: WatchNumber = new WatchNumber(null, digitTypes.sunrise)
-  sunriseOneLine: WatchNumber = new WatchNumber(null, digitTypes.sunrise)
+  sunsetOneLine: WatchNumber = new WatchNumber(null, digitTypes.sunrise, true)
+  sunriseOneLine: WatchNumber = new WatchNumber(null, digitTypes.sunrise, true)
 
   sunsetIcon: WatchImage = new WatchImage()
   sunsetShortcut: WatchShortcutElement = new WatchShortcutElement()
@@ -1578,8 +1579,8 @@ export class WatchSunset {
 export class WatchAlarmTime {
   collapsed = true
 
-  hours: WatchNumber = new WatchNumber(null, digitTypes.hour)
-  minutes: WatchNumber = new WatchNumber(null, digitTypes.min)
+  hours: WatchNumber = new WatchNumber(null, digitTypes.hour, true)
+  minutes: WatchNumber = new WatchNumber(null, digitTypes.min, true)
 
 
   constructor(j?: AlarmTime) {
