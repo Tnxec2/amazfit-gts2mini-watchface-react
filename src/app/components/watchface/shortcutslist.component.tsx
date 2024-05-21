@@ -29,6 +29,9 @@ const ShortCutListComponent: FC = () => {
     e.stopPropagation()
     const w = {...watchface}
     let shortcut = new WatchShortcut()
+    if (w.shortcuts?.shortcuts?.length > 0) {
+      shortcut.icon = {...w.shortcuts.shortcuts[w.shortcuts.shortcuts.length-1].icon}
+    }
     shortcut.type = selectedType
     if (!w.shortcuts.shortcuts) w.shortcuts.shortcuts = []
     w.shortcuts.shortcuts.push(shortcut)
