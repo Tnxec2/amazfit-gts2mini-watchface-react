@@ -62,7 +62,7 @@ const JsonComponent: FC = () => {
             ActivitySeparateDigits: getActivitySeparatedDigits(w.activity),
         }
         return JSON.stringify(j, (key, value) => {
-            if (value !== null && value !== undefined) return value
+            if (value !== null && value !== undefined && key !== 'uid') return value
           }, "  ")
     }
     
